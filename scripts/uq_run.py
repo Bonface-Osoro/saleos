@@ -21,11 +21,11 @@ pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
 #Import the data.
 
-data_path = "/Users/osoro/Codebase/saleos/data/"
+data_path = "/Users/osoro/Github/saleos/data/"
 df = pd.read_csv(data_path + "uq_parameters.csv")
 uq_dict = df.to_dict('records') #Convert the csv to list
 
-path = "/Users/osoro/Codebase/saleos/results/"
+path = "/Users/osoro/Github/saleos/results/"
 results = []
 for item in uq_dict:
     constellation = item["constellation"]
@@ -126,8 +126,8 @@ for item in uq_dict:
     df = pd.DataFrame.from_dict(results)
     df.to_csv(path + "uq_results.csv")
 
-data_path = '/Users/osoro/Codebase/saleos/results/'
-results_path = '/Users/osoro/Codebase/saleos/results/'
+data_path = '/Users/osoro/Github/saleos/results/'
+results_path = '/Users/osoro/Github/saleos/results/'
 
 def process_mission_results(data_path, results_path):
     """
