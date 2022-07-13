@@ -6,7 +6,7 @@ from random import*
 from inputs import parameters, lut
 
 def uq_inputs_generator():
-    path = "/Users/osoro/Codebase/saleos/data/"
+    path = "/Users/osoro/Github/saleos/data/"
     uq_parameters = []
 
     N = 1000 #Number of datapoints to generate
