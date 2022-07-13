@@ -1,5 +1,5 @@
 import pytest
-from globalsat.sim import (
+from saleos.sim import (
     system_capacity,
     calc_geographic_metrics,
     calc_free_space_path_loss,
