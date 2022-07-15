@@ -1,4 +1,5 @@
-def demand_model(monthly_traffic_GB, percent_of_traffic):
+def demand_model(monthly_traffic_GB, percent_of_traffic, 
+adoption_rate, population_density, area_km):
     """
     Calculate the demand density per area (Mbps/km2):
 
@@ -13,9 +14,6 @@ def demand_model(monthly_traffic_GB, percent_of_traffic):
             demand density_mbps_sqkm.
 
     """
-    area_km = 1
-    adoption_rate = 0.1
-    population_density = 5
     active_users_per_sqkm = population_density * (adoption_rate / 100)
     hourly_MB = (monthly_traffic_GB / 30) * 1000 * percent_of_traffic
     hourly_mbps = hourly_MB * (8 / 3600)
