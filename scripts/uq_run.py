@@ -71,8 +71,10 @@ for item in uq_dict:
                    spectral_efficiency, item["number_of_channels"], 
                    item["polarization"])
 
+    adoption_rate = item["adoption_rate"]
+
     demand_density_mbps_sqkm = demand_model(item["monthly_traffic_GB"], 
-                               item["percent_of_traffic"])
+                               item["percent_of_traffic"], item["adoption_rate"], 5, 0.3)
 
     emission_dict = gb.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
@@ -83,7 +85,7 @@ for item in uq_dict:
                            item["subscriber_acquisition"], item["staff_costs"], 
                            item["research_development"], item["maintenance"], 
                            item["discount_rate"], item["assessment_period_year"])             
-    cost_per_capacity = total_cost_ownership / sat_capacity* number_of_satellites
+    cost_per_capacity = total_cost_ownership / sat_capacity * number_of_satellites
 
     aluminium_oxide_emissions = emission_dict['alumina_emission']
     sulphur_oxide_emissions = emission_dict['sulphur_emission']
@@ -112,6 +114,7 @@ for item in uq_dict:
                     "agg_capacity": agg_capacity,
                     "capacity_per_single_satellite": sat_capacity,
                     "capacity_per_area_mbps/sqkm": agg_capacity/item["coverage_area_per_sat_sqkm"],
+                    "adoption_rate": adoption_rate,
                     "demand_density_mbps_sqkm": demand_density_mbps_sqkm,
                     "total_cost_ownership": total_cost_ownership,
                     "cost_per_capacity": cost_per_capacity,

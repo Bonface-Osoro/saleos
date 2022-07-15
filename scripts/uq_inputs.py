@@ -9,7 +9,7 @@ def uq_inputs_generator():
     path = "/Users/osoro/Github/saleos/data/"
     uq_parameters = []
 
-    N = 1000 #Number of datapoints to generate
+    N = 10 #Number of datapoints to generate
 
     for number in range(N):
         for key, item in parameters.items():
@@ -40,6 +40,7 @@ def uq_inputs_generator():
             monthly_traffic = uniform((item["monthly_traffic_GB"]), 
                               (item["monthly_traffic_GB"] + 10))
             traffic_percent = item["percent_of_traffic"]
+            adoption_rate = uniform(item["adoption_rate"], (item["adoption_rate"] + 0.99))
             fuel_mass_kg = item["fuel_mass"]
             fuel_mass_1_kg = item["fuel_mass_1"]
             fuel_mass_2_kg = item["fuel_mass_2"]
@@ -89,6 +90,7 @@ def uq_inputs_generator():
                                   "polarization": polarization,
                                   "monthly_traffic_GB": monthly_traffic,
                                   "percent_of_traffic": traffic_percent,
+                                  "adoption_rate": adoption_rate,
                                   "fuel_mass_kg": fuel_mass_kg,
                                   "fuel_mass_1_kg": fuel_mass_1_kg,
                                   "fuel_mass_2_kg": fuel_mass_2_kg,
