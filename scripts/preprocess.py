@@ -13,8 +13,10 @@ import math
 import glob
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 import pyproj
+import shapely
+import fiona
+import geopandas as gpd
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, shape, mapping, box
 from shapely.ops import unary_union, nearest_points, transform
 import rasterio
@@ -359,6 +361,7 @@ def get_area(modeling_region_geom):
     project = pyproj.Transformer.from_crs('epsg:4326', 'epsg:3857', always_xy=True).transform
     new_geom = transform(project, modeling_region_geom)
     area_km = new_geom.area / 1e6
+    print(area_km)
 
     return area_km
 

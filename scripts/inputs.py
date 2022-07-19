@@ -31,6 +31,7 @@ parameters = {
         'polarization':2,
         'monthly_traffic_GB': 25,
         'percent_of_traffic': 15,
+        'adoption_rate': 0.01,
         'fuel_mass': 488370,
         'fuel_mass_1': 0,
         'fuel_mass_2': 0,
@@ -66,11 +67,12 @@ parameters = {
         'receiver_gain': 30,
         'earth_atmospheric_losses': 15, #Rain Attenuation
         'all_other_losses': 0.53, #All other losses
-        'number_of_channels': 8, #Number of channels per satellite
+        'number_of_channels': 16, #Number of channels per satellite
         'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
         'monthly_traffic_GB': 25,
         'percent_of_traffic': 15,
+        'adoption_rate': 0.01,
         'fuel_mass': 218150,
         'fuel_mass_1': 7360,
         'fuel_mass_2': 0,
@@ -106,11 +108,12 @@ parameters = {
         'receiver_gain': 31,
         'earth_atmospheric_losses': 15, #Rain Attenuation
         'all_other_losses': 0.53, #All other losses
-        'number_of_channels': 8, #Number of channels per satellite
+        'number_of_channels': 16, #Number of channels per satellite
         'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
         'monthly_traffic_GB': 25,
         'percent_of_traffic': 15,
+        'adoption_rate': 0.01,
         'fuel_mass': 0,
         'fuel_mass_1':10000,
         'fuel_mass_2': 480000,

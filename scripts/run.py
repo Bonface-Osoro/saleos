@@ -105,7 +105,7 @@ def process_mean_results(data, capacity, constellation, scenario, parameters):
             'active_users_km2': active_users_km2,
             'per_user_capacity': per_user_capacity,
         })
-
+    
     return output
 
 
