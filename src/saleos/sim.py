@@ -56,7 +56,7 @@ def system_capacity(constellation, number_of_satellites, params, lut):
         antenna_gain = calc_antenna_gain(
             params['speed_of_light'],
             params['antenna_diameter'],
-            params['dl_frequency'],
+            params['dl_frequency_Hz'],
             params['antenna_efficiency']
         )
 

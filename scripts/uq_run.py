@@ -10,17 +10,18 @@ from __future__ import division
 import configparser
 import os
 import math
+import timeit
 from numpy import savez_compressed
 import pandas as pd
 
-import saleos.sim as gb
+import saleos.sim as sl
 from inputs import lut
 from cost import cost_model
 from demand import demand_model
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
 #Import the data.
-
+start = timeit.timeit()
 data_path = "/Users/osoro/Github/saleos/data/"
 df = pd.read_csv(data_path + "uq_parameters.csv")
 uq_dict = df.to_dict('records') #Convert the csv to list
@@ -32,42 +33,42 @@ for item in uq_dict:
 
     number_of_satellites = item["number_of_satellites"]
 
-    random_variations = gb.generate_log_normal_dist_value(
+    random_variations = sl.generate_log_normal_dist_value(
         item['dl_frequency_Hz'],
         item['mu'],
         item['sigma'],
         item['seed_value'],
         item['iterations'])
 
-    distance, satellite_coverage_area_km = gb.calc_geographic_metrics(
+    distance, satellite_coverage_area_km = sl.calc_geographic_metrics(
                                            item["number_of_satellites"], item)
 
     path_loss = 20*math.log10(distance) + 20*math.log10(item['dl_frequency_Hz']/1e9) + 92.45
 
-    losses = gb.calc_losses(item["earth_atmospheric_losses_dB"], 
+    losses = sl.calc_losses(item["earth_atmospheric_losses_dB"], 
                      item["all_other_losses_dB"])
 
-    antenna_gain = gb.calc_antenna_gain(item["speed_of_light"],
+    antenna_gain = sl.calc_antenna_gain(item["speed_of_light"],
                            item["antenna_diameter_m"], item["dl_frequency_Hz"],
                            item["antenna_efficiency"]) 
 
-    eirp = gb.calc_eirp(item["power_dBw"], antenna_gain)
+    eirp = sl.calc_eirp(item["power_dBw"], antenna_gain)
 
-    noise = gb.calc_noise()
+    noise = sl.calc_noise()
 
-    received_power = gb.calc_received_power(eirp, path_loss, 
+    received_power = sl.calc_received_power(eirp, path_loss, 
                              item["receiver_gain_dB"], losses)
 
-    cnr = gb.calc_cnr(received_power, noise)
+    cnr = sl.calc_cnr(received_power, noise)
 
-    spectral_efficiency = gb.calc_spectral_efficiency(cnr, lut)
+    spectral_efficiency = sl.calc_spectral_efficiency(cnr, lut)
             
-    channel_capacity = gb.calc_capacity(spectral_efficiency, item["dl_bandwidth_Hz"])
+    channel_capacity = sl.calc_capacity(spectral_efficiency, item["dl_bandwidth_Hz"])
 
-    agg_capacity = gb.calc_agg_capacity(channel_capacity, 
+    agg_capacity = sl.calc_agg_capacity(channel_capacity, 
                    item["number_of_channels"], item["polarization"])
 
-    sat_capacity = gb.single_satellite_capacity(item["dl_bandwidth_Hz"],
+    sat_capacity = sl.single_satellite_capacity(item["dl_bandwidth_Hz"],
                    spectral_efficiency, item["number_of_channels"], 
                    item["polarization"])
 
@@ -76,14 +77,14 @@ for item in uq_dict:
     demand_density_mbps_sqkm = demand_model(item["monthly_traffic_GB"], 
                                item["percent_of_traffic"], item["adoption_rate"], 5, 0.3)
 
-    emission_dict = gb.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
+    emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
 
     total_cost_ownership = cost_model(item["satellite_launch_cost"], item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
                            item["digital_infrastructure_cost"], item["ground_station_energy"], 
                            item["subscriber_acquisition"], item["staff_costs"], 
-                           item["research_development"], item["maintenance"], 
+                           item["research_development"], item["maintenance_costs"], 
                            item["discount_rate"], item["assessment_period_year"])             
     cost_per_capacity = total_cost_ownership / sat_capacity * number_of_satellites
 
@@ -127,7 +128,7 @@ for item in uq_dict:
                     "total_emissions_t": total_emissions})
 
     df = pd.DataFrame.from_dict(results)
-    df.to_csv(path + "uq_results.csv")
+    df.to_csv(path + "uq_results.csv") 
 
 data_path = '/Users/osoro/Github/saleos/results/'
 results_path = '/Users/osoro/Github/saleos/results/'
@@ -198,3 +199,6 @@ def process_mission_results(data_path, results_path):
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
     return store_results
 process_mission_results(data_path, results_path)
+
+end = timeit.timeit()
+print("Time taken is ", end - start, "seconds")
