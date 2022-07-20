@@ -65,9 +65,9 @@ parameters = {
         'antenna_efficiency': 0.6,
         'power': 30, #dBw
         'receiver_gain': 30,
-        'earth_atmospheric_losses': 15, #Rain Attenuation
+        'earth_atmospheric_losses': 10, #Rain Attenuation
         'all_other_losses': 0.53, #All other losses
-        'number_of_channels': 16, #Number of channels per satellite
+        'number_of_channels': 8, #Number of channels per satellite
         'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
         'monthly_traffic_GB': 25,
@@ -106,9 +106,9 @@ parameters = {
         'antenna_efficiency': 0.6,
         'power': 30, #dBw
         'receiver_gain': 31,
-        'earth_atmospheric_losses': 15, #Rain Attenuation
+        'earth_atmospheric_losses': 10, #Rain Attenuation
         'all_other_losses': 0.53, #All other losses
-        'number_of_channels': 16, #Number of channels per satellite
+        'number_of_channels': 8, #Number of channels per satellite
         'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
         'monthly_traffic_GB': 25,
