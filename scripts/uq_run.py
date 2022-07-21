@@ -65,8 +65,8 @@ for item in uq_dict:
             
     channel_capacity = sl.calc_capacity(spectral_efficiency, item["dl_bandwidth_Hz"])
 
-    agg_capacity = sl.calc_agg_capacity(channel_capacity, 
-                   item["number_of_channels"], item["polarization"])
+    agg_capacity = (sl.calc_agg_capacity(channel_capacity, 
+                   item["number_of_channels"], item["polarization"])) * item["number_of_satellites"]
 
     sat_capacity = sl.single_satellite_capacity(item["dl_bandwidth_Hz"],
                    spectral_efficiency, item["number_of_channels"], 
@@ -116,16 +116,27 @@ for item in uq_dict:
                     "received_power_dB": received_power,
                     "received_power_scenario": item["receiver_gain_scenario"],
                     "cnr": cnr,
+                    "cnr_scenario": item["cnr_scenario"],
                     "spectral_efficiency": spectral_efficiency,
                     "channel_capacity": channel_capacity,
-                    "agg_capacity": agg_capacity,
+                    "constellation_capacity": agg_capacity,
                     "capacity_per_single_satellite": sat_capacity,
                     "capacity_per_area_mbps/sqkm": agg_capacity/item["coverage_area_per_sat_sqkm"],
                     "adoption_rate_scenario": item["adoption_rate_scenario"],
                     "adoption_rate": adoption_rate,
                     "demand_density_mbps_sqkm": demand_density_mbps_sqkm,
+                    "satellite_launch_cost": item["satellite_launch_cost"],
+                    "ground_station_cost": item["ground_station_cost"],
+                    "spectrum_cost": item["spectrum_cost"],
+                    "regulation_fees": item["regulation_fees"],
+                    "digital_infrastructure_cost": item["digital_infrastructure_cost"],
+                    "ground_station_energy": item["ground_station_energy"],
+                    "subscriber_acquisition": item["subscriber_acquisition"],
+                    "staff_costs": item["staff_costs"],
+                    "research_development": item["research_development"],
+                    "maintenance_costs": item["maintenance_costs"],
                     "total_cost_ownership": total_cost_ownership,
-                    "total_cost_ownership_scenario": item["total_cost_ownership_scenario"],
+                    "capex_scenario": item["capex_scenario"],
                     "cost_per_capacity": cost_per_capacity,
                     "aluminium_oxide_emissions": aluminium_oxide_emissions,
                     "sulphur_oxide_emissions": sulphur_oxide_emissions,
