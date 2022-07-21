@@ -24,7 +24,7 @@ def uq_inputs_generator():
         ground_station = [item["ground_station_cost"] - (item["ground_station_cost"] * 0.2), 
                          item["ground_station_cost"], item["ground_station_cost"] + 
                          (item["ground_station_cost"] * 0.2)]
-
+        
         for alt in altitude:
             altitude_km = alt
             if alt == 540 or alt == 1190 or alt == 600:
@@ -70,11 +70,11 @@ def uq_inputs_generator():
                             satellite_launch_cost = sat_launch
                             for gst in ground_station:
                                 ground_station_cost = gst
-                                if gst == 39088000 and sat_launch == 186328000 or gst == 39088000 and \
-                                    sat_launch == 656328000 or gst == 26400000 and sat_launch == 116328000:
+                                if gst == 39088000 and sat_launch == 186328000 or gst == 16000000 and \
+                                    sat_launch == 86328000 or gst == 26400000 and sat_launch == 116328000:
                                     capex_scenario = "Low"
-                                elif gst == 48860000 and sat_launch == 250000000 or gst == 48860000 and \
-                                    sat_launch == 656328000 or gst == 33000000 and sat_launch == 180000000:
+                                elif gst == 48860000 and sat_launch == 250000000 or gst == 20000000 and \
+                                    sat_launch == 150000000 or gst == 33000000 and sat_launch == 180000000:
                                     capex_scenario = "Baseline"
                                 else:
                                     capex_scenario = "High"
