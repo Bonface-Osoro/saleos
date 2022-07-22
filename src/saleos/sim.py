@@ -56,7 +56,7 @@ def system_capacity(constellation, number_of_satellites, params, lut):
         antenna_gain = calc_antenna_gain(
             params['speed_of_light'],
             params['antenna_diameter'],
-            params['dl_frequency_Hz'],
+            params['dl_frequency'],
             params['antenna_efficiency']
         )
 
@@ -75,11 +75,42 @@ def system_capacity(constellation, number_of_satellites, params, lut):
         channel_capacity = calc_capacity(spectral_efficiency, params['dl_bandwidth'])
 
         agg_capacity = calc_agg_capacity(channel_capacity, params['number_of_channels'],
-                       params['polarization'])
+                       params['polarization'])* params["number_of_satellites"]
 
         sat_capacity = single_satellite_capacity(params['dl_bandwidth'],
                        spectral_efficiency, params['number_of_channels'],
                        params['polarization'])
+
+        adoption_rate = params["adoption_rate"]
+
+        demand_density_mbps_sqkm = demand_model(params["monthly_traffic_GB"], 
+                               params["percent_of_traffic"], params["adoption_rate"], 5, 0.3)
+
+        emission_dict = calc_per_sat_emission(params["name"], params["fuel_mass"],
+                    params["fuel_mass_1"], params["fuel_mass_2"], params["fuel_mass_3"])
+        
+        aluminium_oxide_emissions = emission_dict['alumina_emission']
+        sulphur_oxide_emissions = emission_dict['sulphur_emission']
+        carbon_oxide_emissions = emission_dict['carbon_emission']
+        cfc_gases_emissions = emission_dict['cfc_gases']
+        particulate_matter_emissions = emission_dict['particulate_matter']
+        photochemical_oxidation_emissions = emission_dict['photo_oxidation']
+
+        total_emissions = aluminium_oxide_emissions + sulphur_oxide_emissions \
+                      + carbon_oxide_emissions + cfc_gases_emissions \
+                      + particulate_matter_emissions \
+                      + photochemical_oxidation_emissions
+        
+        total_mission_emissions = total_emissions * params["number_of_missions"]
+        
+        total_cost_ownership = cost_model(params["satellite_launch_cost"], params["ground_station_cost"], 
+                           params["spectrum_cost"], params["regulation_fees"], 
+                           params["digital_infrastructure_cost"], params["ground_station_energy"], 
+                           params["subscriber_acquisition"], params["staff_costs"], 
+                           params["research_development"], params["maintenance"], 
+                           params["discount_rate"], params["assessment_period"]) 
+        
+        cost_per_capacity = total_cost_ownership / sat_capacity * number_of_satellites
 
         results.append({
             'constellation': constellation,
@@ -99,6 +130,12 @@ def system_capacity(constellation, number_of_satellites, params, lut):
             'aggregate_capacity': agg_capacity,
             'capacity_kmsq': agg_capacity / satellite_coverage_area_km,
             'capacity_per_single_satellite': sat_capacity,
+            'adoption_rate': adoption_rate,
+            'demand_density_mbps_sqkm': demand_density_mbps_sqkm,
+            'total_emissions': total_emissions,
+            'total_cost_ownership': total_cost_ownership,
+            'cost_per_capacity': cost_per_capacity,
+            'emission_per_capacity': total_mission_emissions / agg_capacity
         })
 
     return results
@@ -716,3 +753,62 @@ def ariane(hypergolic, solid, cryogenic):
                                        + (hypergolic*0.001*1)
 
     return emission_dict
+
+
+def demand_model(monthly_traffic_GB, percent_of_traffic, 
+adoption_rate, population_density, area_km):
+    """
+    Calculate the demand density per area (Mbps/km2):
+
+    Parameters
+    ----------
+    params : dict.
+        Contains all simulation parameters.
+
+    Returns
+    -------
+    results : float
+            demand density_mbps_sqkm.
+
+    """
+    active_users_per_sqkm = population_density * (adoption_rate / 100)
+    hourly_MB = (monthly_traffic_GB / 30) * 1000 * percent_of_traffic
+    hourly_mbps = hourly_MB * (8 / 3600)
+    hourly_active_user_density = (active_users_per_sqkm * percent_of_traffic) / area_km
+    demand_density_mbps_sqkm = hourly_active_user_density / hourly_mbps
+
+    return demand_density_mbps_sqkm
+
+
+def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regulation_fees, \
+    digital_infrastructure_cost, ground_station_energy, subscriber_acquisition, \
+    staff_costs, research_development, maintenance, discount_rate, assessment_period):
+    """
+    Calculate the total cost of ownership(TCO):
+
+    Parameters
+    ----------
+    params : dict.
+        Contains all simulation parameters.
+
+    Returns
+    -------
+    results : float
+            The total cost of ownership.
+
+    """
+
+    capex = satellite_launch_cost + ground_station_cost + spectrum_cost + regulation_fees \
+            + digital_infrastructure_cost #Addition of all capital expenditure
+
+    opex_costs = ground_station_energy + subscriber_acquisition + staff_costs \
+                 + research_development + maintenance #Addition of all recurrent expenditures
+
+    year_costs = []
+    for time in np.arange(1, assessment_period):  #Discounted for the years
+        yearly_opex = opex_costs/(((discount_rate/100) + 1)**time)
+        year_costs.append(yearly_opex)
+
+    total_cost_ownership = capex + sum(year_costs) + opex_costs
+
+    return total_cost_ownership
