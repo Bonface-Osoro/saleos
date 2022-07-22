@@ -144,80 +144,14 @@ for item in uq_dict:
                     "cfc_gases_emissions": cfc_gases_emissions,
                     "particulate_matter_emissions": particulate_matter_emissions,
                     "photochemical_oxidation_emissions": photochemical_oxidation_emissions,
-                    "total_emissions_t": total_emissions})
+                    "total_emissions_t": total_emissions,
+                    "emission_per_capacity": total_emissions / agg_capacity,
+                    "emission_per_sqkm": total_emissions / satellite_coverage_area_km,
+                    "emission_for_every_cost": total_emissions / total_cost_ownership
+                    })
 
     df = pd.DataFrame.from_dict(results)
     df.to_csv(path + "uq_results.csv") 
-
-data_path = '/Users/osoro/Github/saleos/results/'
-results_path = '/Users/osoro/Github/saleos/results/'
-
-def process_mission_results(data_path, results_path):
-    """
-    Prepare full emission results for the three constellations
-    
-    """
-    df = pd.read_csv(data_path + "uq_results.csv", index_col=False)
-    
-    #Select the columns to use.
-    df = df[['constellation', 'aluminium_oxide_emissions',
-       'sulphur_oxide_emissions', 'carbon_oxide_emissions',
-       'cfc_gases_emissions', 'particulate_matter_emissions',
-       'photochemical_oxidation_emissions']]
-    
-    #Create new columns to store the results.
-    df[["starlink_aluminium_emissions", "starlink_sulphur_emissions", 
-    "starlink_carbon_emissions", "starlink_cfc_emissions", 
-    "starlink_particulate_emissions", "starlink_oxidation_emissions", 
-    "starlink_total_emissions", "oneweb_aluminium_emissions", 
-    "oneweb_sulphur_emissions", "oneweb_carbon_emissions", 
-    "oneweb_cfc_emissions", "oneweb_particulate_emissions", 
-    "oneweb_oxidation_emissions", "oneweb_total_emissions", 
-    "kuiper_aluminium_emissions", "kuiper_sulphur_emissions", 
-    "kuiper_carbon_emissions", "kuiper_cfc_emissions", 
-    "kuiper_particulate_emissions", "kuiper_oxidation_emissions", 
-    "kuiper_total_emissions"]] = ""
-    
-    #Iterate through the rows and store the results.
-    for i in range(len(df)):
-        if df["constellation"].loc[i] == "Starlink":
-            df["starlink_aluminium_emissions"].loc[i] = (df["aluminium_oxide_emissions"].loc[i]) * 74
-            df["starlink_sulphur_emissions"].loc[i] = (df["sulphur_oxide_emissions"].loc[i]) * 74
-            df["starlink_carbon_emissions"].loc[i] = (df["carbon_oxide_emissions"].loc[i]) * 74
-            df["starlink_cfc_emissions"].loc[i] = (df["cfc_gases_emissions"].loc[i]) * 74
-            df["starlink_particulate_emissions"].loc[i] = (df["particulate_matter_emissions"].loc[i]) * 74
-            df["starlink_oxidation_emissions"].loc[i] = (df["photochemical_oxidation_emissions"].loc[i]) * 74
-            df["starlink_total_emissions"].loc[i] = df["starlink_aluminium_emissions"].loc[i] \
-                + df["starlink_sulphur_emissions"].loc[i] + df["starlink_carbon_emissions"].loc[i] \
-                + df["starlink_cfc_emissions"].loc[i] + df["starlink_particulate_emissions"].loc[i] \
-                + df["starlink_oxidation_emissions"].loc[i] 
-        elif df["constellation"].loc[i]=="OneWeb":
-            df["oneweb_aluminium_emissions"].loc[i] = (df["aluminium_oxide_emissions"].loc[i]) * 20
-            df["oneweb_sulphur_emissions"].loc[i] = (df["sulphur_oxide_emissions"].loc[i]) * 20
-            df["oneweb_carbon_emissions"].loc[i] = (df["carbon_oxide_emissions"].loc[i]) * 20
-            df["oneweb_cfc_emissions"].loc[i] = (df["cfc_gases_emissions"].loc[i]) * 20
-            df["oneweb_particulate_emissions"].loc[i] = (df["particulate_matter_emissions"].loc[i]) * 20
-            df["oneweb_oxidation_emissions"].loc[i] = (df["photochemical_oxidation_emissions"].loc[i]) * 20
-            df["oneweb_total_emissions"].loc[i] = df["oneweb_aluminium_emissions"].loc[i] \
-                + df["oneweb_sulphur_emissions"].loc[i] + df["oneweb_carbon_emissions"].loc[i] \
-                + df["oneweb_cfc_emissions"].loc[i] + df["oneweb_particulate_emissions"].loc[i] \
-                + df["oneweb_oxidation_emissions"].loc[i] 
-        elif df["constellation"].loc[i]=="Kuiper":
-            df["kuiper_aluminium_emissions"].loc[i] = (df["aluminium_oxide_emissions"].loc[i]) * 54
-            df["kuiper_sulphur_emissions"].loc[i] = (df["sulphur_oxide_emissions"].loc[i]) * 54
-            df["kuiper_carbon_emissions"].loc[i] = (df["carbon_oxide_emissions"].loc[i]) * 54
-            df["kuiper_cfc_emissions"].loc[i] = (df["cfc_gases_emissions"].loc[i]) * 54
-            df["kuiper_particulate_emissions"].loc[i] = (df["particulate_matter_emissions"].loc[i]) * 54
-            df["kuiper_oxidation_emissions"].loc[i] = (df["photochemical_oxidation_emissions"].loc[i]) * 54
-            df["kuiper_total_emissions"].loc[i] = df["kuiper_aluminium_emissions"].loc[i] \
-                + df["kuiper_sulphur_emissions"].loc[i] + df["kuiper_carbon_emissions"].loc[i] \
-                + df["kuiper_cfc_emissions"].loc[i] + df["kuiper_particulate_emissions"].loc[i] \
-                + df["kuiper_oxidation_emissions"].loc[i]
-        else:
-            break
-    store_results = df.to_csv(results_path + "mission_emission_results.csv")
-    return store_results
-process_mission_results(data_path, results_path)
 
 end = timeit.timeit()
 print("Time taken is ", end - start, "seconds")
