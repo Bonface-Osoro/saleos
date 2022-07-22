@@ -43,15 +43,21 @@ def process_capacity_data(data, constellations):
 
         channel_capacity_results = []
         aggregate_capacity_results = []
+        total_emission_results = [] ######
+        total_cost_results = []
 
         for idx, item in data.iterrows():
             if constellation.lower() == item['constellation'].lower():
                 if item['number_of_satellites'] == max_satellites:
                     channel_capacity_results.append(item['channel_capacity']) #append to list
                     aggregate_capacity_results.append(item['aggregate_capacity']) #append to list
+                    total_emission_results.append(item["total_emissions"])#######
+                    total_cost_results.append(item["total_cost_ownership"])
 
         mean_channel_capacity = sum(channel_capacity_results) / len(channel_capacity_results)
         mean_agg_capacity = sum(aggregate_capacity_results) / len(aggregate_capacity_results)
+        total_emissions = sum(total_emission_results) / len(total_emission_results) #######
+        total_costs = sum(total_cost_results) / len(total_cost_results)
 
         output[constellation] = {
             'number_of_satellites': max_satellites,
@@ -59,6 +65,8 @@ def process_capacity_data(data, constellations):
             'channel_capacity': mean_channel_capacity,
             'aggregate_capacity': mean_agg_capacity,
             'capacity_kmsq': mean_agg_capacity / coverage_area,
+            'total_emissions': total_emissions,######
+            'total_costs': total_costs
         }
 
     return output
@@ -74,6 +82,8 @@ def process_mean_results(data, capacity, constellation, scenario, parameters):
     adoption_rate = scenario[1]
     overbooking_factor = parameters[constellation.lower()]['overbooking_factor']
     constellation_capacity = capacity[constellation]
+    constellation_emission = constellation_capacity['total_emissions']#######
+    constellation_costs = constellation_capacity['total_costs']
 
     max_capacity = constellation_capacity['capacity_kmsq']
     number_of_satellites = constellation_capacity['number_of_satellites']
@@ -104,6 +114,10 @@ def process_mean_results(data, capacity, constellation, scenario, parameters):
             'users_per_km2': users_per_km2,
             'active_users_km2': active_users_km2,
             'per_user_capacity': per_user_capacity,
+            'constellation_costs': constellation_costs,
+            'constellation_emission_kg': constellation_emission, ########
+            'emission_for_every_cost': constellation_emission / constellation_costs,
+            'emission_per_region': constellation_emission / item['area_m']
         })
     
     return output
@@ -192,7 +206,7 @@ if __name__ == '__main__':
 
     ##process global results
     capacity = process_capacity_data(results, CONSTELLATIONS)
-
+    
     path = os.path.join(INTERMEDIATE, 'global_regional_population_lookup.csv')
     global_data = pd.read_csv(path)
 

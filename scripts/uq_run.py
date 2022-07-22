@@ -16,8 +16,6 @@ import pandas as pd
 
 import saleos.sim as sl
 from inputs import lut
-from cost import cost_model
-from demand import demand_model
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
 #Import the data.
@@ -74,13 +72,13 @@ for item in uq_dict:
 
     adoption_rate = item["adoption_rate"]
 
-    demand_density_mbps_sqkm = demand_model(item["monthly_traffic_GB"], 
+    demand_density_mbps_sqkm = sl.demand_model(item["monthly_traffic_GB"], 
                                item["percent_of_traffic"], item["adoption_rate"], 5, 0.3)
 
     emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
 
-    total_cost_ownership = cost_model(item["satellite_launch_cost"], item["ground_station_cost"], 
+    total_cost_ownership = sl.cost_model(item["satellite_launch_cost"], item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
                            item["digital_infrastructure_cost"], item["ground_station_energy"], 
                            item["subscriber_acquisition"], item["staff_costs"], 
