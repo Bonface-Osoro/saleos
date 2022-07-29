@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import random
 import decimal
+import saleos as sl
 from random import*
 from inputs import parameters, lut
 
@@ -73,11 +74,17 @@ def uq_inputs_generator():
                                 if gst == 39088000 and sat_launch == 186328000 or gst == 16000000 and \
                                     sat_launch == 86328000 or gst == 26400000 and sat_launch == 116328000:
                                     capex_scenario = "Low"
+                                    sat_launch_scenario = "Low"
+                                    ground_station_scenario = "Low"
                                 elif gst == 48860000 and sat_launch == 250000000 or gst == 20000000 and \
                                     sat_launch == 150000000 or gst == 33000000 and sat_launch == 180000000:
                                     capex_scenario = "Baseline"
+                                    sat_launch_scenario = "Baseline"
+                                    ground_station_scenario = "Baseline"
                                 else:
                                     capex_scenario = "High"
+                                    sat_launch_scenario = "High"
+                                    ground_station_scenario = "High"
                                 for adop in adopt_rate:
                                     adoption_rate = adop
                                     if adop == 0.01:
@@ -152,7 +159,9 @@ def uq_inputs_generator():
                                                             "fuel_mass_2_kg": fuel_mass_2_kg,
                                                             "fuel_mass_3_kg": fuel_mass_3_kg,
                                                             "satellite_launch_cost": satellite_launch_cost,
+                                                            "satellite_launch_scenario": sat_launch_scenario,
                                                             "ground_station_cost": ground_station_cost,
+                                                            "ground_station_scenario": ground_station_scenario,
                                                             "spectrum_cost": spectrum_cost,
                                                             "regulation_fees": regulation_fees,
                                                             "digital_infrastructure_cost": digital_infrastructure_cost,

@@ -62,9 +62,16 @@ for item in uq_dict:
     spectral_efficiency = sl.calc_spectral_efficiency(cnr, lut)
             
     channel_capacity = sl.calc_capacity(spectral_efficiency, item["dl_bandwidth_Hz"])
-
+    
     agg_capacity = (sl.calc_agg_capacity(channel_capacity, 
                    item["number_of_channels"], item["polarization"])) * item["number_of_satellites"]
+
+    if channel_capacity == 823.6055 or channel_capacity == 411.80275:
+        capacity_scenario = "Low"
+    elif channel_capacity == 1810.268 or channel_capacity == 526.2125 and item["constellation"] == "OneWeb" or channel_capacity == 1183.8385:
+        capacity_scenario = "High"
+    else:
+        capacity_scenario = "Baseline"
 
     sat_capacity = sl.single_satellite_capacity(item["dl_bandwidth_Hz"],
                    spectral_efficiency, item["number_of_channels"], 
@@ -74,6 +81,12 @@ for item in uq_dict:
 
     demand_density_mbps_sqkm = sl.demand_model(item["monthly_traffic_GB"], 
                                item["percent_of_traffic"], item["adoption_rate"], 5, 0.3)
+    if item["adoption_rate"] == 0.01:
+        demand_scenario = "Low"
+    elif item["adoption_rate"] == 1:
+        demand_scenario = "High"
+    else:
+        demand_scenario = "Baseline"
 
     emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
@@ -85,6 +98,13 @@ for item in uq_dict:
                            item["research_development"], item["maintenance_costs"], 
                            item["discount_rate"], item["assessment_period_year"])             
     cost_per_capacity = total_cost_ownership / sat_capacity * number_of_satellites
+
+    if item["capex_scenario"] == "Low":
+        cost_scenario = "Low"
+    elif item["capex_scenario"] == "High":
+        cost_scenario = "High"
+    else:
+        cost_scenario = "Baseline"
 
     aluminium_oxide_emissions = emission_dict['alumina_emission']
     sulphur_oxide_emissions = emission_dict['sulphur_emission']
@@ -100,6 +120,7 @@ for item in uq_dict:
 
     results.append({"constellation": constellation, 
                     "signal_path": distance,
+                    "altitude_km": item["altitude_km"],
                     "signal_path_scenario": item["altitude_scenario"],
                     "satellite_coverage_area_km": satellite_coverage_area_km,
                     "dl_frequency_Hz": item["dl_frequency_Hz"],
@@ -111,6 +132,8 @@ for item in uq_dict:
                     "antenna_gain": antenna_gain,
                     "eirp_dB": eirp,
                     "noise": noise,
+                    "receiver_gain_db": item["receiver_gain_dB"],
+                    "receiver_gain_scenario": item["receiver_gain_scenario"],
                     "received_power_dB": received_power,
                     "received_power_scenario": item["receiver_gain_scenario"],
                     "cnr": cnr,
@@ -118,12 +141,17 @@ for item in uq_dict:
                     "spectral_efficiency": spectral_efficiency,
                     "channel_capacity": channel_capacity,
                     "constellation_capacity": agg_capacity,
+                    "capacity_scenario": capacity_scenario,
                     "capacity_per_single_satellite": sat_capacity,
                     "capacity_per_area_mbps/sqkm": agg_capacity/item["coverage_area_per_sat_sqkm"],
                     "adoption_rate_scenario": item["adoption_rate_scenario"],
                     "adoption_rate": adoption_rate,
+                    "adoption_scenario": item["adoption_rate_scenario"],
                     "demand_density_mbps_sqkm": demand_density_mbps_sqkm,
+                    "demand_scenario": demand_scenario,
                     "satellite_launch_cost": item["satellite_launch_cost"],
+                    "satellite_launch_scenario": item["satellite_launch_scenario"],
+                    "ground_station_cost_scenario": item["ground_station_scenario"],
                     "ground_station_cost": item["ground_station_cost"],
                     "spectrum_cost": item["spectrum_cost"],
                     "regulation_fees": item["regulation_fees"],
@@ -136,6 +164,7 @@ for item in uq_dict:
                     "total_cost_ownership": total_cost_ownership,
                     "capex_scenario": item["capex_scenario"],
                     "cost_per_capacity": cost_per_capacity,
+                    "cost_scenario": cost_scenario,
                     "aluminium_oxide_emissions": aluminium_oxide_emissions,
                     "sulphur_oxide_emissions": sulphur_oxide_emissions,
                     "carbon_oxide_emissions": carbon_oxide_emissions,
