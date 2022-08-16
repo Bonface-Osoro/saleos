@@ -130,5 +130,5 @@ dmypy.json
 
 # Exclusions
 data/*
-**/figures/*/
+**/vis/*/
 figures/*
