@@ -95,9 +95,9 @@ ce
            labels = c("A", "B", "C", "D"))
  emission_profile
  
- path = file.path(folder, 'publication_plots', 
+ path = file.path(folder, 'figures', 
         'constellation_emission_profile.tiff')
- dir.create(file.path(folder, 'publication_plots'), 
+ dir.create(file.path(folder, 'figures'), 
          showWarnings = FALSE)
  tiff(path, units="in", width=6, height=6, res=300)
  print(emission_profile)
@@ -258,9 +258,9 @@ ce
                     labels = c("A", "B", "C", "D"))
  capacities
  
- path = file.path(folder, 'publication_plots', 
+ path = file.path(folder, 'figures', 
                   'constellation_capacity_profile.tiff')
- dir.create(file.path(folder, 'publication_plots'), 
+ dir.create(file.path(folder, 'figures'), 
             showWarnings = FALSE)
  tiff(path, units="in", width=7, height=10, res=300)
  print(capacities)
@@ -407,9 +407,9 @@ ce
                          labels = c("A", "B", "C", "D"))
  const_cost
  
- path = file.path(folder, 'publication_plots', 
+ path = file.path(folder, 'figures', 
                   'constellation_cost_profile.tiff')
- dir.create(file.path(folder, 'publication_plots'), 
+ dir.create(file.path(folder, 'figures'), 
             showWarnings = FALSE)
  tiff(path, units="in", width=7, height=10, res=380)
  print(const_cost)
