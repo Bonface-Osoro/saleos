@@ -414,26 +414,3 @@ ce
  tiff(path, units="in", width=7, height=10, res=380)
  print(const_cost)
  dev.off()
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
