@@ -62,13 +62,12 @@ ce
  ae <- ggplot(de, aes(x = Constellation,
    y = emission_per_sqkm, fill = Constellation)) +
    geom_bar(stat = "identity", size = 0.9, position=position_dodge(width = 0.01)) +
-   scale_fill_brewer(palette = "Paired") +
-   theme(legend.position = 'bottom') + theme_bw() +
+   scale_fill_brewer(palette = "Paired") + theme_bw() +
    theme(panel.border = element_blank(), 
    panel.grid.major = element_blank(),
    panel.grid.minor = element_blank(), 
    axis.line = element_line(colour = "black"))+
-   labs(colour=NULL,
+   theme(legend.position = 'bottom') + labs(colour=NULL,
    title = " ",
    subtitle = "Equivalent Emission per Area",
    x = NULL, y = "Emissions (kg/km^2)") +
@@ -109,8 +108,6 @@ ce
                capacity_per_area_mbps.sqkm, constellation_capacity, 
                ground_station_cost, cnr,
                cnr_scenario,cost_per_capacity, total_cost_ownership)
- 
- # CAPACITY PLOTS
  
  # Channel capacity with Bars
  coss = dct %>%
@@ -279,24 +276,25 @@ ce
  df5$Capex = factor(df5$capex_scenario,
    levels=c('Low', 'Baseline', 'High'))
 
- p <- ggplot(df5, aes(x=Constellation, y=satellite_launch_cost/1e6, 
+ sat_costs <- ggplot(df5, aes(x=Constellation, y=satellite_launch_cost/1e6, 
    fill=Capex)) + geom_bar(stat="identity", 
    position=position_dodge()) +
-   geom_errorbar(aes(ymin=satellite_launch_cost/1e6-sd/1e6, 
-   ymax=satellite_launch_cost/1e6+sd/1e6), width=.2,
-   position=position_dodge(.9), color = 'orange', size = 0.3)
- sat_costs <- p + scale_fill_brewer(palette="Paired") + theme_minimal() + 
+      geom_errorbar(aes(ymin=satellite_launch_cost/1e6-sd/1e6, 
+      ymax=satellite_launch_cost/1e6+sd/1e6), width=.2,
+   position=position_dodge(.9), color = 'orange', size = 0.3) +
+   scale_fill_brewer(palette="Paired") + theme_minimal() + 
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Satellite Launch Cost", subtitle = "Satellite Launch Cost for different capital expenditure costs", 
-   x = "Capex Scenario", y = "Cost ($ million)") + 
+       title = "Satellite Launch Cost", subtitle = "Satellite Launch Cost for different capital expenditure costs", 
+       x = "Capex Scenario", y = "Cost ($ million)") + 
    scale_y_continuous(labels = function(y) format(y, 
-   scientific = FALSE), expand = c(0, 0)) + 
-   facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
-   theme(strip.text.x = element_blank(),
-   panel.border = element_blank(),
-   panel.grid.major = element_blank(),
-   panel.grid.minor = element_blank(),
-   axis.line = element_line(colour = "black"))
+        scientific = FALSE), expand = c(0, 0)) + 
+   facet_wrap(~Constellation, scales = "free") + 
+   theme_minimal() + 
+       theme(strip.text.x = element_blank(),
+       panel.border = element_blank(),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       axis.line = element_line(colour = "black"))
  sat_costs
  
  ## Constellation Ground Costs with Error Bars
@@ -312,24 +310,25 @@ ce
  df6$Capex = factor(df6$capex_scenario,
     levels=c('Low', 'Baseline', 'High'))
  
- p <- ggplot(df6, aes(x=Constellation, y=ground_station_cost/1e6, 
-   fill=Capex)) + geom_bar(stat="identity", 
-   position=position_dodge()) +
+ grd_costs <- ggplot(df6, aes(x=Constellation, y=ground_station_cost/1e6, 
+   fill=Capex)) + 
+   geom_bar(stat="identity", position=position_dodge()) +
    geom_errorbar(aes(ymin=ground_station_cost/1e6-sd/1e6, 
-   ymax=ground_station_cost/1e6+sd/1e6), width=.2,
-   position=position_dodge(.9), color = 'orange', size = 0.3)
- grd_costs <- p + scale_fill_brewer(palette="Paired") + theme_minimal() + 
-   theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Ground Station Cost", subtitle = "Ground Station Cost for different capital expenditure costs", 
+       ymax=ground_station_cost/1e6+sd/1e6), width=.2,
+   position=position_dodge(.9), color = 'orange', size = 0.3) + 
+   scale_fill_brewer(palette="Paired") + theme_minimal() + 
+       theme(legend.position = 'bottom') + labs(colour=NULL, 
+       title = "Ground Station Cost", subtitle = "Ground Station Cost for different capital expenditure costs", 
    x = "Capex Scenario", y = "Cost ($ million)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
-   facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
-   theme(strip.text.x = element_blank(),
-   panel.border = element_blank(),
-   panel.grid.major = element_blank(),
-   panel.grid.minor = element_blank(),
-   axis.line = element_line(colour = "black"))
+   facet_wrap(~Constellation, scales = "free") + 
+   theme_minimal() + 
+       theme(strip.text.x = element_blank(),
+       panel.border = element_blank(),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       axis.line = element_line(colour = "black"))
  grd_costs
  
  ## Constellation Cost per capacity Costs with Error Bars
@@ -346,24 +345,24 @@ ce
    levels=c('Low', 'Baseline', 'High'))
  
  
- p <- ggplot(dff6, aes(x=Constellation, y=cost_per_capacity/1e6, 
-   fill=Capex)) + geom_bar(stat="identity", 
-   position=position_dodge()) +
-   geom_errorbar(aes(ymin=cost_per_capacity/1e6-sd/1e6, 
-   ymax=cost_per_capacity/1e6+sd/1e6), width=.2,
-   position=position_dodge(.9), color = 'orange', size = 0.3)
- cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
+ cap_cost <- ggplot(dff6, aes(x=Constellation, y=cost_per_capacity/1e6, 
+   fill=Capex)) + 
+   geom_bar(stat="identity", position=position_dodge()) +
+      geom_errorbar(aes(ymin=cost_per_capacity/1e6-sd/1e6, 
+      ymax=cost_per_capacity/1e6+sd/1e6), width=.2,
+   position=position_dodge(.9), color = 'orange', size = 0.3) + 
+   scale_fill_brewer(palette="Paired") + theme_minimal() +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Cost per Capacity", subtitle = "Cost for providing a 1 Gbps capacity under different capital expenditure scenarios", 
-   x = "Capex Scenario", y = "Cost ($ million/Gbps)") + 
+      title = "Cost per Capacity", subtitle = "Cost for providing a 1 Gbps capacity under different capital expenditure scenarios", 
+   x = "Capex Scenario", y = "Cost ($ million/Tbps)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
-   facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
-   theme(strip.text.x = element_blank(),
-   panel.border = element_blank(),
-   panel.grid.major = element_blank(),
-   panel.grid.minor = element_blank(),
-   axis.line = element_line(colour = "black"))
+   facet_wrap(~Constellation, scales = "free") + 
+   theme_minimal() + theme(strip.text.x = element_blank(),
+     panel.border = element_blank(),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank(),
+     axis.line = element_line(colour = "black"))
  cap_cost
  
  ## Constellation Total Cost Ownership with Error Bars
@@ -379,24 +378,24 @@ ce
  df7$Capex = factor(df7$capex_scenario,
    levels=c('Low', 'Baseline', 'High'))
 
- p <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/1e6, 
+ total_cost <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/1e9, 
    fill=Capex)) + geom_bar(stat="identity", 
    position=position_dodge()) +
-   geom_errorbar(aes(ymin=(total_cost_ownership/1e6)-sd/1e6, 
-   ymax=(total_cost_ownership/1e6)+sd/1e6), width=.2,
-   position=position_dodge(.9), color = 'orange', size = 0.3)
- total_cost <- p + scale_fill_brewer(palette="Paired") +
+   geom_errorbar(aes(ymin=(total_cost_ownership/1e9)-sd/1e9, 
+      ymax=(total_cost_ownership/1e9)+sd/1e9), width=.2,
+      position=position_dodge(.9), color = 'orange', size = 0.3) + 
+   scale_fill_brewer(palette="Paired") +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Total Cost Ownership", subtitle = "Resulting total cost of ownership for different capital expenditure scenario", 
-   x = "Capex Scenario", y = "Cost ($ million)") + 
+      title = "Total Cost Ownership", subtitle = "Resulting total cost of ownership for different capital expenditure scenario", 
+   x = "Capex Scenario", y = "Cost ($ billion)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
-   facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
-   theme(strip.text.x = element_blank(),
-   panel.border = element_blank(),
-   panel.grid.major = element_blank(),
-   panel.grid.minor = element_blank(),
-   axis.line = element_line(colour = "black"))
+   facet_wrap(~Constellation, scales = "free") + 
+   theme_minimal() + theme(strip.text.x = element_blank(),
+      panel.border = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(colour = "black"))
  total_cost
  
  ## Combine Cost Plots ##
