@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Exclusions
-#vis/*/* ignore folders inside vis
+vis/*/* 
 data/*
 figures/*
