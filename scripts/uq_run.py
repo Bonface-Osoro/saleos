@@ -3,7 +3,7 @@ Simulation run script for saleos.
 
 Written by Bonface Osoro & Ed Oughton.
 
-December 2022
+May 2022
 
 """
 from __future__ import division

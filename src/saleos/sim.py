@@ -1,9 +1,9 @@
 """
 saleos simulation model.
 
-Developed by Bonface Osaro and Ed Oughton.
+Developed by Bonface Osoro and Ed Oughton.
 
-December 2022
+May 2022
 
 """
 import math
