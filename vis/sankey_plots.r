@@ -342,7 +342,7 @@ q2 <- ggarrange(AH, AI, AJ + font("x.text", size = 9),
 q3 <- ggarrange(im_G, im_H, im_J + font("x.text", size = 9),
                 ncol = 1, nrow = 3)
 const_sankey <- ggarrange(q1, q2, q3, nrow = 1, ncol = 3, 
-          labels = c("(A) LEO Constellations", 
+          labels = c("(A) LEO Orbit Designs", 
           "(B) Constellation Details", 
           "(C) Constellation Sankeys"),
           heights = c(1, 1, 1), align = c("hv"))

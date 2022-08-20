@@ -3,11 +3,9 @@ library(png)
 library(ggplot2)
 library(gridExtra)
 library(grid)
-# library(kableExtra)
 library(data.table)
 library(dplyr)
 library(tidyverse)
-# library(reshape2)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
