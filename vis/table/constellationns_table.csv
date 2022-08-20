@@ -1,0 +1,7 @@
+﻿Properties,Starlink,OneWeb,Kuiper
+Constellation Name,Starlink,OneWeb,Kuiper
+Operator,SpaceX,OneWeb,Amazon
+Number of Satellites,4425,720,3236
+Number of Satellites per Launch,60,36,_
+Number of Satellites in Orbit,1961,428,_
+Primary Launch Vehicle,Falcon 9,Soyuz  FG,Ariane 5
