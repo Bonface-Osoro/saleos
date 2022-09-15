@@ -31,7 +31,7 @@ te <- ggplot(de, aes(x = Constellation,
   y = mission_total_emissions/1e6, fill = Constellation)) +
   geom_bar(stat = "identity", size = 0.9, position=position_dodge(width = 0.01)) +
   scale_fill_brewer(palette = "Paired") +theme_bw() +
-  theme(panel.border = element_blank(), 
+  theme( panel.border = element_blank(),
   panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), 
   axis.line = element_line(colour = "black"))+
@@ -40,13 +40,13 @@ te <- ggplot(de, aes(x = Constellation,
   subtitle = "Total Emissions",
   x = NULL, y = "Emissions (kt)") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE),
-  expand = c(0, 0))
+  expand = c(0, 0)) 
 te
  ce <- ggplot(de, aes(x = Constellation,
    y = emission_per_capacity*1e3, fill = Constellation)) +
    geom_bar(stat = "identity", size = 0.9, position=position_dodge(width = 0.01)) +
    scale_fill_brewer(palette = "Paired") +theme_bw() +
-   theme(panel.border = element_blank(), 
+   theme( panel.border = element_blank(),
    panel.grid.major = element_blank(),
    panel.grid.minor = element_blank(), 
    axis.line = element_line(colour = "black"))+
@@ -100,13 +100,25 @@ ce
  print(emission_profile)
  dev.off()
  
+ tprcem <- ggarrange(te,  ce, ncol = 2, 
+                      common.legend = T, legend="bottom", 
+                      labels = c("A", "B"))
+ tprcem
+ 
+ path = file.path(folder, 'figures','tprc_emission_profile.tiff')
+ dir.create(file.path(folder, 'figures'),showWarnings = FALSE)
+ tiff(path, units="in", width=7, height=3, res=300)
+ print(tprcem)
+ dev.off()
+ 
  # INDIVIDUAL PLOTS WITH ERROR BARS #
- dct <- select(dr, constellation, capex_scenario,channel_capacity, 
+ dct <- select(dr, constellation, capex_scenario, channel_capacity, 
                capacity_per_single_satellite, satellite_launch_cost, 
                capacity_per_area_mbps.sqkm, constellation_capacity, 
                ground_station_cost, cnr,
                cnr_scenario,cost_per_capacity, total_cost_ownership)
  
+ str(dct)
  # Channel capacity with Bars
  coss = dct %>%
    group_by(channel_capacity, constellation, cnr_scenario) %>%
@@ -118,7 +130,7 @@ ce
  df1$cnr_scenario=as.factor(df1$cnr_scenario)
  df1$Constellation = factor(df1$constellation)
  df1$CNR = factor(df1$cnr_scenario,
-   levels=c('Low', 'Baseline', 'High'))
+   levels=c('Low (<7.5 dB)', 'Baseline(7.6 - 10.5 dB)', 'High(>13.5 dB)'))
  
  chn_capacity <- ggplot(df1, aes(x=Constellation, y=channel_capacity/1e3, fill=CNR)) + 
     geom_bar(stat="identity", 
@@ -200,7 +212,7 @@ ce
    position=position_dodge(.9), color = 'orange', size = 0.3) +
    scale_fill_brewer(palette="Paired") + theme_minimal() +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Per Area Capacity", subtitle = "Possible capacity per area for different carrier-to-noise ratio and user adoption rates", 
+   title = "Per Area Capacity", subtitle = "Possible capacity per area for different carrier-to-noise ratio(CNR) and user adoption rates. \nInterval bars reflect low and high CNR scenarios.", 
    x = "Constellation", y = "Capacity (Mbps/km^2)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
@@ -223,7 +235,7 @@ ce
  df4$cnr_scenario=as.factor(df4$cnr_scenario)
  df4$Constellation = factor(df4$constellation)
  df4$CNR = factor(df4$cnr_scenario,
-   levels=c('Low', 'Baseline', 'High'))
+   levels=c('Low(>7.5dB)', 'Baseline(7.6-10.5dB)', 'High(<13.5)'))
  
  const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6, 
    fill=CNR)) + geom_bar(stat="identity", 
@@ -233,7 +245,7 @@ ce
    position=position_dodge(.9), color = 'orange', size = 0.3) +
    scale_fill_brewer(palette="Paired") + theme_minimal() +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-   title = "Constellation Capacity", subtitle = "Constellation Capacity based on different carrier-to-noise ratio scenario", 
+   title = "Constellation Capacity", subtitle = "Constellation Capacity based on different carrier-to-noise ratio (CNR) scenario. \nInterval bars reflect low and high CNR scenarios.", 
    x = "Constellation", y = "Capacity (Tbps)") +
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
@@ -252,6 +264,17 @@ ce
                     common.legend = T, legend="bottom", 
                     labels = c("A", "B", "C", "D"))
  capacities
+ 
+ tprcap <- ggarrange(const_capacity, ar_capacity, nrow = 2, 
+                         common.legend = T, legend="bottom", 
+                         labels = c("A", "B"))
+ tprcap
+ 
+ path = file.path(folder, 'figures','tprc_capacity_profile.tiff')
+ dir.create(file.path(folder, 'figures'),showWarnings = FALSE)
+ tiff(path, units="in", width=7, height=6, res=300)
+ print(tprcap)
+ dev.off()
  
  path = file.path(folder, 'figures', 
                   'constellation_capacity_profile.tiff')
@@ -351,7 +374,7 @@ ce
    position=position_dodge(.9), color = 'orange', size = 0.3) + 
    scale_fill_brewer(palette="Paired") + theme_minimal() +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-      title = "Cost per Capacity", subtitle = "Cost for providing a 1 Gbps capacity under different capital expenditure scenarios", 
+      title = "Cost per Capacity", subtitle = "Cost for providing a 1 Tbps capacity under different capital expenditure scenarios. \nInterval bars reflect low and high capital expenditure scenarios.", 
    x = "Capex Scenario", y = "Cost ($ million/Tbps)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
@@ -384,7 +407,7 @@ ce
       position=position_dodge(.9), color = 'orange', size = 0.3) + 
    scale_fill_brewer(palette="Paired") +
    theme(legend.position = 'bottom') + labs(colour=NULL, 
-      title = "Total Cost Ownership", subtitle = "Resulting total cost of ownership for different capital expenditure scenario", 
+      title = "Total Cost Ownership", subtitle = "Resulting total cost of ownership for different capital expenditure scenario. \nInterval bars reflect low and high capital expenditure scenarios.", 
    x = "Capex Scenario", y = "Cost ($ billion)") + 
    scale_y_continuous(labels = function(y) format(y, 
    scientific = FALSE), expand = c(0, 0)) + 
@@ -410,4 +433,15 @@ ce
             showWarnings = FALSE)
  tiff(path, units="in", width=7, height=10, res=380)
  print(const_cost)
+ dev.off()
+ 
+ tprcost <- ggarrange(total_cost,  cap_cost, nrow = 2, 
+                     common.legend = T, legend="bottom", 
+                     labels = c("A", "B"))
+ tprcost
+ 
+ path = file.path(folder, 'figures','tprc_cost_profile.tiff')
+ dir.create(file.path(folder, 'figures'),showWarnings = FALSE)
+ tiff(path, units="in", width=7, height=6, res=300)
+ print(tprcost)
  dev.off()
