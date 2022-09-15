@@ -71,9 +71,9 @@ uq <- ggarrange(cnr_box, dq, ctq, ncol = 3,
 uq
 
 path = file.path(folder, 'figures', 
-                 'uncertainity_plots.tiff')
+                 'uncertainity_plots.png')
 dir.create(file.path(folder, 'figures'), 
            showWarnings = FALSE)
-tiff(path, units="in", width=9, height=3.5, res=300)
+png(path, units="in", width=9, height=3.5, res=300)
 print(uq)
 dev.off()

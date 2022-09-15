@@ -60,13 +60,13 @@ def uq_inputs_generator():
                         earth_atmospheric_losses_dB = atm_loss
                         if atm_loss == 7:
                             atmospheric_loss_scenario = "Low"
-                            cnr_scenario = "High"
+                            cnr_scenario = "High(>13.5 dB)"
                         elif atm_loss == 10:
                             atmospheric_loss_scenario = "Baseline"
-                            cnr_scenario = "Baseline"
+                            cnr_scenario = "Baseline(7.6 - 10.5 dB)"
                         else:
                             atmospheric_loss_scenario = "High"
-                            cnr_scenario = "Low"
+                            cnr_scenario = "Low (<7.5 dB)"
                         for sat_launch in satellite_launch:
                             satellite_launch_cost = sat_launch
                             for gst in ground_station:
