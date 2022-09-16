@@ -1,8 +1,8 @@
 ﻿Properties,Falcon_9,Falcon Heavy,Soyuz_FG,Ariane_5,Unit
-Dry Mass,22000,22000,312000,12000,kg
+Dry Mass,22,22,312,12,tonnes
 Operator,SpaceX,SpaceX,Progress Rocket Space Center,European Space Agency,_
-Payload  to LEO,22800,63800,8200,20000,kg
+Payload  to LEO,22.8,63.8,8.2,20,tonnes
 Fuel Type,Kerosene (Rocket Propellant-1),Kerosene (Rocket Propellant-1),Kerosene and Hypergolic,"Solid, Hypergolic and Cryogenic",_
 Height,70,70,46.3,46 - 52,m
-Price Per Launch ($),62,90,80,149 - 198,Million
-Propellant Mass,488370,1397000,255510,764900,kg
+Price Per Launch ($),62,90,80,149 - 198,US$ Mn
+Propellant Mass,488.37,1397,255.51,764.9,tonnes
