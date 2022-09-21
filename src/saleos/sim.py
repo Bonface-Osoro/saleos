@@ -815,14 +815,36 @@ def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regula
 
 
     def subscriber_scenario(name, subscribers):
-    """
-    Quantify subscriber scenario for each of the constellations.
+        """
+        Quantify subscriber scenario for each of the constellations.
 
-    Parameters
-    ----------
-    name : string
-        Name of the constellation.
-    subscribers : list
-        Number of subscribers
+        Parameters
+        ----------
+        name : string
+            Name of the constellation.
+        subscribers : list
+            Number of subscribers
+        
+        Returns
+        -------
+        subscriber_dict : dict.
+            a dictionary of all estimated subscriber scenario
+        """
+        subscriber_dict = {}
+        
+        if name == 'Starlink':
+            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+            subscriber_dict['high'] = subscribers[2]
 
-    """
+        elif name == 'Kuiper':
+            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+            subscriber_dict['high'] = subscribers[2]
+
+        elif name == 'OneWeb':
+            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+            subscriber_dict['high'] = subscribers[2]
+
+        else:
+            print('Constellation not found. Please ensure the first letter is capitalized')
+        
+        return subscriber_dict
