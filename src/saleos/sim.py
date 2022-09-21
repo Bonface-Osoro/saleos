@@ -812,3 +812,17 @@ def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regula
     total_cost_ownership = capex + sum(year_costs) + opex_costs
 
     return total_cost_ownership
+
+
+    def subscriber_scenario(name, subscribers):
+    """
+    Quantify subscriber scenario for each of the constellations.
+
+    Parameters
+    ----------
+    name : string
+        Name of the constellation.
+    subscribers : list
+        Number of subscribers
+
+    """
