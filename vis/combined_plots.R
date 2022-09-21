@@ -46,8 +46,8 @@ te <- ggplot(de, aes(x = Constellation,
                                                 x = NULL, y = "Emissions (Megatonnes)") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE),
                      expand = c(0, 0), limits=c(0,70))
-
 te
+
 ce <-  ggplot(de, aes(x = Constellation,
                       y = emission_per_capacity, fill = Constellation)) +
   geom_text(aes(label = round(after_stat(y),2), group = Constellation), 
@@ -114,9 +114,17 @@ tprcem <- ggarrange(te, ce, ncol = 2,
           labels = c("A", "B", "C", "D"))
 tprcem
 
+path = file.path(folder, 'figures', 
+                 'tprc_emission_profile.tiff')
+dir.create(file.path(folder, 'figures'), 
+           showWarnings = FALSE)
+tiff(path, units="in", width=8, height=4, res=720)
+print(tprcem)
+dev.off()
+
 path = file.path(folder, 'publication_plots', 
                  'constellation_emission_profile.tiff')
-dir.create(file.path(folder, 'publication_plots'), 
+dir.create(file.path(folder, 'figures'), 
            showWarnings = FALSE)
 tiff(path, units="in", width=6, height=6, res=300)
 print(emission_profile)
@@ -241,7 +249,8 @@ ar_capacity <- ggplot(df3, aes(x=Constellation, y=capacity_per_area_mbps.sqkm,
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(colour = "black"))
+        axis.line = element_line(colour = "black"),
+        axis.title=element_text(size=8))
 ar_capacity
 
 ## Constellation capacity with error bars
@@ -276,7 +285,8 @@ const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6,
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        axis.line = element_line(colour = "black"))
+        axis.line = element_line(colour = "black"),
+        axis.title=element_text(size=8))
 const_capacity
 
 ## Combine all the capacity plots ##
@@ -286,10 +296,22 @@ capacities <- ggarrange(chn_capacity, sat_capacity,
                         common.legend = T, legend="bottom", 
                         labels = c("A", "B", "C", "D"))
 capacities
+tprc_cap <- ggarrange(const_capacity, ar_capacity, nrow = 2, 
+                        common.legend = T, legend="bottom", 
+                        labels = c("A", "B"))
+tprc_cap
 
-path = file.path(folder, 'publication_plots', 
+path = file.path(folder, 'figures', 
+                 'tprc_capacity_profile.tiff')
+dir.create(file.path(folder, 'figures'), 
+           showWarnings = FALSE)
+tiff(path, units="in", width=8, height=5, res=720)
+print(tprc_cap)
+dev.off()
+
+path = file.path(folder, 'figures', 
                  'constellation_capacity_profile.tiff')
-dir.create(file.path(folder, 'publication_plots'), 
+dir.create(file.path(folder, 'figures'), 
            showWarnings = FALSE)
 tiff(path, units="in", width=7, height=10, res=300)
 print(capacities)
@@ -444,9 +466,23 @@ const_cost <- ggarrange(sat_costs, grd_costs,
                         labels = c("A", "B", "C", "D"))
 const_cost
 
-path = file.path(folder, 'publication_plots', 
+tprc_const_cost <- ggarrange(total_cost, 
+                   cap_cost, ncol = 1, 
+                   common.legend = T, legend="bottom", 
+                   labels = c("A", "B"))
+tprc_const_cost
+
+path = file.path(folder, 'figures', 
+                 'tprc_cost_profile.tiff')
+dir.create(file.path(folder, 'figures'), 
+           showWarnings = FALSE)
+tiff(path, units="in", width=8, height=5, res=720)
+print(tprc_const_cost)
+dev.off()
+
+path = file.path(folder, 'figures', 
                  'constellation_cost_profile.tiff')
-dir.create(file.path(folder, 'publication_plots'), 
+dir.create(file.path(folder, 'figures'), 
            showWarnings = FALSE)
 tiff(path, units="in", width=7, height=10, res=380)
 print(const_cost)
