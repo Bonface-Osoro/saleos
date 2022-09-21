@@ -83,6 +83,12 @@ def system_capacity(constellation, number_of_satellites, params, lut):
 
         adoption_rate = params["adoption_rate"]
 
+        subscriber_number = subscriber_scenario(params["name"], params["subscribers"])
+
+        subscriber_low = subscriber_number["low"]
+        subscriber_baseline = subscriber_number["baseline"]
+        subscriber_high = subscriber_number["high"]
+
         demand_density_mbps_sqkm = demand_model(params["monthly_traffic_GB"], 
                                params["percent_of_traffic"], params["adoption_rate"], 5, 0.3)
 
@@ -132,6 +138,9 @@ def system_capacity(constellation, number_of_satellites, params, lut):
             'capacity_per_single_satellite': sat_capacity,
             'adoption_rate': adoption_rate,
             'demand_density_mbps_sqkm': demand_density_mbps_sqkm,
+            'subscribers_low': subscriber_low,
+            'subscribers_baseline': subscriber_baseline,
+            'subscribers_high': subscriber_high,
             'total_emissions': total_emissions,
             'total_cost_ownership': total_cost_ownership,
             'cost_per_capacity': cost_per_capacity,
@@ -814,37 +823,37 @@ def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regula
     return total_cost_ownership
 
 
-    def subscriber_scenario(name, subscribers):
-        """
-        Quantify subscriber scenario for each of the constellations.
+def subscriber_scenario(name, subscribers):
+    """
+    Quantify subscriber scenario for each of the constellations.
 
-        Parameters
-        ----------
-        name : string
-            Name of the constellation.
-        subscribers : list
-            Number of subscribers
-        
-        Returns
-        -------
-        subscriber_dict : dict.
-            a dictionary of all estimated subscriber scenario
-        """
-        subscriber_dict = {}
-        
-        if name == 'Starlink':
-            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
-            subscriber_dict['high'] = subscribers[2]
+    Parameters
+    ----------
+    name : string
+        Name of the constellation.
+    subscribers : list
+        Number of subscribers
+    
+    Returns
+    -------
+    subscriber_dict : dict.
+        a dictionary of all estimated subscriber scenario
+    """
+    subscriber_dict = {}
+    
+    if name == 'Starlink':
+        subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+        subscriber_dict['high'] = subscribers[2]
 
-        elif name == 'Kuiper':
-            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
-            subscriber_dict['high'] = subscribers[2]
+    elif name == 'Kuiper':
+        subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+        subscriber_dict['high'] = subscribers[2]
 
-        elif name == 'OneWeb':
-            subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
-            subscriber_dict['high'] = subscribers[2]
+    elif name == 'OneWeb':
+        subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+        subscriber_dict['high'] = subscribers[2]
 
-        else:
-            print('Constellation not found. Please ensure the first letter is capitalized')
-        
-        return subscriber_dict
+    else:
+        print('Constellation not found. Please ensure the first letter is capitalized')
+    
+    return subscriber_dict

@@ -106,6 +106,10 @@ for item in uq_dict:
     else:
         cost_scenario = "Baseline"
 
+    subscribers_low = item["subscribers_low"]
+    subscribers_baseline = item["subscribers_baseline"]
+    subscribers_high = item["subscribers_high"]
+
     aluminium_oxide_emissions = emission_dict['alumina_emission']
     sulphur_oxide_emissions = emission_dict['sulphur_emission']
     carbon_oxide_emissions = emission_dict['carbon_emission']
@@ -149,6 +153,9 @@ for item in uq_dict:
                     "adoption_scenario": item["adoption_rate_scenario"],
                     "demand_density_mbps_sqkm": demand_density_mbps_sqkm,
                     "demand_scenario": demand_scenario,
+                    "subscribers_low": subscribers_low,
+                    "subscribers_baseline": subscribers_baseline,
+                    "subscribers_high": subscribers_high,                    
                     "satellite_launch_cost": item["satellite_launch_cost"],
                     "satellite_launch_scenario": item["satellite_launch_scenario"],
                     "ground_station_cost_scenario": item["ground_station_scenario"],
