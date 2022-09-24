@@ -19,13 +19,20 @@ def process_mission_number(data_path, results_path):
     
     #Select the columns to use.
 
-    df = df[["constellation", "total_emissions_t", "emission_per_capacity",
-       "emission_per_sqkm", "emission_for_every_cost"]]
+    df = df[["constellation", "subscribers_low", "subscribers_baseline", "subscribers_high", \
+         "total_emissions_t", "emission_per_capacity", "emission_per_sqkm", "emission_for_every_cost"]]
+
+    df = pd.melt(df, id_vars=["constellation", "total_emissions_t", "emission_per_capacity", \
+        "emission_per_sqkm", "emission_for_every_cost"],
+         value_vars=["subscribers_low", "subscribers_baseline", "subscribers_high"])
+    df.columns = ["constellation", "total_emissions_t", "emission_per_capacity", \
+                "emission_per_sqkm", "emission_for_every_cost", "subscriber_scenario", "subscribers"]
+   
     
     #Create new columns to store the results.
 
     df[["mission_number", "mission_total_emissions", "mission_emission_per_capacity", 
-    "mission_emission_per_sqkm", "mission_emission_for_every_cost"]] = ""
+    "mission_emission_per_sqkm", "mission_emission_for_every_cost", "emission_per_subscriber"]] = " "
     
     # Generate mission number for each constellation.
 
@@ -50,7 +57,16 @@ def process_mission_number(data_path, results_path):
                 df["mission_number"].loc[i]=54
         else:
             df["mission_number"].loc[i]= 0
-    
+    # Rename subscriber scenario
+
+    for i in range(len(df)):
+        if df["subscriber_scenario"].loc[i] == "subscribers_low":
+            df["subscriber_scenario"].loc[i] = "Low"
+        elif df["subscriber_scenario"].loc[i] == "subscribers_baseline":
+            df["subscriber_scenario"].loc[i] = "Baseline"
+        else:
+            df["subscriber_scenario"].loc[i] = "High"
+
     # Calculate the mission emission results for each constellation.
 
     for i in range(len(df)):
@@ -62,6 +78,8 @@ def process_mission_number(data_path, results_path):
                                           * df["mission_number"].loc[i]
         df["mission_emission_for_every_cost"].loc[i] = df["emission_for_every_cost"].loc[i] \
                                                        * df["mission_number"].loc[i]
+        df["emission_per_subscriber"].loc[i] = df["total_emissions_t"].loc[i] / \
+                                               df["subscribers"].loc[i]
 
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
 
