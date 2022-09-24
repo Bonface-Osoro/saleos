@@ -28,106 +28,204 @@ dr <- read.csv(file.path(folder, "uq_results.csv"))
 de <- read.csv(file.path(folder, "mission_emission_results.csv"))
 
 # INDIVIDUAL EMISSION PLOTS
-de$Constellation = factor(de$constellation)
-te <- ggplot(de, aes(x = Constellation,
-                     y = mission_total_emissions/1e9, fill = Constellation)) +
-  geom_text(aes(label = round(after_stat(y),2), group = Constellation), 
-            stat = 'summary', fun = sum, vjust = -.5, size=2.5) +
-  geom_bar(stat = "identity", size = 0.9) +
-  scale_fill_brewer(palette = "Paired") +theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))+
-  theme(legend.position = 'bottom',
-        axis.title=element_text(size=8)) + labs(colour=NULL,
-                                                title = " ",
-                                                subtitle = "Total Constellation Emissions",
-                                                x = NULL, y = "Emissions (Megatonnes)") +
-  scale_y_continuous(labels = function(y) format(y, scientific = FALSE),
-                     expand = c(0, 0), limits=c(0,70))
-te
+# Variables to Consider
+emissions <- select(de, constellation, total_emissions_t, emission_per_capacity, 
+             emission_per_sqkm, emission_for_every_cost, 
+             subscriber_scenario, subscribers, mission_total_emissions, 
+             mission_emission_per_capacity, mission_emission_per_sqkm,
+             mission_emission_for_every_cost, emission_per_subscriber)
 
-ce <-  ggplot(de, aes(x = Constellation,
-                      y = emission_per_capacity, fill = Constellation)) +
-  geom_text(aes(label = round(after_stat(y),2), group = Constellation), 
-            stat = 'summary', fun = sum, vjust = -.5, size=2.5) +
-  geom_bar(stat = "identity", size = 0.9) +
-  scale_fill_brewer(palette = "Paired") +theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))+
-  theme(legend.position = 'bottom',
-        axis.title=element_text(size=8)) + labs(colour=NULL,
-                                                title = " ",
-                                                subtitle = "Emissions vs Provided Capacity",
-                                                x = NULL, y = "Emissions (Kilograms per Mbps)") +
+# Emission per subscriber
+subscriber = emissions %>%
+  group_by(emission_per_subscriber, constellation, subscriber_scenario) %>%
+  summarise(value =mean(emission_per_subscriber),
+            error = sd(emission_per_subscriber)) %>%
+  ungroup() 
+df1 <- data_summary(emissions, varname="emission_per_subscriber", 
+       groupnames=c("constellation", "subscriber_scenario"))
+df1$subscriber_scenario=as.factor(df1$subscriber_scenario)
+df1$Constellation = factor(df1$constellation)
+
+emission_subscriber <- ggplot(df1, aes(x = Constellation, y = emission_per_subscriber, 
+  fill = subscriber_scenario)) + geom_bar(stat = "identity", 
+  position=position_dodge()) + scale_fill_brewer(palette="Paired") + theme_minimal() + 
+  labs(colour=NULL, 
+  title = "Constellation Emission Per Subscriber", 
+  subtitle = "Estimated for different Subscriber scenarios.", 
+  x = "", y = "Emission (kg/subscriber)", fill ='Subscriber Scenario') +
+  scale_y_continuous(labels = function(y) format(y, scientific = FALSE), expand = c(0, 0)) +
+  facet_wrap(~Constellation, scales = "free") + theme_minimal() +
+  theme(strip.text.x = element_blank(), panel.border = element_blank(),
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black") + theme(legend.position = 'bottom', 
+  axis.title = element_text(size = 7)))
+emission_subscriber
+
+# Mission Total Emissions
+total_emissions = emissions %>%
+  group_by(mission_total_emissions, constellation) %>%
+  summarise(value =mean(mission_total_emissions),
+            error = sd(mission_total_emissions)) %>%
+  ungroup() 
+df1 <- data_summary(emissions, varname="mission_total_emissions", 
+                    groupnames=c("constellation"))
+df1$Constellation = factor(df1$constellation)
+
+emission_total <- ggplot(df1, aes(x = Constellation, y = mission_total_emissions/1e6, 
+  fill=Constellation)) + geom_text(aes(label = round(after_stat(y),2), 
+  group = Constellation), stat = 'summary', fun = sum, vjust = -.5, size = 2.5) +
+  geom_bar(stat = "identity", size = 0.9)  + scale_fill_brewer(palette="Paired") + 
+  theme_minimal()  +  labs(colour=NULL, title = "", subtitle = "Total Constellation Emissions", 
+  x = "", y = "Total Emissions", fill = "Constellations") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
-                     expand = c(0, 0), limits=c(0,40)) 
-ce
-ae <-  ggplot(de, aes(x = Constellation,
-                      y = emission_per_sqkm/1e3, fill = Constellation)) +
-  geom_text(aes(label = round(after_stat(y),2), group = Constellation), 
-            stat = 'summary', fun = sum, vjust = -.5, size=2.5) +
-  geom_bar(stat = "identity", size = 0.9) +
-  scale_fill_brewer(palette = "Paired") +
-  theme(legend.position = 'bottom') + theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=8))+
-  labs(colour=NULL,
-       title = " ",
-       subtitle = "Emissions vs Coverage Area",
-       x = NULL, y = "Emissions (Tonnes per km^2)") +
-  scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
-                     expand = c(0, 0), limits=c(0,8)) 
-ae
-## Later we need to convert this to emissions per $1 million invested. 
-cte <-  ggplot(de, aes(x = Constellation,
-                       y = emission_for_every_cost, fill = Constellation)) +
-  geom_text(aes(label = round(after_stat(y),2), group = Constellation), 
-            stat = 'summary', fun = sum, vjust = -.5, size=2.5) +
-  geom_bar(stat = "identity", size = 0.9) +
-  scale_fill_brewer(palette = "Paired") +theme_bw() +
-  theme(panel.border = element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=8))+
-  theme(legend.position = 'bottom') + labs(colour=NULL,
-                                           title = " ",
-                                           subtitle = "Emissions vs Investment Cost",
-                                           x = NULL, y = "Emissions (Grams per US$)") +
-  scale_y_continuous(labels = function(y) format(y, scientific = FALSE),
-                     expand = c(0, 0), limits=c(0,1.1)) 
-cte
-emission_profile <- ggarrange(te, ce, ae, cte, ncol = 2, nrow = 2, 
-                              common.legend = T, legend="bottom", 
-                              labels = c("A", "B", "C", "D"))
+  expand = c(0, 0), limits = c(0,35)) + theme_minimal() +
+  theme(strip.text.x = element_blank(), panel.border = element_blank(),
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black")) + theme(legend.position = 'bottom',
+  axis.title=element_text(size = 7))
+emission_total
+
+# Emissions Vs Capacity Provided
+
+emission_cap = emissions %>%
+  group_by(mission_emission_per_capacity, constellation) %>%
+  summarise(value =mean(mission_emission_per_capacity),
+            error = sd(mission_emission_per_capacity)) %>%
+  ungroup() 
+df1 <- data_summary(emissions, varname="mission_emission_per_capacity", 
+                    groupnames=c("constellation"))
+df1$Constellation = factor(df1$constellation)
+
+emission_capacity <- ggplot(df1, aes(x= Constellation, y = mission_emission_per_capacity * 1e3, 
+  fill=Constellation)) + geom_text(aes(label = round(after_stat(y), 2), group = Constellation), 
+  stat = 'summary', fun = sum, vjust = -.5, size = 2.5) +
+  geom_bar(stat = "identity", size = 0.9)  +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() + 
+  theme(legend.position = 'right') + 
+  labs(colour = NULL, title = "", subtitle = "Emissions vs Provided Capacity", 
+  x = "", y = "Emissions (Grams per Mbps)", fill='Constellations') +
+  scale_y_continuous(labels = function(y) format(y, 
+  scientific = FALSE), expand = c(0, 0), limits = c(0, 30)) +
+  theme_minimal() + theme(strip.text.x = element_blank(),
+  panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
+  theme(legend.position = 'bottom', axis.title=element_text(size = 7))
+
+emission_capacity
+
+# Emission vs Cost
+
+emission_ct = emissions %>%
+  group_by(mission_emission_for_every_cost, constellation) %>%
+  summarise(value = mean(mission_emission_for_every_cost),
+            error = sd(mission_emission_for_every_cost)) %>%
+  ungroup() 
+df1 <- data_summary(emissions, varname ="mission_emission_for_every_cost", 
+                    groupnames = c("constellation"))
+df1$Constellation = factor(df1$constellation)
+
+emission_cost <- ggplot(df1, aes(x= Constellation, y = (mission_emission_for_every_cost * 1e6) / 1e3, 
+  fill=Constellation)) + geom_text(aes(label = round(after_stat(y), 2), group = Constellation), 
+  stat = 'summary', fun = sum, vjust = -.5, size = 2.5) +
+  geom_bar(stat = "identity", size = 0.9)  +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() + 
+  theme(legend.position = 'right') + 
+  labs(colour = NULL, title = "", subtitle = "Emissions vs Investment Cost", 
+       x = "", y = "Emissions (Tonnes per US$ 1 Million)", fill = "Constellations") +
+  scale_y_continuous(labels = function(y) format(y, 
+  scientific = FALSE), expand = c(0, 0), limits = c(0, 30)) +
+  theme_minimal() + theme(strip.text.x = element_blank(),
+  panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
+  theme(legend.position = 'bottom', axis.title = element_text(size = 7))
+
+emission_cost
+
+# Emission vs Area
+
+emission_sqkm = emissions %>%
+  group_by(mission_emission_per_sqkm, constellation) %>%
+  summarise(value = mean(mission_emission_per_sqkm),
+            error = sd(mission_emission_per_sqkm)) %>%
+  ungroup() 
+df1 <- data_summary(emissions, varname = "mission_emission_per_sqkm", 
+                    groupnames = c("constellation"))
+df1$Constellation = factor(df1$constellation)
+
+emission_area <- ggplot(df1, aes(x = Constellation, y = mission_emission_per_sqkm, 
+  fill=Constellation)) + geom_text(aes(label = round(after_stat(y), 2), group = Constellation), 
+  stat = "summary", fun = sum, vjust = -.5, size = 2.5) +
+  geom_bar(stat = "identity", size = 0.9)  +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() + 
+  theme(legend.position = "right") + 
+  labs(colour = NULL, title = "", subtitle = "Emissions vs Coverage Area", 
+  x = "", y = "Emissions (Kilograms per km^2)", fill = "Constellations") +
+  scale_y_continuous(labels = function(y) format(y, 
+  scientific = FALSE), expand = c(0, 0), limits = c(0, 200)) +
+  theme_minimal() + theme(strip.text.x = element_blank(),
+  panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
+  theme(legend.position = 'bottom', axis.title = element_text(size = 7))
+emission_area
+
+# COMBINE EMISSION PLOTS
+emission_profile <- ggarrange(emission_total, emission_capacity, 
+                    emission_cost, emission_area, ncol = 2, nrow = 2, 
+                    common.legend = T, legend="bottom", 
+                    labels = c("A", "B", "C", "D"))
 emission_profile
 
-tprcem <- ggarrange(te, ce, ncol = 2, 
-          common.legend = T, legend="bottom", 
-          labels = c("A", "B", "C", "D"))
-tprcem
-
-path = file.path(folder, 'figures', 
-                 'tprc_emission_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
-tiff(path, units="in", width=8, height=4, res=720)
-print(tprcem)
-dev.off()
-
-path = file.path(folder, 'publication_plots', 
-                 'constellation_emission_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
+path = file.path(folder, 'figures', 'constellation_emission_profile.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(path, units="in", width=6, height=6, res=300)
 print(emission_profile)
+dev.off()
+
+# EMISSION VALIDATION WITH COLUMBIA DATA
+constellation <- c("Kuiper", "OneWeb", "Starlink", "Terrestrial")
+subscribers_high <- c(500000, 100000, 800000, 61000000)
+total_emissions_full <- c(29, 0.04, 18, 187)
+emission_sub <- c(29*1e6/1000000, 0.04*1e6/300000, 18*1e6/1500000, 187*1e6/61800000)
+sat_terres <- data.frame(constellation, subscribers_high, emission_sub)
+
+emission_validation <- ggplot(sat_terres, aes(x = constellation, y = emission_sub, 
+  fill = constellation)) + 
+  geom_text(aes(label = round(after_stat(y), 2), group = constellation), 
+  stat = "summary", fun = sum, vjust = -.5, size = 2.5) + 
+  geom_bar(stat = "identity", size = 0.9) + 
+  scale_fill_brewer(palette="Paired") + theme_minimal() + 
+  theme(legend.position = "right") + 
+  labs(colour = NULL, title = "Constellation vs Terrestrial Emissions", 
+  subtitle = "Estimated emission of the satellite constellations compared to total emissions by major terrestrial
+  \n(Mobile Network Operators) systems in Columbia (América Móvil, Telefonica and Millicom) for the year 2020", 
+  x = "", y = "Emission (kg/subscriber)", fill ='Constellations') +
+  scale_y_continuous(labels = function(y) format(y, scientific = FALSE), expand = c(0, 0), limits = c(0, 30)) +
+  theme_minimal() + theme(strip.text.x = element_blank(), 
+  panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
+  theme(legend.position = 'bottom', axis.title = element_text(size = 7))
+emission_validation
+
+# Save emission validation results
+emission_val <- ggarrange(emission_validation, 
+                common.legend = T, legend="bottom", labels = c("A"))
+emission_val
+
+path = file.path(folder, 'figures', 'constellation_emission_validation.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+tiff(path, units="in", width=8, height=6, res=300)
+print(emission_val)
+dev.off()
+
+# Save emission per subscriber results
+emission_sub <- ggarrange(emission_subscriber, 
+                common.legend = T, legend="bottom", labels = c("A"))
+emission_sub
+
+path = file.path(folder, 'figures', 'constellation_emission_subscriber.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+tiff(path, units="in", width=8, height=4, res=300)
+print(emission_sub)
 dev.off()
 
 # INDIVIDUAL PLOTS WITH ERROR BARS #
@@ -487,26 +585,6 @@ dir.create(file.path(folder, 'figures'),
 tiff(path, units="in", width=7, height=10, res=380)
 print(const_cost)
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
