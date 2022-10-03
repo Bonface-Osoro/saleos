@@ -480,6 +480,7 @@ fuels <- ggplot(drockets, aes(x=Rocket, y=amount/1e3, fill=Fuel)) +
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black")) +
   theme(legend.position = 'bottom')
+fuels
 
 path = file.path(folder, 'figures','fuel_composition.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)

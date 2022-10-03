@@ -32,7 +32,7 @@ parameters = {
         'monthly_traffic_GB': 25,
         'percent_of_traffic': 15,
         'adoption_rate': 0.01,
-        'subscribers': [500000, 800000, 1200000],
+        'subscribers': [800000, 1200000, 2000000],
         'fuel_mass': 488370,
         'fuel_mass_1': 0,
         'fuel_mass_2': 0,

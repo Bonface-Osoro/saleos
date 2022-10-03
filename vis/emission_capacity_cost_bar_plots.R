@@ -3,11 +3,9 @@ library(png)
 library(ggplot2)
 library(gridExtra)
 library(grid)
-# library(kableExtra)
 library(data.table)
 library(dplyr)
 library(tidyverse)
-# library(reshape2)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -15,10 +13,9 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 # Helper function to calculate mean and standard deviation of each group
 data_summary <- function(data, varname, groupnames){
   require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
+  summary_func <- function(x, col){c(mean = mean(x[[col]], na.rm=TRUE),
       sd = sd(x[[col]], na.rm=TRUE))}
-  data_sum<-ddply(data, groupnames, .fun=summary_func,varname)
+  data_sum <- ddply(data, groupnames, .fun=summary_func,varname)
   data_sum <- rename(data_sum, c("mean" = varname))
   return(data_sum)}
 
@@ -45,6 +42,9 @@ df1 <- data_summary(emissions, varname="emission_per_subscriber",
        groupnames=c("constellation", "subscriber_scenario"))
 df1$subscriber_scenario=as.factor(df1$subscriber_scenario)
 df1$Constellation = factor(df1$constellation)
+df1$subscriber_scenario = factor(df1$subscriber_scenario,
+                levels=c('Low', 'Baseline', 'High'),
+                 labels=c('Low', 'Baseline', 'High'))
 
 emission_subscriber <- ggplot(df1, aes(x = Constellation, y = emission_per_subscriber, 
   fill = subscriber_scenario)) + geom_bar(stat = "identity", 
@@ -585,6 +585,76 @@ dir.create(file.path(folder, 'figures'),
 tiff(path, units="in", width=7, height=10, res=380)
 print(const_cost)
 dev.off()
+
+# FUEL COMPOSITION BY ROCKETS
+
+# Falcon-9
+Rocket <- c("Falcon-9")
+Fuel <- c("Kerosene")
+amount <- c(488370)
+dfalcon <- data.frame(Rocket, Fuel, amount)
+
+# Falcon-heavy
+Rocket <- c("Falcon-Heavy")
+Fuel <- c("Kerosene")
+amount <- c(1397000)
+dheavy <- data.frame(Rocket, Fuel, amount)
+
+# Soyuz-FG
+Rocket <- c("Soyuz-FG")
+Fuel <- c("Kerosene", "Hypergolic")
+amount <- c(218150, 7360) 
+dsoyuz <- data.frame(Rocket, Fuel, amount)
+
+# Ariane-5
+Rocket <- c("Ariane-5")
+Fuel <- c("Solid","Cryogenic", "Hypergolic")
+amount <- c(10000, 480000, 184900) 
+dariane <- data.frame(Rocket, Fuel, amount)
+
+#Merge the dataframes
+drockets <- rbind(dfalcon, dheavy, dsoyuz, dariane)
+
+fuels <- ggplot(drockets, aes(x=Rocket, y=amount/1e3, fill=Fuel)) + 
+  geom_bar(stat="identity", position=position_dodge()) +
+  scale_fill_brewer(palette="Paired") + 
+  labs(colour=NULL, 
+       title = "Rocket Fuel Compositions", 
+       x = "Rocket Names", y = "Fuel Amounts (t)") +
+  scale_y_continuous(labels = function(y) format(y, 
+                                                 scientific = FALSE), expand = c(0, 0)) +
+  facet_wrap(~Rocket, scales = "free", ncol = 4) + theme_minimal() +
+  theme(strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black"),
+        axis.title=element_text(size=8)) +
+  theme(legend.position = 'bottom')
+fuels
+
+path = file.path(folder, 'figures','fuel_composition.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+tiff(path, units="in", width=10, height=3, res=480)
+print(fuels)
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
