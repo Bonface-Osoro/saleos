@@ -118,7 +118,7 @@ parameters = {
         'monthly_traffic_GB': 25,
         'percent_of_traffic': 15,
         'adoption_rate': 0.01,
-        'subscribers': [300000, 500000, 700000],
+        'subscribers': [500000, 700000, 1500000],
         'fuel_mass': 0,
         'fuel_mass_1':10000,
         'fuel_mass_2': 480000,

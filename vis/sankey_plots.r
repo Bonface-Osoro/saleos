@@ -400,6 +400,12 @@ tiff(path, units="in", width=6, height=1.5, res=480)
 print(grid.table(ct))
 dev.off()
 
+path = file.path(folder, 'pics','constellations_table.png')
+dir.create(file.path(folder, 'pics'),showWarnings = FALSE)
+png(path, units="in", width=6, height=1.5, res=480)
+print(grid.table(ct))
+dev.off()
+
 # Reading the images
 im1 <- readPNG(file.path(folder, 'pics', 'falcon_table.png'))
 im2 <- readPNG(file.path(folder, 'pics', "soyuz_table.png"))
@@ -511,7 +517,7 @@ png(path, units="in", width=10, height=8, res=720)
 print(rocket_sankey)
 dev.off()
 
-orbits <- ggarrange(AK, AM, AL, nrow = 1, ncol = 3, 
+orbits <- ggarrange(AK, AL, AM, nrow = 1, ncol = 3, 
                     labels = c("(A) Starlink Network", 
                                "(B) OneWeb Network", 
                                "(C) Kuiper Network"),
