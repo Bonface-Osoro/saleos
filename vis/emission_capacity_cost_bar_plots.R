@@ -54,14 +54,17 @@ capacity_subscriber <- ggplot(df1, aes(x = Constellation, y = capacity_per_user,
   position=position_dodge(.9), color = 'orange', size = 0.3) +
   scale_fill_brewer(palette="Paired") + 
   labs(colour=NULL, title = NULL, 
-  subtitle = "Capaciy per user estimated for different subscriber scenarios with error bars representing 1SD", 
-  x = NULL, y = "Capacity(Mbps/user)", fill ='Subscriber Scenario') +
+  subtitle = "Capaciy per User", 
+  x = NULL, y = "Capacity(Mbps/user)", fill ='Subscriber Scenario',
+  caption = "Capacity estimated for different subscriber scenarios with error bars representing 1 standard deviation.") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
   expand = c(0, 0), limits = c(0, 210)) + theme_minimal() +
   theme(strip.text.x = element_blank(), 
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'bottom', axis.title = element_text(size = 7))
+  theme(legend.position = 'bottom', axis.title = element_text(size = 7)) + 
+  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
+  theme(legend.text=element_text(size=7))
 capacity_subscriber
 
 # Emission per subscriber
@@ -82,14 +85,18 @@ emission_subscriber <- ggplot(df1, aes(x = Constellation, y = emission_per_subsc
   fill = subscriber_scenario)) + geom_bar(stat = "identity", 
   position=position_dodge()) + scale_fill_brewer(palette="Paired") + 
   theme_minimal() + labs(colour=NULL, title = NULL, 
-  subtitle = "Constellation emission per subscriber estimated for different subscriber scenarios.", 
-  x = NULL, y = "Emission (kg/subscriber)", fill ='Subscriber Scenario') +
+  subtitle = "Emissions vs Subscribers", 
+  x = NULL, y = "Emission (kg/subscriber)", fill ='Subscriber Scenario',
+  caption = "Emissions estimated for different subscriber scenarios.") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), expand = c(0, 0)) +
   facet_wrap(~Constellation, scales = "free") +
   theme_minimal() + theme(strip.text.x = element_blank(),
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'bottom', axis.title=element_text(size = 6))
+  theme(legend.position = 'bottom', axis.title=element_text(size = 6)) + 
+  theme(legend.text=element_text(size=7)) + 
+  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
+  theme(legend.text=element_text(size=7))
 emission_subscriber
 
 # Mission Total Emissions
@@ -140,7 +147,8 @@ emission_capacity <- ggplot(df1, aes(x= Constellation, y = mission_emission_per_
   theme_minimal() + theme(strip.text.x = element_blank(),
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'bottom', axis.title=element_text(size = 7))
+  theme(legend.position = 'bottom', axis.title=element_text(size = 7)) + 
+  theme(legend.text=element_text(size=7))
 emission_capacity
 
 # Emission vs Cost
@@ -225,7 +233,7 @@ emission_validation <- ggplot(sat_terres, aes(x = constellation, y = emission_su
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = "right") + 
   labs(colour = NULL, title = NULL, 
-  subtitle = "Satellite Constellations vs Terrestrial Networks", 
+  subtitle = "Constellations vs Terrestrial Networks", 
   x = NULL, y = "Emission (kg/subscriber)", 
   caption = "Terrestrial network is based on 2020 Columbian Mobile Network Operators (América Móvil, Telefonica and Millicom) market data.",
   fill ='Constellations') +
@@ -234,7 +242,7 @@ emission_validation <- ggplot(sat_terres, aes(x = constellation, y = emission_su
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
   theme(legend.position = 'none', axis.title = element_text(size = 6)) +
-  theme(plot.caption = element_text(size=5, color="blue", face="italic"))
+  theme(plot.caption = element_text(size=5, color="black", face="italic"))
 emission_validation
 
 # Save emission validation results
@@ -243,12 +251,12 @@ emission_val <- ggarrange(emission_validation,
 
 pub_emission <- ggarrange(emission_subscriber, ggarrange(emission_total, 
    emission_validation, ncol = 2, labels = c("B", "C")), 
-   nrow = 2, labels = "A") + labs(caption = "adafag")
+   nrow = 2, labels = "A") 
 pub_emission
 
 path = file.path(folder, 'figures', 'pub_emission.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=8, height=4, res=300)
+tiff(path, units="in", width=6, height=5, res=300)
 print(pub_emission)
 dev.off()
 
@@ -395,8 +403,9 @@ const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6,
   position=position_dodge(.9), color = 'orange', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() +
   labs(colour=NULL, title = NULL, 
-  subtitle = "Constellation capacity estimated for different QoS scenarios with error bars representing 1 SD.", 
-  x = NULL, y = "Capacity (Tbps)", fill='QoS Scenario') +
+  subtitle = "Aggregate Constellation Capacity", 
+  x = NULL, y = "Capacity (Tbps)", fill='QoS Scenario',
+  caption = "Capacity estimated for different QoS scenarios, error bars represent 1 standard deviation.") +
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
@@ -405,7 +414,9 @@ const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6,
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=7), legend.position = 'bottom')
+        axis.title=element_text(size=7), legend.position = 'bottom') + 
+  theme(plot.caption = element_text(size=6, color="black", face="italic")) +
+  theme(legend.text=element_text(size=7))
 const_capacity
 
 ## Combine all the capacity plots ##
@@ -420,18 +431,14 @@ pub_cap <- ggarrange(const_capacity, capacity_subscriber, nrow = 2,
                         labels = c("a", "b"))
 pub_cap
 
-path = file.path(folder, 'figures', 
-                 'pub_capacity_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
-tiff(path, units="in", width=7, height=5, res=720)
+path = file.path(folder, 'figures', 'pub_capacity_profile.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+tiff(path, units="in", width=4, height=5, res=720)
 print(pub_cap)
 dev.off()
 
-path = file.path(folder, 'figures', 
-                 'constellation_capacity_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
+path = file.path(folder, 'figures', 'constellation_capacity_profile.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(path, units="in", width=7, height=10, res=300)
 print(capacities)
 dev.off()
@@ -528,10 +535,9 @@ p <- ggplot(dff6, aes(x=Constellation, y=cost_per_capacity/1e6,
   position=position_dodge(.9), color = 'orange', size = 0.3)
 cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
   labs(colour=NULL, title = NULL, 
-  subtitle = "Cost per capacity estimated for 
-  \ndifferent capex scenarios with error bars 
-  \nrepresenting 1 SD.", 
-  x = NULL, y = "Capex Cost\n(Million US$ per Gbps)") + 
+  subtitle = "Cost per capacity.", 
+  x = NULL, y = "Capex Cost\n(Million US$ per Gbps)",
+  caption = "b. Cost per capacity is estimated for different capex scenarios with error bars representing 1SD.") + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + 
@@ -540,7 +546,9 @@ cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=8), legend.position = 'bottom')
+        axis.title=element_text(size=8), legend.position = 'bottom') + 
+  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
+  theme(legend.text=element_text(size=8))
 cap_cost
 
 ## Constellation Total Cost Ownership with Error Bars
@@ -564,10 +572,9 @@ p <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/1e6,
   position=position_dodge(.9), color = 'orange', size = 0.3)
 total_cost <- p + scale_fill_brewer(palette="Paired") +
   labs(colour=NULL, title = NULL, 
-  subtitle = "Total Cost of Ownership (TCO) estimated for 
-  \ndifferent capex scenarios with error bars 
-  \nrepresenting 1 SD.", 
-  x = NULL, y = "TCO\n(Million US$ per Gbps)") + 
+  subtitle = "Total Cost of Ownership (TCO) ", 
+  x = NULL, y = "TCO\n(Million US$ per Gbps)",
+  caption = "a. TCO is estimated for different capex scenarios with error bars representing 1SD.") + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + 
@@ -576,7 +583,9 @@ total_cost <- p + scale_fill_brewer(palette="Paired") +
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=8), legend.position = 'bottom')
+        axis.title=element_text(size=8), legend.position = 'bottom') +
+  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
+  theme(legend.text=element_text(size=8))
 total_cost
 
 ## Combine Cost Plots ##
@@ -593,10 +602,8 @@ pub_const_cost <- ggarrange(total_cost,
                    labels = c("a", "b"))
 pub_const_cost
 
-path = file.path(folder, 'figures', 
-                 'pub_cost_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
+path = file.path(folder, 'figures', 'pub_cost_profile.tiff')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(path, units="in", width=8, height=5, res=720)
 print(pub_const_cost)
 dev.off()
