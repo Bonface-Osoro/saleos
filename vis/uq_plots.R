@@ -28,7 +28,8 @@ dq <- ggplot(dqq, aes(x = Demand_Scenario, y = Demand_Density,
       theme(panel.border = element_blank(), 
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(), 
-      axis.line = element_line(colour = "black")) + 
+      axis.line = element_line(colour = "black"),
+      axis.title=element_text(size=8)) + 
       labs(colour=NULL, title = NULL,
       x = " ", y = "Capacity per area (Mbps/km^2)") + 
       scale_y_continuous(labels = function(y) format(y, scientific = FALSE))
@@ -43,7 +44,8 @@ ctq <- ggplot(dqq, aes(x = Cost_Scenario, y = Cost_per_Capacity/1e6,
        theme(panel.border = element_blank(), 
        panel.grid.major = element_blank(),
        panel.grid.minor = element_blank(), 
-       axis.line = element_line(colour = "black")) + 
+       axis.line = element_line(colour = "black"),
+       axis.title=element_text(size=8)) + 
        labs(colour=NULL, title = NULL,
        x = " ", y = "Cost per Capacity (US$ millions)") + 
        scale_y_continuous(labels = function(y) format(y, scientific = FALSE))
@@ -59,7 +61,8 @@ cnr_box <- ggplot(dqq, aes(x = cnr_scenario, y = cnr,
   theme(panel.border = element_blank(), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black")) + 
+        axis.line = element_line(colour = "black"),
+        axis.title=element_text(size=8)) + 
   labs(colour=NULL, title = NULL,
        x = " ", y = "Carrier-to-noise ratio (dB)") + 
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE))
@@ -71,9 +74,9 @@ uq <- ggarrange(cnr_box, dq, ctq, ncol = 3,
 uq
 
 path = file.path(folder, 'figures', 
-                 'uncertainity_plots.png')
+                 'uncertainity_plots.tiff')
 dir.create(file.path(folder, 'figures'), 
            showWarnings = FALSE)
-png(path, units="in", width=9, height=3.5, res=300)
+tiff(path, units="in", width=9, height=3.5, res=300)
 print(uq)
 dev.off()
