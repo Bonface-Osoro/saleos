@@ -147,7 +147,7 @@ names(links) = c("source", "target", "value")
 w <- sankeyNetwork(Links = links, Nodes = nodes,
               Source = "source", Target = "target",
               Value = "value", NodeID = "name",
-              fontSize= 35, fontFamily = 'Helvetica')
+              fontSize= 20, fontFamily = 'Helvetica')
 path = file.path(folder, 'sankey', 'sankey.html')
 saveNetwork(w, path)
 pathsave = file.path(folder, "sankey", "oneweb_sankey.png")
