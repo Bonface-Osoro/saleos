@@ -53,18 +53,17 @@ capacity_subscriber <- ggplot(df1, aes(x = Constellation, y = capacity_per_user,
   ymax=capacity_per_user+sd), width=.2,
   position=position_dodge(.9), color = 'orange', size = 0.3) +
   scale_fill_brewer(palette="Paired") + 
-  labs(colour=NULL, title = NULL, 
-  subtitle = "Capaciy per User", 
-  x = NULL, y = "Capacity(Mbps/user)", fill ='Subscriber Scenario',
-  caption = "Capacity estimated for different subscriber scenarios with error bars representing 1 standard deviation.") +
+  labs(colour=NULL, title = "Capacity per User", 
+  subtitle = "Estimated for different subscriber scenarios with 
+  \nerror bars representing 1 standard deviation.", 
+  x = NULL, y = "Capacity (Mbps/user)", fill ='Subscriber Scenario') +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
-  expand = c(0, 0), limits = c(0, 210)) + theme_minimal() +
+  expand = c(0, 0), limits = c(0, 150)) + theme_minimal() +
   theme(strip.text.x = element_blank(), 
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'bottom', axis.title = element_text(size = 7)) + 
-  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
-  theme(legend.text=element_text(size=7))
+  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.text=element_text(size=8))
 capacity_subscriber
 
 # Emission per subscriber
@@ -84,19 +83,16 @@ df1$subscriber_scenario = factor(df1$subscriber_scenario,
 emission_subscriber <- ggplot(df1, aes(x = Constellation, y = emission_per_subscriber, 
   fill = subscriber_scenario)) + geom_bar(stat = "identity", 
   position=position_dodge()) + scale_fill_brewer(palette="Paired") + 
-  theme_minimal() + labs(colour=NULL, title = NULL, 
-  subtitle = "Emissions vs Subscribers", 
-  x = NULL, y = "Emission (kg/subscriber)", fill ='Subscriber Scenario',
-  caption = "Emissions estimated for different subscriber scenarios.") +
+  theme_minimal() + labs(colour=NULL, title = "Emissions vs Subscribers", 
+  subtitle = "Emissions estimated for different subscriber scenarios.", 
+  x = NULL, y = "Emission (kg/subscriber)", fill ='Subscriber Scenario') +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), expand = c(0, 0)) +
-  facet_wrap(~Constellation, scales = "free") +
+  #facet_wrap(~Constellation, scales = "free") +
   theme_minimal() + theme(strip.text.x = element_blank(),
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'bottom', axis.title=element_text(size = 6)) + 
-  theme(legend.text=element_text(size=7)) + 
-  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
-  theme(legend.text=element_text(size=7))
+  theme(legend.position = 'bottom', axis.title=element_text(size = 8)) + 
+  theme(legend.text=element_text(size=8)) 
 emission_subscriber
 
 # Mission Total Emissions
@@ -113,14 +109,14 @@ emission_total <- ggplot(df1, aes(x = Constellation, y = mission_total_emissions
   fill=Constellation)) + geom_text(aes(label = round(after_stat(y),2), 
   group = Constellation), stat = 'summary', fun = sum, vjust = -.5, size = 2.5) +
   geom_bar(stat = "identity", size = 0.9)  + scale_fill_brewer(palette="Paired") + 
-  theme_minimal()  +  labs(colour=NULL, title = "", subtitle = "Total Constellation Emissions", 
-  x = "", y = "Total Emissions", fill = "Constellations") +
+  theme_minimal()  +  labs(colour=NULL, title = "Total Constellation Emissions", subtitle = NULL, 
+  x = NULL, y = "Total Emissions (kt)", fill = "Constellations") +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
   expand = c(0, 0), limits = c(0,35)) + theme_minimal() +
   theme(strip.text.x = element_blank(), panel.border = element_blank(),
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   axis.line = element_line(colour = "black")) + theme(legend.position = 'none',
-  axis.title=element_text(size = 6))
+  axis.title=element_text(size = 8))
 emission_total
 
 # Emissions Vs Capacity Provided
@@ -232,8 +228,8 @@ emission_validation <- ggplot(sat_terres, aes(x = constellation, y = emission_su
   geom_bar(stat = "identity", size = 0.9) + 
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = "right") + 
-  labs(colour = NULL, title = NULL, 
-  subtitle = "Constellations vs Terrestrial Networks", 
+  labs(colour = NULL, title = "Constellations vs Terrestrial Networks", 
+  subtitle = NULL, 
   x = NULL, y = "Emission (kg/subscriber)", 
   caption = "Terrestrial network is based on 2020 Columbian Mobile Network Operators (América Móvil, Telefonica and Millicom) market data.",
   fill ='Constellations') +
@@ -241,7 +237,7 @@ emission_validation <- ggplot(sat_terres, aes(x = constellation, y = emission_su
   theme_minimal() + theme(strip.text.x = element_blank(), 
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
-  theme(legend.position = 'none', axis.title = element_text(size = 6)) +
+  theme(legend.position = 'none', axis.title = element_text(size = 8)) +
   theme(plot.caption = element_text(size=5, color="black", face="italic"))
 emission_validation
 
@@ -250,13 +246,13 @@ emission_val <- ggarrange(emission_validation,
                 common.legend = T, legend="bottom", labels = c("A"))
 
 pub_emission <- ggarrange(emission_subscriber, ggarrange(emission_total, 
-   emission_validation, ncol = 2, labels = c("B", "C")), 
-   nrow = 2, labels = "A") 
+   emission_validation, ncol = 2, labels = c("b", "c")), 
+   nrow = 2, labels = "a") 
 pub_emission
 
 path = file.path(folder, 'figures', 'pub_emission.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=6, height=5, res=300)
+tiff(path, units="in", width=7.5, height=5, res=720)
 print(pub_emission)
 dev.off()
 
@@ -396,27 +392,27 @@ df4$CNR = factor(df4$cnr_scenario,
                  labels=c('Low', 'Baseline', 'High'))
 
 const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6, 
-  fill=CNR)) + geom_bar(stat="identity", 
-  position=position_dodge()) +
+  fill=CNR)) + 
+  geom_bar(stat = "identity", position=position_dodge()) +
   geom_errorbar(aes(ymin=constellation_capacity/1e6-sd/1e6, 
   ymax=constellation_capacity/1e6+sd/1e6), width=.2,
   position=position_dodge(.9), color = 'orange', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() +
-  labs(colour=NULL, title = NULL, 
-  subtitle = "Aggregate Constellation Capacity", 
-  x = NULL, y = "Capacity (Tbps)", fill='QoS Scenario',
-  caption = "Capacity estimated for different QoS scenarios, error bars represent 1 standard deviation.") +
+  labs(colour=NULL, title = "Aggregate Constellation Capacity", 
+  subtitle = "Estimated for different QoS scenarios with 
+  \nerror bars represent 1 standard deviation.", 
+  x = NULL, y = "Capacity (Tbps)", fill='QoS Scenario') +
   scale_y_continuous(labels = function(y) format(y, 
-  scientific = FALSE), expand = c(0, 0)) + 
-  facet_wrap(~Constellation, scales = "free") + theme_minimal() + 
+  scientific = FALSE), expand = c(0, 0), limits = c(0, 130)) + 
+  #facet_wrap(~Constellation, scales = "free") + 
+  theme_minimal() + 
   theme(strip.text.x = element_blank(),
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=7), legend.position = 'bottom') + 
-  theme(plot.caption = element_text(size=6, color="black", face="italic")) +
-  theme(legend.text=element_text(size=7))
+        axis.title=element_text(size=8), legend.position = 'bottom') + 
+  theme(legend.text=element_text(size=8))
 const_capacity
 
 ## Combine all the capacity plots ##
@@ -426,14 +422,14 @@ capacities <- ggarrange(chn_capacity, sat_capacity,
                         common.legend = T, legend="bottom", 
                         labels = c("A", "B", "C", "D"))
 capacities
-pub_cap <- ggarrange(const_capacity, capacity_subscriber, nrow = 2, 
+pub_cap <- ggarrange(const_capacity, capacity_subscriber, ncol = 2, 
                         common.legend = F, legend="bottom", 
-                        labels = c("a", "b"))
+                        labels = c("d", "e"))
 pub_cap
 
 path = file.path(folder, 'figures', 'pub_capacity_profile.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=4, height=5, res=720)
+tiff(path, units="in", width=7.8, height=5, res=720)
 print(pub_cap)
 dev.off()
 
@@ -534,10 +530,10 @@ p <- ggplot(dff6, aes(x=Constellation, y=cost_per_capacity/1e6,
   ymax=cost_per_capacity/1e6+sd/1e6), width=.2,
   position=position_dodge(.9), color = 'orange', size = 0.3)
 cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
-  labs(colour=NULL, title = NULL, 
-  subtitle = "Cost per capacity.", 
-  x = NULL, y = "Capex Cost\n(Million US$ per Gbps)",
-  caption = "b. Cost per capacity is estimated for different capex scenarios with error bars representing 1SD.") + 
+  labs(colour=NULL, title = "Cost per Capacity", 
+  subtitle = "Estimated for different capex scenarios with 
+  \nerror bars representing 1 standard deviation.", 
+  x = NULL, y = "Capex Cost\n(Million US$ per Gbps)") + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + 
@@ -546,8 +542,7 @@ cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=8), legend.position = 'bottom') + 
-  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
+        axis.title=element_text(size=8), legend.position = 'bottom') +  
   theme(legend.text=element_text(size=8))
 cap_cost
 
@@ -571,10 +566,10 @@ p <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/1e6,
   ymax=(total_cost_ownership/1e6)+sd/1e6), width=.2,
   position=position_dodge(.9), color = 'orange', size = 0.3)
 total_cost <- p + scale_fill_brewer(palette="Paired") +
-  labs(colour=NULL, title = NULL, 
-  subtitle = "Total Cost of Ownership (TCO) ", 
-  x = NULL, y = "TCO\n(Million US$ per Gbps)",
-  caption = "a. TCO is estimated for different capex scenarios with error bars representing 1SD.") + 
+  labs(colour=NULL, title = "Total Cost of Ownership (TCO)", 
+  subtitle = "Estimated for different capex scenarios with 
+  \nerror bars representing 1 standard deviation.", 
+  x = NULL, y = "TCO\n(Million US$ per Gbps)") + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + 
@@ -584,7 +579,6 @@ total_cost <- p + scale_fill_brewer(palette="Paired") +
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"),
         axis.title=element_text(size=8), legend.position = 'bottom') +
-  theme(plot.caption = element_text(size=6, color="black", face="italic")) + 
   theme(legend.text=element_text(size=8))
 total_cost
 
@@ -599,12 +593,12 @@ const_cost
 pub_const_cost <- ggarrange(total_cost, 
                    cap_cost, ncol = 2, 
                    common.legend = T, legend="bottom", 
-                   labels = c("a", "b"))
+                   labels = c("f", "g"))
 pub_const_cost
 
 path = file.path(folder, 'figures', 'pub_cost_profile.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=8, height=5, res=720)
+tiff(path, units="in", width=7.5, height=5, res=720)
 print(pub_const_cost)
 dev.off()
 
@@ -617,52 +611,26 @@ print(const_cost)
 dev.off()
 
 # FUEL COMPOSITION BY ROCKETS
+Fuel <- c("Kerosene", "Kerosene", "Hypergolic", "Solid", "Cryogenic",
+          "Hypergolic")
+Rockets <- c("Falcon-9", "Soyuz-FG", "Soyuz-FG", "Ariane-5", "Ariane-5",
+             "Ariane-5")
+Amount <- c(488370, 218150, 7360, 10000, 480000, 184900)
+fuels_df <- data.frame(Rockets, Fuel, Amount) 
 
-# Falcon-9
-Rocket <- c("Falcon-9")
-Fuel <- c("Kerosene")
-amount <- c(488370)
-dfalcon <- data.frame(Rocket, Fuel, amount)
-
-# Falcon-heavy
-Rocket <- c("Falcon-Heavy")
-Fuel <- c("Kerosene")
-amount <- c(1397000)
-dheavy <- data.frame(Rocket, Fuel, amount)
-
-# Soyuz-FG
-Rocket <- c("Soyuz-FG")
-Fuel <- c("Kerosene", "Hypergolic")
-amount <- c(218150, 7360) 
-dsoyuz <- data.frame(Rocket, Fuel, amount)
-
-# Ariane-5
-Rocket <- c("Ariane-5")
-Fuel <- c("Solid","Cryogenic", "Hypergolic")
-amount <- c(10000, 480000, 184900) 
-dariane <- data.frame(Rocket, Fuel, amount)
-
-#Merge the dataframes
-drockets <- rbind(dfalcon, dheavy, dsoyuz, dariane)
-
-fuels <- ggplot(drockets, aes(x=Rocket, y=amount/1e3, fill=Fuel)) + 
-  geom_bar(stat="identity", position=position_dodge()) +
-  scale_fill_brewer(palette="Paired") + 
-  labs(colour=NULL, title = NULL, 
-  subtitle = "Rocket Fuel Compositions",
-  x = "Rocket Names", y = "Fuel Amounts (t)") +
+fuels <- ggplot(fuels_df, aes(x = Rockets, y = Amount/1e3, 
+  fill = Fuel, label = Amount/1e3)) + geom_bar(stat = "identity") + 
+  geom_text(size = 3, position = position_stack(vjust = 0.9)) + 
+  scale_fill_brewer(palette="Paired") + labs(colour=NULL, 
+  title = "Rocket Fuel Compositions", subtitle = NULL,
+  x = NULL, y = "Fuel Amounts (t)", fill = "Fuel Type") +
   scale_y_continuous(labels = function(y) format(y, 
-                                                 scientific = FALSE), expand = c(0, 0)) +
-  #facet_wrap(~Rocket, scales = "free", ncol = 4) + 
-  theme_minimal() +
-  theme(strip.text.x = element_blank(),
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.line = element_line(colour = "black"),
-        axis.title=element_text(size=7)) +
-  theme(legend.position = 'bottom')
-fuels
+  scientific = FALSE), expand = c(0, 0), limits = c(0, 700)) + 
+  theme_minimal() + theme(strip.text.x = element_blank(),
+  panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+  axis.title=element_text(size=8)) + theme(legend.position = 'bottom') + 
+  theme(legend.text=element_text(size=8))
 
 fuel_plot <- ggarrange(fuels, legend="bottom",nrow = 1, 
              labels = c("a"))
@@ -670,7 +638,23 @@ fuel_plot
 
 path = file.path(folder, 'figures','fuel_composition.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=5, height=3, res=480)
+tiff(path, units="in", width=5, height=4, res=720)
 print(fuel_plot)
 dev.off()
+
+  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 
