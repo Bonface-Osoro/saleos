@@ -91,7 +91,7 @@ for item in uq_dict:
     emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
 
-    total_cost_ownership = sl.cost_model(item["satellite_launch_cost"], item["ground_station_cost"], 
+    total_cost_ownership = sl.cost_model(item["satellite_manufacturing"], item["satellite_launch_cost"], item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
                            item["digital_infrastructure_cost"], item["ground_station_energy"], 
                            item["subscriber_acquisition"], item["staff_costs"], 
@@ -128,7 +128,6 @@ for item in uq_dict:
                     "signal_path_scenario": item["altitude_scenario"],
                     "satellite_coverage_area_km": satellite_coverage_area_km,
                     "dl_frequency_Hz": item["dl_frequency_Hz"],
-                    "center_frequency": item["center_frequency"],
                     "path_loss": path_loss,
                     "earth_atmospheric_losses_dB": item["earth_atmospheric_losses_dB"],
                     "atmospheric_loss_scenario": item["atmospheric_loss_scenario"],
@@ -169,9 +168,12 @@ for item in uq_dict:
                     "research_development": item["research_development"],
                     "maintenance_costs": item["maintenance_costs"],
                     "total_cost_ownership": total_cost_ownership,
+                    "capex_costs": item["capex_costs"],
                     "capex_scenario": item["capex_scenario"],
                     "cost_per_capacity": cost_per_capacity,
                     "cost_scenario": cost_scenario,
+                    "total_opex": item["opex_costs"],
+                    "opex_scenario": item["opex_scenario"],
                     "aluminium_oxide_emissions": aluminium_oxide_emissions,
                     "sulphur_oxide_emissions": sulphur_oxide_emissions,
                     "carbon_oxide_emissions": carbon_oxide_emissions,
@@ -186,6 +188,8 @@ for item in uq_dict:
 
     df = pd.DataFrame.from_dict(results)
     df.to_csv(path + "uq_results.csv") 
+    results_path2 = '/Users/osoro/Github/saleos/vis/'
+    store_results = df.to_csv(results_path2 + "uq_results.csv")
 
 end = timeit.timeit()
-print("Time taken is ", end - start, "seconds")
+print("Time taken is ", start - end, "seconds")

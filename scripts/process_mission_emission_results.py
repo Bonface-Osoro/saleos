@@ -21,21 +21,24 @@ def process_mission_number(data_path, results_path):
 
     df = df[["constellation", "constellation_capacity", "capacity_scenario", "subscribers_low", \
         "subscribers_baseline", "subscribers_high", "total_emissions_t", "emission_per_capacity", \
-        "emission_per_sqkm", "emission_for_every_cost"]]
+        "emission_per_sqkm", "emission_for_every_cost", "capex_costs", "total_opex", "opex_scenario",
+        "total_cost_ownership", "capex_scenario"]]
 
     df = pd.melt(df, id_vars=["constellation", "constellation_capacity", "capacity_scenario", \
-        "total_emissions_t", "emission_per_capacity", "emission_per_sqkm", "emission_for_every_cost"],
+        "total_emissions_t", "emission_per_capacity", "emission_per_sqkm", "emission_for_every_cost",
+        "capex_costs", "total_opex", "opex_scenario", "total_cost_ownership", "capex_scenario"],
          value_vars=["subscribers_low", "subscribers_baseline", "subscribers_high"])
 
     df.columns = ["constellation", "constellation_capacity", "capacity_scenario", "total_emissions_t", \
-                "emission_per_capacity", "emission_per_sqkm", "emission_for_every_cost", \
-                "subscriber_scenario", "subscribers"]
+                "emission_per_capacity", "emission_per_sqkm", "emission_for_every_cost", "capex_costs","total_opex", \
+                "opex_scenario", "total_cost_ownership", "capex_scenario", "subscriber_scenario", "subscribers"]
    
     
     #Create new columns to store the results.
 
     df[["mission_number", "capacity_per_user", "mission_total_emissions", "mission_emission_per_capacity", 
-    "mission_emission_per_sqkm", "mission_emission_for_every_cost", "emission_per_subscriber"]] = " "
+    "mission_emission_per_sqkm", "mission_emission_for_every_cost", "emission_per_subscriber",
+    "capex_per_user","opex_per_user", "tco_per_user"]] = " "
     
     # Generate mission number for each constellation.
 
@@ -75,7 +78,7 @@ def process_mission_number(data_path, results_path):
     for i in range(len(df)):
         df["mission_total_emissions"].loc[i] = df["total_emissions_t"].loc[i] \
                                                * df["mission_number"].loc[i]
-        df["mission_emission_per_capacity"].loc[i] = df["emission_for_every_cost"].loc[i] \
+        df["mission_emission_per_capacity"].loc[i] = df["emission_per_capacity"].loc[i] \
                                                      * df["mission_number"].loc[i]
         df["mission_emission_per_sqkm"].loc[i] =  df["emission_per_sqkm"].loc[i] \
                                           * df["mission_number"].loc[i]
@@ -85,8 +88,13 @@ def process_mission_number(data_path, results_path):
                                                df["subscribers"].loc[i]
         df["capacity_per_user"].loc[i] = df["constellation_capacity"].loc[i] / \
                                          df["subscribers"].loc[i]
+        df["capex_per_user"].loc[i] = df["capex_costs"].loc[i] / df["subscribers"].loc[i] 
+        df["opex_per_user"].loc[i] = df["total_opex"].loc[i] / df["subscribers"].loc[i]   
+        df["tco_per_user"].loc[i] = df["total_cost_ownership"].loc[i] / df["subscribers"].loc[i]                              
 
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
+    results_path2 = '/Users/osoro/Github/saleos/vis/'
+    store_results = df.to_csv(results_path2 + "mission_emission_results.csv")
 
     return store_results
 
