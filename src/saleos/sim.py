@@ -109,7 +109,7 @@ def system_capacity(constellation, number_of_satellites, params, lut):
         
         total_mission_emissions = total_emissions * params["number_of_missions"]
         
-        total_cost_ownership = cost_model(params["satellite_launch_cost"], params["ground_station_cost"], 
+        total_cost_ownership = cost_model(params["satellite_manufacturing"], params["satellite_launch_cost"], params["ground_station_cost"], 
                            params["spectrum_cost"], params["regulation_fees"], 
                            params["digital_infrastructure_cost"], params["ground_station_energy"], 
                            params["subscriber_acquisition"], params["staff_costs"], 
@@ -789,7 +789,7 @@ adoption_rate, population_density, area_km):
     return demand_density_mbps_sqkm
 
 
-def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regulation_fees, \
+def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_cost, spectrum_cost, regulation_fees, \
     digital_infrastructure_cost, ground_station_energy, subscriber_acquisition, \
     staff_costs, research_development, maintenance, discount_rate, assessment_period):
     """
@@ -807,7 +807,7 @@ def cost_model(satellite_launch_cost, ground_station_cost, spectrum_cost, regula
 
     """
 
-    capex = satellite_launch_cost + ground_station_cost + spectrum_cost + regulation_fees \
+    capex = satellite_manufacturing + satellite_launch_cost + ground_station_cost + spectrum_cost + regulation_fees \
             + digital_infrastructure_cost #Addition of all capital expenditure
 
     opex_costs = ground_station_energy + subscriber_acquisition + staff_costs \
