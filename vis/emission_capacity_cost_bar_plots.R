@@ -48,12 +48,13 @@ fuels <- ggplot(fuels_df, aes(x = Rockets, y = Amount/1e3,
   theme(legend.text=element_text(size=5))
 fuels
 # Variables to Consider
-emissions <- select(de, constellation, constellation_capacity,
+emissions <- select(de, constellation, constellation_capacity,capex_costs,
   capacity_per_user, total_emissions_t, total_opex, opex_scenario,
   emission_per_capacity, emission_per_sqkm, emission_for_every_cost, 
   total_cost_ownership, subscriber_scenario, subscribers, mission_total_emissions, 
   capex_scenario, mission_emission_per_capacity, mission_emission_per_sqkm,
-  mission_emission_for_every_cost, emission_per_subscriber)
+  mission_emission_for_every_cost, emission_per_subscriber,
+  capex_per_user, opex_per_user, tco_per_user)
 
 # Capacity per Subscriber
 cap_per = emissions %>%
@@ -70,14 +71,14 @@ df1$subscriber_scenario = factor(df1$subscriber_scenario,
    labels=c('Low', 'Baseline', 'High'))
 
 capacity_subscriber <- ggplot(df1, aes(x = Constellation, y = capacity_per_user, 
-  fill = subscriber_scenario)) + geom_bar(stat = "identity", 
+  fill = subscriber_scenario)) + geom_bar(stat = "identity", width = 0.98,
   position=position_dodge()) + 
   geom_errorbar(aes(ymin=capacity_per_user-sd, 
   ymax=capacity_per_user+sd), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3) +
+  position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + 
   labs(colour=NULL, title = "Capacity per User", 
-  subtitle = "Estimated for different subscriber scenarios with \nerror bars representing 1 standard deviation.", 
+  subtitle = "Estimated for different subscriber scenarios \nwith error bars representing 1SD.", 
   x = NULL, y = "Capacity (Mbps/user)", fill ='Scenario') +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
   expand = c(0, 0), limits = c(0, 150)) + theme_minimal() +
@@ -85,7 +86,8 @@ capacity_subscriber <- ggplot(df1, aes(x = Constellation, y = capacity_per_user,
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
-  theme(legend.text=element_text(size=8))
+  theme(legend.text=element_text(size=8), plot.subtitle = element_text(size = 8),
+  plot.title = element_text(size = 10))
 capacity_subscriber
 
 # Emission per subscriber
@@ -224,7 +226,6 @@ emission_area <- ggplot(df1, aes(x = Constellation, y = mission_emission_per_sqk
   theme(legend.position = 'bottom', axis.title = element_text(size = 7))
 emission_area
 
-
 # EMISSION VALIDATION WITH COLUMBIA DATA
 constellation <- c("Kuiper", "OneWeb", "Starlink", "Terrestrial")
 subscribers_high <- c(500000, 100000, 800000, 61000000)
@@ -261,7 +262,7 @@ pub_emission <- ggarrange(fuels, emission_total, emission_capacity, emission_cos
 
 path = file.path(folder, 'figures', 'pub_emission.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=5.6, height=6.5, res=720)
+tiff(path, units="in", width=5.6, height=6.5, res=480)
 print(pub_emission)
 dev.off()
 
@@ -289,14 +290,14 @@ df1$CNR = factor(df1$cnr_scenario,
   labels=c('Low', 'Baseline', 'High'))
 
 chn_capacity <- ggplot(df1, aes(x=Constellation, y=channel_capacity/1e3, fill=CNR)) + 
-  geom_bar(stat="identity", position=position_dodge()) +
+  geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
   geom_errorbar(aes(ymin=channel_capacity/1e3-sd/1e3, 
   ymax=channel_capacity/1e3+sd/1e3), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3) +
+  position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = 'right') + 
-  labs(colour=NULL, title = "Single Satellite Channel Capacity", 
-  subtitle = "Estimated for different QoS scenarios with \nerror bars representing 1 SD.", 
+  labs(colour=NULL, title = "Single Satellite \nChannel Capacity", 
+  subtitle = "Estimated for different QoS scenarios \nwith error bars representing 1 SD.", 
   x = NULL, y = "Capacity (Gbps)", fill='Scenario') +
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) +theme_minimal() +
@@ -304,7 +305,8 @@ chn_capacity <- ggplot(df1, aes(x=Constellation, y=channel_capacity/1e3, fill=CN
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   axis.line = element_line(colour = "black")) + 
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) + 
-  theme(legend.text=element_text(size=8))
+  theme(legend.text=element_text(size=8), plot.subtitle = element_text(size = 8),
+  plot.title = element_text(size = 10))
 chn_capacity
 
 ## Single Satellite Capacity with bars
@@ -322,14 +324,14 @@ df2$CNR = factor(df2$cnr_scenario,
                  labels=c('Low', 'Baseline', 'High'))
 
 sat_capacity <- ggplot(df2, aes(x=Constellation, y=capacity_per_single_satellite/1e3, fill=CNR)) + 
-  geom_bar(stat="identity", position=position_dodge()) +
+  geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
   geom_errorbar(aes(ymin=capacity_per_single_satellite/1e3-sd/1e3, 
   ymax=capacity_per_single_satellite/1e3+sd/1e3), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3) +
+  position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = 'bottom') + labs(colour=NULL, 
-  title = "Single Satellite Aggregate Capacity", 
-  subtitle = "Estimated for different QoS scenarios with \nerror bars representing 1 SD.", 
+  title = "Single Satellite \nAggregate Capacity", 
+  subtitle = "Estimated for different QoS scenarios \nwith error bars representing 1 SD.", 
   x = NULL, y = "Capacity (Gbps)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0), limits = c(0, 30)) + 
@@ -337,7 +339,8 @@ sat_capacity <- ggplot(df2, aes(x=Constellation, y=capacity_per_single_satellite
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) + 
-  theme(legend.text=element_text(size=8))
+  theme(legend.text=element_text(size=8), plot.subtitle = element_text(size = 8),
+  plot.title = element_text(size = 10))
 sat_capacity
 
 ## Per Area Capacity with error bars
@@ -392,13 +395,13 @@ df4$CNR = factor(df4$cnr_scenario,
 
 const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6, 
   fill=CNR)) + 
-  geom_bar(stat = "identity", position=position_dodge()) +
+  geom_bar(stat = "identity", position=position_dodge(), width = 0.98) +
   geom_errorbar(aes(ymin=constellation_capacity/1e6-sd/1e6, 
   ymax=constellation_capacity/1e6+sd/1e6), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3) +
+  position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() +
-  labs(colour=NULL, title = "Aggregate Constellation Capacity", 
-  subtitle = "Estimated for different QoS scenarios with \nerror bars represent 1 standard deviation.", 
+  labs(colour=NULL, title = "Aggregate Constellation \nCapacity", 
+  subtitle = "Estimated for different QoS scenarios \nwith nerror bars represent 1SD.", 
   x = NULL, y = "Capacity (Tbps)", fill='Scenario') +
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0), limits = c(0, 130)) + 
@@ -406,7 +409,8 @@ const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6,
   panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
   axis.title=element_text(size=8), legend.position = 'bottom') + 
-  theme(legend.text=element_text(size=8))
+  theme(legend.text=element_text(size=8), plot.subtitle = element_text(size = 8),
+  plot.title = element_text(size = 10))
 const_capacity
 
 ## Combine all the capacity plots ##
@@ -417,7 +421,7 @@ pub_cap
 
 path = file.path(folder, 'figures', 'pub_capacity_profile.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=7.5, height=6, res=720)
+tiff(path, units="in", width=6, height=6, res=480)
 print(pub_cap)
 dev.off()
 
@@ -475,7 +479,7 @@ p <- ggplot(df6, aes(x=Constellation, y=ground_station_cost/1e6,
   position=position_dodge()) +
   geom_errorbar(aes(ymin=ground_station_cost/1e6-sd/1e6, 
   ymax=ground_station_cost/1e6+sd/1e6), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3)
+  position=position_dodge(.9), color = 'black', size = 0.3)
 grd_costs <- p + scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = 'bottom') + labs(colour=NULL, 
   title = "Ground Station Cost", 
@@ -528,7 +532,7 @@ cap_cost <- p + scale_fill_brewer(palette="Paired") + theme_minimal() +
   theme(legend.text=element_text(size=8))
 cap_cost
 
-## Constellation Total Cost Ownership with Error Bars
+## Constellation Total Cost Ownership 
 dct %>%
   group_by(total_cost_ownership, constellation, capex_scenario) %>%
   summarise(value =mean(total_cost_ownership),
@@ -540,15 +544,14 @@ df7$Constellation = factor(df7$constellation)
 df7$Capex = factor(df7$capex_scenario, levels=c('Low', 'Baseline', 'High'))
 
 p <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/1e6, 
-  fill=Capex)) + geom_bar(stat="identity", position=position_dodge()) +
+  fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
   geom_errorbar(aes(ymin=(total_cost_ownership/1e6)-sd/1e6, 
   ymax=(total_cost_ownership/1e6)+sd/1e6), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3)
+  position=position_dodge(.9), color = 'black', size = 0.3)
 total_cost <- p + scale_fill_brewer(palette="Paired") +
-  labs(colour=NULL, title = "Total Cost of Ownership (TCO)", 
-  subtitle = "Estimated for different capex scenarios with 
-  \nerror bars representing 1 standard deviation.", 
-  x = NULL, y = "TCO\n(Million US$ per Gbps)") + 
+  labs(colour=NULL, title = "Total Cost of \nOwnership (TCO)", 
+  subtitle = "Estimated for different \ncapex scenarios with error \nbars representing 1SD.", 
+  x = NULL, y = "TCO\n(Million US$ per Gbps)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + theme(strip.text.x = element_blank(),
@@ -558,27 +561,26 @@ total_cost <- p + scale_fill_brewer(palette="Paired") +
   theme(legend.text=element_text(size=8))
 total_cost
 
-## Total Cost Ownership per subscriber with Error Bars
+## Total Cost Ownership per subscriber 
 emissions %>%
-  group_by(total_cost_ownership, constellation, capex_scenario, subscribers) %>%
-  summarise(value =mean(total_cost_ownership/subscribers),
-  error = sd(total_cost_ownership/subscribers)) %>% ungroup() 
-df7 <- data_summary(emissions, varname="total_cost_ownership", 
-  groupnames=c("constellation", "capex_scenario", "subscribers"))
+  group_by(tco_per_user, constellation, capex_scenario) %>%
+  summarise(value =mean(tco_per_user),
+  error = sd(tco_per_user)) %>% ungroup() 
+df7 <- data_summary(emissions, varname="tco_per_user", 
+  groupnames=c("constellation", "capex_scenario"))
 df7$capex_scenario=as.factor(df7$capex_scenario)
 df7$Constellation = factor(df7$constellation)
 df7$Capex = factor(df7$capex_scenario, levels=c('Low', 'Baseline', 'High'))
 
-p <- ggplot(df7, aes(x=Constellation, y=total_cost_ownership/subscribers, 
-  fill=Capex)) + geom_bar(stat="identity", position=position_dodge()) +
-  geom_errorbar(aes(ymin=(total_cost_ownership/subscribers)-sd/subscribers, 
-  ymax=(total_cost_ownership/subscribers)+sd/subscribers), width=.2,
-  position=position_dodge(.9), color = 'orange', size = 0.3)
+p <- ggplot(df7, aes(x=Constellation, y=tco_per_user, 
+  fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
+  geom_errorbar(aes(ymin=(tco_per_user)-sd, 
+  ymax=(tco_per_user)+sd), width=.2,
+  position=position_dodge(.9), color = 'black', size = 0.3)
 tco_subscriber <- p + scale_fill_brewer(palette="Paired") +
   labs(colour=NULL, title = "TCO per User", 
-  subtitle = "Estimated for different capex scenarios with 
-  \nerror bars representing 1 standard deviation.", 
-  x = NULL, y = "TCO per User\n(Million US$ per User)") + 
+  subtitle = "Estimated for different \ncapex scenarios with error \nbars representing 1SD.", 
+  x = NULL, y = "TCO \n(US$ per User)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + theme_minimal() + 
   theme(strip.text.x = element_blank(),
@@ -588,7 +590,7 @@ tco_subscriber <- p + scale_fill_brewer(palette="Paired") +
   theme(legend.text=element_text(size=8))
 tco_subscriber
 
-## Constellation Total Opex with Error Bars
+## Constellation Total Opex 
 emissions %>%
   group_by(total_opex, constellation, opex_scenario) %>%
   summarise(value =mean(total_opex), error = sd(total_opex)) %>%
@@ -600,14 +602,13 @@ df7$Constellation = factor(df7$constellation)
 df7$Capex = factor(df7$opex_scenario, levels=c('Low', 'Baseline', 'High'))
 
 p <- ggplot(df7, aes(x=Constellation, y=(total_opex/1e6), 
-   fill=Capex)) + geom_bar(stat="identity", position=position_dodge()) +
+   fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
   geom_errorbar(aes(ymin=((total_opex/1e6))-sd/1e6, ymax=((total_opex/1e6))+sd/1e6), 
-  width=.2, position=position_dodge(.9), color = 'orange', size = 0.3)
+  width=.2, position=position_dodge(.9), color = 'black', size = 0.3)
 opex_cost <- p + scale_fill_brewer(palette="Paired") +
-  labs(colour=NULL, title = "Total Operating (Opex) Costs", 
-       subtitle = "Estimated for different maintenance cost scenarios with 
-  \nerror bars representing 1 standard deviation.", 
-       x = NULL, y = "Opex\n(Million US$ per Gbps)") + 
+  labs(colour=NULL, title = "Total Operating \n(Opex) Costs", 
+  subtitle = "Estimated for different maintenance \nand staff cost scenarios with \nerror bars representing 1SD.", 
+  x = NULL, y = "Opex\n(Million US$ per Gbps)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
   theme_minimal() + theme(strip.text.x = element_blank(),
@@ -617,79 +618,97 @@ opex_cost <- p + scale_fill_brewer(palette="Paired") +
   theme(legend.text=element_text(size=8))
 opex_cost
 
-## Total Opex per Subscriber with Error Bars
+## Total Opex per Subscriber 
 emissions %>%
-  group_by(total_opex, constellation, opex_scenario, subscribers) %>%
-  summarise(value =mean(total_opex/subscribers), error = sd(total_opex/subscribers)) %>%
+  group_by(opex_per_user, constellation, opex_scenario) %>%
+  summarise(value =mean(opex_per_user), error = sd(opex_per_user)) %>%
   ungroup() 
-df7 <- data_summary(emissions, varname="total_opex", 
-  groupnames=c("constellation", "opex_scenario", "subscribers"))
+df7 <- data_summary(emissions, varname="opex_per_user", 
+  groupnames=c("constellation", "opex_scenario"))
 df7$opex_scenario=as.factor(df7$opex_scenario)
 df7$Constellation = factor(df7$constellation)
 df7$Capex = factor(df7$opex_scenario, levels=c('Low', 'Baseline', 'High'))
 
-p <- ggplot(df7, aes(x=Constellation, y=(total_opex)/subscribers, 
-  fill=Capex)) + geom_bar(stat="identity", position=position_dodge()) +
-  geom_errorbar(aes(ymin=((total_opex)/subscribers)-sd, 
-  ymax=((total_opex)/subscribers)+sd), width=.2, 
-  position=position_dodge(0.9), color = 'orange', size = 0.3)
-opex_cost <- p + scale_fill_brewer(palette="Paired") +
+p <- ggplot(df7, aes(x=Constellation, y=(opex_per_user), 
+  fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
+  geom_errorbar(aes(ymin=(opex_per_user)-sd, 
+  ymax=(opex_per_user)+sd), width=.2, 
+  position=position_dodge(0.9), color = 'black', size = 0.3)
+opex_sub <- p + scale_fill_brewer(palette="Paired") +
   labs(colour=NULL, title = "Opex per User", 
-  subtitle = "Estimated for different maintenance cost scenarios with 
-  \nerror bars representing 1 standard deviation.", 
-  x = NULL, y = "Opex\n(US$ per User)") + 
+  subtitle = "Estimated for different maintenance \nand staff ncost scenarios with \nerror bars representing 1SD.", 
+  x = NULL, y = "Opex\n(US$ per User)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + theme_minimal() + 
   theme(strip.text.x = element_blank(), panel.border = element_blank(), 
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
   axis.line = element_line(colour = "black"), axis.title=element_text(size=8), 
   legend.position = 'bottom') + theme(legend.text=element_text(size=8))
-opex_cost
+opex_sub
 
+## Constellation Total Capex 
+emissions %>%
+  group_by(capex_costs, constellation, capex_scenario) %>%
+  summarise(value =mean(capex_costs), error = sd(capex_costs)) %>%
+  ungroup() 
+df7 <- data_summary(emissions, varname="capex_costs", 
+  groupnames=c("constellation", "capex_scenario"))
+df7$capex_scenario=as.factor(df7$capex_scenario)
+df7$Constellation = factor(df7$constellation)
+df7$Capex = factor(df7$capex_scenario, levels=c('Low', 'Baseline', 'High'))
 
+p <- ggplot(df7, aes(x=Constellation, y=(capex_costs/1e6), 
+  fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
+  geom_errorbar(aes(ymin=(capex_costs/1e6)-sd/1e6, ymax=(capex_costs/1e6)+sd/1e6), width=.2, 
+  position=position_dodge(0.9), color = 'black', size = 0.3)
+capex <- p + scale_fill_brewer(palette="Paired") +
+  labs(colour=NULL, title = "Constellation Capital \nExpenditure (Capex) Costs", 
+  subtitle = "Estimated for different ground station \nand satellite launch cost scenarios \nwith error bars representing 1SD.", 
+  x = NULL, y = "Capex\n(Million US$)", fill='Scenario') + 
+  scale_y_continuous(labels = function(y) format(y, 
+  scientific = FALSE), expand = c(0, 0)) + theme_minimal() + 
+  theme(strip.text.x = element_blank(), panel.border = element_blank(), 
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+  axis.line = element_line(colour = "black"), axis.title=element_text(size=8), 
+  legend.position = 'bottom') + theme(legend.text=element_text(size=8))
+capex
+
+## Total Capex per Subscriber 
+emissions %>%
+  group_by(capex_per_user, constellation, capex_scenario) %>%
+  summarise(value =mean(capex_per_user), error = sd(capex_per_user)) %>%
+  ungroup() 
+df7 <- data_summary(emissions, varname="capex_per_user", 
+  groupnames=c("constellation", "capex_scenario"))
+df7$capex_scenario=as.factor(df7$capex_scenario)
+df7$Constellation = factor(df7$constellation)
+df7$Capex = factor(df7$capex_scenario, levels=c('Low', 'Baseline', 'High'))
+
+p <- ggplot(df7, aes(x=Constellation, y=(capex_per_user), 
+   fill=Capex)) + geom_bar(stat="identity", position=position_dodge(), width = 0.98) +
+  geom_errorbar(aes(ymin=(capex_per_user)-sd, ymax=(capex_per_user)+sd), width=.2, 
+  position=position_dodge(0.9), color = "black", size = 0.3)
+capex_sub <- p + scale_fill_brewer(palette="Paired") +
+  labs(colour=NULL, title = "Capex per User", 
+  subtitle = "Estimated for different ground station \nand satellite launch cost scenarios \nwith error bars representing 1SD.", 
+  x = NULL, y = "Capex\n(US$ per User)", fill='Scenario') + 
+  scale_y_continuous(labels = function(y) format(y, 
+  scientific = FALSE), expand = c(0, 0)) + theme_minimal() + 
+  theme(strip.text.x = element_blank(), panel.border = element_blank(), 
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+  axis.line = element_line(colour = "black"), axis.title=element_text(size=8), 
+  legend.position = 'bottom') + theme(legend.text=element_text(size=8))
+capex_sub
 
 ## Combine Cost Plots ##
-const_cost <- ggarrange(sat_costs, grd_costs, 
-                        cap_cost, total_cost, 
-                        nrow = 4, 
-                        common.legend = T, legend="bottom", 
-                        labels = c("A", "B", "C", "D"))
-const_cost
-
-pub_const_cost <- ggarrange(total_cost, 
-                   cap_cost, ncol = 2, 
-                   common.legend = T, legend="bottom", 
-                   labels = c("a", "b"))
+pub_const_cost <- ggarrange(total_cost, tco_subscriber, capex, capex_sub,  
+  opex_cost, opex_sub, ncol = 3, nrow = 2, common.legend = T, legend="bottom", 
+  labels = c("a", "b", "c", "d", "e", "f"))
 pub_const_cost
 
 path = file.path(folder, 'figures', 'pub_cost_profile.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=7.5, height=5, res=720)
+tiff(path, units="in", width=10, height=8, res=480)
 print(pub_const_cost)
 dev.off()
-
-path = file.path(folder, 'figures', 
-                 'constellation_cost_profile.tiff')
-dir.create(file.path(folder, 'figures'), 
-           showWarnings = FALSE)
-tiff(path, units="in", width=7, height=10, res=380)
-print(const_cost)
-dev.off()
-
-
-  
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
 
