@@ -38,7 +38,8 @@ def process_mission_number(data_path, results_path):
 
     df[["mission_number", "capacity_per_user", "mission_total_emissions", "mission_emission_per_capacity", 
     "mission_emission_per_sqkm", "mission_emission_for_every_cost", "emission_per_subscriber",
-    "capex_per_user","opex_per_user", "tco_per_user"]] = " "
+    "capex_per_user","opex_per_user", "tco_per_user", "capex_per_capacity", "opex_per_capacity", 
+    "tco_per_capacity"]] = " "
     
     # Generate mission number for each constellation.
 
@@ -90,7 +91,11 @@ def process_mission_number(data_path, results_path):
                                          df["subscribers"].loc[i]
         df["capex_per_user"].loc[i] = df["capex_costs"].loc[i] / df["subscribers"].loc[i] 
         df["opex_per_user"].loc[i] = df["total_opex"].loc[i] / df["subscribers"].loc[i]   
-        df["tco_per_user"].loc[i] = df["total_cost_ownership"].loc[i] / df["subscribers"].loc[i]                              
+        df["tco_per_user"].loc[i] = df["total_cost_ownership"].loc[i] / df["subscribers"].loc[i]
+        df["capex_per_capacity"].loc[i] = df["capex_costs"].loc[i] / df["constellation_capacity"].loc[i]
+        df["opex_per_capacity"].loc[i] = df["total_opex"].loc[i] / df["constellation_capacity"].loc[i]
+        df["tco_per_capacity"].loc[i] = df["total_cost_ownership"].loc[i] / df["constellation_capacity"].loc[i]
+
 
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
     results_path2 = '/Users/osoro/Github/saleos/vis/'
