@@ -77,18 +77,15 @@ def process_mission_number(data_path, results_path):
     # Calculate the mission emission results for each constellation.
 
     for i in range(len(df)):
-        df["mission_total_emissions"].loc[i] = df["total_emissions_t"].loc[i] \
-                                               * df["mission_number"].loc[i]
+        df["mission_total_emissions"].loc[i] = df["total_emissions_t"].loc[i] * df["mission_number"].loc[i]
         df["mission_emission_per_capacity"].loc[i] = df["emission_per_capacity"].loc[i] \
                                                      * df["mission_number"].loc[i]
         df["mission_emission_per_sqkm"].loc[i] =  df["emission_per_sqkm"].loc[i] \
                                           * df["mission_number"].loc[i]
         df["mission_emission_for_every_cost"].loc[i] = df["emission_for_every_cost"].loc[i] \
                                                        * df["mission_number"].loc[i]
-        df["emission_per_subscriber"].loc[i] = df["total_emissions_t"].loc[i] / \
-                                               df["subscribers"].loc[i]
-        df["capacity_per_user"].loc[i] = df["constellation_capacity"].loc[i] / \
-                                         df["subscribers"].loc[i]
+        df["emission_per_subscriber"].loc[i] = df["total_emissions_t"].loc[i] / df["subscribers"].loc[i]
+        df["capacity_per_user"].loc[i] = df["constellation_capacity"].loc[i] / df["subscribers"].loc[i]
         df["capex_per_user"].loc[i] = df["capex_costs"].loc[i] / df["subscribers"].loc[i] 
         df["opex_per_user"].loc[i] = df["total_opex"].loc[i] / df["subscribers"].loc[i]   
         df["tco_per_user"].loc[i] = df["total_cost_ownership"].loc[i] / df["subscribers"].loc[i]
