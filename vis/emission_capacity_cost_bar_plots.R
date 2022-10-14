@@ -6,18 +6,18 @@ library(grid)
 library(data.table)
 library(dplyr)
 library(tidyverse)
+require(plyr)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-# Helper function to calculate mean and standard deviation of each group
-data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){c(mean = mean(x[[col]], na.rm=TRUE),
-      sd = sd(x[[col]], na.rm=TRUE))}
-  data_sum <- ddply(data, groupnames, .fun=summary_func,varname)
-  data_sum <- rename(data_sum, c("mean" = varname))
-  return(data_sum)}
+# # Helper function to calculate mean and standard deviation of each group
+# data_summary <- function(data, varname, groupnames){
+#   summary_func <- function(x, col){c(mean = mean(x[[col]], na.rm=TRUE),
+#       sd = sd(x[[col]], na.rm=TRUE))}
+#   data_sum <- ddply(data, groupnames, .fun=summary_func,varname)
+#   data_sum <- rename(data_sum, c("mean" = varname))
+#   return(data_sum)}
 
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -67,11 +67,23 @@ emissions <- select(de, constellation, constellation_capacity,capex_costs,
 # Capacity per Subscriber
 cap_per = emissions %>%
   group_by(capacity_per_user, constellation, subscriber_scenario) %>%
-  summarise(value =mean(capacity_per_user),
-            error = sd(capacity_per_user)) %>%
+  summarize(emission_per_subscriber = emission_per_subscriber,
+    value=mean(capacity_per_user),
+            error=sd(capacity_per_user)) %>%
   ungroup() 
-df1 <- data_summary(emissions, varname="capacity_per_user", 
-                    groupnames=c("constellation", "subscriber_scenario"))
+# df1 <- data_summary(emissions, varname="capacity_per_user",
+#                     groupnames=c("constellation", "subscriber_scenario"))
+# 
+# folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+# write.csv(df1, file.path(folder, 'df1.csv'))
+
+### Here the data_summary function was replaced by a dplyr version 
+df1 = emissions %>%
+  group_by(constellation, subscriber_scenario) %>%
+  summarize(capacity_per_user = capacity_per_user,
+            mean=mean(capacity_per_user),
+            sd=sd(capacity_per_user))
+
 df1$subscriber_scenario=as.factor(df1$subscriber_scenario)
 df1$Constellation = factor(df1$constellation)
 df1$subscriber_scenario = factor(df1$subscriber_scenario,
@@ -86,7 +98,7 @@ capacity_subscriber <- ggplot(df1, aes(x = Constellation, y = capacity_per_user,
   position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + 
   labs(colour=NULL, title = "Capacity per User", 
-  subtitle = "Estimated for different subscriber scenarios \nwith error bars representing 1SD.", 
+  subtitle = "By subscriber scenario (Error bars: 1SD).", 
   x = NULL, y = "Capacity (Mbps/user)", fill ='Scenario') +
   scale_y_continuous(labels = function(y) format(y, scientific = FALSE), 
   expand = c(0, 0), limits = c(0, 150)) + theme_minimal() +
@@ -309,7 +321,7 @@ chn_capacity <- ggplot(df1, aes(x=Constellation, y=channel_capacity/1e3, fill=CN
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = 'right') + 
   labs(colour=NULL, title = "Single Satellite Channel Capacity", 
-  subtitle = "Estimated for different QoS scenarios \nwith error bars representing 1 SD.", 
+  subtitle = "By QoS scenario (Error bars: 1SD).", 
   x = NULL, y = "Capacity (Gbps)", fill='Scenario') +
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) +theme_minimal() +
@@ -343,7 +355,7 @@ sat_capacity <- ggplot(df2, aes(x=Constellation, y=capacity_per_single_satellite
   scale_fill_brewer(palette="Paired") + theme_minimal() + 
   theme(legend.position = 'bottom') + labs(colour=NULL, 
   title = "Single Satellite Aggregate Capacity", 
-  subtitle = "Estimated for different QoS scenarios \nwith error bars representing 1 SD.", 
+  subtitle = "By QoS scenario (Error bars: 1SD).", 
   x = NULL, y = "Capacity (Gbps)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0), limits = c(0, 30)) + 
@@ -378,7 +390,7 @@ ar_capacity <- ggplot(df3, aes(x=Constellation, y=capacity_per_area_mbps.sqkm,
   scale_fill_brewer(palette="Paired") + theme_minimal() +
   theme(legend.position = 'bottom') + labs(colour=NULL, 
   title = "Per Area Capacity", 
-  subtitle = "Estimated for different QoS scenarios and adoption rates with error bars representing 1 SD.", 
+  subtitle = "By QoS scenario (Error bars: 1SD).", 
   x = "", y = "Capacity (Mbps/km^2)", fill='Scenario') + 
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0)) + 
@@ -413,7 +425,7 @@ const_capacity <- ggplot(df4, aes(x=Constellation, y=constellation_capacity/1e6,
   position=position_dodge(.9), color = 'black', size = 0.3) +
   scale_fill_brewer(palette="Paired") + theme_minimal() +
   labs(colour=NULL, title = "Aggregate Constellation Capacity", 
-  subtitle = "Estimated for different QoS scenarios \nwith nerror bars represent 1SD.", 
+  subtitle = "By QoS scenario (Error bars: 1SD).", 
   x = NULL, y = "Capacity (Tbps)", fill='Scenario') +
   scale_y_continuous(labels = function(y) format(y, 
   scientific = FALSE), expand = c(0, 0), limits = c(0, 130)) + 
