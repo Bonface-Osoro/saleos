@@ -75,11 +75,13 @@ chn_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -138,11 +140,13 @@ sat_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -201,11 +205,13 @@ const_capacity <-
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.line = element_line(colour = "black"),
+    axis.text.x = element_text(size = 6),
     axis.title = element_text(size = 8),
     legend.position = 'bottom'
   ) +
   theme(
-    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -264,11 +270,13 @@ capacity_subscriber <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
