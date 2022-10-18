@@ -132,4 +132,4 @@ dmypy.json
 vis/*/* 
 data/*
 figures/*
-sankey/*
+sankey/
