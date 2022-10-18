@@ -63,15 +63,16 @@ fuels = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
     panel.grid.minor = element_blank(),
     axis.line = element_line(colour = "black"),
     axis.title = element_text(size = 5),
-    axis.text.x = element_text(size = 6)
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7)
   ) + theme(legend.position = 'right') +
   theme(
     legend.position = 'bottom',
     legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
+    legend.text = element_text(size =5),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10),
-  )
+  ) + guides(fill = guide_legend(ncol = 5, nrow = 2))
 
 # Variables to Consider
 data <-
@@ -133,11 +134,12 @@ emission_subscriber <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) + theme(legend.position = 'bottom', axis.title = element_text(size = 8)) + theme(
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
+    legend.title = element_text(size = 5),
+    legend.text = element_text(size = 8),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10) 
   ) 
@@ -169,14 +171,15 @@ emission_totals <-
     aes(label = round(after_stat(y), 2), group = Constellation),
     stat = "summary",
     fun = sum,
-    vjust = -.5,
+    vjust = -.3,
+    hjust = -0.6,
     size = 2.5
   ) + 
   scale_fill_brewer(palette = "Paired") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Total Constellation Emissions",
-    subtitle = "Error bars: 1 SD",
+    subtitle = "Error bars: 1 Standard Deviation (SD)",
     x = NULL,
     y = "Total Emissions (kt)"
   ) + scale_y_continuous(
@@ -189,7 +192,8 @@ emission_totals <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) + theme(legend.position = 'none', axis.title = element_text(size = 8)) + theme(
     legend.text = element_text(size = 8),
@@ -205,8 +209,8 @@ emission_totals <-
 df = data %>%
   group_by(constellation) %>%
   summarize(
-    mean = mean(mission_emission_per_capacity),
-    sd = sd(mission_emission_per_capacity)
+    mean = mean(mission_emission_per_capacity * 1e3),
+    sd = sd(mission_emission_per_capacity * 1e3)
   )
 
 df$Constellation = factor(df$constellation)
@@ -222,10 +226,11 @@ emission_capacity <-
     color = "black",
     size = 0.3
   ) + geom_text(
-    aes(label = round(after_stat(y), 2), group = Constellation),
+    aes(label = round(after_stat(y), 1), group = Constellation),
     stat = "summary",
     fun = sum,
     vjust = -.5,
+    hjust = -0.4,
     size = 2.5
   ) +
   scale_fill_brewer(palette = "Paired") + theme_minimal() +
@@ -234,20 +239,21 @@ emission_capacity <-
     title = "Emissions vs Provided Capacity",
     subtitle = "Error bars: 1 SD",
     x = NULL,
-    y = "Emissions (kg/Mbps)",
+    y = "Emissions (t/Gbps)",
     fill = "Constellations"
   ) + scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 1.3)
+    limits = c(0, 1300)
   ) +
   theme_minimal() + theme(
     strip.text.x = element_blank(),
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = "none", axis.title = element_text(size = 8)) +
@@ -265,8 +271,8 @@ emission_capacity <-
 df = data %>%
   group_by(constellation) %>%
   summarize(
-    mean = mean(mission_emission_for_every_cost),
-    sd = sd(mission_emission_for_every_cost)
+    mean = mean(mission_emission_for_every_cost * 1e3),
+    sd = sd(mission_emission_for_every_cost * 1e3)
   )
 
 df$Constellation = factor(df$constellation)
@@ -286,6 +292,7 @@ emission_cost <-
     stat = "summary",
     fun = sum,
     vjust = -.5,
+    hjust = -0.6,
     size = 2.5
   ) + 
   scale_fill_brewer(palette = "Paired") + theme_minimal() +
@@ -294,19 +301,20 @@ emission_cost <-
     title = "Emissions vs Investment Cost",
     subtitle = "Error bars: 1 SD",
     x = NULL,
-    y = "Emissions (kg per US$ 1 Million)",
+    y = "Emissions (kt/US$ 1 Billion)",
     fill = "Constellations"
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 0.016),
+    expand = c(0, 0), limits = c(0, 16),
   ) + theme_minimal() + theme(
     strip.text.x = element_blank(),
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = "none", axis.title = element_text(size = 8)) +
@@ -346,6 +354,7 @@ emission_sqkm <-
     stat = "summary",
     fun = sum,
     vjust = -.5,
+    hjust = -0.6,
     size = 2.5
   ) +
   scale_fill_brewer(palette = "Paired") + theme_minimal() +
@@ -367,7 +376,8 @@ emission_sqkm <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = "none", axis.title = element_text(size = 8)) +
@@ -398,7 +408,7 @@ emission_validation <-
                stat = "summary",
                fun = sum,
                vjust = -.5,
-               size = 1.5
+               size = 2.5
              ) +
   geom_bar(stat = "identity", size = 0.9) + scale_fill_brewer(palette = "Paired") +
   theme_minimal() + theme(legend.position = "right") +
@@ -408,8 +418,7 @@ emission_validation <-
     subtitle = "Comparison of emissions.",
     x = NULL,
     y = "Emission (kg/subscriber)",
-    caption = "Terrestrial network is based on 2020 Columbian Mobile
-  \nNetwork Operators (América Móvil, Telefonica and Millicom) market data.",
+    caption = "Terrestrial network is based on 2020 Columbian \nMobile Network Operators (América Móvil, \nTelefonica and Millicom) market data.",
     fill = 'Constellations'
   ) + scale_y_continuous(
     labels = function(y)
@@ -422,13 +431,13 @@ emission_validation <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'none', axis.title = element_text(size = 5)) +
   theme(
-    plot.caption = element_text(size = 5, color = "black", face = "italic"),
-    axis.text.x = element_text(size = 6)
+    plot.caption = element_text(size = 6, color = "black", face = "italic")
   ) + theme(legend.text = element_text(size = 5),
             plot.subtitle = element_text(size = 8),
             plot.title = element_text(size = 10))
@@ -438,12 +447,12 @@ pub_emission <-
   ggarrange(
     fuels,
     emission_totals,
+    emission_subscriber,
     emission_capacity,
     emission_cost,
-    emission_subscriber,
     emission_validation,
-    nrow = 2,
-    ncol = 3,
+    nrow = 3,
+    ncol = 2,
     labels = c("a", "b", "c", "d", "e", "f")
   )
 
@@ -452,8 +461,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 8,
-  height = 6,
+  width = 6,
+  height = 8,
   res = 480
 )
 print(pub_emission)
