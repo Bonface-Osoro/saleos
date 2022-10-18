@@ -76,14 +76,15 @@ constellation_capex <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -136,14 +137,15 @@ constellation_opex <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -196,14 +198,15 @@ constellation_tco <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -256,14 +259,15 @@ constellation_capex_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -316,14 +320,15 @@ constellation_opex_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -360,7 +365,7 @@ constellation_tco_per_user <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Opex per User",
+    title = "TCO per User",
     subtitle = "By capex scenario (Error bars: 1SD).",
     x = NULL,
     y = "TCO \n(US$ per User",
@@ -376,14 +381,15 @@ constellation_tco_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -436,14 +442,15 @@ constellation_capex_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -464,7 +471,7 @@ df$Constellation = factor(df$constellation)
 df$opex = factor(df$opex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
-constellation_capex_capacity <-
+constellation_opex_capacity <-
   ggplot(df, aes(x = Constellation, y = mean, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
@@ -497,14 +504,15 @@ constellation_capex_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size =7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -557,14 +565,15 @@ constellation_tco_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.text.y = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size =5),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size =7),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10)
   )
@@ -582,7 +591,7 @@ pub_const_cost <- ggarrange(
   constellation_opex_per_user,
   constellation_tco_per_user,
   constellation_capex_capacity,
-  constellation_capex_capacity,
+  constellation_opex_capacity,
   constellation_tco_capacity,
   nrow = 3,
   ncol = 3,
