@@ -8,7 +8,6 @@ library(tidyverse)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data <- read.csv(file.path(folder, "mission_emission_results.csv"))
 
 # INDIVIDUAL PLOTS WITH ERROR BARS #
