@@ -65,14 +65,14 @@ fuels = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
     axis.title = element_text(size = 5),
     axis.text.x = element_text(size = 7),
     axis.title.y = element_text(size = 7)
-  ) + theme(legend.position = 'right') +
-  theme(
-    legend.position = 'bottom',
+  ) +
+  theme(legend.direction = "vertical",
+    legend.position = c(0.85, 0.7),
     legend.title = element_text(size = 6),
     legend.text = element_text(size =5),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10),
-  ) + guides(fill = guide_legend(ncol = 5, nrow = 2))
+  ) #+ guides(fill = guide_legend(ncol = 5, nrow = 2))
 
 # Variables to Consider
 data <-
@@ -137,11 +137,11 @@ emission_subscriber <-
     axis.text.x = element_text(size = 7),
     axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
-  ) + theme(legend.position = 'bottom', axis.title = element_text(size = 8)) + theme(
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size = 8),
+  ) + theme(legend.position = c(0.8, 0.8), axis.title = element_text(size = 8)) + theme(
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10) 
+    plot.title = element_text(size = 10)
   ) 
 
 ######################################
