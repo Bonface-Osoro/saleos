@@ -31,7 +31,7 @@ totals <- fuels_df %>%
   group_by(rockets) %>%
   summarize(value = signif(sum(amount / 1e3), 2))
 
-fuels = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
+fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
   geom_bar(stat = "identity", aes(fill = fuel)) +
   geom_text(
     aes(x = rockets, y = value, label = value),
@@ -46,7 +46,7 @@ fuels = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
     title = "Rocket Fuel Compositions",
     subtitle = "Fuel amounts for single launch event.",
     x = NULL,
-    y = "Fuel Amounts (kt)",
+    y = "Fuel Amounts (t)",
     fill = "Fuel"
   ) +
   scale_y_continuous(
@@ -88,6 +88,75 @@ data <-
     emission_per_subscriber
   )
 
+
+########################################
+##plot2 = Emission Composition Factors
+########################################
+
+fuels <- c("Solid", "Solid", "Solid", "Solid", "Solid", "Solid",
+          "Cryogenic", "Cryogenic", "Cryogenic", "Cryogenic", "Cryogenic", "Cryogenic",
+          "Kerosene", "Kerosene", "Kerosene", "Kerosene", "Kerosene", "Kerosene",
+          "Hypergolic", "Hypergolic", "Hypergolic", "Hypergolic", "Hypergolic", "Hypergolic")
+compositions <- c("Aluminium \nOxides", "Sulphur \nOxides", "Carbon \nOxides", 
+                  "Chlorofluoro \ncarbons", "Particulate \nMatter", 
+                  "Photochemical \nOxidation", "Aluminium \nOxides", 
+                  "Sulphur \nOxides", "Carbon \nOxides", 
+                  "Chlorofluoro \ncarbons", "Particulate \nMatter", 
+                  "Photochemical \nOxidation", "Aluminium \nOxides", 
+                  "Sulphur \nOxides", "Carbon \nOxides", 
+                  "Chlorofluoro \ncarbons", "Particulate \nMatter", 
+                  "Photochemical \nOxidation", "Aluminium \nOxides", 
+                  "Sulphur \nOxides", "Carbon \nOxides", 
+                  "Chlorofluoro \ncarbons", "Particulate \nMatter", 
+                  "Photochemical \nOxidation")
+factors <- c(0.33, 0.22, 0.27, 0.16, 0.335, 0.167, 0, 0.01, 0, 0.02, 0.001, 0.001, 
+            0.05, 0.001, 0.88, 0.02, 0.051, 0.529, 0.001, 0.001, 0.63, 0.02, 0.002, 
+            0.379)
+compositions_df <- data.frame(fuels, compositions, factors)
+
+totals <- compositions_df %>%
+  group_by(fuels) %>%
+  summarize(value = signif(sum(factors), 3))
+
+fuel_factors <- ggplot(compositions_df, aes(x = fuels, y = factors)) +
+  geom_bar(stat = "identity", aes(fill = compositions)) + geom_text(
+    aes(x = fuels, y = value, label = value),
+    size = 2,
+    data = totals,
+    vjust = -1,
+    hjust = 1,
+    position = position_stack()
+  ) + scale_fill_brewer(palette = "Paired") + labs(
+    colour = NULL,
+    title = "Fuel Emission Factors",
+    subtitle = "Emission factors of the fuel compositions",
+    x = NULL,
+    y = "Emission Factor",
+    fill = "Compositions"
+  ) + scale_y_continuous(
+    labels = function(y)
+      format(y,
+             scientific = FALSE),
+    expand = c(0, 0),
+    limits = c(0, 1.9)
+  ) + 
+  theme_minimal() + theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    axis.title = element_text(size = 5),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_text(size = 7)
+  ) +
+  theme(legend.direction = "vertical",
+        legend.position = c(0.44, 0.75),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size =5),
+        plot.subtitle = element_text(size = 8),
+        plot.title = element_text(size = 10),
+  ) + guides(fill = guide_legend(ncol = 4, nrow = 4))
 
 ######################################
 ##plot1 = Emission per Subscriber
@@ -445,12 +514,11 @@ emission_validation <-
 # Save emission validation results
 pub_emission <-
   ggarrange(
-    fuels,
+    fuel_types, fuel_factors,
     emission_totals,
     emission_subscriber,
     emission_capacity,
     emission_cost,
-    emission_validation,
     nrow = 3,
     ncol = 2,
     labels = c("a", "b", "c", "d", "e", "f")
@@ -461,7 +529,7 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 6,
+  width = 6.3,
   height = 8,
   res = 480
 )
