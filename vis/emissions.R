@@ -38,7 +38,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
     size = 2,
     data = totals,
     vjust = -1,
-    hjust = 1,
+    hjust = 0.5,
     position = position_stack()
   ) +
   scale_fill_brewer(palette = "Paired") + labs(
@@ -46,7 +46,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e3)) +
     title = "Rocket Fuel Compositions",
     subtitle = "Fuel amounts for single launch event.",
     x = NULL,
-    y = "Fuel Amounts (t)",
+    y = "Fuel Amounts \n(t)",
     fill = "Fuel"
   ) +
   scale_y_continuous(
@@ -124,21 +124,21 @@ fuel_factors <- ggplot(compositions_df, aes(x = fuels, y = factors)) +
     size = 2,
     data = totals,
     vjust = -1,
-    hjust = 1,
+    hjust = 0.5,
     position = position_stack()
   ) + scale_fill_brewer(palette = "Paired") + labs(
     colour = NULL,
-    title = "Fuel Emission Factors",
-    subtitle = "Emission factors of the fuel compositions",
+    title = "Fuel Mass Fractions",
+    subtitle = "Mass fractions of the fuel compositions.",
     x = NULL,
-    y = "Emission Factor",
+    y = "Fuel Mass \nFractions",
     fill = "Compositions"
   ) + scale_y_continuous(
     labels = function(y)
       format(y,
              scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 1.9)
+    limits = c(0, 2.5)
   ) + 
   theme_minimal() + theme(
     strip.text.x = element_blank(),
@@ -151,12 +151,12 @@ fuel_factors <- ggplot(compositions_df, aes(x = fuels, y = factors)) +
     axis.title.y = element_text(size = 7)
   ) +
   theme(legend.direction = "vertical",
-        legend.position = c(0.44, 0.75),
+        legend.position = c(0.55, 0.85),
         legend.title = element_text(size = 6),
         legend.text = element_text(size =5),
         plot.subtitle = element_text(size = 8),
         plot.title = element_text(size = 10),
-  ) + guides(fill = guide_legend(ncol = 4, nrow = 4))
+  ) + guides(fill = guide_legend(ncol = 4, nrow = 2))
 
 ######################################
 ##plot1 = Emission per Subscriber
@@ -189,9 +189,9 @@ emission_subscriber <-
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Emission vs Users",
-    subtitle = "By different subscriber scenarios",
+    subtitle = "By different subscriber scenarios.",
     x = NULL,
-    y = "Emission (kg/subscriber)",
+    y = "Emission \n(kg/subscriber)",
     fill = 'Scenario'
   ) + scale_y_continuous(
     labels = function(y)
@@ -206,7 +206,7 @@ emission_subscriber <-
     axis.text.x = element_text(size = 7),
     axis.title.y = element_text(size = 7),
     axis.line = element_line(colour = "black")
-  ) + theme(legend.position = c(0.8, 0.8), axis.title = element_text(size = 8)) + theme(
+  ) + theme(legend.position = c(0.8, 0.7), axis.title = element_text(size = 8)) + theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
@@ -248,9 +248,9 @@ emission_totals <-
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Total Constellation Emissions",
-    subtitle = "Error bars: 1 Standard Deviation (SD)",
+    subtitle = "Error bars: 1 Standard Deviation (SD).",
     x = NULL,
-    y = "Total Emissions (kt)"
+    y = "Total Emissions \n(kt)"
   ) + scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
@@ -306,9 +306,9 @@ emission_capacity <-
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Emissions vs Provided Capacity",
-    subtitle = "Error bars: 1 SD",
+    subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions (t/Gbps)",
+    y = "Emissions \n(t/GBps)",
     fill = "Constellations"
   ) + scale_y_continuous(
     labels = function(y)
@@ -368,9 +368,9 @@ emission_cost <-
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Emissions vs Investment Cost",
-    subtitle = "Error bars: 1 SD",
+    subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions (kt/US$ 1 Billion)",
+    y = "Emissions \n(kt/US$ 1 Billion)",
     fill = "Constellations"
   ) +
   scale_y_continuous(
@@ -430,9 +430,9 @@ emission_sqkm <-
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "Emissions vs Coverage Area",
-    subtitle = "Error bars: 1 SD",
+    subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions (Kilograms per km^2)",
+    y = "Emissions \n(Kilograms per km^2)",
     fill = "Constellations"
   ) +
   scale_y_continuous(
@@ -486,7 +486,7 @@ emission_validation <-
     title = "Constellations vs Terrestrial",
     subtitle = "Comparison of emissions.",
     x = NULL,
-    y = "Emission (kg/subscriber)",
+    y = "Emission \n(kg/subscriber)",
     caption = "Terrestrial network is based on 2020 Columbian \nMobile Network Operators (América Móvil, \nTelefonica and Millicom) market data.",
     fill = 'Constellations'
   ) + scale_y_continuous(
