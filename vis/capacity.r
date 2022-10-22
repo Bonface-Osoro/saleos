@@ -62,7 +62,7 @@ chn_capacity <-
     title = "Single Satellite Channel Capacity",
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capacity (Gbps)",
+    y = "Capacity (GBps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -126,7 +126,7 @@ sat_capacity <-
     title = "Single Satellite Aggregate Capacity",
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capacity (Gbps)",
+    y = "Capacity (GBps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -190,7 +190,7 @@ const_capacity <-
     title = "Aggregate Constellation Capacity",
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capacity (Tbps)",
+    y = "Capacity (TBps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -256,7 +256,7 @@ capacity_subscriber <-
     title = "Capacity per User",
     subtitle = "By subscriber scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capacity (Mbps/user)",
+    y = "Capacity (MBps/user)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
