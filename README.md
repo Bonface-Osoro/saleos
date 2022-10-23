@@ -4,7 +4,7 @@ Connecting the other 45% of the unconnected world population living in areas wit
 
 ## Figure 1 Satellite Orbit Network Illustration.
 <p align="center">
-  <img src="/docs/orbit.png" />
+  <img src="/docs/orbits.png" />
 </p>
 
 To date, there exists no open-source integrated emission, capacity, cost and coverage models for assessing broadband LEO networks. Several questions remain unanswered.
