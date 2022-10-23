@@ -17,7 +17,7 @@ The assumptions and uncertainties is taken into account in the integrated model 
 
 ## Figure 1 Emission, Capacity and Cost method for satellite broadband assessment
 <p align="center">
-  <img src="/figures/Box_model.png" />
+  <img src="/docs/Box_model.png" />
 </p>
 
 Example Results
@@ -29,5 +29,5 @@ Example scenarios are applied in the modeling process, and results for the estim
 
 ## Figure 2 Estimated per user emission and comparison with terrestrial systems for three LEO constellations
 <p align="center">
-  <img src="/figures/pub_emission.tiff" />
+  <img src="/docs/pub_emission.tiff" />
 </p>
