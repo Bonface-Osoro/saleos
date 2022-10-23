@@ -1,5 +1,6 @@
 # Sustainability Analytics for Low Earth Orbit Satellites (saleos)
-Connecting the other 45% of the unconnected world population in areas with no form of coverage will require use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. 
+Connecting the other 45% of the unconnected world population living in areas with no form of coverage will require the use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. 
+
 To date, there exists no open-source integrated emission, capacity, cost and coverage models for assessing broadband LEO networks. Several questions remain unanswered.
 How does the emissions due to launch of LEO broadband satellites compare to the capacity they provide and costs needed to place and keep them operational? How does the emission for every subscriber compare to terristrial systems?
 Therefore, this `saleos` repository provides code to help model emission in tandem with capacity, cost and coverage. 
