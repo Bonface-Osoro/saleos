@@ -428,7 +428,7 @@ constellation_capex_capacity <-
     title = "Capex per Capacity",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex \n(US$ per MBps",
+    y = "Capex \n(US$ per Mbps",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -490,7 +490,7 @@ constellation_opex_capacity <-
     title = "Opex per Capacity",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(US$ per MBps",
+    y = "Opex \n(US$ per Mbps",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -551,7 +551,7 @@ constellation_tco_capacity <-
     title = "TCO per Capacity",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(US$ per MBps",
+    y = "Opex \n(US$ per Mbps",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
