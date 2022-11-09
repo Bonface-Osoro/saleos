@@ -1,7 +1,7 @@
 ﻿Properties,Details
 Constellation Name,Kuiper
 Operator,Amazon
-Number of Satellites,3236
-Number of Satellites per Launch,_
-Number of Satellites in Orbit,_
-Primary Launch Vehicle,Ariane 5
+Satellites,3236
+Satellites per Launch,_
+Satellites in Orbit,_
+Launch Vehicle,Ariane 5

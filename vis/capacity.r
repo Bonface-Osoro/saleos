@@ -63,7 +63,7 @@ chn_capacity <-
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capacity (Gbps)",
-    fill = 'Scenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -127,7 +127,7 @@ sat_capacity <-
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capacity (Gbps)",
-    fill = 'Scenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -191,7 +191,7 @@ const_capacity <-
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capacity (Tbps)",
-    fill = 'Scenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -257,7 +257,7 @@ capacity_subscriber <-
     subtitle = "By subscriber scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capacity (Mbps/user)",
-    fill = 'Scenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)

@@ -1,7 +1,7 @@
 ﻿Properties,Details
 Constellation Name,OneWeb
 Operator,OneWeb
-Number of Satellites,720
-Number of Satellites per Launch,36
-Number of Satellites in Orbit,428
-Primary Launch Vehicle,Soyuz  FG
+Satellites,720
+Satellites per Launch,36
+Satellites in Orbit,462
+Launch Vehicle,Soyuz  FG/LVM3
