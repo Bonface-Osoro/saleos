@@ -251,12 +251,10 @@ im_AC <- ggplot() + background_image(img1) +
 # Falcon 9 sankey image
 im_B <- ggplot() + background_image(img2) + 
   theme(plot.margin = margin(t=0, l=0, r=0, b=0, unit ="cm"))
-im_B
 
 # Falcon Heavy Sankey Image
 im_bb <- ggplot() + background_image(img2b) + 
   theme(plot.margin = margin(t=0, l=0, r=0, b=0, unit ="cm"))
-im_bb
 
 # Soyuz FG sankey image
 im_C <- ggplot() + background_image(img3) + 
@@ -271,22 +269,18 @@ im_D <- ggplot() + background_image(img4) +
 # Starlink sankey image
 im_G <- ggplot() + background_image(img6) + 
   theme(plot.margin = margin(t=1, l=0, r=0, b=0, unit ="cm"))
-im_G
 
 # Starlink falcon heavy sankey image
 im_gg <- ggplot() + background_image(img6b) + 
   theme(plot.margin = margin(t=1, l=0, r=0, b=0, unit ="cm"))
-im_gg
 
 # OneWeb sankey image
 im_H <- ggplot() + background_image(img7) + 
   theme(plot.margin = margin(t=0, l=0, r=0, b=0, unit ="cm"))
-im_H
 
 # Kuiper sankey image
 im_J <- ggplot() + background_image(img8) + 
   theme(plot.margin = margin(t=0, l=0, r=0, b=0, unit ="cm"))
-im_J
 
 
 # ROCKET TABLE
@@ -372,19 +366,19 @@ dev.off()
 
 path = file.path(folder, 'pics','starlink_table.tiff')
 dir.create(file.path(folder, 'pics'),showWarnings = FALSE)
-tiff(path, units="in", width=4, height=2, res=480)
+tiff(path, units="in", width=3.2, height=2, res=480)
 print(grid.table(stl))
 dev.off()
 
 path = file.path(folder, 'pics','oneweb_table.tiff')
 dir.create(file.path(folder, 'pics'),showWarnings = FALSE)
-tiff(path, units="in", width=4, height=2, res=480)
+tiff(path, units="in", width=3.2, height=2, res=480)
 print(grid.table(ow))
 dev.off()
 
 path = file.path(folder, 'pics','kuiper_table.tiff')
 dir.create(file.path(folder, 'pics'),showWarnings = FALSE)
-tiff(path, units="in", width=4, height=2, res=480)
+tiff(path, units="in", width=3.2, height=2, res=480)
 print(grid.table(kp))
 dev.off()
 
@@ -396,7 +390,7 @@ dev.off()
 
 path = file.path(folder, 'pics','constellations_table.tiff')
 dir.create(file.path(folder, 'pics'),showWarnings = FALSE)
-tiff(path, units="in", width=6, height=1.5, res=480)
+tiff(path, units="in", width=8, height=3, res=480)
 print(grid.table(ct))
 dev.off()
 
@@ -529,9 +523,9 @@ png(path, units="in", width=12, height=3.5, res=300)
 print(orbits )
 dev.off()
 
-path = file.path(folder, 'sankey','orbits.tiff')
+path = file.path(folder, 'pics','orbits.tiff')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(path, units="in", width=12, height=3.5, res=300)
+tiff(path, units="in", width=14, height=4.5, res=480)
 print(orbits )
 dev.off()
 
