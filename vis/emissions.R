@@ -308,7 +308,7 @@ emission_capacity <-
     title = "Emissions vs Provided Capacity",
     subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions \n(t/GBps)",
+    y = "Emissions \n(t/Gbps)",
     fill = "Constellations"
   ) + scale_y_continuous(
     labels = function(y)

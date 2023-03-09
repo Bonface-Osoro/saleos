@@ -184,9 +184,9 @@ if __name__ == '__main__':
     ]
 
     SCENARIO = [
-        ('low', 0.5),
-        ('baseline', 1),
-        ('high', 2),
+        ('low', 0.01),
+        ('baseline', 0.5),
+        ('high', 1),
     ]
 
     results = []
