@@ -9,6 +9,7 @@ May 2022
 import math
 import numpy as np
 from itertools import tee
+from collections import Counter
 from collections import OrderedDict
 
 
@@ -94,18 +95,10 @@ def system_capacity(constellation, number_of_satellites, params, lut):
 
         emission_dict = calc_per_sat_emission(params["name"], params["fuel_mass"],
                     params["fuel_mass_1"], params["fuel_mass_2"], params["fuel_mass_3"])
-        
-        aluminium_oxide_emissions = emission_dict['alumina_emission']
-        sulphur_oxide_emissions = emission_dict['sulphur_emission']
-        carbon_oxide_emissions = emission_dict['carbon_emission']
-        cfc_gases_emissions = emission_dict['cfc_gases']
-        particulate_matter_emissions = emission_dict['particulate_matter']
-        photochemical_oxidation_emissions = emission_dict['photo_oxidation']
 
-        total_emissions = aluminium_oxide_emissions + sulphur_oxide_emissions \
-                      + carbon_oxide_emissions + cfc_gases_emissions \
-                      + particulate_matter_emissions \
-                      + photochemical_oxidation_emissions
+        particulate_matter_emissions = emission_dict['particulate_matter']
+
+        total_emissions = particulate_matter_emissions
         
         total_mission_emissions = total_emissions * params["number_of_missions"]
         
@@ -615,6 +608,244 @@ def calc_per_sat_emission(name, fuel_mass, fuel_mass_1, fuel_mass_2, fuel_mass_3
     return emission_dict
 
 
+def calc_scheduling_emission(name):
+    """
+    calculate the emissions due to scheduling of rocket launches.
+
+    Parameters
+    ----------
+    name: string
+        Name of the constellation.
+
+    Returns
+    -------
+    emissions: dict.
+    """
+
+    if name == 'Starlink':
+        emission_dict0 = propellant_containment()
+        emission_list0 = []
+        for i in emission_dict0.keys():
+            new_emissions = emission_dict0.get(i) * 530
+            emission_list0.append(new_emissions)
+        emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
+
+        emission_dict1 = waste_decontamination()
+        emission_list1 = []
+        for i in emission_dict1.keys():
+            new_emissions = emission_dict1.get(i) * 488370
+            emission_list1.append(new_emissions)
+        emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
+
+        emission_dict2 = propellant_handling()
+        emission_list2 = []
+        for i in emission_dict2.keys():
+            new_emissions = emission_dict2.get(i) * 504
+            emission_list2.append(new_emissions)
+        emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
+
+        emission_dict3 = propellant_storage()
+        emission_list3 = []
+        for i in emission_dict3.keys():
+            new_emissions = emission_dict3.get(i) * 494
+            emission_list3.append(new_emissions)
+        emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
+        
+        cdict1 = Counter(emission_dict0) + Counter(emission_list1)
+        cdict2 = Counter(emission_list2) + Counter(emission_list3)
+        emission_dict = Counter(cdict1) + Counter(cdict2)
+
+    elif name == 'Kuiper':
+        emission_dict0 = propellant_containment()
+        emission_list0 = []
+        for i in emission_dict0.keys():
+            new_emissions = emission_dict0.get(i) * 1148
+            emission_list0.append(new_emissions)
+        emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
+
+        emission_dict1 = waste_decontamination()
+        emission_list1 = []
+        for i in emission_dict1.keys():
+            new_emissions = emission_dict1.get(i) * 674900
+            emission_list1.append(new_emissions)
+        emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
+
+        emission_dict2 = propellant_handling()
+        emission_list2 = []
+        for i in emission_dict2.keys():
+            new_emissions = emission_dict2.get(i) * 504
+            emission_list2.append(new_emissions)
+        emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
+
+        emission_dict3 = propellant_storage()
+        emission_list3 = []
+        for i in emission_dict3.keys():
+            new_emissions = emission_dict3.get(i) * 1105
+            emission_list3.append(new_emissions)
+        emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
+
+        cdict1 = Counter(emission_dict0) + Counter(emission_list1)
+        cdict2 = Counter(emission_list2) + Counter(emission_list3)
+        emission_dict = Counter(cdict1) + Counter(cdict2)
+
+    elif name == 'OneWeb':
+        emission_dict0 = propellant_containment()
+        emission_list0 = []
+        for i in emission_dict0.keys():
+            new_emissions = emission_dict0.get(i) * 304
+            emission_list0.append(new_emissions)
+        emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
+
+        emission_dict1 = waste_decontamination()
+        emission_list1 = []
+        for i in emission_dict1.keys():
+            new_emissions = emission_dict1.get(i) * 281710
+            emission_list1.append(new_emissions)
+        emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
+
+        emission_dict2 = propellant_handling()
+        emission_list2 = []
+        for i in emission_dict2.keys():
+            new_emissions = emission_dict2.get(i) * 504
+            emission_list2.append(new_emissions)
+        emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
+
+        emission_dict3 = propellant_storage()
+        emission_list3 = []
+        for i in emission_dict3.keys():
+            new_emissions = emission_dict3.get(i) * 284
+            emission_list3.append(new_emissions)
+        emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
+        
+        cdict1 = Counter(emission_dict0) + Counter(emission_list1)
+        cdict2 = Counter(emission_list2) + Counter(emission_list3)
+        emission_dict = Counter(cdict1) + Counter(cdict2)
+    else:
+        print('Invalid Constellation name')
+
+    return emission_dict
+
+
+def calc_transportation_emission(name):
+    """
+    calculate the emissions of the 6 compounds for each of the satellites
+    due to transportation of rockets.
+
+    Parameters
+    ----------
+    name: string
+        Name of the constellation.
+
+    Returns
+    -------
+    al, sul, cb, cfc, pm, phc: dict.
+    """
+
+    if name == 'Starlink':
+        emission_dict = falcon9_transportation()  # Emission per satellite
+
+    elif name == 'Kuiper':
+        emission_dict = ariane_transportation()
+
+    elif name == 'OneWeb':
+        emission_dict = soyuzfg_transportation()
+
+    else:
+        print('Invalid Constellation name')
+
+    return emission_dict
+
+
+def calc_launch_campaign_emission(name):
+    """
+    calculate the emissions of the 6 compounds for each of the satellites
+    due to launch campaign.
+
+    Parameters
+    ----------
+    name: string
+        Name of the constellation.
+
+    Returns
+    -------
+    al, sul, cb, cfc, pm, phc: dict.
+    """
+
+    if name == 'Starlink':
+        emission_dict = launcher_campaign()  # Emission per satellite
+
+    elif name == 'Kuiper':
+        emission_dict = launcher_campaign()
+
+    elif name == 'OneWeb':
+        emission_dict = launcher_campaign()
+
+    else:
+        print('Invalid Constellation name')
+
+    return emission_dict
+
+
+def calc_propellant_emission(name):
+    """
+    calculate the emissions of the 6 compounds for each of the satellites
+    due to propellant production.
+
+    Parameters
+    ----------
+    name: string
+        Name of the constellation.
+
+    Returns
+    -------
+    al, sul, cb, cfc, pm, phc: dict.
+    """
+
+    if name == 'Starlink':
+        emission_dict = falcon_propellant_production()  # Emission per satellite
+
+    elif name == 'Kuiper':
+        emission_dict = ariane_propellant_production()
+
+    elif name == 'OneWeb':
+        emission_dict = soyuzfg_propellant_production()
+
+    else:
+        print('Invalid Constellation name')
+
+    return emission_dict
+
+
+def calc_rocket_emission(name):
+    """
+    calculate the emissions of the 6 compounds for each of the satellites
+    due to rocket production.
+
+    Parameters
+    ----------
+    name: string
+        Name of the constellation.
+
+    Returns
+    -------
+    al, sul, cb, cfc, pm, phc: dict.
+    """
+
+    if name == 'Starlink':
+        emission_dict = falcon9_rocket_production()  # Emission per satellite
+
+    elif name == 'Kuiper':
+        emission_dict = ariane_rocket_production()
+
+    elif name == 'OneWeb':
+        emission_dict = soyuzfg_rocket_production()
+
+    else:
+        print('Invalid Constellation name')
+
+    return emission_dict
+
+
 def soyuz_fg(hypergolic, kerosene):
     """
     Calculate the emissions of the 6 compounds for Soyuz FG rocket vehicle.
@@ -634,23 +865,27 @@ def soyuz_fg(hypergolic, kerosene):
     """
     emissions_dict = {}
 
-    emissions_dict['alumina_emission'] = (hypergolic*1*0.001) + (kerosene*1*0.05)
+    emissions_dict['acidification'] = (hypergolic*0.7*0.001) + (kerosene*0.7*0.001)
 
-    emissions_dict['sulphur_emission'] = (hypergolic*0.7*0.001) + (kerosene*0.7*0.001)
+    emissions_dict['global_warming'] = (hypergolic*0.252*1) + (kerosene*0.352*1)
 
-    emissions_dict['carbon_emission'] = (hypergolic*0.252*1) + (kerosene*0.352*1)
-
-    emissions_dict['cfc_gases'] = (hypergolic*0.016*0.7) + (kerosene*0.016*0.7) \
+    emissions_dict['ozone_depletion'] = (hypergolic*0.016*0.7) + (kerosene*0.016*0.7) \
                                   + (hypergolic*0.003*0.7) + (kerosene*0.003*0.7) \
                                   + (hypergolic*0.001*0.7) + (kerosene*0.001*0.7)
 
     emissions_dict['particulate_matter'] = (hypergolic*0.001*0.22) + (kerosene *0.001*0.22) \
                                            + (hypergolic*0.001*1) + (kerosene*0.05*1)
+    
+    emissions_dict['mineral_depletion'] = 0 + 12473.4086 + 6.71625049 + 0.158493574
 
-    emissions_dict['photo_oxidation'] = (hypergolic*0.378*0.0456) + (kerosene *0.528*0.0456) \
-                                        + (hypergolic*0.001*1) + (kerosene*0.001*1)
+    emissions_dict['freshwater_toxicity'] = 0 + 280703930.5 + 3114043.098 + 22931.63867
+
+    emissions_dict['human_toxicity'] = 0 + 19.1361269 + 0.28140976 + 0.002580373
+
+    emissions_dict['water_depletion'] = 0 + 300062816.3 + 6419840.99 + 59492.59014
 
     return emissions_dict
+
 
 
 def falcon_9(kerosene):
@@ -670,18 +905,22 @@ def falcon_9(kerosene):
     """
     emission_dict = {}
 
-    emission_dict['alumina_emission'] = (kerosene*0.05)
+    emission_dict['acidification'] = (kerosene*0.001*0.7)
 
-    emission_dict['sulphur_emission'] = (kerosene*0.001*0.7)
+    emission_dict['global_warming'] = (kerosene*0.352*1)
 
-    emission_dict['carbon_emission'] = (kerosene*0.352*1)
-
-    emission_dict['cfc_gases'] = (kerosene*0.016*0.7) + (kerosene*0.003*0.7) \
+    emission_dict['ozone_depletion'] = (kerosene*0.016*0.7) + (kerosene*0.003*0.7) \
                                  + (kerosene*0.001*0.7)
 
     emission_dict['particulate_matter'] = (kerosene*0.001*0.22) + (kerosene*0.05*1)
 
-    emission_dict['photo_oxidation'] = (kerosene*0.0456*0.528) + (kerosene*0.001*1)
+    emission_dict['mineral_depletion'] = 0
+
+    emission_dict['freshwater_toxicity'] = 0 
+
+    emission_dict['human_toxicity'] = 0 
+
+    emission_dict['water_depletion'] = 0 
 
     return emission_dict
 
@@ -703,18 +942,22 @@ def falcon_heavy(kerosene):
     """
     emission_dict = {}
 
-    emission_dict['alumina_emission'] = kerosene*0.05
+    emission_dict['acidification'] = (kerosene*0.001*0.7)
 
-    emission_dict['sulphur_emission'] = (kerosene*0.001*0.7)
+    emission_dict['global_warming'] = (kerosene*0.352*1)
 
-    emission_dict['carbon_emission'] = (kerosene*0.352*1)
-
-    emission_dict['cfc_gases'] = (kerosene*0.016*0.7) + (kerosene*0.003*0.7) \
+    emission_dict['ozone_depletion'] = (kerosene*0.016*0.7) + (kerosene*0.003*0.7) \
                                  + (kerosene*0.001*0.7)
 
     emission_dict['particulate_matter'] = (kerosene*0.001*0.22) + (kerosene*0.05*1)
 
-    emission_dict['photo_oxidation'] = (kerosene*0.0456*0.528) + (kerosene*0.001*1)
+    emission_dict['mineral_depletion'] = 0
+
+    emission_dict['freshwater_toxicity'] = 0 
+
+    emission_dict['human_toxicity'] = 0 
+
+    emission_dict['water_depletion'] = 0 
 
     return emission_dict
 
@@ -740,14 +983,12 @@ def ariane(hypergolic, solid, cryogenic):
     """
     emission_dict = {}
 
-    emission_dict['alumina_emission'] = (solid*0.33*1) + (hypergolic*0.001*1)
-
-    emission_dict['sulphur_emission'] = (solid*0.005*0.7) + (cryogenic*0.001*0.7) \
+    emission_dict['acidification'] = (solid*0.005*0.7) + (cryogenic*0.001*0.7) \
                                         + (hypergolic*0.001*0.7)+(solid*0.15*0.88)
 
-    emission_dict['carbon_emission'] = (solid*0.108*1) + (hypergolic*0.252)
+    emission_dict['global_warming'] = (solid*0.108*1) + (hypergolic*0.252)
 
-    emission_dict['cfc_gases'] = (solid*0.08*0.7) + (cryogenic*0.016*0.7) \
+    emission_dict['ozone_depletion'] = (solid*0.08*0.7) + (cryogenic*0.016*0.7) \
                                  + (hypergolic*0.016*0.7) + (solid*0.015*0.7) \
                                  + (cryogenic*0.003*0.7) + (hypergolic*0.003*0.7) \
                                  + (solid*0.005*0.7) + (cryogenic*0.001*0.7) \
@@ -756,11 +997,479 @@ def ariane(hypergolic, solid, cryogenic):
     emission_dict['particulate_matter'] = (solid*0.005*0.22) + (cryogenic*0.001*0.22) \
                                           + (hypergolic*0.001*0.22) + (solid*0.33*1) \
                                           + (hypergolic*0.001*1)
+    
+    emission_dict['mineral_depletion'] = 0
 
-    emission_dict['photo_oxidation'] = (solid*0.162*0.0456) + (hypergolic*0.378*0.0456) \
-                                       + (solid*0.005*1) + (cryogenic*0.001*1) \
-                                       + (hypergolic*0.001*1)
+    emission_dict['freshwater_toxicity'] = 0 
 
+    emission_dict['human_toxicity'] = 0 
+
+    emission_dict['water_depletion'] = 0 
+
+    return emission_dict
+
+def ariane_rocket_production():
+    """
+    calculate the emissions from production of ariane rocket.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to propellant handling for 1 hour.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 54180.76808
+
+    emission_dict['global_warming'] = 11018755.48
+
+    emission_dict['ozone_depletion'] = 0.745735051
+
+    emission_dict['particulate_matter'] = 28957.00033
+
+    emission_dict['mineral_depletion'] = 2719.725687
+
+    emission_dict['freshwater_toxicity'] = 69735037.48
+
+    emission_dict['human_toxicity'] = 4.585385379
+
+    emission_dict['water_depletion'] = 72724206.06
+    
+    return emission_dict
+
+
+def falcon9_rocket_production():
+    """
+    calculate the emissions from production of falcon9 rocket.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket production.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 198435.5397
+
+    emission_dict['global_warming'] = 35339152.42
+
+    emission_dict['ozone_depletion'] = 2.64478797
+
+    emission_dict['particulate_matter'] = 97319.64784
+
+    emission_dict['mineral_depletion'] = 22544.0257
+
+    emission_dict['freshwater_toxicity'] = 188591914
+
+    emission_dict['human_toxicity'] = 13.78955101
+
+    emission_dict['water_depletion'] = 266498435.6
+    
+    return emission_dict
+
+
+def soyuzfg_rocket_production():
+    """
+    calculate the emissions from production of soyuz-fg.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket production.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 222796.2579
+
+    emission_dict['global_warming'] = 44680412.98
+
+    emission_dict['ozone_depletion'] = 3.11181773
+
+    emission_dict['particulate_matter'] = 117159.6716
+
+    emission_dict['mineral_depletion'] = 12473.4086
+
+    emission_dict['freshwater_toxicity'] = 280703930.5
+
+    emission_dict['human_toxicity'] = 19.1361269
+
+    emission_dict['water_depletion'] = 300062816.3
+    
+    return emission_dict
+
+
+def ariane_propellant_production():
+    """
+    calculate the emissions from production of ariane propellant.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket production.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 24130.48328
+
+    emission_dict['global_warming'] = 4793267.48
+
+    emission_dict['ozone_depletion'] = 0.223292749
+
+    emission_dict['particulate_matter'] = 7006.545607
+
+    emission_dict['mineral_depletion'] = 34.59642811
+
+    emission_dict['freshwater_toxicity'] = 17124098.34
+
+    emission_dict['human_toxicity'] = 1.520253794
+
+    emission_dict['water_depletion'] = 28627598.23
+    
+    return emission_dict
+
+
+def falcon_propellant_production():
+    """
+    calculate the emissions from production of falcon propellant.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket production.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 8035.285105
+
+    emission_dict['global_warming'] = 1658693.764
+
+    emission_dict['ozone_depletion'] = 0.19117908
+
+    emission_dict['particulate_matter'] = 2431.63847
+
+    emission_dict['mineral_depletion'] = 11.51065086
+
+    emission_dict['freshwater_toxicity'] = 5346183.662
+
+    emission_dict['human_toxicity'] = 0.481982373
+
+    emission_dict['water_depletion'] = 11044585.32
+    
+    return emission_dict
+
+
+def soyuzfg_propellant_production():
+    """
+    calculate the emissions from production of falcon propellant.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket production.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 4673.557463
+
+    emission_dict['global_warming'] = 968910.1994
+
+    emission_dict['ozone_depletion'] = 0.109998823
+
+    emission_dict['particulate_matter'] = 1415.050324
+
+    emission_dict['mineral_depletion'] = 6.71625049
+
+    emission_dict['freshwater_toxicity'] = 3114043.098
+
+    emission_dict['human_toxicity'] = 0.28140976
+
+    emission_dict['water_depletion'] = 6419840.99
+    
+    return emission_dict
+
+
+def ariane_transportation():
+    """
+    calculate the emissions from transportation of ariane.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket transportation.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 176.2347537
+
+    emission_dict['global_warming'] = 11043.18682
+
+    emission_dict['ozone_depletion'] = 0.001892801
+
+    emission_dict['particulate_matter'] = 55.66084637
+
+    emission_dict['mineral_depletion'] = 0.194786912
+
+    emission_dict['freshwater_toxicity'] = 17341.87779
+
+    emission_dict['human_toxicity'] = 0.001653926
+
+    emission_dict['water_depletion'] = 15359.77386
+    
+    return emission_dict
+
+
+def falcon9_transportation():
+    """
+    calculate the emissions from transportation of falcon9.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket transportation.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 44.88002212
+
+    emission_dict['global_warming'] = 17220.72491
+
+    emission_dict['ozone_depletion'] = 0.003568284
+
+    emission_dict['particulate_matter'] = 29.15460898
+
+    emission_dict['mineral_depletion'] = 0.83687164
+
+    emission_dict['freshwater_toxicity'] = 47571.20342
+
+    emission_dict['human_toxicity'] = 0.004766684
+
+    emission_dict['water_depletion'] = 19269.82569
+    
+    return emission_dict
+
+
+def soyuzfg_transportation():
+    """
+    calculate the emissions from transportation of soyuzfg.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to rocket transportation.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 23.61629256
+
+    emission_dict['global_warming'] = 4328.603808
+
+    emission_dict['ozone_depletion'] = 0.001339551
+
+    emission_dict['particulate_matter'] = 12.50376157
+
+    emission_dict['mineral_depletion'] = 0.158493574
+
+    emission_dict['freshwater_toxicity'] = 22931.63867
+
+    emission_dict['human_toxicity'] = 0.002580373
+
+    emission_dict['water_depletion'] = 59492.59014
+    
+    return emission_dict
+
+
+def waste_decontamination():
+    """
+    calculate the emissions from decontamination of waste treatment.
+
+    Returns
+    -------
+    emission_dict: list.
+                     decontamination emission from 1kg of propellant
+
+    """
+    emission_dict = {} 
+
+    emission_dict['acidification'] = 0.044415433
+
+    emission_dict['global_warming'] = 8.178531277
+
+    emission_dict['ozone_depletion'] = 0.000000855992
+
+    emission_dict['particulate_matter'] = 0.013622665
+
+    emission_dict['mineral_depletion'] = 0.000238204
+
+    emission_dict['freshwater_toxicity'] = 47.24602286
+
+    emission_dict['human_toxicity'] = 0.00000283671
+
+    emission_dict['water_depletion'] = 56.59444675
+    
+    return emission_dict
+
+
+def propellant_handling():
+    """
+    calculate the emissions from general propellant handling.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to propellant handling for 1 hour.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 0.018030463
+
+    emission_dict['global_warming'] = 5.277030386
+
+    emission_dict['ozone_depletion'] = 0.00000026525
+
+    emission_dict['particulate_matter'] = 0.006432194
+
+    emission_dict['mineral_depletion'] = 0.000372566
+
+    emission_dict['freshwater_toxicity'] = 5.984817084
+
+    emission_dict['human_toxicity'] = 0.000000601283
+
+    emission_dict['water_depletion'] = 2.308026645
+    
+    return emission_dict
+
+
+def propellant_storage():
+    """
+    calculate the emissions from storage of 1 m^3 propellant.
+
+    Returns
+    -------
+    emission_dict: list.
+                    emissions due to storage of 1 m^3 propellant.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 0.190349538
+
+    emission_dict['global_warming'] = 5.789177649
+
+    emission_dict['ozone_depletion'] = 0.000000461473
+
+    emission_dict['particulate_matter'] = 0.144724364
+
+    emission_dict['mineral_depletion'] = 0.000117724
+
+    emission_dict['freshwater_toxicity'] = 22.90504946
+
+    emission_dict['human_toxicity'] = 0.00000206909
+
+    emission_dict['water_depletion'] = 40.74218258
+    
+    return emission_dict
+
+
+def launcher_AIT():
+    """
+    calculate the emissions due to assembling, integration and testing (AIT).
+
+    Returns
+    -------
+    ait: float.
+                    emissions due to rocket AIT.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 8825.019187
+
+    emission_dict['global_warming'] = 1616263.557
+
+    emission_dict['ozone_depletion'] = 0.156575296
+
+    emission_dict['particulate_matter'] = 3113.030938
+
+    emission_dict['mineral_depletion'] = 15.65466435
+
+    emission_dict['freshwater_toxicity'] = 7701094.993
+
+    emission_dict['human_toxicity'] = 0.486234151
+
+    emission_dict['water_depletion'] = 22191474.45
+    
+    return emission_dict
+
+
+def launcher_campaign():
+    """
+    calculate the emissions due to 1 launch campaign.
+
+    Returns
+    -------
+    emission_dict : list.
+                    emissions due to 1 launch camapign.
+
+    """
+    emission_dict = {} 
+    
+    emission_dict['acidification'] = 26479.61301
+
+    emission_dict['global_warming'] = 5666556.742
+
+    emission_dict['ozone_depletion'] = 0.777870405
+
+    emission_dict['particulate_matter'] = 7995.731848
+
+    emission_dict['mineral_depletion'] = 33.22600998
+
+    emission_dict['freshwater_toxicity'] = 18683396.82
+
+    emission_dict['human_toxicity'] = 1.695861368
+
+    emission_dict['water_depletion'] = 39174017.92
+    
+    return emission_dict
+
+
+def propellant_containment():
+    """
+    calculate the emissions from containment of 900 litres of propellant.
+
+    Returns
+    -------
+    emission_dict: list.
+                     containment emission from 1kg of propellant
+
+    """
+    emission_dict = {} 
+
+    emission_dict['acidification'] = 15.20166461
+
+    emission_dict['global_warming'] = 3010.041736
+
+    emission_dict['ozone_depletion'] = 0.000153001
+
+    emission_dict['particulate_matter'] = 12.7975931
+
+    emission_dict['mineral_depletion'] = 0.304111566
+
+    emission_dict['freshwater_toxicity'] = 26153.09824
+
+    emission_dict['human_toxicity'] = 0.001972144
+
+    emission_dict['water_depletion'] = 56899.79493
+    
     return emission_dict
 
 

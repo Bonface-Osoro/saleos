@@ -90,6 +90,18 @@ for item in uq_dict:
 
     emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
                     item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
+    
+    scheduling_dict = sl.calc_scheduling_emission(item["constellation"])
+
+    transport_dict = sl.calc_transportation_emission(item["constellation"])
+
+    launch_campaign_dict = sl.calc_launch_campaign_emission(item["constellation"])
+
+    propellant_dict = sl.calc_propellant_emission(item["constellation"])
+
+    ait_dict = sl.launcher_AIT()
+
+    rocket_dict = sl.calc_rocket_emission(item["constellation"])
 
     total_cost_ownership = sl.cost_model(item["satellite_manufacturing"], item["satellite_launch_cost"], item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
@@ -110,16 +122,70 @@ for item in uq_dict:
     subscribers_baseline = item["subscribers_baseline"]
     subscribers_high = item["subscribers_high"]
 
-    aluminium_oxide_emissions = emission_dict['alumina_emission']
-    sulphur_oxide_emissions = emission_dict['sulphur_emission']
-    carbon_oxide_emissions = emission_dict['carbon_emission']
-    cfc_gases_emissions = emission_dict['cfc_gases']
+    acidification = emission_dict['acidification']
+    global_warming = emission_dict['global_warming']
+    ozone_depletion = emission_dict['ozone_depletion']
     particulate_matter_emissions = emission_dict['particulate_matter']
-    photochemical_oxidation_emissions = emission_dict['photo_oxidation']
-    total_emissions = aluminium_oxide_emissions + sulphur_oxide_emissions \
-                      + carbon_oxide_emissions + cfc_gases_emissions \
-                      + particulate_matter_emissions \
-                      + photochemical_oxidation_emissions
+    mineral_depletion = emission_dict['mineral_depletion']
+    freshwater_toxicity = emission_dict['freshwater_toxicity']
+    human_toxicity = emission_dict['human_toxicity']
+    water_depletion = emission_dict['water_depletion']
+
+    acidification_schd = scheduling_dict['acidification']
+    global_warming_schd =  scheduling_dict['global_warming']
+    ozone_depletion_schd = scheduling_dict['ozone_depletion']
+    particulate_matter_emissions_schd = scheduling_dict['particulate_matter']
+    mineral_depletion_schd = scheduling_dict['mineral_depletion']
+    freshwater_toxicity_schd = scheduling_dict['freshwater_toxicity']
+    human_toxicity_schd = scheduling_dict['human_toxicity']
+    water_depletion_schd = scheduling_dict['water_depletion']
+
+    acidification_trans = transport_dict['acidification']
+    global_warming_trans =  transport_dict['global_warming']
+    ozone_depletion_trans = transport_dict['ozone_depletion']
+    particulate_matter_emissions_trans = transport_dict['particulate_matter']
+    mineral_depletion_trans = transport_dict['mineral_depletion']
+    freshwater_toxicity_trans = transport_dict['freshwater_toxicity']
+    human_toxicity_trans = transport_dict['human_toxicity']
+    water_depletion_trans = transport_dict['water_depletion']
+
+    acidification_campaign = launch_campaign_dict['acidification']
+    global_warming_campaign =  launch_campaign_dict['global_warming']
+    ozone_depletion_campaign = launch_campaign_dict['ozone_depletion']
+    particulate_matter_emissions_campaign = launch_campaign_dict['particulate_matter']
+    mineral_depletion_campaign = launch_campaign_dict['mineral_depletion']
+    freshwater_toxicity_campaign = launch_campaign_dict['freshwater_toxicity']
+    human_toxicity_campaign = launch_campaign_dict['human_toxicity']
+    water_depletion_campaign = launch_campaign_dict['water_depletion']
+
+    acidification_propellant = propellant_dict['acidification']
+    global_warming_propellant =  propellant_dict['global_warming']
+    ozone_depletion_propellant = propellant_dict['ozone_depletion']
+    particulate_matter_emissions_propellant = propellant_dict['particulate_matter']
+    mineral_depletion_propellant = propellant_dict['mineral_depletion']
+    freshwater_toxicity_propellant = propellant_dict['freshwater_toxicity']
+    human_toxicity_propellant = propellant_dict['human_toxicity']
+    water_depletion_propellant = propellant_dict['water_depletion']
+
+    acidification_ait = ait_dict['acidification']
+    global_warming_ait =  ait_dict['global_warming']
+    ozone_depletion_ait = ait_dict['ozone_depletion']
+    particulate_matter_emissions_ait = ait_dict['particulate_matter']
+    mineral_depletion_ait = ait_dict['mineral_depletion']
+    freshwater_toxicity_ait = ait_dict['freshwater_toxicity']
+    human_toxicity_ait = ait_dict['human_toxicity']
+    water_depletion_ait = ait_dict['water_depletion']
+
+    acidification_roct = rocket_dict['acidification']
+    global_warming_roct =  rocket_dict['global_warming']
+    ozone_depletion_roct = rocket_dict['ozone_depletion']
+    particulate_matter_emissions_roct = rocket_dict['particulate_matter']
+    mineral_depletion_roct = rocket_dict['mineral_depletion']
+    freshwater_toxicity_roct = rocket_dict['freshwater_toxicity']
+    human_toxicity_roct = rocket_dict['human_toxicity']
+    water_depletion_roct = rocket_dict['water_depletion']
+
+    total_emissions = particulate_matter_emissions 
 
 
     results.append({"constellation": constellation, 
@@ -174,12 +240,62 @@ for item in uq_dict:
                     "cost_scenario": cost_scenario,
                     "total_opex": item["opex_costs"],
                     "opex_scenario": item["opex_scenario"],
-                    "aluminium_oxide_emissions": aluminium_oxide_emissions,
-                    "sulphur_oxide_emissions": sulphur_oxide_emissions,
-                    "carbon_oxide_emissions": carbon_oxide_emissions,
-                    "cfc_gases_emissions": cfc_gases_emissions,
+                    "acidification": acidification,
+                    "global_warming": global_warming,
+                    "ozone_depletion": ozone_depletion,
                     "particulate_matter_emissions": particulate_matter_emissions,
-                    "photochemical_oxidation_emissions": photochemical_oxidation_emissions,
+                    "mineral_depletion": mineral_depletion,
+                    "freshwater_toxicity": freshwater_toxicity,
+                    "human_toxicity": human_toxicity,
+                    "water_depletion": water_depletion,
+                    "acidification_schd": acidification_schd,
+                    "global_warming_schd": global_warming_schd,
+                    "ozone_depletion_schd": ozone_depletion_schd,
+                    "particulate_matter_emissions_schd": particulate_matter_emissions_schd,
+                    "mineral_depletion_schd": mineral_depletion_schd,
+                    "freshwater_toxicity_schd": freshwater_toxicity_schd,
+                    "human_toxicity_schd": human_toxicity_schd,
+                    "water_depletion_schd": water_depletion_schd,
+                    "acidification_trans": acidification_trans,
+                    "global_warming_trans": global_warming_trans,
+                    "ozone_depletion_trans": ozone_depletion_trans, 
+                    "particulate_matter_emissions_trans": particulate_matter_emissions_trans,
+                    "mineral_depletion_trans": mineral_depletion_trans, 
+                    "freshwater_toxicity_trans": freshwater_toxicity_trans, 
+                    "human_toxicity_trans": human_toxicity_trans, 
+                    "water_depletion_trans": water_depletion_trans, 
+                    "acidification_campaign": acidification_campaign, 
+                    "global_warming_campaign": global_warming_campaign,
+                    "ozone_depletion_campaign": ozone_depletion_campaign, 
+                    "particulate_matter_emissions_campaign": particulate_matter_emissions_campaign, 
+                    "mineral_depletion_campaign": mineral_depletion_campaign, 
+                    "freshwater_toxicity_campaign": freshwater_toxicity_campaign, 
+                    "human_toxicity_campaign": human_toxicity_campaign, 
+                    "water_depletion_campaign": water_depletion_campaign, 
+                    "acidification_propellant": acidification_propellant, 
+                    "global_warming_propellant": global_warming_propellant, 
+                    "ozone_depletion_propellant": ozone_depletion_propellant, 
+                    "particulate_matter_emissions_propellant":particulate_matter_emissions_propellant,
+                    "mineral_depletion_propellant": mineral_depletion_propellant, 
+                    "freshwater_toxicity_propellant": freshwater_toxicity_propellant, 
+                    "human_toxicity_propellant": human_toxicity_propellant, 
+                    "water_depletion_propellant": water_depletion_propellant, 
+                    "acidification_ait": acidification_ait, 
+                    "global_warming_ait": global_warming_ait, 
+                    "ozone_depletion_ait": ozone_depletion_ait, 
+                    "particulate_matter_emissions_ait": particulate_matter_emissions_ait, 
+                    "mineral_depletion_ait": mineral_depletion_ait,
+                    "freshwater_toxicity_ait": freshwater_toxicity_ait,
+                    "human_toxicity_ait": human_toxicity_ait, 
+                    "water_depletion_ait": water_depletion_ait, 
+                    "acidification_roct": acidification_roct, 
+                    "global_warming_roct": global_warming_roct, 
+                    "ozone_depletion_roct": ozone_depletion_roct, 
+                    "particulate_matter_emissions_roct": particulate_matter_emissions_roct, 
+                    "mineral_depletion_roct": mineral_depletion_roct, 
+                    "freshwater_toxicity_roct": freshwater_toxicity_roct, 
+                    "human_toxicity_roct": human_toxicity_roct, 
+                    "water_depletion_roct": water_depletion_roct, 
                     "total_emissions_t": total_emissions,
                     "emission_per_capacity": total_emissions / agg_capacity,
                     "emission_per_sqkm": total_emissions / satellite_coverage_area_km,
