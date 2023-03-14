@@ -10,7 +10,7 @@ from __future__ import division
 import configparser
 import os
 import math
-import timeit
+import time
 from numpy import savez_compressed
 import pandas as pd
 
@@ -19,7 +19,7 @@ from inputs import lut
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
 #Import the data.
-start = timeit.timeit()
+start = time.time()
 data_path = "/Users/osoro/Github/saleos/data/"
 df = pd.read_csv(data_path + "uq_parameters.csv")
 uq_dict = df.to_dict('records') #Convert the csv to list
@@ -185,7 +185,45 @@ for item in uq_dict:
     human_toxicity_roct = rocket_dict['human_toxicity']
     water_depletion_roct = rocket_dict['water_depletion']
 
-    total_emissions = particulate_matter_emissions 
+    total_acidification_em = acidification + acidification_schd + acidification_trans + \
+                             acidification_campaign + acidification_propellant + \
+                             acidification_ait + acidification_roct
+    
+    total_global_warming_em = global_warming + global_warming_schd + global_warming_trans + \
+                              global_warming_campaign + global_warming_propellant + \
+                              global_warming_ait + global_warming_roct
+    
+    total_ozone_depletion_em = ozone_depletion + ozone_depletion_schd + ozone_depletion_trans + \
+                               ozone_depletion_campaign + ozone_depletion_propellant + \
+                               ozone_depletion_ait + ozone_depletion_roct
+    
+    total_particulate_em = particulate_matter_emissions + particulate_matter_emissions_schd + \
+                           particulate_matter_emissions_trans + particulate_matter_emissions_campaign + \
+                           particulate_matter_emissions_propellant + particulate_matter_emissions_ait + \
+                           particulate_matter_emissions_roct
+    
+    total_mineral_depletion = mineral_depletion + mineral_depletion_schd + mineral_depletion_trans + \
+                              mineral_depletion_campaign + mineral_depletion_propellant + \
+                              mineral_depletion_ait + mineral_depletion_roct
+    
+    total_freshwater_toxicity = freshwater_toxicity + freshwater_toxicity_schd + \
+                                freshwater_toxicity_trans + freshwater_toxicity_campaign + \
+                                freshwater_toxicity_propellant +  freshwater_toxicity_ait + \
+                                freshwater_toxicity_roct
+
+    total_human_toxicity = human_toxicity + human_toxicity_schd + human_toxicity_trans + \
+                           human_toxicity_campaign + human_toxicity_propellant + \
+                           human_toxicity_ait + human_toxicity_roct
+
+    total_water_depletion = water_depletion + water_depletion_schd + water_depletion_trans + \
+                            water_depletion_campaign + water_depletion_propellant + \
+                            water_depletion_ait + water_depletion_roct
+
+    total_emissions = total_acidification_em + total_global_warming_em + \
+                      total_ozone_depletion_em +  total_particulate_em + \
+                      total_mineral_depletion + total_freshwater_toxicity + \
+                      total_human_toxicity + total_water_depletion
+    
 
 
     results.append({"constellation": constellation, 
@@ -296,6 +334,14 @@ for item in uq_dict:
                     "freshwater_toxicity_roct": freshwater_toxicity_roct, 
                     "human_toxicity_roct": human_toxicity_roct, 
                     "water_depletion_roct": water_depletion_roct, 
+                    "total_acidification_em": total_acidification_em,
+                    "total_global_warming_em": total_global_warming_em,
+                    "total_ozone_depletion_em": total_ozone_depletion_em,
+                    "total_particulate_em": total_particulate_em,
+                    "total_mineral_depletion": total_mineral_depletion,
+                    "total_freshwater_toxicity": total_freshwater_toxicity,
+                    "total_human_toxicity": total_human_toxicity,
+                    "total_water_depletion": total_water_depletion,
                     "total_emissions_t": total_emissions,
                     "emission_per_capacity": total_emissions / agg_capacity,
                     "emission_per_sqkm": total_emissions / satellite_coverage_area_km,
@@ -307,5 +353,5 @@ for item in uq_dict:
     results_path2 = '/Users/osoro/Github/saleos/vis/'
     store_results = df.to_csv(results_path2 + "uq_results.csv")
 
-end = timeit.timeit()
-print("Time taken is ", start - end, "seconds")
+executionTime = (time.time() - start)
+print('Execution time in hours: ' + str(executionTime/60))
