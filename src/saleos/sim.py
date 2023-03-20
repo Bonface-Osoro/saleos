@@ -846,7 +846,7 @@ def calc_rocket_emission(name):
     return emission_dict
 
 
-def soyuz_fg(hypergolic, kerosene):
+def soyuz_fg():
     """
     Calculate the emissions of the 6 compounds for Soyuz FG rocket vehicle.
 
@@ -865,24 +865,21 @@ def soyuz_fg(hypergolic, kerosene):
     """
     emissions_dict = {}
 
-    emissions_dict['acidification'] = (hypergolic*0.7*0.001) + (kerosene*0.7*0.001)
+    emissions_dict['acidification'] = 157.857
 
-    emissions_dict['global_warming'] = (hypergolic*0.252*1) + (kerosene*0.352*1)
+    emissions_dict['global_warming'] = 288655.1096
 
-    emissions_dict['ozone_depletion'] = (hypergolic*0.016*0.7) + (kerosene*0.016*0.7) \
-                                  + (hypergolic*0.003*0.7) + (kerosene*0.003*0.7) \
-                                  + (hypergolic*0.001*0.7) + (kerosene*0.001*0.7)
+    emissions_dict['ozone_depletion'] = 3157.14
 
-    emissions_dict['particulate_matter'] = (hypergolic*0.001*0.22) + (kerosene *0.001*0.22) \
-                                           + (hypergolic*0.001*1) + (kerosene*0.05*1)
+    emissions_dict['particulate_matter'] = 10964.4722
     
-    emissions_dict['mineral_depletion'] = 0 + 12473.4086 + 6.71625049 + 0.158493574
+    emissions_dict['mineral_depletion'] = 0 
 
-    emissions_dict['freshwater_toxicity'] = 0 + 280703930.5 + 3114043.098 + 22931.63867
+    emissions_dict['freshwater_toxicity'] = 0 
 
-    emissions_dict['human_toxicity'] = 0 + 19.1361269 + 0.28140976 + 0.002580373
+    emissions_dict['human_toxicity'] = 0 
 
-    emissions_dict['water_depletion'] = 0 + 300062816.3 + 6419840.99 + 59492.59014
+    emissions_dict['water_depletion'] = 0 
 
     return emissions_dict
 
@@ -905,14 +902,13 @@ def falcon_9(kerosene):
     """
     emission_dict = {}
 
-    emission_dict['acidification'] = (kerosene*0.001*0.7)
+    emission_dict['acidification'] = 341.859
 
-    emission_dict['global_warming'] = (kerosene*0.352*1)
+    emission_dict['global_warming'] = 630466.1352
 
-    emission_dict['ozone_depletion'] = (kerosene*0.016*0.7) + (kerosene*0.003*0.7) \
-                                 + (kerosene*0.001*0.7)
+    emission_dict['ozone_depletion'] = 6837.18
 
-    emission_dict['particulate_matter'] = (kerosene*0.001*0.22) + (kerosene*0.05*1)
+    emission_dict['particulate_matter'] = 24525.9414
 
     emission_dict['mineral_depletion'] = 0
 
@@ -962,7 +958,7 @@ def falcon_heavy(kerosene):
     return emission_dict
 
 
-def ariane(hypergolic, solid, cryogenic):
+def ariane():
     """
     calculate the emissions of the 6 compounds for Ariane 5 space.
 
@@ -983,20 +979,13 @@ def ariane(hypergolic, solid, cryogenic):
     """
     emission_dict = {}
 
-    emission_dict['acidification'] = (solid*0.005*0.7) + (cryogenic*0.001*0.7) \
-                                        + (hypergolic*0.001*0.7)+(solid*0.15*0.88)
+    emission_dict['acidification'] = 65176.43
 
-    emission_dict['global_warming'] = (solid*0.108*1) + (hypergolic*0.252)
+    emission_dict['global_warming'] = 467816.8
 
-    emission_dict['ozone_depletion'] = (solid*0.08*0.7) + (cryogenic*0.016*0.7) \
-                                 + (hypergolic*0.016*0.7) + (solid*0.015*0.7) \
-                                 + (cryogenic*0.003*0.7) + (hypergolic*0.003*0.7) \
-                                 + (solid*0.005*0.7) + (cryogenic*0.001*0.7) \
-                                 + (hypergolic*0.001*0.7) + (solid*0.15*0.7)
+    emission_dict['ozone_depletion'] = 86728.6
 
-    emission_dict['particulate_matter'] = (solid*0.005*0.22) + (cryogenic*0.001*0.22) \
-                                          + (hypergolic*0.001*0.22) + (solid*0.33*1) \
-                                          + (hypergolic*0.001*1)
+    emission_dict['particulate_matter'] = 158980.878
     
     emission_dict['mineral_depletion'] = 0
 

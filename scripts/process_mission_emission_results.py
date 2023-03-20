@@ -16,6 +16,7 @@ data_path = '/Users/osoro/Github/saleos/results/'
 results_path = '/Users/osoro/Github/saleos/results/'
 
 start = time.time() 
+
 def process_mission_total(data_path, results_path):
     
     df = pd.read_csv(data_path + "uq_results.csv", index_col=False)

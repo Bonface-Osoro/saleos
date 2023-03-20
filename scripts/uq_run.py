@@ -16,17 +16,18 @@ import pandas as pd
 
 import saleos.sim as sl
 from inputs import lut
+from tqdm import tqdm
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
 #Import the data.
-start = time.time()
+start = time.time() 
 data_path = "/Users/osoro/Github/saleos/data/"
 df = pd.read_csv(data_path + "uq_parameters.csv")
 uq_dict = df.to_dict('records') #Convert the csv to list
 
 path = "/Users/osoro/Github/saleos/results/"
 results = []
-for item in uq_dict:
+for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     constellation = item["constellation"]
 
     number_of_satellites = item["number_of_satellites"]
@@ -341,11 +342,7 @@ for item in uq_dict:
                     "total_mineral_depletion": total_mineral_depletion,
                     "total_freshwater_toxicity": total_freshwater_toxicity,
                     "total_human_toxicity": total_human_toxicity,
-                    "total_water_depletion": total_water_depletion,
-                    "total_emissions_t": total_emissions,
-                    "emission_per_capacity": total_emissions / agg_capacity,
-                    "emission_per_sqkm": total_emissions / satellite_coverage_area_km,
-                    "emission_for_every_cost": total_emissions / total_cost_ownership
+                    "total_water_depletion": total_water_depletion
                     })
 
     df = pd.DataFrame.from_dict(results)
@@ -354,4 +351,4 @@ for item in uq_dict:
     store_results = df.to_csv(results_path2 + "uq_results.csv")
 
 executionTime = (time.time() - start)
-print('Execution time in hours: ' + str(executionTime/60))
+print('Execution time in minutes: ' + str(round(executionTime/60, 2))) 

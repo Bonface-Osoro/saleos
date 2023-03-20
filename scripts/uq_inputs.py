@@ -4,13 +4,14 @@ import random
 import decimal
 import saleos as sl
 from random import*
+from tqdm import tqdm
 from inputs import parameters, lut
 
 def uq_inputs_generator():
     path = "/Users/osoro/Github/saleos/data/"
     uq_parameters = []
 
-    for key, item in parameters.items():
+    for key, item in tqdm(parameters.items(), desc = "Processing capacity, cost and emission inputs"):
         altitude = [(item["altitude_km"] - 5), item["altitude_km"], (item["altitude_km"] + 5)]
         receiver_gain = [(item["receiver_gain"] - 5), (item["receiver_gain"]), (item["receiver_gain"] + 5)]
         atmospheric_loss = [item["earth_atmospheric_losses"]- 3, item["earth_atmospheric_losses"], 
@@ -26,7 +27,7 @@ def uq_inputs_generator():
 
         staff_cost = [item["staff_costs"] - 10000000, item["staff_costs"], item["staff_costs"] + 10000000]
         
-        for alt in altitude:
+        for alt in tqdm(altitude, desc = "Processing satellite altitude"):
             altitude_km = alt
             if alt == 540 or alt == 1190 or alt == 600:
                 altitude_scenario = "Low"
@@ -34,7 +35,7 @@ def uq_inputs_generator():
                 altitude_scenario = "Baseline"
             else:
                 altitude_scenario = "High"
-            for rec_gain in receiver_gain:
+            for rec_gain in tqdm(receiver_gain, desc = "Processing satellite receiver gain"):
                 receiver_gain_dB = rec_gain
                 if rec_gain == 25 or rec_gain == 26:
                     receiver_gain_scenario = "Low"
@@ -42,7 +43,7 @@ def uq_inputs_generator():
                     receiver_gain_scenario = "Baseline" 
                 else:
                     receiver_gain_scenario = "High"
-                for atm_loss in atmospheric_loss:
+                for atm_loss in tqdm(atmospheric_loss, desc = "Processing atmospheric losses"):
                     earth_atmospheric_losses_dB = atm_loss
                     if atm_loss == 7:
                         atmospheric_loss_scenario = "Low"
@@ -53,9 +54,9 @@ def uq_inputs_generator():
                     else:
                         atmospheric_loss_scenario = "High"
                         cnr_scenario = "Low (<7.5 dB)"
-                    for sat_launch in satellite_launch:
+                    for sat_launch in tqdm(satellite_launch, desc = "Processing satellite launch costs"):
                         satellite_launch_cost = sat_launch
-                        for gst in ground_station:
+                        for gst in tqdm(ground_station, desc = "Processing ground station costs"):
                             ground_station_cost = gst
                             if gst == 39088000 and sat_launch == 186328000 or gst == 16000000 and \
                                 sat_launch == 86328000 or gst == 26400000 and sat_launch == 116328000:
@@ -71,7 +72,7 @@ def uq_inputs_generator():
                                 capex_scenario = "High"
                                 sat_launch_scenario = "High"
                                 ground_station_scenario = "High"
-                            for adop in adopt_rate:
+                            for adop in tqdm(adopt_rate, desc = "Processing consumer adoption rates"):
                                 adoption_rate = adop
                                 if adop == 0.01:
                                     adoption_rate_scenario = "Low"
@@ -79,7 +80,7 @@ def uq_inputs_generator():
                                     adoption_rate_scenario = "Baseline"
                                 else:
                                     adoption_rate_scenario = "High"
-                                for maint_cost in maintenance_cost:
+                                for maint_cost in tqdm(maintenance_cost, desc = "Processing satellite maintenance costs"):
                                     maint_costs = maint_cost
                                     if maint_cost == maintenance_cost[0]:
                                         opex_scenario = "Low"
@@ -89,7 +90,7 @@ def uq_inputs_generator():
                                         opex_scenario = "High"
                                     else: 
                                         opex_scenario = "None"
-                                    for stf_cost in staff_cost:
+                                    for stf_cost in tqdm(staff_cost, desc = "Processing satellite staff costs"):
                                         staff_costs = stf_cost
                                         satellite_manufacturing = item["satellite_manufacturing"]
                                         spectrum_cost = item["spectrum_cost"] 
