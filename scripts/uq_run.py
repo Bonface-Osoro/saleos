@@ -89,8 +89,7 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     else:
         demand_scenario = "Baseline"
 
-    emission_dict = sl.calc_per_sat_emission(item["constellation"], item["fuel_mass_kg"],
-                    item["fuel_mass_1_kg"], item["fuel_mass_2_kg"], item["fuel_mass_3_kg"])
+    emission_dict = sl.calc_per_sat_emission(item["constellation"])
     
     scheduling_dict = sl.calc_scheduling_emission(item["constellation"])
 

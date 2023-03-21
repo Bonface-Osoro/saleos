@@ -93,8 +93,7 @@ def system_capacity(constellation, number_of_satellites, params, lut):
         demand_density_mbps_sqkm = demand_model(params["monthly_traffic_GB"], 
                                params["percent_of_traffic"], params["adoption_rate"], 5, 0.3)
 
-        emission_dict = calc_per_sat_emission(params["name"], params["fuel_mass"],
-                    params["fuel_mass_1"], params["fuel_mass_2"], params["fuel_mass_3"])
+        emission_dict = calc_per_sat_emission(params["name"])
 
         particulate_matter_emissions = emission_dict['particulate_matter']
 
@@ -568,7 +567,7 @@ def pairwise(iterable):
     return zip(a, b)
 
 
-def calc_per_sat_emission(name, fuel_mass, fuel_mass_1, fuel_mass_2, fuel_mass_3):
+def calc_per_sat_emission(name):
     """
     calculate the emissions of the 6 compounds for each of the satellites
     of the three constellations based on the rocket vehicle used.
@@ -592,15 +591,13 @@ def calc_per_sat_emission(name, fuel_mass, fuel_mass_1, fuel_mass_2, fuel_mass_3
     """
 
     if name == 'Starlink':
-        emission_dict = falcon_9(fuel_mass)  # Emission per satellite
+        emission_dict = falcon_9()  # Emission per satellite
 
     elif name == 'Kuiper':
-        fm_hyp, fm_sod, fm_cry = fuel_mass_1, fuel_mass_2, fuel_mass_3
-        emission_dict = ariane(fm_hyp, fm_sod, fm_cry)
+        emission_dict = ariane()
 
     elif name == 'OneWeb':
-        fm_hyp, fm_ker = fuel_mass_1, fuel_mass_2
-        emission_dict = soyuz_fg(fm_hyp, fm_ker)
+        emission_dict = soyuz_fg()
 
     else:
         print('Invalid Constellation name')
@@ -885,7 +882,7 @@ def soyuz_fg():
 
 
 
-def falcon_9(kerosene):
+def falcon_9():
     """
     calculate the emissions of the 6 compounds for Falcon 9 rocket vehicle.
 

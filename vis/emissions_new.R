@@ -30,12 +30,25 @@ climate_change <- c(595012795.9, 87278232.09, 258836443.9,
       119603503.2, 122743338.5, 414029327.8, 1274333.643,
       419325198.9, 46654494)
 
+climate_change_wc <- c(595012795.9, 87278232.09, 258836443.9, 
+      485150868.1, 596332.0885, 305994064.1, 5856534706,
+      893608259.6, 32325271.14, 19378203.99, 64466609.67,
+      86572.07616, 113331134.8, 239684676, 290566364.3,
+      119603503.2, 122743338.5, 414029327.8, 1274333.643,
+      419325198.9, 1971041785)
+
 ozone_depletion <- c(40.26969277, 8.455065994, 12.05780847,
       40.71209018, 0.102211235, 42.00500185, 4683344.4, 
       62.23635459, 3.131505924, 2.19997646, 5.756972014,
       0.026791027, 15.55740809, 63142.8, 21.74603442,
       11.58657192, 14.14725189, 36.95730308, 0.264053,
       57.56240995, 505951.32)
+
+ozone_depletion_wc <- c(40.26969277, 8.455065994, 12.05780847,
+      40.71209018, 0.102211235, 42.00500185, 6715170, 62.23635459, 
+      3.131505924, 2.19997646, 5.756972014, 0.026791027, 
+      15.55740809, 214302.2, 21.74603442, 11.58657192, 
+      14.14725189, 36.95730308, 0.264053, 57.56240995, 1770829.62)
 
 resource_depletion <- c(146865.1871, 845.3518747, 1868.207118,
       27550.91438, 10.51849324, 1794.204539, 0, 
@@ -58,8 +71,10 @@ human_toxicity <- c(247.6108105, 26.25664416, 82.09370489,
       125.4937412, 0)
 
 individual_emissions <- data.frame(constellation, category, 
-      climate_change, ozone_depletion, resource_depletion, 
+      climate_change, climate_change_wc, ozone_depletion, 
+      ozone_depletion_wc, resource_depletion, 
       freshwater_ecotixicity, human_toxicity)
+
 ##########################
 ##plot1 = Global warming##
 ##########################
@@ -120,6 +135,66 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )
 
 
+#####################################
+##plot1 = Global warming worst case##
+#####################################
+df = individual_emissions %>%
+  group_by(constellation, category) %>%
+  summarize(
+    mean = mean(climate_change_wc),
+    sd = sd(climate_change_wc)
+  )
+
+totals <- individual_emissions %>%
+  group_by(constellation) %>%
+  summarize(value = signif(sum(climate_change_wc)))
+
+df$Constellation = factor(df$constellation)
+df$category = factor(df$category, levels = 
+                       c("ait", "campaign", "launcher", "launching", 
+                         "propellant", "scheduling", "transportation"),
+                     labels = c("Launcher AIT", "Launch Campaign", "Launcher Production", 
+                                "Launch Event", "Launcher Propellant Production", 
+                                "SCHD of Propellant", "Transportation of Launcher"))
+climate_change_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
+  geom_bar(stat = "identity", aes(fill = category)) + 
+  geom_text(
+    aes(x = constellation, y = value/1e6, label = round(value/1e6, 1)),
+    size = 1.2,
+    data = totals,
+    vjust = -1,
+    hjust = 0.5,
+    position = position_stack()
+  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  theme(legend.position = "right") + labs(
+    colour = NULL,
+    title = "(B) Climate Change (Worst Case)",
+    subtitle = "Emission for worst case scenario consisting of \nblack carbon, aluminium oxide and water vapour",
+    x = NULL,
+    y = "Kt CO2 Equivalent",
+    fill = "Category"
+  ) + scale_y_continuous(limits = c(0, 8500),
+                         labels = function(y)
+                           format(y, scientific = FALSE),
+                         expand = c(0, 0)
+  ) +   theme(plot.title = element_text(face = "bold")) + 
+  theme(legend.position = "bottom", axis.title = element_text(size = 6)) + 
+  theme(axis.line = element_line(colour = "black"),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        plot.subtitle = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        plot.title = element_text(size = 8)
+  )
+
+
 ###########################
 ##plot2 = Ozone Depletion##
 ###########################
@@ -153,7 +228,7 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(B) Ozone Depletion",
+    title = "(C) Ozone Depletion",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "Kt CFC-11 Equivalent",
@@ -178,6 +253,67 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     axis.line.y  = element_line(size = 0.15),
     plot.title = element_text(size = 8)
   )
+
+
+##########################################
+##plot2 = Ozone Depletion worst scenario##
+##########################################
+df = individual_emissions %>%
+  group_by(constellation, category) %>%
+  summarize(
+    mean = mean(ozone_depletion_wc),
+    sd = sd(ozone_depletion_wc)
+  )
+
+totals <- individual_emissions %>%
+  group_by(constellation) %>%
+  summarize(value = signif(sum(ozone_depletion_wc)))
+
+df$Constellation = factor(df$constellation)
+df$category = factor(df$category, levels = 
+                       c("ait", "campaign", "launcher", "launching", 
+                         "propellant", "scheduling", "transportation"),
+                     labels = c("Launcher AIT", "Launch Campaign", "Launcher Production", 
+                                "Launch Event", "Launcher Propellant Production", 
+                                "SCHD of Propellant", "Transportation of Launcher"))
+ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
+  geom_bar(stat = "identity", aes(fill = category)) + 
+  geom_text(
+    aes(x = constellation, y = value/1e6, label = round(value/1e6, 1)),
+    size = 1.2,
+    data = totals,
+    vjust = -1,
+    hjust = 0.5,
+    position = position_stack()
+  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  theme(legend.position = "right") + labs(
+    colour = NULL,
+    title = "(D) Ozone Depletion (Worst Case)",
+    subtitle = "Emission for worst case scenario consisting of \nblack carbon, aluminium oxide and water vapour",
+    x = NULL,
+    y = "Kt CFC-11 Equivalent",
+    fill = "Category"
+  ) + scale_y_continuous(limits = c(0, 7.5),
+                         labels = function(y)
+                           format(y, scientific = FALSE),
+                         expand = c(0, 0)
+  ) +  theme(plot.title = element_text(face = "bold")) + 
+  theme(legend.position = "bottom", axis.title = element_text(size = 6)) + 
+  theme(axis.line = element_line(colour = "black"),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        plot.subtitle = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        plot.title = element_text(size = 8)
+  )
+
 
 ##############################
 ##plot3 = Resource Depletion##
@@ -212,7 +348,7 @@ resource_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e3)) +
   )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(C) Resource Depletion",
+    title = "(E) Resource Depletion",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "Tonnes Sb. Equivalent",
@@ -270,12 +406,12 @@ freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(D) Freshwater Aquatic Ecotoxicity",
+    title = "(F) Freshwater Ecotoxicity",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "PAF.M3.DAY (million)",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 10000),
+  ) + scale_y_continuous(limits = c(0, 11000),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -321,7 +457,7 @@ df$category = factor(df$category, levels =
 human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
   geom_bar(stat = "identity", aes(fill = category)) + 
   geom_text(
-    aes(x = constellation, y = value, label = value),
+    aes(x = constellation, y = value, label = round(value, 0)),
     size = 1,
     data = totals,
     vjust = -1,
@@ -330,28 +466,31 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
   )  + scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(E) Human Ecotoxicity",
+    title = "(G) Human Ecotoxicity",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "CASES",
     fill = "Category"
-  ) + scale_y_continuous(
+  ) + scale_y_continuous(limits = c(0, 750),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + theme_minimal() +
   theme(plot.title = element_text(face = "bold")) + 
-  theme(axis.text.x = element_text(size = 6),
+  theme(legend.position = "bottom", axis.title = element_text(size = 6)) + 
+  theme(axis.line = element_line(colour = "black"),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        axis.text.x = element_text(size = 6),
         axis.text.y = element_text(size = 6),
-        axis.line = element_line(colour = "black")) +
-  theme(legend.position = "bottom", axis.title = element_text(size = 6)) +
-  theme(
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    plot.title = element_text(size = 8)
+        plot.subtitle = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        plot.title = element_text(size = 8)
   )
 
 ####################################
@@ -360,10 +499,13 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
 
 pub_emission <- ggarrange(
   climate_change,
+  climate_change_wc,
   ozone_depletion,
+  ozone_depletion_wc,
   resource_depletion,
   freshwater_ecotixicity,
-  nrow = 2,
+  human_toxicity,
+  nrow = 4,
   ncol = 2,
   common.legend = T,
   legend = "bottom"
@@ -374,8 +516,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 6,
-  height = 6,
+  width = 4.57,
+  height = 6.5,
   res = 480
 )
 print(pub_emission)
@@ -667,22 +809,6 @@ tiff(
 )
 print(pub_emission)
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
