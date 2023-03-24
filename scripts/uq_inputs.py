@@ -72,116 +72,106 @@ def uq_inputs_generator():
                                 capex_scenario = "High"
                                 sat_launch_scenario = "High"
                                 ground_station_scenario = "High"
-                            for adop in tqdm(adopt_rate, desc = "Processing consumer adoption rates"):
-                                adoption_rate = adop
-                                if adop == 0.01:
-                                    adoption_rate_scenario = "Low"
-                                elif adop == 0.5:
-                                    adoption_rate_scenario = "Baseline"
-                                else:
-                                    adoption_rate_scenario = "High"
-                                for maint_cost in tqdm(maintenance_cost, desc = "Processing satellite maintenance costs"):
-                                    maint_costs = maint_cost
-                                    if maint_cost == maintenance_cost[0]:
-                                        opex_scenario = "Low"
-                                    elif maint_cost == maintenance_cost[1]:
-                                        opex_scenario = "Baseline"
-                                    elif maint_cost == maintenance_cost[2]:
-                                        opex_scenario = "High"
-                                    else: 
-                                        opex_scenario = "None"
-                                    for stf_cost in tqdm(staff_cost, desc = "Processing satellite staff costs"):
-                                        staff_costs = stf_cost
-                                        satellite_manufacturing = item["satellite_manufacturing"]
-                                        spectrum_cost = item["spectrum_cost"] 
-                                        regulation_fees = item["regulation_fees"] 
-                                        digital_infrastructure_cost = item["digital_infrastructure_cost"]
-                                        ground_station_energy = item["ground_station_energy"]
-                                        subscriber_acquisition = item["subscriber_acquisition"]
-                                        research_development = item["research_development"] 
-                                        maintenance_costs = maint_costs
-                                        capex_costs = item["satellite_manufacturing"] + item["subscriber_acquisition"] \
-                                                        + satellite_launch_cost + ground_station_cost + digital_infrastructure_cost
-                                        opex_costs = spectrum_cost + spectrum_cost + ground_station_energy \
-                                                    + staff_costs + research_development + maintenance_costs 
-                                        number_of_satellites = item["number_of_satellites"]
-                                        name = item["name"]
-                                        iterations = item['iterations']
-                                        seed_value = item['seed_value']
-                                        mu = item['mu']
-                                        sigma = item['sigma']
-                                        total_area_earth_km_sq = item["total_area_earth_km_sq"]
-                                        dl_bandwidth_Hz = item["dl_bandwidth"]
-                                        speed_of_light = item["speed_of_light"]
-                                        antenna_diameter_m = item["antenna_diameter"]
-                                        antenna_efficiency = item["antenna_efficiency"]
-                                        power_dBw = item["power"]
-                                        all_other_losses_dB = item["all_other_losses"] 
-                                        number_of_channels = item["number_of_channels"]
-                                        polarization = item["polarization"]
-                                        traffic_percent = item["percent_of_traffic"]
-                                        monthly_traffic_GB = item["monthly_traffic_GB"]+5
-                                        fuel_mass_kg = item["fuel_mass"]
-                                        fuel_mass_1_kg = item["fuel_mass_1"]
-                                        fuel_mass_2_kg = item["fuel_mass_2"]
-                                        fuel_mass_3_kg = item["fuel_mass_3"]
-                                        discount_rate = item["discount_rate"]
-                                        assessment_period_year = item["assessment_period"]
+                            for maint_cost in tqdm(maintenance_cost, desc = "Processing satellite maintenance costs"):
+                                maint_costs = maint_cost
+                                if maint_cost == maintenance_cost[0]:
+                                    opex_scenario = "Low"
+                                elif maint_cost == maintenance_cost[1]:
+                                    opex_scenario = "Baseline"
+                                elif maint_cost == maintenance_cost[2]:
+                                    opex_scenario = "High"
+                                else: 
+                                    opex_scenario = "None"
+                                for stf_cost in tqdm(staff_cost, desc = "Processing satellite staff costs"):
+                                    staff_costs = stf_cost
+                                    satellite_manufacturing = item["satellite_manufacturing"]
+                                    spectrum_cost = item["spectrum_cost"] 
+                                    regulation_fees = item["regulation_fees"] 
+                                    digital_infrastructure_cost = item["digital_infrastructure_cost"]
+                                    ground_station_energy = item["ground_station_energy"]
+                                    subscriber_acquisition = item["subscriber_acquisition"]
+                                    research_development = item["research_development"] 
+                                    maintenance_costs = maint_costs
+                                    capex_costs = item["satellite_manufacturing"] + item["subscriber_acquisition"] \
+                                                    + satellite_launch_cost + ground_station_cost + digital_infrastructure_cost
+                                    opex_costs = spectrum_cost + spectrum_cost + ground_station_energy \
+                                                + staff_costs + research_development + maintenance_costs 
+                                    number_of_satellites = item["number_of_satellites"]
+                                    name = item["name"]
+                                    iterations = item['iterations']
+                                    seed_value = item['seed_value']
+                                    mu = item['mu']
+                                    sigma = item['sigma']
+                                    total_area_earth_km_sq = item["total_area_earth_km_sq"]
+                                    dl_bandwidth_Hz = item["dl_bandwidth"]
+                                    speed_of_light = item["speed_of_light"]
+                                    antenna_diameter_m = item["antenna_diameter"]
+                                    antenna_efficiency = item["antenna_efficiency"]
+                                    power_dBw = item["power"]
+                                    all_other_losses_dB = item["all_other_losses"] 
+                                    number_of_channels = item["number_of_channels"]
+                                    polarization = item["polarization"]
+                                    traffic_percent = item["percent_of_traffic"]
+                                    monthly_traffic_GB = item["monthly_traffic_GB"]+5
+                                    fuel_mass_kg = item["fuel_mass"]
+                                    fuel_mass_1_kg = item["fuel_mass_1"]
+                                    fuel_mass_2_kg = item["fuel_mass_2"]
+                                    fuel_mass_3_kg = item["fuel_mass_3"]
+                                    discount_rate = item["discount_rate"]
+                                    assessment_period_year = item["assessment_period"]
 
-                                        uq_parameters.append({"constellation": name, 
-                                                                "iterations": iterations,
-                                                                "seed_value": seed_value,
-                                                                "mu": mu,
-                                                                "sigma": sigma,
-                                                                "number_of_satellites": number_of_satellites,
-                                                                "total_area_earth_km_sq": total_area_earth_km_sq,
-                                                                "coverage_area_per_sat_sqkm": total_area_earth_km_sq/number_of_satellites,
-                                                                "altitude_km": altitude_km,
-                                                                "altitude_scenario": altitude_scenario,
-                                                                "dl_frequency_Hz": item["dl_frequency"],
-                                                                "dl_bandwidth_Hz": dl_bandwidth_Hz,
-                                                                "speed_of_light": speed_of_light,
-                                                                "antenna_diameter_m": antenna_diameter_m,
-                                                                "antenna_efficiency": antenna_efficiency,
-                                                                "power_dBw": power_dBw,
-                                                                "receiver_gain_dB": receiver_gain_dB,
-                                                                "receiver_gain_scenario": receiver_gain_scenario,
-                                                                "earth_atmospheric_losses_dB": earth_atmospheric_losses_dB,
-                                                                "atmospheric_loss_scenario": atmospheric_loss_scenario,
-                                                                "all_other_losses_dB": all_other_losses_dB,
-                                                                "number_of_channels": number_of_channels,
-                                                                "cnr_scenario": cnr_scenario,
-                                                                "polarization": polarization,
-                                                                "monthly_traffic_GB": monthly_traffic_GB,
-                                                                "percent_of_traffic": traffic_percent,
-                                                                "adoption_rate": adoption_rate,
-                                                                "subscribers_low": item["subscribers"][0],
-                                                                "subscribers_baseline": item["subscribers"][1],
-                                                                "subscribers_high": item["subscribers"][2],
-                                                                "adoption_rate_scenario": adoption_rate_scenario,
-                                                                "fuel_mass_kg": fuel_mass_kg,
-                                                                "fuel_mass_1_kg": fuel_mass_1_kg,
-                                                                "fuel_mass_2_kg": fuel_mass_2_kg,
-                                                                "fuel_mass_3_kg": fuel_mass_3_kg,
-                                                                "satellite_manufacturing": satellite_manufacturing,
-                                                                "satellite_launch_cost": satellite_launch_cost,
-                                                                "satellite_launch_scenario": sat_launch_scenario,
-                                                                "ground_station_cost": ground_station_cost,
-                                                                "ground_station_scenario": ground_station_scenario,
-                                                                "spectrum_cost": spectrum_cost,
-                                                                "regulation_fees": regulation_fees,
-                                                                "digital_infrastructure_cost": digital_infrastructure_cost,
-                                                                "ground_station_energy": ground_station_energy,
-                                                                "subscriber_acquisition": subscriber_acquisition,
-                                                                "staff_costs": staff_costs,
-                                                                "research_development": research_development,
-                                                                "maintenance_costs": maintenance_costs,
-                                                                "discount_rate": discount_rate,
-                                                                "assessment_period_year": assessment_period_year,
-                                                                "opex_costs": opex_costs,
-                                                                "opex_scenario": opex_scenario,
-                                                                "capex_costs": capex_costs,
-                                                                "capex_scenario": capex_scenario})
+                                    uq_parameters.append({"constellation": name, 
+                                                            "iterations": iterations,
+                                                            "seed_value": seed_value,
+                                                            "mu": mu,
+                                                            "sigma": sigma,
+                                                            "number_of_satellites": number_of_satellites,
+                                                            "total_area_earth_km_sq": total_area_earth_km_sq,
+                                                            "coverage_area_per_sat_sqkm": total_area_earth_km_sq/number_of_satellites,
+                                                            "altitude_km": altitude_km,
+                                                            "altitude_scenario": altitude_scenario,
+                                                            "dl_frequency_Hz": item["dl_frequency"],
+                                                            "dl_bandwidth_Hz": dl_bandwidth_Hz,
+                                                            "speed_of_light": speed_of_light,
+                                                            "antenna_diameter_m": antenna_diameter_m,
+                                                            "antenna_efficiency": antenna_efficiency,
+                                                            "power_dBw": power_dBw,
+                                                            "receiver_gain_dB": receiver_gain_dB,
+                                                            "receiver_gain_scenario": receiver_gain_scenario,
+                                                            "earth_atmospheric_losses_dB": earth_atmospheric_losses_dB,
+                                                            "atmospheric_loss_scenario": atmospheric_loss_scenario,
+                                                            "all_other_losses_dB": all_other_losses_dB,
+                                                            "number_of_channels": number_of_channels,
+                                                            "cnr_scenario": cnr_scenario,
+                                                            "polarization": polarization,
+                                                            "monthly_traffic_GB": monthly_traffic_GB,
+                                                            "percent_of_traffic": traffic_percent,
+                                                            "subscribers_low": item["subscribers"][0],
+                                                            "subscribers_baseline": item["subscribers"][1],
+                                                            "subscribers_high": item["subscribers"][2],
+                                                            "fuel_mass_kg": fuel_mass_kg,
+                                                            "fuel_mass_1_kg": fuel_mass_1_kg,
+                                                            "fuel_mass_2_kg": fuel_mass_2_kg,
+                                                            "fuel_mass_3_kg": fuel_mass_3_kg,
+                                                            "satellite_manufacturing": satellite_manufacturing,
+                                                            "satellite_launch_cost": satellite_launch_cost,
+                                                            "satellite_launch_scenario": sat_launch_scenario,
+                                                            "ground_station_cost": ground_station_cost,
+                                                            "ground_station_scenario": ground_station_scenario,
+                                                            "spectrum_cost": spectrum_cost,
+                                                            "regulation_fees": regulation_fees,
+                                                            "digital_infrastructure_cost": digital_infrastructure_cost,
+                                                            "ground_station_energy": ground_station_energy,
+                                                            "subscriber_acquisition": subscriber_acquisition,
+                                                            "staff_costs": staff_costs,
+                                                            "research_development": research_development,
+                                                            "maintenance_costs": maintenance_costs,
+                                                            "discount_rate": discount_rate,
+                                                            "assessment_period_year": assessment_period_year,
+                                                            "opex_costs": opex_costs,
+                                                            "opex_scenario": opex_scenario,
+                                                            "capex_costs": capex_costs,
+                                                            "capex_scenario": capex_scenario})
 
     df = pd.DataFrame.from_dict(uq_parameters)
     df.to_csv(path + "uq_parameters.csv")

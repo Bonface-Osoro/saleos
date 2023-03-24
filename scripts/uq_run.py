@@ -78,17 +78,6 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                    spectral_efficiency, item["number_of_channels"], 
                    item["polarization"])
 
-    adoption_rate = item["adoption_rate"]
-
-    demand_density_mbps_sqkm = sl.demand_model(item["monthly_traffic_GB"], 
-                               item["percent_of_traffic"], item["adoption_rate"], 5, 0.3)
-    if item["adoption_rate"] == 0.01:
-        demand_scenario = "Low"
-    elif item["adoption_rate"] == 1:
-        demand_scenario = "High"
-    else:
-        demand_scenario = "Baseline"
-
     emission_dict = sl.calc_per_sat_emission(item["constellation"])
     
     scheduling_dict = sl.calc_scheduling_emission(item["constellation"])
@@ -251,11 +240,6 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                     "capacity_scenario": capacity_scenario,
                     "capacity_per_single_satellite": sat_capacity,
                     "capacity_per_area_mbps/sqkm": agg_capacity/item["coverage_area_per_sat_sqkm"],
-                    "adoption_rate_scenario": item["adoption_rate_scenario"],
-                    "adoption_rate": adoption_rate,
-                    "adoption_scenario": item["adoption_rate_scenario"],
-                    "demand_density_mbps_sqkm": demand_density_mbps_sqkm,
-                    "demand_scenario": demand_scenario,
                     "subscribers_low": subscribers_low,
                     "subscribers_baseline": subscribers_baseline,
                     "subscribers_high": subscribers_high,                    
