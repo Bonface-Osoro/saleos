@@ -15,6 +15,19 @@ start = time.time()
 data_path = '/Users/osoro/Github/saleos/results/'
 results_path = '/Users/osoro/Github/saleos/results/'
 
+def monthly_traffic(capacity_mbps):
+    """ This function calculates the monthly traffic
+
+    Returns
+    -------
+    traffic : float
+            monthly traffic in GB.
+    """
+    amount = capacity_mbps / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+
+    return amount
+
+
 start = time.time() 
 
 def process_mission_total(data_path, results_path):
@@ -43,15 +56,15 @@ def process_mission_total(data_path, results_path):
             else:
                 df["mission_number"].loc[i]=74
         elif df["constellation"].loc[i] == "OneWeb":
-            df["mission_number"].loc[i]=i-(6560)
+            df["mission_number"].loc[i]=i-(2186)
             if df["mission_number"].loc[i]<20:
-                df["mission_number"].loc[i]=i-(6560)
+                df["mission_number"].loc[i]=i-(2186)
             else:
                 df["mission_number"].loc[i]=20
         elif df["constellation"].loc[i] == "Kuiper":
-            df["mission_number"].loc[i]=i-(13121)
+            df["mission_number"].loc[i]=i-(4373)
             if df["mission_number"].loc[i]<54:
-                df["mission_number"].loc[i]=i-(13121)
+                df["mission_number"].loc[i]=i-(4373)
             else:
                 df["mission_number"].loc[i]=54
         else:
@@ -94,7 +107,7 @@ def process_mission_total(data_path, results_path):
     df[["capacity_per_user", "emission_per_capacity", "per_cost_emission", 
         "per_subscriber_emission", "capex_per_user", "opex_per_user", 
         "tco_per_user", "capex_per_capacity", "opex_per_capacity", 
-        "tco_per_capacity"]] = ""
+        "tco_per_capacity", "monthly_gb"]] = ""
 
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
@@ -105,6 +118,8 @@ def process_mission_total(data_path, results_path):
         df["per_subscriber_emission"].loc[i] = df["total_emissions"].loc[i] / df["subscribers"].loc[i]
         
         df["capacity_per_user"].loc[i] = df["constellation_capacity"].loc[i] / df["subscribers"].loc[i]
+
+        df["monthly_gb"].loc[i] = monthly_traffic(df["capacity_per_user"].loc[i])
         
         df["capex_per_user"].loc[i] = df["capex_costs"].loc[i] / df["subscribers"].loc[i] 
         
