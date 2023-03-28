@@ -127,11 +127,11 @@ def process_mission_total(data_path, results_path):
         
         df["tco_per_user"].loc[i] = df["total_cost_ownership"].loc[i] / df["subscribers"].loc[i]
         
-        df["capex_per_capacity"].loc[i] = df["capex_costs"].loc[i] / df["constellation_capacity"].loc[i]
+        df["capex_per_capacity"].loc[i] = df["capex_costs"].loc[i] / df["monthly_gb"].loc[i]
         
-        df["opex_per_capacity"].loc[i] = df["total_opex"].loc[i] / df["constellation_capacity"].loc[i]
+        df["opex_per_capacity"].loc[i] = df["total_opex"].loc[i] / df["monthly_gb"].loc[i]
         
-        df["tco_per_capacity"].loc[i] = df["total_cost_ownership"].loc[i] / df["constellation_capacity"].loc[i]
+        df["tco_per_capacity"].loc[i] = df["total_cost_ownership"].loc[i] / df["monthly_gb"].loc[i]
          
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
     results_path2 = '/Users/osoro/Github/saleos/vis/'
