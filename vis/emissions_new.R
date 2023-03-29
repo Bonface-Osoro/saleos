@@ -609,6 +609,14 @@ emission_totals <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     color = "black",
     size = 0.2
   ) + 
+  geom_text(
+    aes(label = round(after_stat(y), 0), group = Constellation),
+    stat = "summary",
+    fun = sum,
+    vjust = -.5,
+    hjust = -0.8,
+    size = 1.5
+  ) +
   scale_fill_brewer(palette = "Dark2") +
   theme(legend.position = "right") + labs(
     colour = NULL,
