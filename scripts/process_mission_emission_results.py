@@ -42,7 +42,7 @@ def process_mission_total(data_path, results_path):
         "total_global_warming_em", "total_ozone_depletion_em",
         "total_mineral_depletion", 
         "total_freshwater_toxicity", "total_human_toxicity", 
-        "total_water_depletion"]]
+        "total_water_depletion", "total_climate_change"]]
 
     # Create future columns to use
     df[["mission_number", "total_emissions"]] = ""
@@ -77,7 +77,8 @@ def process_mission_total(data_path, results_path):
         "opex_scenario", "total_cost_ownership", "mission_number", 
         "total_global_warming_em", "total_ozone_depletion_em", 
         "total_mineral_depletion", "total_freshwater_toxicity", 
-        "total_human_toxicity", "total_water_depletion", "total_emissions"], 
+        "total_human_toxicity", "total_water_depletion", "total_emissions",
+        "total_climate_change"], 
         value_vars = ["subscribers_low", "subscribers_baseline", 
         "subscribers_high",], var_name = "subscriber_scenario", 
         value_name = "subscribers")
@@ -86,7 +87,8 @@ def process_mission_total(data_path, results_path):
     df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
         "capacity_scenario", "total_opex", "capex_costs", "capex_scenario",
         "opex_scenario", "total_cost_ownership", "mission_number", 
-        "subscriber_scenario", "subscribers", "total_emissions"], 
+        "subscriber_scenario", "subscribers", "total_emissions", 
+        "total_climate_change"], 
         value_vars = ["total_global_warming_em", "total_ozone_depletion_em", 
         "total_mineral_depletion", "total_freshwater_toxicity", 
         "total_human_toxicity", "total_water_depletion"], var_name = 
@@ -101,25 +103,29 @@ def process_mission_total(data_path, results_path):
     df = df[['constellation', 'constellation_capacity', 'capacity_scenario',
         'total_opex', 'capex_costs', 'capex_scenario', 'opex_scenario',
         'total_cost_ownership', 'mission_number', 'subscriber_scenario', 
-        'subscribers', 'impact_category', 'total_emissions']]
+        'subscribers', 'impact_category', 'total_emissions', 
+        'total_climate_change']]
 
     #Create columns to store new data
     df[["capacity_per_user", "emission_per_capacity", "per_cost_emission", 
         "per_subscriber_emission", "capex_per_user", "opex_per_user", 
         "tco_per_user", "capex_per_capacity", "opex_per_capacity", 
-        "tco_per_capacity", "monthly_gb"]] = ""
+        "tco_per_capacity", "monthly_gb", "total_climate_emissions"]] = ""
 
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
-        df["emission_per_capacity"].loc[i] = df["total_emissions"].loc[i] / df["constellation_capacity"].loc[i]
-        
-        df["per_cost_emission"].loc[i] = df["total_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
-                                                    
-        df["per_subscriber_emission"].loc[i] = df["total_emissions"].loc[i] / df["subscribers"].loc[i]
-        
+
         df["capacity_per_user"].loc[i] = df["constellation_capacity"].loc[i] / df["subscribers"].loc[i]
 
         df["monthly_gb"].loc[i] = monthly_traffic(df["capacity_per_user"].loc[i])
+
+        df["total_climate_emissions"].loc[i] = df["total_climate_change"].loc[i] * df["mission_number"].loc[i]
+
+        df["emission_per_capacity"].loc[i] = df["total_climate_emissions"].loc[i] / df["monthly_gb"].loc[i]
+        
+        df["per_cost_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
+                                                    
+        df["per_subscriber_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["subscribers"].loc[i]
         
         df["capex_per_user"].loc[i] = df["capex_costs"].loc[i] / df["subscribers"].loc[i] 
         

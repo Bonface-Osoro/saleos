@@ -514,7 +514,8 @@ emission_validation <-
 # Save emission validation results
 pub_emission <-
   ggarrange(
-    fuel_types, fuel_factors,
+    fuel_types, 
+    fuel_factors,
     emission_totals,
     emission_subscriber,
     emission_capacity,
