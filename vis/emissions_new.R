@@ -99,19 +99,19 @@ df$category = factor(df$category, levels =
 climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) + 
   geom_text(
-    aes(x = constellation, y = value/1e6, label = round(value/1e6, 1)),
+    aes(x = constellation, y = value/1e6, label = round(value/1e6, 0)),
     size = 1.2,
     data = totals,
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(A) Climate Change",
+    title = "(A) Climate Change Impacts (Normal)",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
-    y = "Kt CO2 Equivalent",
+    y = "Kt Carbon dioxides Eqv.",
     fill = "Category"
   ) + scale_y_continuous(limits = c(0, 2000),
     labels = function(y)
@@ -160,19 +160,19 @@ df$category = factor(df$category, levels =
 climate_change_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) + 
   geom_text(
-    aes(x = constellation, y = value/1e6, label = round(value/1e6, 1)),
+    aes(x = constellation, y = value/1e6, label = round(value/1e6, 0)),
     size = 1.2,
     data = totals,
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(B) Climate Change (Worst Case)",
-    subtitle = "Emission for worst case scenario consisting of \nblack carbon, aluminium oxide and water vapour",
+    title = "(B) Climate Change Impacts (Worst Case)",
+    subtitle = "Black carbon, aluminium oxide and water vapour included",
     x = NULL,
-    y = "Kt CO2 Equivalent",
+    y = "Kt Carbon dioxides Eqv.",
     fill = "Category"
   ) + scale_y_continuous(limits = c(0, 8500),
                          labels = function(y)
@@ -227,15 +227,15 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(C) Ozone Depletion",
+    title = "(C) Ozone Depletion (Normal)",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
-    y = "Kt CFC-11 Equivalent",
+    y = "Kt CFC-11 \nEqv.",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 5),
+  ) + scale_y_continuous(limits = c(0, 5.1),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -288,13 +288,13 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(D) Ozone Depletion (Worst Case)",
-    subtitle = "Emission for worst case scenario consisting of \nblack carbon, aluminium oxide and water vapour",
+    subtitle = "Black carbon, aluminium oxide and water vapour included",
     x = NULL,
-    y = "Kt CFC-11 Equivalent",
+    y = "Kt CFC-11 \nEqv.",
     fill = "Category"
   ) + scale_y_continuous(limits = c(0, 7.5),
                          labels = function(y)
@@ -343,19 +343,19 @@ df$category = factor(df$category, levels =
 resource_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e3)) +
   geom_bar(stat = "identity", aes(fill = category)) + 
   geom_text(
-    aes(x = constellation, y = value/1e3, label = round(value/1e3, 1)),
+    aes(x = constellation, y = value/1e3, label = round(value/1e3, 0)),
     size = 1.2,
     data = totals,
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(E) Resource Depletion",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
-    y = "Tonnes Sb. Equivalent",
+    y = "Tonnes Sb. Eqv.",
     fill = "Category"
   ) + scale_y_continuous(limits = c(0, 300),
     labels = function(y)
@@ -399,28 +399,29 @@ df$category = factor(df$category, levels =
                      labels = c("Launcher Production", "Launcher Propellant Production", 
                                 "Launch Campaign", "Transportation of Launcher", 
                                 "Launcher AIT", "SCHD of Propellant", "Launch Event"))
-freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
+freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e8)) +
   geom_bar(stat = "identity", aes(fill = category)) + 
   geom_text(
-    aes(x = constellation, y = value/1e6, label = round(value/1e6, 1)),
+    aes(x = constellation, y = value/1e8, label = round(value/1e8, 0)),
     size = 1.2,
     data = totals,
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(F) Freshwater Ecotoxicity",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
-    y = "PAF.M3.DAY (million)",
+    y = "PAF.M3.DAY (bquote(~10^7))",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 11000),
+  ) + scale_y_continuous(limits = c(0, 105),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +  theme(plot.title = element_text(face = "bold")) + 
+  ) + ylab(bquote('PAF.M3.DAY ('*~10^8*')')) +
+  theme(plot.title = element_text(face = "bold")) + 
   theme(legend.position = "none", axis.title = element_text(size = 6)) + 
   theme(axis.line = element_line(colour = "black"),
         strip.text.x = element_blank(),
@@ -469,7 +470,7 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
     vjust = -1,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Set1") +
+  )  + scale_fill_brewer(palette = "Dark2") +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(G) Human Ecotoxicity",
@@ -519,14 +520,14 @@ df$Category = factor(df$category, levels =
                          "transportation", "ait", 
                          "scheduling", "launching"),
                      labels = c("Launcher \nProduction", "Launcher \nPropellant \nProduction", 
-                                "Launch \nCampaign", "Transportation of \nLauncher", 
-                                "Launcher AIT", "SCHD of \nPropellant", "Launch \nEvent"))
+                                "Launch \nCampaign", "Transportation \nof Launcher", 
+                                "Launcher \nAssembling \nIntegration \n& Testing", "Scheduling \nof \nPropellant", "Launch \nEvent"))
 legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
   geom_point(size=0.005) + 
   lims(x = c(0,0), y = c(0,0))+
-  theme_void()+ scale_color_brewer(palette = "Set1") +
+  theme_void()+ scale_color_brewer(palette = "Dark2") +
   theme(legend.direction = "vertical",
-        legend.position = c(0.7, 0.48),
+        legend.position = c(0.7, 0.5),
         legend.key.size = unit(1, "cm"),
         legend.text = element_text(size =  6),
         legend.title = element_text(size = 8, face = "bold"))+
@@ -556,7 +557,7 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 5.57,
+  width = 5.3,
   height = 6.5,
   res = 480
 )
@@ -578,67 +579,66 @@ data <-
     per_subscriber_emission,
     emission_per_capacity,
     per_cost_emission,
-    total_emissions
+    total_emissions,
+    total_climate_emissions
   )
 
 ###########################
 ##plot1 = Total Emissions##
 ###########################
 df = data %>%
-  group_by(constellation, impact_category) %>%
+  group_by(constellation) %>%
   summarize(
-    mean = mean(total_emissions),
-    sd = sd(total_emissions)
+    mean = mean(total_climate_emissions),
+    sd = sd(total_climate_emissions)
   )
 
 totals <- data %>%
   group_by(constellation) %>%
-  summarize(value = signif(sum(total_emissions)))
+  summarize(value = signif(sum(total_climate_emissions)))
 
 
-df$impact_category = as.factor(df$impact_category)
 df$Constellation = factor(df$constellation)
-df$category = factor(df$impact_category, levels = 
-    c("total_global_warming_em", "total_ozone_depletion_em", 
-    "total_mineral_depletion", "total_freshwater_toxicity", 
-    "total_human_toxicity", "total_water_depletion"),
-    labels = c("Climate Change", "Ozone Depletion", 
-    "Resource Depletion", "Freshwater Ecotoxicity", 
-    "Human Ecotoxicity", "Freshwater Depletion"))
 
-emission_totals <- ggplot(df, aes(x = Constellation, y = mean/1e9)) +
-  geom_bar(stat = "identity", aes(fill = category)) + 
-  scale_fill_brewer(palette = "Set1") +
+emission_totals <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
+  geom_bar(stat = "identity", aes(fill = Constellation)) + 
+  geom_errorbar(
+    aes(ymin = mean/1e6 - sd/1e6, ymax = mean/1e6 + sd/1e6),
+    width = .2,
+    position = position_dodge(.9),
+    color = "black",
+    size = 0.2
+  ) + 
+  scale_fill_brewer(palette = "Dark2") +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(A) Total Emissions",
-    subtitle = "By impact category",
+    subtitle = "Reported for climate change impacts",
     x = NULL,
-    y = "Total Emissions (Mt)",
+    y = "Total Emissions \n(Mt)",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 55),
+  ) + scale_y_continuous(#limits = c(0, 55),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) + theme_minimal() + theme(plot.title = element_text(face = "bold")) +
-  theme(strip.text.x = element_blank(),
+  ) +   theme_minimal() + theme(
+    strip.text.x = element_blank(),
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line = element_line(colour = "black")) +
-  theme(legend.position = "bottom", axis.title = element_text(size = 4)) +
-  theme(
-    legend.direction = "horizontal",
-    legend.position = c(0.37, 0.88),
-    legend.title = element_text(size = 4),
-    legend.text = element_text(size = 4),
-    plot.subtitle = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
+    axis.line = element_line(colour = "black")
+  ) + theme(plot.title = element_text(face = "bold")) +
+  theme(legend.position = "none", axis.title = element_text(size = 6)) +
+  theme(
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 6),
     plot.title = element_text(size = 8)
-  ) + guides(fill = guide_legend(ncol = 2, nrow = 3))
+  )
 
 ##########################################
 ##plot2 = Emissions Vs Capacity Provided##
@@ -653,33 +653,33 @@ df = data %>%
 
 df$Constellation = factor(df$constellation)
 emission_capacity <- ggplot(df, aes(x = Constellation, 
-  y = mean, fill = Constellation)) +
+  y = mean/1e3, fill = Constellation)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd/1e2, ymax = mean + sd/1e2),
+    aes(ymin = mean/1e3 - sd/1e4, ymax = mean/1e3 + sd/1e4),
     width = .2,
     position = position_dodge(.9),
     color = "black",
     size = 0.2
   ) + geom_text(
-    aes(label = round(after_stat(y), 1), group = Constellation),
+    aes(label = round(after_stat(y), 0), group = Constellation),
     stat = "summary",
     fun = sum,
     vjust = -.5,
     hjust = -0.8,
     size = 1.5
   ) +
-  scale_fill_brewer(palette = "Set1") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
-    title = "(C) Emissions vs Provided Capacity",
+    title = "(C) Emissions vs User Traffic",
     subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions \n(t/Gbps)",
+    y = "Emissions \n(t/GB)",
     fill = "Constellations"
-  ) + scale_y_continuous(limits = c(0, 1000),
+  ) + scale_y_continuous(#limits = c(0, 1000),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -721,7 +721,7 @@ emission_cost <- ggplot(df, aes(x = Constellation,
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd/1e2, ymax = mean + sd/1e2),
+    aes(ymin = mean - sd/1, ymax = mean + sd/1),
     width = .2,
     position = position_dodge(.9),
     color = "black",
@@ -734,7 +734,7 @@ emission_cost <- ggplot(df, aes(x = Constellation,
     hjust = -1.2,
     size = 1.5
   ) + 
-  scale_fill_brewer(palette = "Set1") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "(D) Emissions vs Investment Cost",
@@ -788,13 +788,13 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd/10, ymax = mean + sd/10),
+    aes(ymin = mean - sd, ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Set1") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "(B) Emission vs Users",

@@ -55,7 +55,7 @@ chn_capacity <-
     color = 'black',
     size = 0.3
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -120,7 +120,7 @@ sat_capacity <-
     color = 'black',
     size = 0.3
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'bottom') + labs(
     colour = NULL,
     title = "Single Satellite Aggregate Capacity",
@@ -184,7 +184,7 @@ const_capacity <-
     color = 'black',
     size = 0.3
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   labs(
     colour = NULL,
     title = "Aggregate Constellation Capacity",
@@ -225,14 +225,14 @@ data2 <- read.csv(file.path(folder, "mission_emission_results.csv"))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(mean = mean(capacity_per_user),
-            sd = sd(capacity_per_user))
+  summarize(mean = mean(monthly_gb),
+            sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
-  levels = c('Low', 'Baseline', 'High'),
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
   labels = c('Low', 'Baseline', 'High')
 )
 
@@ -250,20 +250,20 @@ capacity_subscriber <-
     color = 'black',
     size = 0.3
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Dark2") +
   labs(
     colour = NULL,
-    title = "Capacity per User",
+    title = "Monthly Traffic",
     subtitle = "By subscriber scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capacity (Mbps/user)",
+    y = "Traffic (GB/user)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 150)
+    limits = c(0, 3050)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),

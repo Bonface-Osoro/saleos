@@ -208,7 +208,7 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                             water_depletion_campaign + water_depletion_propellant + \
                             water_depletion_ait + water_depletion_roct
 
-    total_emissions = total_global_warming_em 
+    total_emissions = total_global_warming_em  
 
 
     results.append({"constellation": constellation, 
@@ -321,7 +321,8 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                     "total_mineral_depletion": total_mineral_depletion,
                     "total_freshwater_toxicity": total_freshwater_toxicity,
                     "total_human_toxicity": total_human_toxicity,
-                    "total_water_depletion": total_water_depletion
+                    "total_water_depletion": total_water_depletion,
+                    "total_climate_change": total_emissions
                     })
 
     df = pd.DataFrame.from_dict(results)
