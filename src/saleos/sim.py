@@ -862,21 +862,19 @@ def soyuz_fg():
     """
     emissions_dict = {}
 
-    emissions_dict['acidification'] = 157.857
+    emissions_dict['global_warming'] = 212272888.91
 
-    emissions_dict['global_warming'] = 288655.1096
+    emissions_dict['global_warming_wc'] = 288655.1096
 
-    emissions_dict['ozone_depletion'] = 3157.14
+    emissions_dict['ozone_depletion'] = 13872.25
 
-    emissions_dict['particulate_matter'] = 10964.4722
+    emissions_dict['ozone_depletion_wc'] = 3157.14
     
     emissions_dict['mineral_depletion'] = 0 
 
     emissions_dict['freshwater_toxicity'] = 0 
 
     emissions_dict['human_toxicity'] = 0 
-
-    emissions_dict['water_depletion'] = 0 
 
     return emissions_dict
 
@@ -899,21 +897,19 @@ def falcon_9():
     """
     emission_dict = {}
 
-    emission_dict['acidification'] = 341.859
+    emission_dict['global_warming'] = 27266165.94
 
-    emission_dict['global_warming'] = 630466.1352
+    emission_dict['global_warming_wc'] = 630466.1352
 
-    emission_dict['ozone_depletion'] = 6837.18
+    emission_dict['ozone_depletion'] = 30767.31
 
-    emission_dict['particulate_matter'] = 24525.9414
+    emission_dict['ozone_depletion_wc'] = 6837.18
 
     emission_dict['mineral_depletion'] = 0
 
     emission_dict['freshwater_toxicity'] = 0 
 
     emission_dict['human_toxicity'] = 0 
-
-    emission_dict['water_depletion'] = 0 
 
     return emission_dict
 
@@ -976,21 +972,19 @@ def ariane():
     """
     emission_dict = {}
 
-    emission_dict['acidification'] = 65176.43
+    emission_dict['global_warming'] = 108922163.2
 
     emission_dict['global_warming'] = 467816.8
 
-    emission_dict['ozone_depletion'] = 86728.6
+    emission_dict['ozone_depletion'] = 211083.6
 
-    emission_dict['particulate_matter'] = 158980.878
+    emission_dict['ozone_depletion_wc'] = 86728.6
     
     emission_dict['mineral_depletion'] = 0
 
     emission_dict['freshwater_toxicity'] = 0 
 
     emission_dict['human_toxicity'] = 0 
-
-    emission_dict['water_depletion'] = 0 
 
     return emission_dict
 
@@ -1005,22 +999,16 @@ def ariane_rocket_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 54180.76808
 
     emission_dict['global_warming'] = 11018755.48
 
     emission_dict['ozone_depletion'] = 0.745735051
-
-    emission_dict['particulate_matter'] = 28957.00033
 
     emission_dict['mineral_depletion'] = 2719.725687
 
     emission_dict['freshwater_toxicity'] = 69735037.48
 
     emission_dict['human_toxicity'] = 4.585385379
-
-    emission_dict['water_depletion'] = 72724206.06
     
     return emission_dict
 
@@ -1036,22 +1024,16 @@ def falcon9_rocket_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 198435.5397
 
-    emission_dict['global_warming'] = 35339152.42
+    emission_dict['global_warming'] = 4113533.907
 
-    emission_dict['ozone_depletion'] = 2.64478797
+    emission_dict['ozone_depletion'] = 0.277478514
 
-    emission_dict['particulate_matter'] = 97319.64784
+    emission_dict['mineral_depletion'] = 1783.337118
 
-    emission_dict['mineral_depletion'] = 22544.0257
+    emission_dict['freshwater_toxicity'] = 20253601.64
 
-    emission_dict['freshwater_toxicity'] = 188591914
-
-    emission_dict['human_toxicity'] = 13.78955101
-
-    emission_dict['water_depletion'] = 266498435.6
+    emission_dict['human_toxicity'] = 1.51530806
     
     return emission_dict
 
@@ -1067,22 +1049,16 @@ def soyuzfg_rocket_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 222796.2579
 
     emission_dict['global_warming'] = 44680412.98
 
     emission_dict['ozone_depletion'] = 3.11181773
-
-    emission_dict['particulate_matter'] = 117159.6716
 
     emission_dict['mineral_depletion'] = 12473.4086
 
     emission_dict['freshwater_toxicity'] = 280703930.5
 
     emission_dict['human_toxicity'] = 19.1361269
-
-    emission_dict['water_depletion'] = 300062816.3
     
     return emission_dict
 
@@ -1098,22 +1074,16 @@ def ariane_propellant_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 24130.48328
 
     emission_dict['global_warming'] = 4793267.48
 
     emission_dict['ozone_depletion'] = 0.223292749
-
-    emission_dict['particulate_matter'] = 7006.545607
 
     emission_dict['mineral_depletion'] = 34.59642811
 
     emission_dict['freshwater_toxicity'] = 17124098.34
 
     emission_dict['human_toxicity'] = 1.520253794
-
-    emission_dict['water_depletion'] = 28627598.23
     
     return emission_dict
 
@@ -1129,22 +1099,16 @@ def falcon_propellant_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 8035.285105
 
-    emission_dict['global_warming'] = 1658693.764
+    emission_dict['global_warming'] = 4744753.339
 
-    emission_dict['ozone_depletion'] = 0.19117908
+    emission_dict['ozone_depletion'] = 0.546874653
 
-    emission_dict['particulate_matter'] = 2431.63847
+    emission_dict['mineral_depletion'] = 32.92663196
 
-    emission_dict['mineral_depletion'] = 11.51065086
+    emission_dict['freshwater_toxicity'] = 15292951.2
 
-    emission_dict['freshwater_toxicity'] = 5346183.662
-
-    emission_dict['human_toxicity'] = 0.481982373
-
-    emission_dict['water_depletion'] = 11044585.32
+    emission_dict['human_toxicity'] = 1.378727964
     
     return emission_dict
 
@@ -1160,22 +1124,16 @@ def soyuzfg_propellant_production():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 4673.557463
 
     emission_dict['global_warming'] = 968910.1994
 
     emission_dict['ozone_depletion'] = 0.109998823
-
-    emission_dict['particulate_matter'] = 1415.050324
 
     emission_dict['mineral_depletion'] = 6.71625049
 
     emission_dict['freshwater_toxicity'] = 3114043.098
 
     emission_dict['human_toxicity'] = 0.28140976
-
-    emission_dict['water_depletion'] = 6419840.99
     
     return emission_dict
 
@@ -1191,22 +1149,16 @@ def ariane_transportation():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 176.2347537
 
     emission_dict['global_warming'] = 11043.18682
 
     emission_dict['ozone_depletion'] = 0.001892801
-
-    emission_dict['particulate_matter'] = 55.66084637
 
     emission_dict['mineral_depletion'] = 0.194786912
 
     emission_dict['freshwater_toxicity'] = 17341.87779
 
     emission_dict['human_toxicity'] = 0.001653926
-
-    emission_dict['water_depletion'] = 15359.77386
     
     return emission_dict
 
@@ -1222,22 +1174,16 @@ def falcon9_transportation():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 44.88002212
 
     emission_dict['global_warming'] = 17220.72491
 
     emission_dict['ozone_depletion'] = 0.003568284
-
-    emission_dict['particulate_matter'] = 29.15460898
 
     emission_dict['mineral_depletion'] = 0.83687164
 
     emission_dict['freshwater_toxicity'] = 47571.20342
 
     emission_dict['human_toxicity'] = 0.004766684
-
-    emission_dict['water_depletion'] = 19269.82569
     
     return emission_dict
 
@@ -1254,21 +1200,15 @@ def soyuzfg_transportation():
     """
     emission_dict = {} 
     
-    emission_dict['acidification'] = 23.61629256
-
     emission_dict['global_warming'] = 4328.603808
 
     emission_dict['ozone_depletion'] = 0.001339551
-
-    emission_dict['particulate_matter'] = 12.50376157
 
     emission_dict['mineral_depletion'] = 0.158493574
 
     emission_dict['freshwater_toxicity'] = 22931.63867
 
     emission_dict['human_toxicity'] = 0.002580373
-
-    emission_dict['water_depletion'] = 59492.59014
     
     return emission_dict
 
@@ -1285,21 +1225,15 @@ def waste_decontamination():
     """
     emission_dict = {} 
 
-    emission_dict['acidification'] = 0.044415433
-
     emission_dict['global_warming'] = 8.178531277
 
     emission_dict['ozone_depletion'] = 0.000000855992
-
-    emission_dict['particulate_matter'] = 0.013622665
 
     emission_dict['mineral_depletion'] = 0.000238204
 
     emission_dict['freshwater_toxicity'] = 47.24602286
 
     emission_dict['human_toxicity'] = 0.00000283671
-
-    emission_dict['water_depletion'] = 56.59444675
     
     return emission_dict
 
@@ -1315,22 +1249,16 @@ def propellant_handling():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 0.018030463
 
     emission_dict['global_warming'] = 5.277030386
 
     emission_dict['ozone_depletion'] = 0.00000026525
-
-    emission_dict['particulate_matter'] = 0.006432194
 
     emission_dict['mineral_depletion'] = 0.000372566
 
     emission_dict['freshwater_toxicity'] = 5.984817084
 
     emission_dict['human_toxicity'] = 0.000000601283
-
-    emission_dict['water_depletion'] = 2.308026645
     
     return emission_dict
 
@@ -1346,22 +1274,16 @@ def propellant_storage():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 0.190349538
 
     emission_dict['global_warming'] = 5.789177649
 
     emission_dict['ozone_depletion'] = 0.000000461473
-
-    emission_dict['particulate_matter'] = 0.144724364
 
     emission_dict['mineral_depletion'] = 0.000117724
 
     emission_dict['freshwater_toxicity'] = 22.90504946
 
     emission_dict['human_toxicity'] = 0.00000206909
-
-    emission_dict['water_depletion'] = 40.74218258
     
     return emission_dict
 
@@ -1377,22 +1299,16 @@ def launcher_AIT():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 8825.019187
 
     emission_dict['global_warming'] = 1616263.557
 
     emission_dict['ozone_depletion'] = 0.156575296
-
-    emission_dict['particulate_matter'] = 3113.030938
 
     emission_dict['mineral_depletion'] = 15.65466435
 
     emission_dict['freshwater_toxicity'] = 7701094.993
 
     emission_dict['human_toxicity'] = 0.486234151
-
-    emission_dict['water_depletion'] = 22191474.45
     
     return emission_dict
 
@@ -1408,22 +1324,16 @@ def launcher_campaign():
 
     """
     emission_dict = {} 
-    
-    emission_dict['acidification'] = 26479.61301
 
     emission_dict['global_warming'] = 5666556.742
 
     emission_dict['ozone_depletion'] = 0.777870405
-
-    emission_dict['particulate_matter'] = 7995.731848
 
     emission_dict['mineral_depletion'] = 33.22600998
 
     emission_dict['freshwater_toxicity'] = 18683396.82
 
     emission_dict['human_toxicity'] = 1.695861368
-
-    emission_dict['water_depletion'] = 39174017.92
     
     return emission_dict
 
@@ -1440,21 +1350,15 @@ def propellant_containment():
     """
     emission_dict = {} 
 
-    emission_dict['acidification'] = 15.20166461
-
     emission_dict['global_warming'] = 3010.041736
 
     emission_dict['ozone_depletion'] = 0.000153001
-
-    emission_dict['particulate_matter'] = 12.7975931
 
     emission_dict['mineral_depletion'] = 0.304111566
 
     emission_dict['freshwater_toxicity'] = 26153.09824
 
     emission_dict['human_toxicity'] = 0.001972144
-
-    emission_dict['water_depletion'] = 56899.79493
     
     return emission_dict
 
