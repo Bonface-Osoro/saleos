@@ -862,7 +862,7 @@ def soyuz_fg():
     """
     emissions_dict = {}
 
-    emissions_dict['global_warming'] = 212272888.91
+    emissions_dict['global_warming'] = 12272888.91
 
     emissions_dict['global_warming_wc'] = 288655.1096
 
@@ -974,7 +974,7 @@ def ariane():
 
     emission_dict['global_warming'] = 108922163.2
 
-    emission_dict['global_warming'] = 467816.8
+    emission_dict['global_warming_wc'] = 467816.8
 
     emission_dict['ozone_depletion'] = 211083.6
 
