@@ -862,13 +862,13 @@ def soyuz_fg():
     """
     emissions_dict = {}
 
-    emissions_dict['global_warming'] = 12272888.91
+    emissions_dict['global_warming'] = 288655.1096
 
-    emissions_dict['global_warming_wc'] = 288655.1096
+    emissions_dict['global_warming_wc'] = 12031437.19
 
-    emissions_dict['ozone_depletion'] = 13872.25
+    emissions_dict['ozone_depletion'] = 3157.14 
 
-    emissions_dict['ozone_depletion_wc'] = 3157.14
+    emissions_dict['ozone_depletion_wc'] = 13872.25
     
     emissions_dict['mineral_depletion'] = 0 
 
@@ -897,13 +897,13 @@ def falcon_9():
     """
     emission_dict = {}
 
-    emission_dict['global_warming'] = 27266165.94
+    emission_dict['global_warming'] = 630466.1352  
 
-    emission_dict['global_warming_wc'] = 630466.1352
+    emission_dict['global_warming_wc'] = 27266165.94
 
-    emission_dict['ozone_depletion'] = 30767.31
+    emission_dict['ozone_depletion'] = 6837.18
 
-    emission_dict['ozone_depletion_wc'] = 6837.18
+    emission_dict['ozone_depletion_wc'] = 30767.31
 
     emission_dict['mineral_depletion'] = 0
 
@@ -972,13 +972,13 @@ def ariane():
     """
     emission_dict = {}
 
-    emission_dict['global_warming'] = 108922163.2
+    emission_dict['global_warming'] = 467816.8
 
-    emission_dict['global_warming_wc'] = 467816.8
+    emission_dict['global_warming_wc'] = 107643343.2
 
-    emission_dict['ozone_depletion'] = 211083.6
+    emission_dict['ozone_depletion'] = 86728.6 
 
-    emission_dict['ozone_depletion_wc'] = 86728.6
+    emission_dict['ozone_depletion_wc'] = 211083.6
     
     emission_dict['mineral_depletion'] = 0
 

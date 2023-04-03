@@ -53,13 +53,13 @@ constellation_capex <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capital Expenditure (Capex) Costs",
+    title = "Capital Expenditure(Capex)",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capex \n(Million US$)",
@@ -78,6 +78,8 @@ constellation_capex <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -85,7 +87,7 @@ constellation_capex <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -114,9 +116,9 @@ constellation_opex <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -139,6 +141,8 @@ constellation_opex <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -146,7 +150,7 @@ constellation_opex <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -175,13 +179,13 @@ constellation_tco <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Total Cost of Ownership (TCO)",
+    title = "Total Cost of Ownership \n(TCO)",
     subtitle = "By capex scenario (Error bars: 1SD).",
     x = NULL,
     y = "Opex \n(Million US$)",
@@ -200,6 +204,8 @@ constellation_tco <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -207,7 +213,7 @@ constellation_tco <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -236,16 +242,16 @@ constellation_capex_per_user <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
     title = "Capex per User",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex \n(US$ per User",
+    y = "Capex (US$ per User",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -261,6 +267,8 @@ constellation_capex_per_user <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -268,7 +276,7 @@ constellation_capex_per_user <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -297,16 +305,16 @@ constellation_opex_per_user <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
     title = "Opex per User",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(US$ per User",
+    y = "Opex (US$ per User",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -322,6 +330,8 @@ constellation_opex_per_user <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -329,7 +339,7 @@ constellation_opex_per_user <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -358,16 +368,16 @@ constellation_tco_per_user <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
     title = "TCO per User",
-    subtitle = "By capex scenario (Error bars: 1SD).",
+    subtitle = "By capex scenario \n(Error bars: 1SD).",
     x = NULL,
-    y = "TCO \n(US$ per User",
+    y = "TCO (US$ per User",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -383,6 +393,8 @@ constellation_tco_per_user <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -390,7 +402,7 @@ constellation_tco_per_user <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -409,26 +421,26 @@ df$capex = factor(df$capex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_capex_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e3, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
+    aes(ymin = mean/1e3 - sd/1e3,
+        ymax = mean/1e3 + sd/1e3),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capex per Capacity",
+    title = "Capex for Traffic",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex \n(US$ per Mbps",
+    y = "Capex ('000' US$ per GB",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -444,6 +456,8 @@ constellation_capex_capacity <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -451,9 +465,8 @@ constellation_capex_capacity <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size = 7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
-
 
 
 #############################################
@@ -471,26 +484,26 @@ df$opex = factor(df$opex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_opex_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = opex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e3, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
+    aes(ymin = mean/1e3 - sd/1e3,
+        ymax = mean/1e3 + sd/1e3),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Opex per Capacity",
+    title = "Opex for Traffic",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(US$ per Mbps",
+    y = "Opex ('000' US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -506,6 +519,8 @@ constellation_opex_capacity <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -513,7 +528,7 @@ constellation_opex_capacity <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size =7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -532,26 +547,26 @@ df$capex = factor(df$capex_scenario,
                  levels = c('Low', 'Baseline', 'High'))
 
 constellation_tco_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
+    aes(ymin = mean/1e6 - sd/1e6,
+        ymax = mean/1e6 + sd/1e6),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "TCO per Capacity",
+    title = "TCO per Traffic",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(US$ per Mbps",
+    y = "Opex \n(Million \nUS$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -567,6 +582,8 @@ constellation_tco_capacity <-
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -574,7 +591,7 @@ constellation_tco_capacity <-
     legend.title = element_text(size = 7),
     legend.text = element_text(size =7),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -595,8 +612,9 @@ pub_const_cost <- ggarrange(
   nrow = 3,
   ncol = 3,
   common.legend = T,
-  legend = "bottom",
-  labels = c("a", "b", "c", "d", "e", "f", "g", "h", "i")
+  legend = "bottom", 
+  labels = c("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)"),
+  font.label = list(size = 9)
 )
 
 path = file.path(folder, 'figures', 'pub_cost_profile.tiff')
