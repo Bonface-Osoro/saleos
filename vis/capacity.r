@@ -1,6 +1,5 @@
 library(ggpubr)
 library(ggplot2)
-library(dplyr)
 library(tidyverse)
 
 
@@ -14,12 +13,10 @@ data <- read.csv(file.path(folder, "uq_results.csv"))
 # INDIVIDUAL PLOTS WITH ERROR BARS #
 data <- select(
   data,
-  channel_capacity,
   constellation,
   cnr_scenario,
   channel_capacity,
   capacity_per_single_satellite,
-  capacity_per_area_mbps.sqkm,
   constellation_capacity,
   cnr
 )
@@ -53,7 +50,7 @@ chn_capacity <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') +
@@ -76,6 +73,8 @@ chn_capacity <-
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.x = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -83,7 +82,7 @@ chn_capacity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -118,7 +117,7 @@ sat_capacity <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'bottom') + labs(
@@ -140,6 +139,8 @@ sat_capacity <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.text.x = element_text(size = 6),
     axis.line = element_line(colour = "black")
   ) +
@@ -148,7 +149,7 @@ sat_capacity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -182,7 +183,7 @@ const_capacity <-
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   labs(
@@ -207,13 +208,15 @@ const_capacity <-
     axis.line = element_line(colour = "black"),
     axis.text.x = element_text(size = 6),
     axis.title = element_text(size = 8),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom'
   ) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -237,18 +240,18 @@ df$subscriber_scenario = factor(
 )
 
 capacity_subscriber <-
-  ggplot(df, aes(x = Constellation, y = mean,
+  ggplot(df, aes(x = Constellation, y = mean/1e3,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
            position = position_dodge()) +
   geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
+    aes(ymin = mean/1e3 - sd/1e3,
+        ymax = mean/1e3 + sd/1e3),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
-    size = 0.3
+    size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") +
   labs(
@@ -256,14 +259,14 @@ capacity_subscriber <-
     title = "Monthly Traffic",
     subtitle = "By subscriber scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Traffic (GB/user)",
+    y = "Traffic ('000' GB/user)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 3050)
+    #limits = c(0, 35)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -271,6 +274,8 @@ capacity_subscriber <-
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.x = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
@@ -278,7 +283,7 @@ capacity_subscriber <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10, face = "bold")
   )
 
 
@@ -295,7 +300,8 @@ pub_cap <- ggarrange(
   ncol = 2,
   common.legend = T,
   legend = "bottom",
-  labels = c("a", "b", "c", "d")
+  labels = c("(A)", "(B)", "(D)", "(E)"),
+  font.label = list(size = 9)
 )
 
 path = file.path(folder, 'figures', 'pub_capacity_profile.tiff')
