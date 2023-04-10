@@ -159,8 +159,8 @@ sat_capacity <-
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
-  summarise(mean = mean(constellation_capacity),
-            sd = sd(constellation_capacity)) %>%
+  summarise(mean = mean(constellation_capacity * 0.65),
+            sd = sd(constellation_capacity * 0.65)) %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
@@ -172,14 +172,14 @@ df$CNR = factor(
 )
 
 const_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6,
+  ggplot(df, aes(x = Constellation, y = (mean) * 0.65 / 1e6,
                  fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean / 1e6 - sd / 1e6,
-        ymax = mean / 1e6 + sd / 1e6),
+    aes(ymin = mean * 0.65 / 1e6 - sd * 0.65 / 1e6,
+        ymax = mean * 0.65 / 1e6 + sd * 0.65 / 1e6),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
@@ -188,7 +188,7 @@ const_capacity <-
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   labs(
     colour = NULL,
-    title = "Aggregate Constellation Capacity",
+    title = "Usable Constellation Capacity",
     subtitle = "By QoS scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capacity (Tbps)",
@@ -198,7 +198,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 130)
+    limits = c(0, 60)
   ) +
   theme_minimal() + theme(
     strip.text.x = element_blank(),
@@ -240,14 +240,14 @@ df$subscriber_scenario = factor(
 )
 
 capacity_subscriber <-
-  ggplot(df, aes(x = Constellation, y = mean/1e3,
+  ggplot(df, aes(x = Constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
            position = position_dodge()) +
   geom_errorbar(
-    aes(ymin = mean/1e3 - sd/1e3,
-        ymax = mean/1e3 + sd/1e3),
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
@@ -257,9 +257,9 @@ capacity_subscriber <-
   labs(
     colour = NULL,
     title = "Monthly Traffic",
-    subtitle = "By subscriber scenario (Error bars: 1SD).",
+    subtitle = "By number of subscribers (QoS Error bars: 1SD).",
     x = NULL,
-    y = "Traffic ('000' GB/user)",
+    y = "Traffic (GB/user)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -300,7 +300,7 @@ pub_cap <- ggarrange(
   ncol = 2,
   common.legend = T,
   legend = "bottom",
-  labels = c("(A)", "(B)", "(D)", "(E)"),
+  labels = c("(A)", "(B)", "(C)", "(D)"),
   font.label = list(size = 9)
 )
 

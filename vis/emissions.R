@@ -113,7 +113,7 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 2000),
+  ) + scale_y_continuous(limits = c(0, 8500),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -235,7 +235,7 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 50),
+  ) + scale_y_continuous(limits = c(0, 30),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -296,7 +296,7 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
     fill = "Category"
-  ) + scale_y_continuous(limits = c(0, 60),
+  ) + scale_y_continuous(limits = c(0, 30),
                          labels = function(y)
                            format(y, scientific = FALSE),
                          expand = c(0, 0)
@@ -674,7 +674,7 @@ totals <- data %>%
 df$Constellation = factor(df$constellation)
 
 emission_totals <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
-  geom_bar(stat = "identity", aes(fill = Constellation)) + 
+  geom_bar(stat = "identity") + 
   geom_errorbar(
     aes(ymin = mean/1e6 - sd/1e6, ymax = mean/1e6 + sd/1e6),
     width = .2,
@@ -740,7 +740,7 @@ totals <- data %>%
 df$Constellation = factor(df$constellation)
 
 emission_totals_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
-  geom_bar(stat = "identity", aes(fill = Constellation)) + 
+  geom_bar(stat = "identity") + 
   geom_errorbar(
     aes(ymin = mean/1e6 - sd/1e6, ymax = mean/1e6 + sd/1e6),
     width = .2,
@@ -805,7 +805,7 @@ df = data %>%
 
 df$Constellation = factor(df$constellation)
 emission_capacity <- ggplot(df, aes(x = Constellation, 
-  y = mean/1e3, fill = Constellation)) +
+  y = mean/1e3)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -829,9 +829,9 @@ emission_capacity <- ggplot(df, aes(x = Constellation,
     title = "(E) Emissions vs User Traffic",
     subtitle = "Error bars: 1 SD.",
     x = NULL,
-    y = "Emissions \n(t/GB)",
+    y = "Emissions (t/GB)",
     fill = "Constellations"
-  ) + scale_y_continuous(#limits = c(0, 1000),
+  ) + scale_y_continuous(limits = c(0, 17000),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -868,7 +868,7 @@ df = data %>%
 df$Constellation = factor(df$constellation)
 
 emission_cost <- ggplot(df, aes(x = Constellation, 
-  y = mean, fill = Constellation)) +
+  y = mean)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +

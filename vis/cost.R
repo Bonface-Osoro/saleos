@@ -122,10 +122,10 @@ constellation_opex <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Total Operating (Opex) Costs",
+    title = "Total Operating (Opex)",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(Million US$)",
+    y = "Opex (Million US$)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -188,7 +188,7 @@ constellation_tco <-
     title = "Total Cost of Ownership \n(TCO)",
     subtitle = "By capex scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(Million US$)",
+    y = "Opex (Million US$)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -251,7 +251,7 @@ constellation_capex_per_user <-
     title = "Capex per User",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex (US$ per User",
+    y = "Capex (US$ per User)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -314,7 +314,7 @@ constellation_opex_per_user <-
     title = "Opex per User",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex (US$ per User",
+    y = "Opex (US$ per User)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -377,7 +377,7 @@ constellation_tco_per_user <-
     title = "TCO per User",
     subtitle = "By capex scenario \n(Error bars: 1SD).",
     x = NULL,
-    y = "TCO (US$ per User",
+    y = "TCO (US$ per User)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -440,7 +440,7 @@ constellation_capex_capacity <-
     title = "Capex for Traffic",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex ('000' US$ per GB",
+    y = "Capex ('000' US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -484,13 +484,13 @@ df$opex = factor(df$opex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_opex_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean/1e3, fill = opex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e4, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean/1e3 - sd/1e3,
-        ymax = mean/1e3 + sd/1e3),
+    aes(ymin = mean/1e4 - sd/1e4,
+        ymax = mean/1e4 + sd/1e4),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
@@ -503,7 +503,7 @@ constellation_opex_capacity <-
     title = "Opex for Traffic",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex ('000' US$ per GB)",
+    y = "Opex ('0000' US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -566,7 +566,7 @@ constellation_tco_capacity <-
     title = "TCO per Traffic",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Opex \n(Million \nUS$ per GB)",
+    y = "Opex \n(Million US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(

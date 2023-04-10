@@ -116,7 +116,7 @@ def process_mission_total(data_path, results_path):
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
 
-        df["capacity_per_user"].loc[i] = (df["constellation_capacity"].loc[i] * 0.65) / df["subscribers"].loc[i]
+        df["capacity_per_user"].loc[i] = (df["constellation_capacity"].loc[i] * 0.65 * 0.5) / df["subscribers"].loc[i]
 
         df["monthly_gb"].loc[i] = monthly_traffic(df["capacity_per_user"].loc[i])
 
