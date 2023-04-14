@@ -108,7 +108,7 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(A) Climate Change Impacts (Normal)",
+    title = "(A) Climate Change Impacts (Baseline)",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
@@ -230,7 +230,7 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(C) Ozone Depletion (Normal)",
+    title = "(C) Ozone Depletion (Baseline)",
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
@@ -520,7 +520,7 @@ df$Category = factor(df$category, levels =
                          "transportation", "ait", 
                          "scheduling", "launching"),
                      labels = c("Launcher \nProduction", "Launcher \nPropellant \nProduction", 
-                                "Launch \nCampaign", "Transportation of Launcher", 
+                                "Launch \nCampaign", "Transportation \nof Launcher", 
                                 "Launcher \nAssembling \nIntegration \n& Testing", "Scheduling \nof \nPropellant", "Launch \nEvent"))
 legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
   geom_point(size=0.005) + 
@@ -533,7 +533,7 @@ legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
         legend.title = element_text(size = 7, face = "bold"))+
   guides(colour = guide_legend(override.aes = list(size=8),
                                ncol = 3, nrow = 4)) + 
-  labs(fill = "Category")
+  labs(fill = "Mission Stage")
 
 ####################################
 ## Combine all the emission plots ##
@@ -622,7 +622,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
     title = "(A) Rocket Fuel Compositions",
     subtitle = "Fuel amounts to complete all missions.",
     x = NULL,
-    y = "Fuel \nAmounts \n(Mt)",
+    y = "Fuel \nAmounts (Mt)",
     fill = "Fuel"
   ) +
   scale_y_continuous(
@@ -693,7 +693,7 @@ emission_totals <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   scale_fill_brewer(palette = "Dark2") +
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(B) Total Emissions (Normal Case)",
+    title = "(B) Total Emissions (Baseline Case)",
     subtitle = "Reported for climate change impacts",
     x = NULL,
     y = "Total Emissions (Mt)",
@@ -762,7 +762,7 @@ emission_totals_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     title = "(C) Total Emissions (Worst Case)",
     subtitle = "Black carbon, aluminium oxide and water vapour included",
     x = NULL,
-    y = "Total Emissions \n(Mt)",
+    y = "Total Emissions (Mt)",
     fill = "Category"
   ) + scale_y_continuous(#limits = c(0, 55),
     labels = function(y)
@@ -827,7 +827,7 @@ emission_capacity <- ggplot(df, aes(x = Constellation,
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "(E) Emissions vs User Traffic",
-    subtitle = "Error bars: 1 SD.",
+    subtitle = "Average monthly traffic (Traffic error bars: 1 SD.)",
     x = NULL,
     y = "Emissions (t/GB)",
     fill = "Constellations"
@@ -890,7 +890,7 @@ emission_cost <- ggplot(df, aes(x = Constellation,
   theme(legend.position = 'right') + labs(
     colour = NULL,
     title = "(F) Emissions vs Investment Cost",
-    subtitle = "Error bars: 1 SD.",
+    subtitle = "Cost error bars: 1 SD.",
     x = NULL,
     y = "Emissions (kg/US$)",
     fill = "Constellations"
@@ -983,9 +983,9 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
 pub_emission <-
   ggarrange(
     fuel_types,
+    emission_subscriber,
     emission_totals,
     emission_totals_wc,
-    emission_subscriber,
     emission_capacity,
     emission_cost,
     nrow = 3,
