@@ -36,7 +36,7 @@ def process_mission_total(data_path, results_path):
     
     #Select the columns to use.
     df = df[["constellation", "constellation_capacity", 
-        "capacity_scenario", "capex_costs", "capex_scenario", 
+        "capacity_scenario", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
         "subscribers_low", "subscribers_baseline", "subscribers_high",
         "total_opex", "total_cost_ownership", "opex_scenario", 
         "total_global_warming_em", "total_ozone_depletion_em",
@@ -73,7 +73,7 @@ def process_mission_total(data_path, results_path):
 
     # Classify subscribers by melting the dataframe into long format
     df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
-        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario",
+        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
         "opex_scenario", "total_cost_ownership", "mission_number", 
         "total_global_warming_em", "total_ozone_depletion_em", 
         "total_mineral_depletion", "total_freshwater_toxicity", 
@@ -85,7 +85,7 @@ def process_mission_total(data_path, results_path):
 
     # Classify total emissions by impact category
     df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
-        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario",
+        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
         "opex_scenario", "total_cost_ownership", "mission_number", 
         "subscriber_scenario", "subscribers", "total_emissions", 
         "total_climate_change", "total_climate_change_wc"], 
@@ -100,7 +100,7 @@ def process_mission_total(data_path, results_path):
     print("Finished calculating constellation emission totals")
 
     # Select columns to use
-    df = df[['constellation', 'constellation_capacity', 'capacity_scenario',
+    df = df[['constellation', 'constellation_capacity', 'capacity_scenario','satellite_coverage_area_km',
         'total_opex', 'capex_costs', 'capex_scenario', 'opex_scenario',
         'total_cost_ownership', 'mission_number', 'subscriber_scenario', 
         'subscribers', 'impact_category', 'total_emissions', 
@@ -111,7 +111,7 @@ def process_mission_total(data_path, results_path):
         "per_subscriber_emission", "capex_per_user", "opex_per_user", 
         "tco_per_user", "capex_per_capacity", "opex_per_capacity", 
         "tco_per_capacity", "monthly_gb", "total_climate_emissions",
-        "total_climate_emissions_wc"]] = ""
+        "total_climate_emissions_wc", "user_per_area"]] = ""
 
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
@@ -141,6 +141,8 @@ def process_mission_total(data_path, results_path):
         df["opex_per_capacity"].loc[i] = df["total_opex"].loc[i] / df["monthly_gb"].loc[i]
         
         df["tco_per_capacity"].loc[i] = df["total_cost_ownership"].loc[i] / df["monthly_gb"].loc[i]
+
+        df["user_per_area"].loc[i] = df["subscribers"].loc[i] / df["satellite_coverage_area_km"].loc[i]
          
     store_results = df.to_csv(results_path + "mission_emission_results.csv")
 

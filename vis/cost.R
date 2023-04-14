@@ -59,10 +59,10 @@ constellation_capex <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capital Expenditure(Capex)",
+    title = "Capital Expenditure (Capex)",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
-    y = "Capex \n(Million US$)",
+    y = "Capex (Million US$)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
