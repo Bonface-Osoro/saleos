@@ -112,7 +112,7 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     subtitle = "By emission at different stage of satellite mission",
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 8500),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -173,7 +173,7 @@ climate_change_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     subtitle = "Black carbon, aluminium oxide and water vapour included",
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 8500),
                          labels = function(y)
                            format(y, scientific = FALSE),
@@ -231,10 +231,10 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(C) Ozone Depletion (Baseline)",
-    subtitle = "By emission at different stage of satellite mission",
+    subtitle = "Impact at different stage of satellite mission",
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 30),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -295,7 +295,7 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     subtitle = "Black carbon, aluminium oxide and water vapour included",
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 30),
                          labels = function(y)
                            format(y, scientific = FALSE),
@@ -353,10 +353,10 @@ resource_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e3)) +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(E) Resource Depletion",
-    subtitle = "By emission at different stage of satellite mission",
+    subtitle = "Impact at different stage of satellite mission",
     x = NULL,
     y = "Tonnes Sb. Eqv.",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 500),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -412,10 +412,10 @@ freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e8)) +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(F) Freshwater Ecotoxicity",
-    subtitle = "By emission at different stage of satellite mission",
+    subtitle = "Impact at different stage of satellite mission",
     x = NULL,
     y = "PAF.M3.DAY (bquote(~10^7))",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 300),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -474,10 +474,10 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "(G) Human Ecotoxicity",
-    subtitle = "By emission at different stage of satellite mission",
+    subtitle = "Impact at different stage of satellite mission",
     x = NULL,
     y = "CASES",
-    fill = "Category"
+    fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 850),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -524,7 +524,7 @@ df$Category = factor(df$category, levels =
                                 "Launcher \nAssembling \nIntegration \n& Testing", "Scheduling \nof \nPropellant", "Launch \nEvent"))
 legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
   geom_point(size=0.005) + 
-  lims(x = c(0,0), y = c(0,0))+
+  lims(x = c(0,0), y = c(0,0))+ labs(fill = "Satellite Mission Stage") +
   theme_void()+ scale_color_brewer(palette = "Dark2") +
   theme(legend.direction = "vertical",
         legend.position = c(0.67, 0.45),
@@ -532,8 +532,7 @@ legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
         legend.text = element_text(size =  5),
         legend.title = element_text(size = 7, face = "bold"))+
   guides(colour = guide_legend(override.aes = list(size=8),
-                               ncol = 3, nrow = 4)) + 
-  labs(fill = "Mission Stage")
+                               ncol = 3, nrow = 4))
 
 ####################################
 ## Combine all the emission plots ##
@@ -949,7 +948,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
-    title = "(D) Emission vs Users",
+    title = "(B) Emission vs Users",
     subtitle = "By different subscriber scenarios.",
     x = NULL,
     y = "Emission \n(Tonnes/subscriber)",
@@ -984,11 +983,7 @@ pub_emission <-
   ggarrange(
     fuel_types,
     emission_subscriber,
-    emission_totals,
-    emission_totals_wc,
-    emission_capacity,
-    emission_cost,
-    nrow = 3,
+    nrow = 1,
     ncol = 2
   )
 
@@ -998,7 +993,7 @@ tiff(
   path,
   units = "in",
   width = 6,
-  height = 6.5,
+  height = 3,
   res = 480
 )
 print(pub_emission)

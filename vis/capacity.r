@@ -57,7 +57,7 @@ chn_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "Channel Capacity",
+    subtitle = "(a) Channel Capacity",
     x = NULL,
     y = "Capacity (Gbps)",
     fill = 'Scenario'
@@ -83,7 +83,7 @@ chn_capacity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 
@@ -124,7 +124,7 @@ sat_capacity <-
   theme(legend.position = 'bottom') + labs(
     colour = NULL,
     title = " ",
-    subtitle = "Satellite Capacity",
+    subtitle = "(a) Satellite Capacity",
     x = NULL,
     y = "Capacity (Gbps)",
     fill = 'Scenario'
@@ -151,7 +151,7 @@ sat_capacity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 
@@ -191,7 +191,7 @@ const_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "Usable Constellation Capacity",
+    subtitle = "(c) Usable Constellation Capacity",
     x = NULL,
     y = "Capacity (Tbps)",
     fill = 'Scenario'
@@ -219,7 +219,7 @@ const_capacity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 
@@ -260,9 +260,9 @@ capacity_subscriber <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "Monthly Traffic",
+    subtitle = "(d) Monthly Traffic",
     x = NULL,
-    y = "Traffic (GB/user)",
+    y = "Average Traffic (GB/user) over \nthe 5-year constellation lifespan",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -287,7 +287,7 @@ capacity_subscriber <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 
@@ -326,7 +326,7 @@ capacity_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "Mean Capacity per User",
+    subtitle = "(e) Mean Capacity per User",
     x = NULL,
     y = "Mean capacity (Mbps/user)",
     fill = 'Scenario'
@@ -353,7 +353,7 @@ capacity_per_user <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 
@@ -384,7 +384,7 @@ per_user_area <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "Mean User per Area",
+    subtitle = "(f) Mean User per Area",
     x = NULL,
     y = 'Mean subscriber per (bquote(~km^2))',
     fill = 'Scenario'
@@ -411,7 +411,7 @@ per_user_area <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
 

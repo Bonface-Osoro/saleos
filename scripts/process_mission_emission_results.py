@@ -118,7 +118,7 @@ def process_mission_total(data_path, results_path):
 
         df["capacity_per_user"].loc[i] = (df["constellation_capacity"].loc[i] * 0.65 * 0.5) / df["subscribers"].loc[i]
 
-        df["monthly_gb"].loc[i] = monthly_traffic(df["capacity_per_user"].loc[i])
+        df["monthly_gb"].loc[i] = (monthly_traffic(df["capacity_per_user"].loc[i]))/(5 * 12)
 
         df["total_climate_emissions"].loc[i] = df["total_climate_change"].loc[i] * df["mission_number"].loc[i]
 
