@@ -57,9 +57,9 @@ chn_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "(a) Channel Capacity",
+    subtitle = "a",
     x = NULL,
-    y = "Capacity (Gbps)",
+    y = "Channel Capacity (Gbps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -82,7 +82,7 @@ chn_capacity <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -124,9 +124,9 @@ sat_capacity <-
   theme(legend.position = 'bottom') + labs(
     colour = NULL,
     title = " ",
-    subtitle = "(a) Satellite Capacity",
+    subtitle = "b",
     x = NULL,
-    y = "Capacity (Gbps)",
+    y = "Satellite Capacity (Gbps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -150,7 +150,7 @@ sat_capacity <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -191,9 +191,9 @@ const_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "(c) Usable Constellation Capacity",
+    subtitle = "c",
     x = NULL,
-    y = "Capacity (Tbps)",
+    y = "Usable Constellation Capacity (Tbps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -218,7 +218,7 @@ const_capacity <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -260,7 +260,7 @@ capacity_subscriber <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "(d) Monthly Traffic",
+    subtitle = "a",
     x = NULL,
     y = "Average Traffic (GB/user) over \nthe 5-year constellation lifespan",
     fill = 'Scenario'
@@ -286,7 +286,7 @@ capacity_subscriber <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -326,7 +326,7 @@ capacity_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "(e) Mean Capacity per User",
+    subtitle = "b",
     x = NULL,
     y = "Mean capacity (Mbps/user)",
     fill = 'Scenario'
@@ -352,7 +352,7 @@ capacity_per_user <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -384,7 +384,7 @@ per_user_area <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "(f) Mean User per Area",
+    subtitle = "c",
     x = NULL,
     y = 'Mean subscriber per (bquote(~km^2))',
     fill = 'Scenario'
@@ -410,7 +410,7 @@ per_user_area <-
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
@@ -423,7 +423,6 @@ pub_qos <- ggarrange(
   sat_capacity,
   const_capacity,
   ncol = 3,
-  labels = c("(A) Satellite Capacity results for different quality of service scenario"),
   common.legend = T,
   legend = "bottom",
   font.label = list(size = 9)
@@ -435,29 +434,38 @@ pub_subs <- ggarrange(
   capacity_per_user,
   per_user_area,
   ncol = 3,
-  labels = "(B) Global traffic and per user results by different subscriber scenario",
   common.legend = T,
   legend = "bottom",
   font.label = list(size = 9)
 )
 
+path = file.path(folder, 'figures', 'traffic_profile.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+png(
+  path,
+  units = "in",
+  width = 5.5,
+  height = 2.5,
+  res = 480
+)
+print(pub_subs)
+dev.off()
 
 pub_cap <- ggarrange(
   pub_qos,
-  pub_subs,
-  nrow = 2,
+  nrow = 1,
   common.legend = T,
   legend = "bottom",
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'pub_capacity_profile.tiff')
+path = file.path(folder, 'figures', 'capacity_profile.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(
+png(
   path,
   units = "in",
-  width = 6.5,
-  height = 5,
+  width = 5.5,
+  height = 2.5,
   res = 480
 )
 print(pub_cap)

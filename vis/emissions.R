@@ -108,8 +108,8 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(A) Climate Change Impacts (Baseline)",
-    subtitle = "By emission at different stage of satellite mission",
+    title = "a",
+    subtitle = " ",
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
     fill = "Satellite Mission Stage"
@@ -169,8 +169,8 @@ climate_change_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(B) Climate Change Impacts (Worst Case)",
-    subtitle = "Black carbon, aluminium oxide and water vapour included",
+    title = "b",
+    subtitle = " ",
     x = NULL,
     y = "Kt Carbon dioxides Eqv.",
     fill = "Satellite Mission Stage"
@@ -230,8 +230,8 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(C) Ozone Depletion (Baseline)",
-    subtitle = "Impact at different stage of satellite mission",
+    title = "c",
+    subtitle = " ",
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
     fill = "Satellite Mission Stage"
@@ -291,8 +291,8 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(D) Ozone Depletion (Worst Case)",
-    subtitle = "Black carbon, aluminium oxide and water vapour included",
+    title = "d",
+    subtitle = " ",
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
     fill = "Satellite Mission Stage"
@@ -352,8 +352,8 @@ resource_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e3)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(E) Resource Depletion",
-    subtitle = "Impact at different stage of satellite mission",
+    title = "e",
+    subtitle = " ",
     x = NULL,
     y = "Tonnes Sb. Eqv.",
     fill = "Satellite Mission Stage"
@@ -411,8 +411,8 @@ freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e8)) +
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(F) Freshwater Ecotoxicity",
-    subtitle = "Impact at different stage of satellite mission",
+    title = "f",
+    subtitle = " ",
     x = NULL,
     y = "PAF.M3.DAY (bquote(~10^7))",
     fill = "Satellite Mission Stage"
@@ -473,8 +473,8 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
   )  + scale_fill_brewer(palette = "Dark2") +
   theme(legend.position = "right") + labs(
     colour = NULL,
-    title = "(G) Human Ecotoxicity",
-    subtitle = "Impact at different stage of satellite mission",
+    title = "g",
+    subtitle = " ",
     x = NULL,
     y = "CASES",
     fill = "Satellite Mission Stage"
@@ -551,9 +551,9 @@ pub_emission <- ggarrange(
   ncol = 2) 
 
 
-path = file.path(folder, 'figures', 'pub_individual_emission.tiff')
+path = file.path(folder, 'figures', 'pub_individual_emission.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(
+png(
   path,
   units = "in",
   width = 5.3,
@@ -618,8 +618,8 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
   ) +
   scale_fill_brewer(palette = "Dark2") + labs(
     colour = NULL,
-    title = "(A) Rocket Fuel Compositions",
-    subtitle = "Fuel amounts to complete all missions.",
+    title = "a",
+    subtitle = " ",
     x = NULL,
     y = "Fuel \nAmounts (Mt)",
     fill = "Fuel"
@@ -948,8 +948,8 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
-    title = "(B) Emission vs Users",
-    subtitle = "By different subscriber scenarios.",
+    title = "b",
+    subtitle = " ",
     x = NULL,
     y = "Emission \n(Tonnes/subscriber)",
     fill = 'Scenario'
@@ -987,7 +987,7 @@ pub_emission <-
     ncol = 2
   )
 
-path = file.path(folder, 'figures', 'combined_emission.tiff')
+path = file.path(folder, 'figures', 'combined_emission.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,

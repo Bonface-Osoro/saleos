@@ -59,7 +59,7 @@ constellation_capex <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capital Expenditure (Capex)",
+    title = " ",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capex (Million US$)",
@@ -122,7 +122,7 @@ constellation_opex <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Total Operating (Opex)",
+    title = " ",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
     y = "Opex (Million US$)",
@@ -185,8 +185,8 @@ constellation_tco <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Total Cost of Ownership \n(TCO)",
-    subtitle = "By capex scenario (Error bars: 1SD).",
+    title = " ",
+    subtitle = "By capex scenario (Error \nbars: 1SD).",
     x = NULL,
     y = "Opex (Million US$)",
     fill = 'Scenario'
@@ -248,7 +248,7 @@ constellation_capex_per_user <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capex per User",
+    title = " ",
     subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
     x = NULL,
     y = "Capex (US$ per User)",
@@ -311,7 +311,7 @@ constellation_opex_per_user <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Opex per User",
+    title = " ",
     subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
     x = NULL,
     y = "Opex (US$ per User)",
@@ -374,7 +374,7 @@ constellation_tco_per_user <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "TCO per User",
+    title = " ",
     subtitle = "By capex scenario \n(Error bars: 1SD).",
     x = NULL,
     y = "TCO (US$ per User)",
@@ -421,13 +421,13 @@ df$capex = factor(df$capex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_capex_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean/1e3, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean/1e3 - sd/1e3,
-        ymax = mean/1e3 + sd/1e3),
+    aes(ymin = mean/1e6 - sd/1e6,
+        ymax = mean/1e6 + sd/1e6),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
@@ -437,10 +437,10 @@ constellation_capex_capacity <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Capex for Traffic",
-    subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
+    title = " ",
+    subtitle = "By ground station and \nsatelite launch scenario \n(Error bars: 1SD)",
     x = NULL,
-    y = "Capex ('000' US$ per GB)",
+    y = "Capex (Million US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -484,13 +484,13 @@ df$opex = factor(df$opex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_opex_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean/1e4, fill = opex)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e6, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
   geom_errorbar(
-    aes(ymin = mean/1e4 - sd/1e4,
-        ymax = mean/1e4 + sd/1e4),
+    aes(ymin = mean/1e6 - sd/1e6,
+        ymax = mean/1e6 + sd/1e6),
     width = .2,
     position = position_dodge(.9),
     color = 'black',
@@ -500,10 +500,10 @@ constellation_opex_capacity <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "Opex for Traffic",
-    subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
+    title = " ",
+    subtitle = "By maintenance and staff \ncosts scenario (Error bars: \n1SD)",
     x = NULL,
-    y = "Opex ('0000' US$ per GB)",
+    y = "Opex (Million US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -563,10 +563,10 @@ constellation_tco_capacity <-
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
-    title = "TCO per Traffic",
-    subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
+    title = " ",
+    subtitle = "By capital expenditure \ncost scenario (Error bars: \n1SD)",
     x = NULL,
-    y = "Opex \n(Million US$ per GB)",
+    y = "TCO (Million US$ per GB)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -595,41 +595,88 @@ constellation_tco_capacity <-
   )
 
 
-####################################
-## Combine all the capacity plots ##
-####################################
+#######################
+##Total cost results###
+#######################
 
-pub_const_cost <- ggarrange(
+total_cost <- ggarrange(
   constellation_capex,
   constellation_opex,
   constellation_tco,
-  constellation_capex_per_user,
-  constellation_opex_per_user,
-  constellation_tco_per_user,
-  constellation_capex_capacity,
-  constellation_opex_capacity,
-  constellation_tco_capacity,
-  nrow = 3,
+  nrow = 1,
   ncol = 3,
   common.legend = T,
   legend = "bottom", 
-  labels = c("(A)", "(B)", "(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)"),
+  labels = c("a", "b", "c"),
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'pub_cost_profile.tiff')
+path = file.path(folder, 'figures', 'total_cost_profile.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-tiff(
+png(
   path,
   units = "in",
-  width = 8.1,
-  height = 7.5,
+  width = 5.5,
+  height = 2.5,
   res = 480
 )
-print(pub_const_cost)
+print(total_cost)
 dev.off()
 
+##########################
+##per user cost results###
+##########################
 
+cost_per_user <- ggarrange(
+  constellation_capex_per_user,
+  constellation_opex_per_user,
+  constellation_tco_per_user,
+  nrow = 1,
+  ncol = 3,
+  common.legend = T,
+  legend = "bottom", 
+  labels = c("a", "b", "c"),
+  font.label = list(size = 9)
+)
 
+path = file.path(folder, 'figures', 'cost_per_user.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+png(
+  path,
+  units = "in",
+  width = 5.5,
+  height = 2.5,
+  res = 480
+)
+print(cost_per_user)
+dev.off()
+
+#########################
+##Cost traffic results###
+#########################
+
+cost_traff <- ggarrange(
+  constellation_capex_capacity,
+  constellation_opex_capacity,
+  constellation_tco_capacity,
+  nrow = 1,
+  ncol = 3,
+  common.legend = T,
+  legend = "bottom", 
+  labels = c("a", "b", "c"),
+  font.label = list(size = 9)
+)
+
+path = file.path(folder, 'figures', 'cost_traff.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+png(
+  path,
+  units = "in",
+  width = 5.5,
+  height = 2.5,
+  res = 480
+)
+print(cost_traff)
+dev.off()
 
 

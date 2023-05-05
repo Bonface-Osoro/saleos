@@ -512,9 +512,9 @@ print(rocket_sankey)
 dev.off()
 
 orbits <- ggarrange(AK, AL, AM, nrow = 1, ncol = 3, 
-                    labels = c("(A) Starlink Network", 
-                               "(B) OneWeb Network", 
-                               "(C) Kuiper Network"),
+                    labels = c("a", 
+                               "b", 
+                               "c"),
                     heights = c(1, 1, 1), align = c("hv"))
 
 path = file.path(folder, 'sankey','orbits.png')
