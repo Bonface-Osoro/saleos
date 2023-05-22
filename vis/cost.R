@@ -60,7 +60,7 @@ constellation_capex <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
+    subtitle = NULL,
     x = NULL,
     y = "Capex (Million US$)",
     fill = 'Scenario'
@@ -123,7 +123,7 @@ constellation_opex <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
+    subtitle = NULL,
     x = NULL,
     y = "Opex (Million US$)",
     fill = 'Scenario'
@@ -186,9 +186,9 @@ constellation_tco <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By capex scenario (Error \nbars: 1SD).",
+    subtitle = NULL,
     x = NULL,
-    y = "Opex (Million US$)",
+    y = "TCO (Million US$)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -249,7 +249,7 @@ constellation_capex_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By ground station and satelite \nlaunch scenario (Error bars: 1SD).",
+    subtitle = NULL,
     x = NULL,
     y = "Capex (US$ per User)",
     fill = 'Scenario'
@@ -312,7 +312,7 @@ constellation_opex_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By maintenance and staff \nscenario (Error bars: 1SD).",
+    subtitle = NULL,
     x = NULL,
     y = "Opex (US$ per User)",
     fill = 'Scenario'
@@ -375,7 +375,7 @@ constellation_tco_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By capex scenario \n(Error bars: 1SD).",
+    subtitle = NULL,
     x = NULL,
     y = "TCO (US$ per User)",
     fill = 'Scenario'
@@ -438,7 +438,7 @@ constellation_capex_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By ground station and \nsatelite launch scenario \n(Error bars: 1SD)",
+    subtitle = NULL,
     x = NULL,
     y = "Capex (Million US$ per GB)",
     fill = 'Scenario'
@@ -501,7 +501,7 @@ constellation_opex_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By maintenance and staff \ncosts scenario (Error bars: \n1SD)",
+    subtitle = NULL,
     x = NULL,
     y = "Opex (Million US$ per GB)",
     fill = 'Scenario'
@@ -564,7 +564,7 @@ constellation_tco_capacity <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "By capital expenditure \ncost scenario (Error bars: \n1SD)",
+    subtitle = NULL,
     x = NULL,
     y = "TCO (Million US$ per GB)",
     fill = 'Scenario'

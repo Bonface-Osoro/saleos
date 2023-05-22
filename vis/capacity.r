@@ -256,7 +256,7 @@ capacity_subscriber <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Accent") +
+  scale_fill_brewer(palette = "Dark2") +
   labs(
     colour = NULL,
     title = " ",
@@ -322,7 +322,7 @@ capacity_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Accent") +
+  scale_fill_brewer(palette = "Dark2") +
   labs(
     colour = NULL,
     title = " ",
@@ -380,7 +380,7 @@ per_user_area <-
   geom_bar(stat = "identity",
            width = 0.98,
            position = position_dodge()) +
-  scale_fill_brewer(palette = "Accent") +
+  scale_fill_brewer(palette = "Dark2") +
   labs(
     colour = NULL,
     title = " ",
