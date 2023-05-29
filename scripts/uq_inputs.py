@@ -1,3 +1,5 @@
+import configparser
+import os
 import numpy as np
 import pandas as pd
 import random
@@ -7,8 +9,12 @@ from random import*
 from tqdm import tqdm
 from inputs import parameters, lut
 
+CONFIG = configparser.ConfigParser()
+CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
+BASE_PATH = CONFIG['file_locations']['base_path']
+
 def uq_inputs_generator():
-    path = "/Users/osoro/Github/saleos/data/"
+
     uq_parameters = []
 
     for key, item in tqdm(parameters.items(), desc = "Processing capacity, cost and emission inputs"):
@@ -174,7 +180,15 @@ def uq_inputs_generator():
                                                             "capex_scenario": capex_scenario})
 
     df = pd.DataFrame.from_dict(uq_parameters)
-    df.to_csv(path + "uq_parameters.csv")
+
+    filename = 'uq_parameters.csv'
+
+    if not os.path.exists(BASE_PATH):
+        os.makedirs(BASE_PATH)
+
+    path_out = os.path.join(BASE_PATH, filename)
+    df.to_csv(path_out)
             
     return df.shape
+
 uq_inputs_generator()
