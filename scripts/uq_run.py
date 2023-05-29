@@ -92,6 +92,10 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
 
     rocket_dict = sl.calc_rocket_emission(item["constellation"])
 
+    oneweb_sz = sl.soyuz_fg()
+
+    oneweb_f9 = sl.falcon_9()
+
     total_cost_ownership = sl.cost_model(item["satellite_manufacturing"], item["satellite_launch_cost"], item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
                            item["digital_infrastructure_cost"], item["ground_station_energy"], 
@@ -179,6 +183,10 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     total_human_toxicity = human_toxicity + human_toxicity_schd + human_toxicity_trans + \
                            human_toxicity_campaign + human_toxicity_propellant + \
                            human_toxicity_ait + human_toxicity_roct
+    
+    oneweb_sz_total = oneweb_sz['global_warming'] + oneweb_sz['ozone_depletion']
+
+    oneweb_f9_total = oneweb_f9['global_warming'] + oneweb_f9['ozone_depletion']
 
     total_emissions = total_global_warming_em 
     total_emissions_wc =  total_global_warming_wc
@@ -267,9 +275,8 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                     "mineral_depletion_campaign": mineral_depletion_campaign, 
                     "freshwater_toxicity_campaign": freshwater_toxicity_campaign, 
                     "human_toxicity_campaign": human_toxicity_campaign, 
-
-
-
+                    "oneweb_f9": oneweb_f9_total,
+                    "oneweb_sz": oneweb_sz_total, 
                     "total_global_warming_em": total_global_warming_em,
                     "total_ozone_depletion_em": total_ozone_depletion_em,
                     "total_mineral_depletion": total_mineral_depletion,
