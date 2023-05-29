@@ -11,9 +11,16 @@ import saleos.sim as sl
 from inputs import lut
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
+CONFIG = configparser.ConfigParser()
+CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
+BASE_PATH = CONFIG['file_locations']['base_path']
+
+DATA_RAW = os.path.join(BASE_PATH, '..', 'results')
+DATA_PROCESSED = os.path.join(BASE_PATH, '..', 'results')
+
 start = time.time()
-data_path = '/Users/osoro/Github/saleos/results/'
-results_path = '/Users/osoro/Github/saleos/results/'
+
+data_in = os.path.join(DATA_RAW, 'uq_results.csv')
 
 def monthly_traffic(capacity_mbps):
     """ This function calculates the monthly traffic
@@ -30,9 +37,9 @@ def monthly_traffic(capacity_mbps):
 
 start = time.time() 
 
-def process_mission_total(data_path, results_path):
+def process_mission_total():
     
-    df = pd.read_csv(data_path + "uq_results.csv", index_col=False)
+    df = pd.read_csv(data_in, index_col=False)
     
     #Select the columns to use.
     df = df[["constellation", "constellation_capacity", 
@@ -157,15 +164,17 @@ def process_mission_total(data_path, results_path):
         df["tco_per_capacity"].loc[i] = df["total_cost_ownership"].loc[i] / df["monthly_gb"].loc[i]
 
         df["user_per_area"].loc[i] = df["subscribers"].loc[i] / df["satellite_coverage_area_km"].loc[i]
-         
-    store_results = df.to_csv(results_path + "mission_emission_results.csv")
 
-    results_path2 = '/Users/osoro/Github/saleos/vis/'
+    filename = 'mission_emission_results.csv'
 
-    store_results = df.to_csv(results_path2 + "mission_emission_results.csv")
+    if not os.path.exists(DATA_PROCESSED):
+        os.makedirs(DATA_PROCESSED)
 
-    return store_results
+    path_out = os.path.join(DATA_PROCESSED, filename)
+    df.to_csv(path_out)
 
-process_mission_total(data_path, results_path)
+    return None
+
+process_mission_total()
 executionTime = (time.time() - start)
 print('Execution time in minutes: ' + str(round(executionTime/60, 2)))  

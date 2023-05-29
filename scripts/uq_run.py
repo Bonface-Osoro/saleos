@@ -19,13 +19,20 @@ from inputs import lut
 from tqdm import tqdm
 pd.options.mode.chained_assignment = None #Suppress pandas outdate errors.
 
+CONFIG = configparser.ConfigParser()
+CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
+BASE_PATH = CONFIG['file_locations']['base_path']
+
+DATA_PROCESSED = os.path.join(BASE_PATH, '..', 'results')
+
+data_in = os.path.join(BASE_PATH, 'uq_parameters.csv')
+
 #Import the data.
 start = time.time() 
-data_path = "/Users/osoro/Github/saleos/data/"
-df = pd.read_csv(data_path + "uq_parameters.csv")
+
+df = pd.read_csv(data_in)
 uq_dict = df.to_dict('records') #Convert the csv to list
 
-path = "/Users/osoro/Github/saleos/results/"
 results = []
 for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     constellation = item["constellation"]
@@ -287,9 +294,15 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
                     })
 
     df = pd.DataFrame.from_dict(results)
-    df.to_csv(path + "uq_results.csv") 
-    results_path2 = '/Users/osoro/Github/saleos/vis/'
-    store_results = df.to_csv(results_path2 + "uq_results.csv")
+
+    filename = 'uq_results.csv'
+    
+    if not os.path.exists(DATA_PROCESSED):
+        os.makedirs(DATA_PROCESSED)
+
+    path_out = os.path.join(DATA_PROCESSED, filename)
+    df.to_csv(path_out)
+
 
 executionTime = (time.time() - start)
 print('Execution time in minutes: ' + str(round(executionTime/60, 2))) 
