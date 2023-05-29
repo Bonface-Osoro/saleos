@@ -193,7 +193,7 @@ const_capacity <-
     title = " ",
     subtitle = "c",
     x = NULL,
-    y = "Usable Constellation Capacity (Tbps)",
+    y = "Total Usable \nConstellation Capacity (Tbps)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -262,7 +262,7 @@ capacity_subscriber <-
     title = " ",
     subtitle = "a",
     x = NULL,
-    y = "Average Traffic (GB/user) over \nthe 5-year constellation lifespan",
+    y = "Mean Monthly Traffic (GB/user)",
     fill = 'Scenario'
   ) +
   scale_y_continuous(
@@ -328,7 +328,7 @@ capacity_per_user <-
     title = " ",
     subtitle = "b",
     x = NULL,
-    y = "Mean capacity (Mbps/user)",
+    y = "Mean Capacity (Mbps/user)",
     fill = 'Scenario'
   ) + 
   scale_y_continuous(
@@ -386,9 +386,9 @@ per_user_area <-
     title = " ",
     subtitle = "c",
     x = NULL,
-    y = 'Mean subscriber per (bquote(~km^2))',
+    y = 'Mean Subscribers (bquote(~Per km^2))',
     fill = 'Scenario'
-  ) + ylab(bquote('Mean subscriber per '*km^2*'')) + 
+  ) + ylab(bquote('Mean Subscribers (Per '*km^2*')')) + 
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),

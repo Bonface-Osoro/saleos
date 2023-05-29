@@ -599,6 +599,9 @@ def calc_per_sat_emission(name):
     elif name == 'OneWeb':
         emission_dict = soyuz_fg()
 
+    elif name == 'onewebf9':
+        emission_dict = falcon_9()
+
     else:
         print('Invalid Constellation name')
 
@@ -619,7 +622,40 @@ def calc_scheduling_emission(name):
     emissions: dict.
     """
 
-    if name == 'Starlink':
+    if name == 'onewebf9':
+        emission_dict0 = propellant_containment()
+        emission_list0 = []
+        for i in emission_dict0.keys():
+            new_emissions = emission_dict0.get(i) * 530
+            emission_list0.append(new_emissions)
+        emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
+
+        emission_dict1 = waste_decontamination()
+        emission_list1 = []
+        for i in emission_dict1.keys():
+            new_emissions = emission_dict1.get(i) * 488370
+            emission_list1.append(new_emissions)
+        emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
+
+        emission_dict2 = propellant_handling()
+        emission_list2 = []
+        for i in emission_dict2.keys():
+            new_emissions = emission_dict2.get(i) * 504
+            emission_list2.append(new_emissions)
+        emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
+
+        emission_dict3 = propellant_storage()
+        emission_list3 = []
+        for i in emission_dict3.keys():
+            new_emissions = emission_dict3.get(i) * 494
+            emission_list3.append(new_emissions)
+        emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
+        
+        cdict1 = Counter(emission_dict0) + Counter(emission_list1)
+        cdict2 = Counter(emission_list2) + Counter(emission_list3)
+        emission_dict = Counter(cdict1) + Counter(cdict2)
+
+    elif name == 'Starlink':
         emission_dict0 = propellant_containment()
         emission_list0 = []
         for i in emission_dict0.keys():
@@ -747,6 +783,9 @@ def calc_transportation_emission(name):
     elif name == 'OneWeb':
         emission_dict = soyuzfg_transportation()
 
+    elif name == 'onewebf9':
+        emission_dict = falcon9_transportation()  # Emission per satellite
+
     else:
         print('Invalid Constellation name')
 
@@ -776,6 +815,9 @@ def calc_launch_campaign_emission(name):
 
     elif name == 'OneWeb':
         emission_dict = launcher_campaign()
+
+    elif name == 'onewebf9':
+        emission_dict = launcher_campaign()  
 
     else:
         print('Invalid Constellation name')
@@ -807,6 +849,9 @@ def calc_propellant_emission(name):
     elif name == 'OneWeb':
         emission_dict = soyuzfg_propellant_production()
 
+    elif name == 'onewebf9':
+        emission_dict = falcon_propellant_production()  
+
     else:
         print('Invalid Constellation name')
 
@@ -829,13 +874,16 @@ def calc_rocket_emission(name):
     """
 
     if name == 'Starlink':
-        emission_dict = falcon9_rocket_production()  # Emission per satellite
+        emission_dict = falcon9_rocket_production()  
 
     elif name == 'Kuiper':
         emission_dict = ariane_rocket_production()
 
     elif name == 'OneWeb':
         emission_dict = soyuzfg_rocket_production()
+
+    elif name == 'onewebf9':
+        emission_dict = falcon9_rocket_production()  
 
     else:
         print('Invalid Constellation name')
@@ -1449,6 +1497,10 @@ def subscriber_scenario(name, subscribers):
         subscriber_dict['high'] = subscribers[2]
 
     elif name == 'OneWeb':
+        subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
+        subscriber_dict['high'] = subscribers[2]
+
+    elif name == 'onewebf9':
         subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
         subscriber_dict['high'] = subscribers[2]
 

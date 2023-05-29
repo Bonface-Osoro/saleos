@@ -42,31 +42,40 @@ def process_mission_total(data_path, results_path):
         "total_global_warming_em", "total_ozone_depletion_em",
         "total_mineral_depletion", "total_climate_change_wc",
         "total_freshwater_toxicity", "total_human_toxicity", 
-        "total_climate_change"]]
+        "total_climate_change", "oneweb_f9", "oneweb_sz"]]
 
     # Create future columns to use
-    df[["mission_number", "total_emissions"]] = ""
+    df[["mission_number", "mission_number_1", "total_emissions"]] = ""
 
     # Process satellite missions       
     for i in tqdm(df.index, desc = "Processing satellite missions"):
         if df["constellation"].loc[i] == "Starlink":
-            df["mission_number"].loc[i]=i
+            df["mission_number"].loc[i]=i+1
+            df["mission_number_1"].loc[i]=i*0
             if df["mission_number"].loc[i]<74:
-                df["mission_number"].loc[i]=i
+                df["mission_number"].loc[i]=i+1
+                df["mission_number_1"].loc[i]=i*0
             else:
                 df["mission_number"].loc[i]=74
+                df["mission_number_1"].loc[i]=i*0
         elif df["constellation"].loc[i] == "OneWeb":
             df["mission_number"].loc[i]=i-(2186)
-            if df["mission_number"].loc[i]<20:
+            df["mission_number_1"].loc[i]=i-(2186)
+            if df["mission_number"].loc[i]<11:
                 df["mission_number"].loc[i]=i-(2186)
+                df["mission_number_1"].loc[i]=i-(2186)
             else:
-                df["mission_number"].loc[i]=20
+                df["mission_number"].loc[i]=11
+                df["mission_number_1"].loc[i]=7
         elif df["constellation"].loc[i] == "Kuiper":
             df["mission_number"].loc[i]=i-(4373)
+            df["mission_number_1"].loc[i]=i*0
             if df["mission_number"].loc[i]<54:
                 df["mission_number"].loc[i]=i-(4373)
+                df["mission_number_1"].loc[i]=i*0
             else:
                 df["mission_number"].loc[i]=54
+                df["mission_number_1"].loc[i]=i*0
         else:
             df["mission_number"].loc[i]= 0
     print("Finished processing satellite missions")
@@ -74,11 +83,11 @@ def process_mission_total(data_path, results_path):
     # Classify subscribers by melting the dataframe into long format
     df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
         "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
-        "opex_scenario", "total_cost_ownership", "mission_number", 
+        "opex_scenario", "total_cost_ownership", "mission_number", "mission_number_1", 
         "total_global_warming_em", "total_ozone_depletion_em", 
         "total_mineral_depletion", "total_freshwater_toxicity", 
         "total_human_toxicity", "total_emissions",
-        "total_climate_change", "total_climate_change_wc"], 
+        "total_climate_change", "total_climate_change_wc", "oneweb_f9", "oneweb_sz"], 
         value_vars = ["subscribers_low", "subscribers_baseline", 
         "subscribers_high",], var_name = "subscriber_scenario", 
         value_name = "subscribers")
@@ -86,9 +95,9 @@ def process_mission_total(data_path, results_path):
     # Classify total emissions by impact category
     df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
         "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
-        "opex_scenario", "total_cost_ownership", "mission_number", 
+        "opex_scenario", "total_cost_ownership", "mission_number", "mission_number_1",
         "subscriber_scenario", "subscribers", "total_emissions", 
-        "total_climate_change", "total_climate_change_wc"], 
+        "total_climate_change", "total_climate_change_wc", "oneweb_f9", "oneweb_sz"], 
         value_vars = ["total_global_warming_em", "total_ozone_depletion_em", 
         "total_mineral_depletion", "total_freshwater_toxicity", 
         "total_human_toxicity"], var_name = 
@@ -96,14 +105,19 @@ def process_mission_total(data_path, results_path):
 
     # Calculate the total emissions
     for i in tqdm(range(len(df)), desc = "Calculating constellation emission totals".format(i)):
-        df["total_emissions"].loc[i] = df["emission_totals"].loc[i] * df["mission_number"].loc[i]
+
+        if df["constellation"].loc[i] == "Starlink" or df["constellation"].loc[i] == "Kuiper":
+            df["total_emissions"].loc[i] = df["emission_totals"].loc[i] * df["mission_number"].loc[i]
+        else:
+            df["total_emissions"].loc[i] = (df["oneweb_sz"].loc[i] * df["mission_number"].loc[i]) + \
+            (df["oneweb_f9"].loc[i] * df["mission_number_1"].loc[i])
     print("Finished calculating constellation emission totals")
 
     # Select columns to use
     df = df[['constellation', 'constellation_capacity', 'capacity_scenario','satellite_coverage_area_km',
         'total_opex', 'capex_costs', 'capex_scenario', 'opex_scenario',
-        'total_cost_ownership', 'mission_number', 'subscriber_scenario', 
-        'subscribers', 'impact_category', 'total_emissions', 
+        'total_cost_ownership', 'mission_number', 'mission_number_1', 'subscriber_scenario', 
+        'subscribers', 'impact_category', 'total_emissions', "oneweb_f9", "oneweb_sz",
         'total_climate_change', 'total_climate_change_wc']]
 
     #Create columns to store new data
