@@ -37,7 +37,7 @@ Rather than estimating only aggregated network capacity results, the purpose of 
 
 Example scenarios are applied in the modeling process, and results for the estimated emission per subscriber are visualized in `Figure 3`.
 
-## Figure 3 Estimated per user emission and comparison with terrestrial systems for three LEO constellations
+## Figure 3 Estimated fuel used for launcing LEO satellites in orbit and per user emission
 <p align="center">
   <img src="/docs/emission.png" />
 </p>
