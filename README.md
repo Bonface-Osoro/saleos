@@ -39,7 +39,7 @@ Example scenarios are applied in the modeling process, and results for the estim
 
 ## Figure 3 Estimated per user emission and comparison with terrestrial systems for three LEO constellations
 <p align="center">
-  <img src="/docs/pub_emission.png" />
+  <img src="/docs/emission.png" />
 </p>
 
 Required Data
