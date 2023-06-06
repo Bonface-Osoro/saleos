@@ -39,7 +39,7 @@ Example scenarios are applied in the modeling process, and results for the estim
 
 ## Figure 3 Estimated fuel used for launcing LEO satellites in orbit and per user emission
 <p align="center">
-  <img src="/docs/emission.png" />
+  <img src="/docs/emissions.png" />
 </p>
 
 Required Data
