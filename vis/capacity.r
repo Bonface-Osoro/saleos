@@ -9,6 +9,45 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data <- read.csv(file.path(folder, "uq_results.csv"))
+orbit <- read.csv(file.path(folder, "space-objects_decade.csv"))
+
+
+#########################
+##plot1 = Space Objects##
+#########################
+totals <- orbit %>%
+  group_by(Decade) %>%
+  summarize(value = signif(sum(yearly_launches), 2))
+
+space_objects = ggplot(orbit, aes(x = Decade, y = yearly_launches)) +
+  geom_bar(stat = "identity", aes(fill = Region)) +
+  geom_text(
+    aes(x = Decade, y = value, label = round(after_stat(y), 2)),
+    size = 2,
+    data = totals,
+    vjust = -3.5,
+    hjust = 0.5,
+    position = position_stack()
+  ) +
+    theme(legend.position = 'bottom',
+          axis.text.x = element_text(angle = 360, hjust = 1)) + 
+      scale_fill_brewer(palette = "Paired") +
+      labs(colour = NULL,
+           title = "Global space launches from 1958 to 1922.",
+           subtitle = "Satellites launched by different governments, businesses and space agencies according to the data from \nthe United States' Space Force.", 
+           x = NULL, y = "Yearly Space Launches", 
+           fill='Continental Region') +
+      theme(panel.spacing = unit(0.6, "lines")) + 
+      expand_limits(y = 0) +
+      guides(fill = guide_legend(ncol = 3, title = 'Space Object Type')) + 
+  theme(axis.title.y = element_text(size = 7),
+        axis.text.x = element_text(size = 7),
+        axis.text.y = element_text(size = 7)) +
+      theme(legend.title = element_text(size = 7),
+      legend.text = element_text(size =6)) +
+      scale_x_discrete(expand = c(0, 0.15)) + guides(fill = guide_legend(ncol = 5, nrow = 1)) +
+      scale_y_continuous(expand = c(0, 0), labels = function(y)
+        format(y, scientific = FALSE), limits = c(0, 18000)) 
 
 # INDIVIDUAL PLOTS WITH ERROR BARS #
 data <- select(
@@ -470,3 +509,30 @@ png(
 )
 print(pub_cap)
 dev.off()
+
+
+#######################
+## Space Object plot ##
+#######################
+
+space <- ggarrange(
+  space_objects,
+  nrow = 1,
+  common.legend = T,
+  legend = "bottom",
+  labels = c("a")
+)
+
+path = file.path(folder, 'figures', 'space_objects.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+png(
+  path,
+  units = "in",
+  width = 8.5,
+  height = 5.5,
+  res = 480
+)
+print(space)
+dev.off()
+
+
