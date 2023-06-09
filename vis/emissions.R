@@ -296,7 +296,7 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     x = NULL,
     y = "Kt CFC-11 \nEqv.",
     fill = "Satellite Mission Stage"
-  ) + scale_y_continuous(limits = c(0, 3),
+  ) + scale_y_continuous(limits = c(0, 13),
                          labels = function(y)
                            format(y, scientific = FALSE),
                          expand = c(0, 0)

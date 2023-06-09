@@ -611,31 +611,23 @@ total_cost <- ggarrange(
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'total_cost_profile.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-png(
-  path,
-  units = "in",
-  width = 5.5,
-  height = 2.5,
-  res = 480
-)
-print(total_cost)
-dev.off()
 
 ##########################
 ##per user cost results###
 ##########################
 
 cost_per_user <- ggarrange(
+  constellation_capex,
+  constellation_opex,
+  constellation_tco,
   constellation_capex_per_user,
   constellation_opex_per_user,
   constellation_tco_per_user,
-  nrow = 1,
+  nrow = 2,
   ncol = 3,
   common.legend = T,
   legend = "bottom", 
-  labels = c("a", "b", "c"),
+  labels = c("a", "b", "c", "d", "e", "f"),
   font.label = list(size = 9)
 )
 
@@ -644,8 +636,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 5.5,
-  height = 2.5,
+  width = 6.5,
+  height = 5,
   res = 480
 )
 print(cost_per_user)
