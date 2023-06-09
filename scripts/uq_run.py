@@ -72,7 +72,8 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     channel_capacity = sl.calc_capacity(spectral_efficiency, item["dl_bandwidth_Hz"])
     
     agg_capacity = (sl.calc_agg_capacity(channel_capacity, 
-                   item["number_of_channels"], item["polarization"])) * item["number_of_satellites"]
+                   item["number_of_channels"], 
+                   item["polarization"])) * item["number_of_satellites"]
 
     if channel_capacity == 823.6055 or channel_capacity == 411.80275:
         capacity_scenario = "Low"
@@ -103,7 +104,9 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
 
     oneweb_f9 = sl.falcon_9()
 
-    total_cost_ownership = sl.cost_model(item["satellite_manufacturing"], item["satellite_launch_cost"], item["ground_station_cost"], 
+    total_cost_ownership = sl.cost_model(item["satellite_manufacturing"], 
+                                         item["satellite_launch_cost"], 
+                                         item["ground_station_cost"], 
                            item["spectrum_cost"], item["regulation_fees"], 
                            item["digital_infrastructure_cost"], item["ground_station_energy"], 
                            item["subscriber_acquisition"], item["staff_costs"], 
@@ -166,30 +169,36 @@ for item in tqdm(uq_dict, desc = "Processing uncertainity results"):
     freshwater_toxicity_roct = rocket_dict['freshwater_toxicity']
     human_toxicity_roct = rocket_dict['human_toxicity']
     
-    total_global_warming_em = global_warming + global_warming_schd + global_warming_trans + \
-                              global_warming_campaign + global_warming_propellant + \
-                              global_warming_ait + global_warming_roct
+    total_global_warming_em = (global_warming + global_warming_schd 
+                               + global_warming_trans 
+                               + global_warming_campaign 
+                               + global_warming_propellant 
+                               + global_warming_ait + global_warming_roct)
 
-    total_global_warming_wc = global_warming_wc + global_warming_schd + global_warming_trans + \
-                              global_warming_campaign + global_warming_propellant + \
-                              global_warming_ait + global_warming_roct
+    total_global_warming_wc = (global_warming_wc + global_warming_schd 
+                               + global_warming_trans + global_warming_campaign 
+                               + global_warming_propellant + global_warming_ait 
+                               + global_warming_roct)
     
-    total_ozone_depletion_em = ozone_depletion + ozone_depletion_schd + ozone_depletion_trans + \
-                               ozone_depletion_campaign + ozone_depletion_propellant + \
-                               ozone_depletion_ait + ozone_depletion_roct
+    total_ozone_depletion_em = (ozone_depletion + ozone_depletion_schd 
+                                + ozone_depletion_trans + ozone_depletion_campaign 
+                                + ozone_depletion_propellant + ozone_depletion_ait 
+                                + ozone_depletion_roct)
     
-    total_mineral_depletion = mineral_depletion + mineral_depletion_schd + mineral_depletion_trans + \
-                              mineral_depletion_campaign + mineral_depletion_propellant + \
-                              mineral_depletion_ait + mineral_depletion_roct
+    total_mineral_depletion = (mineral_depletion + mineral_depletion_schd 
+                               + mineral_depletion_trans + mineral_depletion_campaign 
+                               + mineral_depletion_propellant + mineral_depletion_ait 
+                               + mineral_depletion_roct)
     
-    total_freshwater_toxicity = freshwater_toxicity + freshwater_toxicity_schd + \
-                                freshwater_toxicity_trans + freshwater_toxicity_campaign + \
-                                freshwater_toxicity_propellant +  freshwater_toxicity_ait + \
-                                freshwater_toxicity_roct
+    total_freshwater_toxicity = (freshwater_toxicity + freshwater_toxicity_schd 
+                                 + freshwater_toxicity_trans + freshwater_toxicity_campaign 
+                                 + freshwater_toxicity_propellant +  freshwater_toxicity_ait 
+                                 + freshwater_toxicity_roct)
 
-    total_human_toxicity = human_toxicity + human_toxicity_schd + human_toxicity_trans + \
-                           human_toxicity_campaign + human_toxicity_propellant + \
-                           human_toxicity_ait + human_toxicity_roct
+    total_human_toxicity = (human_toxicity + human_toxicity_schd 
+                            + human_toxicity_trans + human_toxicity_campaign 
+                            + human_toxicity_propellant + human_toxicity_ait 
+                            + human_toxicity_roct)
     
     oneweb_sz_total = oneweb_sz['global_warming'] + oneweb_sz['ozone_depletion']
 

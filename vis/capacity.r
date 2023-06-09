@@ -78,8 +78,8 @@ df$CNR = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
-chn_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
+# chn_capacity <-
+ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -87,7 +87,7 @@ chn_capacity <-
     aes(ymin = mean / 1e3 - sd / 1e3,
         ymax = mean / 1e3 + sd / 1e3),
     width = .2,
-    position = position_dodge(.9),
+    position = position_dodge(.98),
     color = 'black',
     size = 0.2
   ) +
@@ -99,7 +99,7 @@ chn_capacity <-
     subtitle = "a",
     x = NULL,
     y = "Channel Capacity (Gbps)",
-    fill = 'Scenario'
+    fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -107,15 +107,15 @@ chn_capacity <-
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    axis.line = element_line(colour = "black")
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
@@ -124,6 +124,7 @@ chn_capacity <-
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
+
 
 
 ######################################
@@ -155,7 +156,7 @@ sat_capacity <-
     aes(ymin = mean / 1e3 - sd / 1e3,
         ymax = mean / 1e3 + sd / 1e3),
     width = .2,
-    position = position_dodge(.9),
+    position = position_dodge(.98),
     color = 'black',
     size = 0.2
   ) +
@@ -166,7 +167,7 @@ sat_capacity <-
     subtitle = "b",
     x = NULL,
     y = "Satellite Capacity (Gbps)",
-    fill = 'Scenario'
+    fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -175,15 +176,15 @@ sat_capacity <-
     limits = c(0, 30)
   ) +
   theme_minimal() +  theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line = element_line(colour = "black")
+                           strip.text.x = element_blank(),
+                           panel.border = element_blank(),
+                           panel.grid.major = element_blank(),
+                           panel.grid.minor = element_blank(),
+                           axis.line.x  = element_line(size = 0.15),
+                           axis.line.y  = element_line(size = 0.15),
+                           axis.text.x = element_text(size = 6),
+                           axis.text.y = element_text(size = 6),
+                           axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
@@ -222,7 +223,7 @@ const_capacity <-
     aes(ymin = mean * 0.65 / 1e6 - sd * 0.65 / 1e6,
         ymax = mean * 0.65 / 1e6 + sd * 0.65 / 1e6),
     width = .2,
-    position = position_dodge(.9),
+    position = position_dodge(.98),
     color = 'black',
     size = 0.2
   ) +
@@ -233,7 +234,7 @@ const_capacity <-
     subtitle = "c",
     x = NULL,
     y = "Total Usable \nConstellation Capacity (Tbps)",
-    fill = 'Scenario'
+    fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -242,17 +243,17 @@ const_capacity <-
     limits = c(0, 60)
   ) +
   theme_minimal() + theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.line = element_line(colour = "black"),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title = element_text(size = 8),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    legend.position = 'bottom'
+                          strip.text.x = element_blank(),
+                          panel.border = element_blank(),
+                          panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(),
+                          axis.line = element_line(colour = "black"),
+                          axis.text.x = element_text(size = 6),
+                          axis.text.y = element_text(size = 6),
+                          axis.title = element_text(size = 8),
+                          axis.line.x  = element_line(size = 0.15),
+                          axis.line.y  = element_line(size = 0.15),
+                          legend.position = 'bottom'
   ) +
   theme(
     legend.title = element_text(size = 6),
@@ -291,7 +292,7 @@ capacity_subscriber <-
     aes(ymin = mean - sd,
         ymax = mean + sd),
     width = .2,
-    position = position_dodge(.9),
+    position = position_dodge(.98),
     color = 'black',
     size = 0.2
   ) +
@@ -299,10 +300,10 @@ capacity_subscriber <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "a",
+    subtitle = "d",
     x = NULL,
     y = "Mean Monthly Traffic (GB/user)",
-    fill = 'Scenario'
+    fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -311,15 +312,15 @@ capacity_subscriber <-
     #limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    axis.line = element_line(colour = "black")
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
@@ -357,7 +358,7 @@ capacity_per_user <-
     aes(ymin = mean - sd,
         ymax = mean + sd),
     width = .2,
-    position = position_dodge(.9),
+    position = position_dodge(.98),
     color = 'black',
     size = 0.2
   ) +
@@ -365,10 +366,10 @@ capacity_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "b",
+    subtitle = "e",
     x = NULL,
     y = "Mean Capacity (Mbps/user)",
-    fill = 'Scenario'
+    fill = 'Adoption\nScenario'
   ) + 
   scale_y_continuous(
     labels = function(y)
@@ -377,15 +378,15 @@ capacity_per_user <-
     #limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    axis.line = element_line(colour = "black")
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
@@ -394,7 +395,6 @@ capacity_per_user <-
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
-
 
 ##################################
 ##plot6 = Average users per area##
@@ -423,10 +423,10 @@ per_user_area <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "c",
+    subtitle = "f",
     x = NULL,
     y = 'Mean Subscribers (bquote(~Per km^2))',
-    fill = 'Scenario'
+    fill = 'Adoption\nScenario'
   ) + ylab(bquote('Mean Subscribers (Per '*km^2*')')) + 
   scale_y_continuous(
     labels = function(y)
@@ -435,15 +435,15 @@ per_user_area <-
     #limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    axis.line = element_line(colour = "black")
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
@@ -478,6 +478,15 @@ pub_subs <- ggarrange(
   font.label = list(size = 9)
 )
 
+pub_cap <- ggarrange(
+  pub_qos,
+  pub_subs,
+  nrow = 2,
+  common.legend = F,
+  legend = "bottom",
+  font.label = list(size = 9)
+)
+
 path = file.path(folder, 'figures', 'traffic_profile.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
@@ -490,21 +499,13 @@ png(
 print(pub_subs)
 dev.off()
 
-pub_cap <- ggarrange(
-  pub_qos,
-  nrow = 1,
-  common.legend = T,
-  legend = "bottom",
-  font.label = list(size = 9)
-)
-
 path = file.path(folder, 'figures', 'capacity_profile.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
   width = 5.5,
-  height = 2.5,
+  height = 4,
   res = 480
 )
 print(pub_cap)

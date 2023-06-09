@@ -18,20 +18,33 @@ def uq_inputs_generator():
     uq_parameters = []
 
     for key, item in tqdm(parameters.items(), desc = "Processing capacity, cost and emission inputs"):
-        altitude = [(item["altitude_km"] - 5), item["altitude_km"], (item["altitude_km"] + 5)]
-        receiver_gain = [(item["receiver_gain"] - 5), (item["receiver_gain"]), (item["receiver_gain"] + 5)]
-        atmospheric_loss = [item["earth_atmospheric_losses"]- 3, item["earth_atmospheric_losses"], 
+        altitude = [(item["altitude_km"] - 5), 
+                    item["altitude_km"], 
+                    (item["altitude_km"] + 5)]
+        receiver_gain = [(item["receiver_gain"] - 5), 
+                         (item["receiver_gain"]), 
+                         (item["receiver_gain"] + 5)]
+        atmospheric_loss = [item["earth_atmospheric_losses"]- 3, 
+                            item["earth_atmospheric_losses"], 
                            item["earth_atmospheric_losses"] + 3]
         adopt_rate = [item["adoption_rate"], 
-                     item["adoption_rate"]+0.49, item["adoption_rate"]+0.99]
+                     item["adoption_rate"]+0.49, 
+                     item["adoption_rate"]+0.99]
         satellite_launch = [item["satellite_launch_cost"] - 63672000, 
-                            item["satellite_launch_cost"], item["satellite_launch_cost"] + 63672000] 
-        ground_station = [item["ground_station_cost"] - (item["ground_station_cost"] * 0.2), 
-                         item["ground_station_cost"], item["ground_station_cost"] + 
+                            item["satellite_launch_cost"], 
+                            item["satellite_launch_cost"] + 63672000] 
+        ground_station = [item["ground_station_cost"] - 
+                          (item["ground_station_cost"] * 0.2), 
+                         item["ground_station_cost"], 
+                         item["ground_station_cost"] + 
                          (item["ground_station_cost"] * 0.2)]
-        maintenance_cost = [item["maintenance"] - 3000000, item["maintenance"], item["maintenance"] + 3000000]
+        maintenance_cost = [item["maintenance"] - 3000000, 
+                            item["maintenance"], 
+                            item["maintenance"] + 3000000]
 
-        staff_cost = [item["staff_costs"] - 10000000, item["staff_costs"], item["staff_costs"] + 10000000]
+        staff_cost = [item["staff_costs"] - 10000000, 
+                      item["staff_costs"], 
+                      item["staff_costs"] + 10000000]
         
         for alt in altitude:
             altitude_km = alt
@@ -98,10 +111,17 @@ def uq_inputs_generator():
                                     subscriber_acquisition = item["subscriber_acquisition"]
                                     research_development = item["research_development"] 
                                     maintenance_costs = maint_costs
-                                    capex_costs = item["satellite_manufacturing"] + item["subscriber_acquisition"] \
-                                                    + satellite_launch_cost + ground_station_cost + digital_infrastructure_cost
-                                    opex_costs = spectrum_cost + spectrum_cost + ground_station_energy \
-                                                + staff_costs + research_development + maintenance_costs 
+                                    capex_costs = (item["satellite_manufacturing"] 
+                                                   + item["subscriber_acquisition"] 
+                                                   + regulation_fees
+                                                   + satellite_launch_cost 
+                                                   + ground_station_cost 
+                                                   + spectrum_cost)
+                                    opex_costs = (ground_station_energy 
+                                                  + staff_costs 
+                                                  + research_development 
+                                                  + digital_infrastructure_cost 
+                                                  + maintenance_costs) 
                                     number_of_satellites = item["number_of_satellites"]
                                     name = item["name"]
                                     iterations = item['iterations']
