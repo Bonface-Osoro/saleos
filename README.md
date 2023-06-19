@@ -29,7 +29,7 @@ The method is based on a stochastic engineering simulation model which estimates
 
 The assumptions and uncertainties is taken into account in the integrated model by treating the key inputs that affect the capacity, demand, cost and coverage models as uncertain parameters. The parameters are set into a range of three values (low, baseline, high).`Figure 2` illustrates this method.
 
-## Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
+#### Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
 <p align = 'center'>
   <img src= '/docs/Box_model.png' />
 </p>
