@@ -2,9 +2,14 @@
 
 Connecting the other 45% of the unconnected world population living in areas with no form of coverage will require the use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. `Figure 1` illustrates the configuration of the LEO satellite orbits for the constellations assessed in this study. 
 
-## Figure 1 Satellite Orbit Network Illustration.
+#### Figure 1 Satellite Orbit Network Illustration.
 <p align="center">
-  <img src="/docs/orbit.png" />
+  <img src="/docs/orbit.jpg" />
+</p>
+
+#### Figure 2 Technical Details of the Launch Rockets.
+<p align="center">
+  <img src="/docs/rocket.jpg" />
 </p>
 
 To date, there exists no open-source integrated emission, capacity, cost and coverage models for assessing broadband LEO networks. Several questions remain unanswered.
@@ -24,7 +29,7 @@ The method is based on a stochastic engineering simulation model which estimates
 
 The assumptions and uncertainties is taken into account in the integrated model by treating the key inputs that affect the capacity, demand, cost and coverage models as uncertain parameters. The parameters are set into a range of three values (low, baseline, high).`Figure 2` illustrates this method.
 
-## Figure 2 Emission, Capacity and Cost method for satellite broadband assessment.
+## Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
 <p align="center">
   <img src="/docs/Box_model.png" />
 </p>
@@ -37,7 +42,7 @@ Rather than estimating only aggregated network capacity results, the purpose of 
 
 Example scenarios are applied in the modeling process, and results for the estimated emission per subscriber are visualized in `Figure 3`.
 
-## Figure 3 Estimated fuel used for launcing LEO satellites in orbit and per user emission
+#### Figure 3 Estimated fuel used for launcing LEO satellites in orbit and per user emission
 <p align="center">
   <img src="/docs/emissions.png" />
 </p>

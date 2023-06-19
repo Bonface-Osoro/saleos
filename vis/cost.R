@@ -46,7 +46,7 @@ constellation_capex <-
   ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean / 1e6 - sd / 1e6,
         ymax = mean / 1e6 + sd / 1e6),
@@ -109,7 +109,7 @@ constellation_opex <-
   ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean / 1e6 - sd / 1e6,
         ymax = mean / 1e6 + sd / 1e6),
@@ -172,7 +172,7 @@ constellation_tco <-
   ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean / 1e6 - sd / 1e6,
         ymax = mean / 1e6 + sd / 1e6),
@@ -235,7 +235,7 @@ constellation_capex_per_user <-
   ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean - sd,
         ymax = mean + sd),
@@ -298,7 +298,7 @@ constellation_opex_per_user <-
   ggplot(df, aes(x = Constellation, y = mean, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean - sd,
         ymax = mean + sd),
@@ -361,7 +361,7 @@ constellation_tco_per_user <-
   ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean - sd,
         ymax = mean + sd),
@@ -424,7 +424,7 @@ constellation_capex_capacity <-
   ggplot(df, aes(x = Constellation, y = mean/1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean/1e6 - sd/1e6,
         ymax = mean/1e6 + sd/1e6),
@@ -487,7 +487,7 @@ constellation_opex_capacity <-
   ggplot(df, aes(x = Constellation, y = mean/1e6, fill = opex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean/1e6 - sd/1e6,
         ymax = mean/1e6 + sd/1e6),
@@ -550,7 +550,7 @@ constellation_tco_capacity <-
   ggplot(df, aes(x = Constellation, y = mean/1e6, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
-           width = 0.98) +
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean/1e6 - sd/1e6,
         ymax = mean/1e6 + sd/1e6),
