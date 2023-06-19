@@ -473,7 +473,7 @@ def calc_capacity(spectral_efficiency, dl_bandwidth):
     spectral_efficiency : float
         The number of bits per Hertz able to be transmitted.
     dl_bandwidth: float
-        The channel bandwidth in Hetz.
+        The channel bandwidth in Hertz.
 
     Returns
     -------
@@ -1497,10 +1497,6 @@ def subscriber_scenario(name, subscribers):
         subscriber_dict['high'] = subscribers[2]
 
     elif name == 'OneWeb':
-        subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
-        subscriber_dict['high'] = subscribers[2]
-
-    elif name == 'onewebf9':
         subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
         subscriber_dict['high'] = subscribers[2]
 

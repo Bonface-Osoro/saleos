@@ -808,8 +808,8 @@ df$Constellation = factor(df$constellation)
 emission_capacity <- ggplot(df, aes(x = Constellation, 
   y = mean/1e3)) +
   geom_bar(stat = "identity",
-           position = position_dodge(),
-           width = 0.98) +
+           position = position_dodge(0.9),
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean/1e3 - sd/1e4, ymax = mean/1e3 + sd/1e4),
     width = .2,
@@ -871,7 +871,7 @@ df$Constellation = factor(df$constellation)
 emission_cost <- ggplot(df, aes(x = Constellation, 
   y = mean)) +
   geom_bar(stat = "identity",
-           position = position_dodge(),
+           position = position_dodge(0.9),
            width = 0.98) +
   geom_errorbar(
     aes(ymin = mean - sd/1, ymax = mean + sd/1),
@@ -940,7 +940,7 @@ df$scenario = factor(df$subscriber_scenario,
 emission_subscriber <- ggplot(df, aes(x = Constellation, 
   y = mean, fill = scenario)) + 
   geom_bar(stat = "identity",
-           position = position_dodge(),
+           position = position_dodge(0.9),
            width = 0.98) +
   geom_errorbar(
     aes(ymin = mean - sd, ymax = mean + sd),
