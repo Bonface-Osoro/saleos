@@ -31,7 +31,7 @@ The assumptions and uncertainties is taken into account in the integrated model 
 
 #### Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
 <p align = 'center'>
-  <img src= '/docs/Box_model.png' />
+  <img src= '/docs/model.png' />
 </p>
 
 Example Results
