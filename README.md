@@ -1,6 +1,6 @@
 # Sustainability Analytics for Low Earth Orbit Satellites (saleos)
 
-Connecting the other 45% of the unconnected world population living in areas with no form of coverage will require the use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. `Figure 1` illustrates the configuration of the LEO satellite orbits for the constellations assessed in this study. 
+Connecting the other 45% of the unconnected world population living in areas with no form of coverage will require the use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. `Figure 1` illustrates the configuration of the LEO satellite orbits for the constellations as well as some of the rocket launchers (`Figure 2`) assessed in this study. 
 
 #### Figure 1 Satellite Orbit Network Illustration.
 <p align="center">
@@ -27,7 +27,7 @@ Example Method
 
 The method is based on a stochastic engineering simulation model which estimates the capacity based on Friss Transmission Equation, costs and emissions. The emissions by the rockets used by the constelllations are modelled by applying the steps defined in previous literature and relating to the number and mass of satellites as well as the number of single launch events.  
 
-The assumptions and uncertainties is taken into account in the integrated model by treating the key inputs that affect the capacity, demand, cost and coverage models as uncertain parameters. The parameters are set into a range of three values (low, baseline, high).`Figure 2` illustrates this method.
+The assumptions and uncertainties is taken into account in the integrated model by treating the key inputs that affect the capacity, demand, cost and coverage models as uncertain parameters. The parameters are set into a range of three values (low, baseline, high).`Figure 3` illustrates this method.
 
 #### Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
 <p align = 'center'>
@@ -38,9 +38,9 @@ Example Results
 ==============
 
 Rather than estimating only aggregated network capacity results, the purpose of the
-`saleos` repository (as reported in the affiliated paper) is to provide insight on the potential amount of emission for every subscriber served and how it compares to the terrestrial systems. 
+`saleos` repository (as reported in the affiliated paper) is to provide insight on the potential amount of emission for every subscriber served. 
 
-Example scenarios are applied in the modeling process, and results for the estimated emission per subscriber are visualized in `Figure 3`.
+Example scenarios are applied in the modeling process, and results for the estimated emission per subscriber are visualized in `Figure 4`.
 
 #### Figure 4 Estimated fuel used for launcing LEO satellites in orbit and per user emission
 <p align = 'center'>
