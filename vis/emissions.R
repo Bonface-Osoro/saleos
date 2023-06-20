@@ -940,8 +940,8 @@ df$scenario = factor(df$subscriber_scenario,
 emission_subscriber <- ggplot(df, aes(x = Constellation, 
   y = mean, fill = scenario)) + 
   geom_bar(stat = "identity",
-           position = position_dodge(0.9),
-           width = 0.98) +
+           position = position_dodge(),
+           width = 0.9) +
   geom_errorbar(
     aes(ymin = mean - sd, ymax = mean + sd),
     width = .2,
