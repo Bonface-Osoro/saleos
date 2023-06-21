@@ -580,7 +580,8 @@ data <-
     per_cost_emission,
     total_emissions,
     total_climate_emissions,
-    total_climate_emissions_wc
+    total_climate_emissions_wc,
+    monthly_gb,
   )
 
 ###################
@@ -646,7 +647,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
     axis.line = element_line(colour = "black")
   ) + theme(plot.title = element_text(face = "bold")) +
   theme(legend.direction = "horizontal",
-        legend.position = c(0.45, 0.9),
+        legend.position = c(0.6, 0.9),
         axis.title = element_text(size = 4)) + 
   guides(fill = guide_legend(ncol = 4, nrow = 1)) +
   theme(
@@ -801,13 +802,16 @@ df = data %>%
   )
 
 df$Constellation = factor(df$constellation)
+df$Constellation = factor(df$constellation,
+                          levels = c('Kuiper', 'OneWeb', 'Starlink'), 
+                          labels = c('Kuiper \n(Ariane-5)', 'OneWeb \n(Soyuz-FG & \nFalcon-9)', 'Starlink \n(Falcon-9)'))
 emission_capacity <- ggplot(df, aes(x = Constellation, 
-  y = mean/1e3)) +
+  y = mean/1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(0.9),
            width = 0.9) +
   geom_errorbar(
-    aes(ymin = mean/1e3 - sd/1e4, ymax = mean/1e3 + sd/1e4),
+    aes(ymin = mean/1e6 - sd/1e7, ymax = mean/1e6 + sd/1e7),
     width = .2,
     position = position_dodge(.9),
     color = "black",
@@ -817,18 +821,18 @@ emission_capacity <- ggplot(df, aes(x = Constellation,
     stat = "summary",
     fun = sum,
     vjust = -.5,
-    hjust = -0.8,
+    hjust = -0.98,
     size = 1.5
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
-    title = "(E) Emissions vs User Traffic",
-    subtitle = "Average monthly traffic (Traffic error bars: 1 SD.)",
+    title = "c",
+    subtitle = " ",
     x = NULL,
-    y = "Emissions (t/GB)",
+    y = "Emissions (Mt / GB)",
     fill = "Constellations"
-  ) + scale_y_continuous(limits = c(0, 17000),
+  ) + scale_y_continuous(limits = c(),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -983,8 +987,9 @@ pub_emission <-
   ggarrange(
     fuel_types,
     emission_subscriber,
+    emission_capacity,
     nrow = 1,
-    ncol = 2
+    ncol = 3
   )
 
 path = file.path(folder, 'figures', 'combined_emission.png')
@@ -992,12 +997,47 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 6,
+  width = 7.5,
   height = 3,
   res = 480
 )
 print(pub_emission)
 dev.off()
+
+
+########################
+## Social Cost Legend ##
+########################
+df = individual_emissions %>%
+  group_by(constellation, category) %>%
+  summarize(
+    mean = mean(human_toxicity),
+    sd = sd(human_toxicity)
+  )
+
+totals <- individual_emissions %>%
+  group_by(constellation) %>%
+  summarize(value = signif(sum(human_toxicity)))
+
+df$Constellation = factor(df$constellation)
+df$Category = factor(df$category, levels = 
+                       c("launcher", "propellant", "campaign", 
+                         "transportation", "ait", 
+                         "scheduling", "launching"),
+                     labels = c("Launcher \nProduction", "Launcher \nPropellant \nProduction", 
+                                "Launch \nCampaign", "Transportation \nof Launcher", 
+                                "Launcher \nAssembling \nIntegration \n& Testing", "Scheduling \nof Propellant", "Launch \nEvent"))
+legends <- ggplot(df, aes(x = mean, y = mean, color = Category))+
+  geom_point(size=0.005) + 
+  lims(x = c(0,0), y = c(0,0))+ labs(fill = "Satellite Mission Stage") +
+  theme_void()+ scale_color_brewer(palette = "Dark2") +
+  theme(legend.direction = "vertical",
+        legend.position = c(0.57, 0.65),
+        legend.key.size = unit(1, "cm"),
+        legend.text = element_text(size =  6),
+        legend.title = element_text(size = 7, face = "bold"))+
+  guides(colour = guide_legend(override.aes = list(size = 8),
+                               ncol = 2, nrow = 4))
 
 
 ##########################
@@ -1027,10 +1067,10 @@ social_carbon_baseline <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)
     aes(x = constellation, y = ((value/1e3)*185)/1e6, label = round(((value/1e3)*185)/1e6, 0)),
     size = 2,
     data = totals,
-    vjust = 0.5,
-    hjust = -0.09,
+    vjust = -0.5,
+    hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + 
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "a",
@@ -1089,10 +1129,10 @@ social_cost_worse <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)/1e6)
     aes(x = constellation, y = ((value/1e3)*185)/1e6, label = round(((value/1e3)*185)/1e6, 0)),
     size = 2,
     data = totals,
-    vjust = 0.5,
-    hjust = -0.09,
+    vjust = -0.5,
+    hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = "right") + labs(
     colour = NULL,
     title = "b",
@@ -1139,12 +1179,10 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 6,
-  height = 3.5,
+  width = 7,
+  height = 2.5,
   res = 480
 )
 print(pub_carbon)
 dev.off()
-
-
 
