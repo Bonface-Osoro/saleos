@@ -1,22 +1,24 @@
 # Sustainability Analytics for Low Earth Orbit Satellites (saleos)
 
-Connecting the other 45% of the unconnected world population living in areas with no form of coverage will require the use of spacebourne technologies. Low Earth Orbit (LEO) satellites are fronted as an alternative due to relatively low cost of production and lower latency. However, placing the thousands of satellites in orbit required to provide global coverage will need several single event launch missions. `Figure 1` illustrates the configuration of the LEO satellite orbits for the constellations as well as some of the rocket launchers (`Figure 2`) assessed in this study. 
+Welcome to the `saleos` repository
+
+There is increasing concern about a range of adverse environmental impacts produced by Low Earth Orbit (LEO) mega-constellations.
+
+While LEO satellite constellations are fronted as an alternative to terrestrial broadband networks, there is a need to place thousands of satellites in orbit to provide global coverage. `Figure 1` illustrates the configuration of three of the main LEO satellite constellations for Amazon's Kuiper, OneWeb and SpaceX's Starlink. 
 
 #### Figure 1 Satellite Orbit Network Illustration.
 <p align="center">
   <img src="/docs/fig_1.jpg" />
 </p>
 
+Emissions produced during the launching of satellites depend on the rocket vehicle. Most operators planning or launching LEO broadband satellites have used (or intend to use) SpaceX’s Falcon-9 or Falcon-Heavy, European Space Agency’s Ariane-5, or prior to Spring 2022 Russia’s Soyuz-FG rocket, as detailed in `Figure 2`. 
+
 #### Figure 2 Technical Details of the Launch Rockets.
 <p align="center">
   <img src="/docs/fig_2.jpg" />
 </p>
 
-To date, there exists no open-source integrated emission, capacity, cost and coverage models for assessing broadband LEO networks. Several questions remain unanswered.
-
-How does the emissions due to launch of LEO broadband satellites compare to the capacity they provide and costs needed to place and keep them operational? How does the emission for every subscriber compare to terristrial systems?
-
-Therefore, this `saleos` repository provides code to help model emission in tandem with capacity, cost and coverage. 
+The `saleos` codebase provides an open-source integrated assessment model capable of concurrently estimating broadband capacity, environmental emissions, and costs for different LEO satellite networks.
 
 Citation
 ---------
@@ -25,27 +27,10 @@ Osoro, B., & Oughton, E. (2022). Universal Broadband Assessment of Low Earth Orb
 Example Method
 ==============
 
-The method is based on a stochastic engineering simulation model which estimates the capacity based on Friss Transmission Equation, costs and emissions. The emissions by the rockets used by the constelllations are modelled by applying the steps defined in previous literature and relating to the number and mass of satellites as well as the number of single launch events.  
+The method is based on a stochastic engineering simulation model which estimates the capacity based on the Friss Transmission Equation, Life Cycle Assessment (LCA) of emissions, and techno-economic analysis of the associated financial costs. `Figure 3` illustrates this method.
 
-The assumptions and uncertainties is taken into account in the integrated model by treating the key inputs that affect the capacity, demand, cost and coverage models as uncertain parameters. The parameters are set into a range of three values (low, baseline, high).`Figure 3` illustrates this method.
-
-#### Figure 3 Emission, Capacity and Cost method for satellite broadband assessment.
+#### Figure 3 Integrated assessment method
 <p align = 'center'>
   <img src= '/docs/model.png' />
 </p>
 
-Example Results
-==============
-
-Rather than estimating only aggregated network capacity results, the purpose of the
-`saleos` repository (as reported in the affiliated paper) is to provide insight on the potential amount of emission for every subscriber served. 
-
-Example scenarios are applied in the modeling process, and results for the estimated emission per subscriber are visualized in `Figure 4`.
-
-#### Figure 4 Estimated fuel used for launcing LEO satellites in orbit and per user emission
-<p align = 'center'>
-  <img src = '/docs/emissions.png' />
-</p>
-
-Required Data
-==============
