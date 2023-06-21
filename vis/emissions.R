@@ -789,10 +789,6 @@ emission_totals_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   )
 
 
-
-
-
-
 ##########################################
 ##plot2 = Emissions Vs Capacity Provided##
 ##########################################
@@ -1001,6 +997,153 @@ tiff(
   res = 480
 )
 print(pub_emission)
+dev.off()
+
+
+##########################
+##Social Carbon Cost.   ##
+##########################
+df = individual_emissions %>%
+  group_by(constellation, category) %>%
+  summarize(
+    mean = mean(climate_change),
+    sd = sd(climate_change)
+  )
+totals <- individual_emissions %>%
+  group_by(constellation) %>%
+  summarize(value = signif(sum(climate_change)))
+
+df$Constellation = factor(df$constellation)
+df$category = factor(df$category, levels = 
+                       c("launcher", "propellant", "campaign", 
+                         "transportation", "ait", 
+                         "scheduling", "launching"),
+                     labels = c("Launcher Production", "Launcher Propellant Production", 
+                                "Launch Campaign", "Transportation of Launcher", 
+                                "Launcher AIT", "SCHD of Propellant", "Launch Event"))
+social_carbon_baseline <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)/1e6)) +
+  geom_bar(stat = "identity", aes(fill = category)) + 
+  geom_text(
+    aes(x = constellation, y = ((value/1e3)*185)/1e6, label = round(((value/1e3)*185)/1e6, 0)),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
+  theme(legend.position = "right") + labs(
+    colour = NULL,
+    title = "a",
+    subtitle = " ",
+    x = NULL,
+    y = "(bquote(~C0_2))",
+    fill = "Satellite Mission Stage"
+  ) + ylab(bquote('$ Million per Tonne CO'[2])) + scale_y_continuous(limits = c(0, 350),
+                         labels = function(y)
+                           format(y, scientific = FALSE),
+                         expand = c(0, 0)
+  ) +   theme(plot.title = element_text(face = "bold")) + 
+  theme(legend.position = "none", axis.title = element_text(size = 6)) + 
+  theme(axis.line = element_line(colour = "black"),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        plot.subtitle = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        plot.title = element_text(size = 8)
+  )
+
+
+
+#######################
+##Social Cost Carbon ##
+#######################
+df = individual_emissions %>%
+  group_by(constellation, category) %>%
+  summarize(
+    mean = mean(climate_change_wc),
+    sd = sd(climate_change_wc)
+  )
+
+totals <- individual_emissions %>%
+  group_by(constellation) %>%
+  summarize(value = signif(sum(climate_change_wc)))
+
+df$Constellation = factor(df$constellation)
+df$category = factor(df$category, levels = 
+                       c("launcher", "propellant", "campaign", 
+                         "transportation", "ait", 
+                         "scheduling", "launching"),
+                     labels = c("Launcher Production", "Launcher Propellant Production", 
+                                "Launch Campaign", "Transportation of Launcher", 
+                                "Launcher AIT", "SCHD of Propellant", "Launch Event"))
+social_cost_worse <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)/1e6)) +
+  geom_bar(stat = "identity", aes(fill = category)) + 
+  geom_text(
+    aes(x = constellation, y = ((value/1e3)*185)/1e6, label = round(((value/1e3)*185)/1e6, 0)),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
+  theme(legend.position = "right") + labs(
+    colour = NULL,
+    title = "b",
+    subtitle = " ",
+    x = NULL,
+    y = "Mt Carbon dioxides \nEqv.",
+    fill = "Satellite Mission Stage"
+  ) + ylab(bquote('$ Million per Tonne CO'[2])) + scale_y_continuous(limits = c(0, 1500),
+                         labels = function(y)
+                           format(y, scientific = FALSE),
+                         expand = c(0, 0)
+  ) +   theme(plot.title = element_text(face = "bold")) + 
+  theme(legend.position = "none", axis.title = element_text(size = 6)) + 
+  theme(axis.line = element_line(colour = "black"),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        plot.subtitle = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        plot.title = element_text(size = 8)
+  )
+
+
+####################################
+## Combine all the emission plots ##
+####################################
+pub_carbon <-
+  ggarrange(
+    social_carbon_baseline,
+    social_cost_worse,
+    legends,
+    nrow = 1,
+    ncol = 3
+  )
+
+path = file.path(folder, 'figures', 'social_carbon.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+tiff(
+  path,
+  units = "in",
+  width = 6,
+  height = 3.5,
+  res = 480
+)
+print(pub_carbon)
 dev.off()
 
 
