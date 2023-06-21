@@ -145,7 +145,7 @@ def process_mission_total():
 
         df["total_climate_emissions_wc"].loc[i] = df["total_climate_change_wc"].loc[i] * df["mission_number"].loc[i]
 
-        df["emission_per_capacity"].loc[i] = df["total_climate_emissions"].loc[i] / df["monthly_gb"].loc[i]
+        df["emission_per_capacity"].loc[i] = df["total_climate_emissions"].loc[i] / (df["monthly_gb"].loc[i] * 12)
         
         df["per_cost_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
                                                     
