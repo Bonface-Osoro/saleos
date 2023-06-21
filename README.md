@@ -1,10 +1,10 @@
 # Sustainability Analytics for Low Earth Orbit Satellites (saleos)
 
-Welcome to the `saleos` repository
+Welcome to the `saleos` repository.
 
-There is increasing concern about a range of adverse environmental impacts produced by Low Earth Orbit (LEO) mega-constellations.
+There is increasing concern about adverse environmental impacts produced by Low Earth Orbit (LEO) mega-constellations.
 
-While LEO satellite constellations are fronted as an alternative to terrestrial broadband networks, there is a need to place thousands of satellites in orbit to provide global coverage. `Figure 1` illustrates the configuration of three of the main LEO satellite constellations for Amazon's Kuiper, OneWeb and SpaceX's Starlink. 
+While LEO mega-constellations are fronted as an alternative to terrestrial broadband networks, there is a need to place thousands of satellite assets in orbit to provide global coverage. `Figure 1` illustrates the configuration of three of the main LEO satellite constellations for Amazon's Kuiper, OneWeb and SpaceX's Starlink. 
 
 #### Figure 1 Satellite Orbit Network Illustration.
 <p align="center">
