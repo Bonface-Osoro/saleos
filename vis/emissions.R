@@ -111,7 +111,7 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean/1e9)) +
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = "Mt Carbon dioxides \nEqv.",
+    y = bquote("Climate Change ( Mt CO"["2"]~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 2),
     labels = function(y)
@@ -172,7 +172,7 @@ climate_change_wc <- ggplot(df, aes(x = Constellation, y = mean/1e9)) +
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = "Mt Carbon dioxides \nEqv.",
+    y = bquote("Climate Change ( Mt CO"["2"]~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 8.5),
                          labels = function(y)
@@ -233,7 +233,7 @@ ozone_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     title = "c",
     subtitle = " ",
     x = NULL,
-    y = "Kt CFC-11 \nEqv.",
+    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 5.2),
     labels = function(y)
@@ -294,7 +294,7 @@ ozone_depletion_wc <- ggplot(df, aes(x = Constellation, y = mean/1e6)) +
     title = "d",
     subtitle = " ",
     x = NULL,
-    y = "Kt CFC-11 \nEqv.",
+    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 13),
                          labels = function(y)
@@ -355,7 +355,7 @@ resource_depletion <- ggplot(df, aes(x = Constellation, y = mean/1e3)) +
     title = "e",
     subtitle = " ",
     x = NULL,
-    y = "Tonnes Sb. Eqv.",
+    y = bquote("Resource Depletion ( t Sb eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 235),
     labels = function(y)
@@ -414,13 +414,13 @@ freshwater_ecotixicity <- ggplot(df, aes(x = Constellation, y = mean/1e8)) +
     title = "f",
     subtitle = " ",
     x = NULL,
-    y = "PAF.M3.DAY (bquote(~10^7))",
+    y = bquote('Water Amount (PAF.M3.DAY'*~10^8*')'),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(limits = c(0, 105),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) + ylab(bquote('PAF.M3.DAY ('*~10^8*')')) +
+  ) +
   theme(plot.title = element_text(face = "bold")) + 
   theme(legend.position = "none", axis.title = element_text(size = 6)) + 
   theme(axis.line = element_line(colour = "black"),
@@ -624,7 +624,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = "Fuel \nAmounts (Mt)",
+    y = "Fuel Amounts (Mt)",
     fill = "Fuel"
   ) +
   scale_y_continuous(
@@ -647,7 +647,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
     axis.line = element_line(colour = "black")
   ) + theme(plot.title = element_text(face = "bold")) +
   theme(legend.direction = "horizontal",
-        legend.position = c(0.6, 0.9),
+        legend.position = c(0.5, 0.9),
         axis.title = element_text(size = 4)) + 
   guides(fill = guide_legend(ncol = 4, nrow = 1)) +
   theme(
@@ -806,7 +806,7 @@ df$Constellation = factor(df$constellation,
                           levels = c('Kuiper', 'OneWeb', 'Starlink'), 
                           labels = c('Kuiper \n(Ariane-5)', 'OneWeb \n(Soyuz-FG & \nFalcon-9)', 'Starlink \n(Falcon-9)'))
 emission_capacity <- ggplot(df, aes(x = Constellation, 
-  y = mean/1e6)) +
+  y = mean/1e6), fill = Constellation) +
   geom_bar(stat = "identity",
            position = position_dodge(0.9),
            width = 0.9) +
@@ -816,14 +816,7 @@ emission_capacity <- ggplot(df, aes(x = Constellation,
     position = position_dodge(.9),
     color = "black",
     size = 0.2
-  ) + geom_text(
-    aes(label = round(after_stat(y), 0), group = Constellation),
-    stat = "summary",
-    fun = sum,
-    vjust = -.5,
-    hjust = -0.98,
-    size = 1.5
-  ) +
+  ) + 
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   theme(legend.position = 'right') + labs(
     colour = NULL,
@@ -955,7 +948,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = "t Carbon dioxides Eqv. \nper subscriber",
+    y = bquote("Emissions / Subscriber ( t CO"["2"]~"eqv.)"),
     fill = 'Scenario'
   ) + scale_y_continuous(
     labels = function(y)
@@ -987,9 +980,8 @@ pub_emission <-
   ggarrange(
     fuel_types,
     emission_subscriber,
-    emission_capacity,
     nrow = 1,
-    ncol = 3
+    ncol = 2
   )
 
 path = file.path(folder, 'figures', 'combined_emission.png')
@@ -997,8 +989,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 7.5,
-  height = 3,
+  width = 6.5,
+  height = 3.5,
   res = 480
 )
 print(pub_emission)
@@ -1076,9 +1068,9 @@ social_carbon_baseline <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = "(bquote(~C0_2))",
+    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
     fill = "Satellite Mission Stage"
-  ) + ylab(bquote('$ Million per Tonne CO'[2])) + scale_y_continuous(limits = c(0, 350),
+  ) + scale_y_continuous(limits = c(0, 350),
                          labels = function(y)
                            format(y, scientific = FALSE),
                          expand = c(0, 0)
@@ -1138,9 +1130,10 @@ social_cost_worse <- ggplot(df, aes(x = Constellation, y = ((mean/1e3)*185)/1e6)
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = "Mt Carbon dioxides \nEqv.",
+    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
     fill = "Satellite Mission Stage"
-  ) + ylab(bquote('$ Million per Tonne CO'[2])) + scale_y_continuous(limits = c(0, 1500),
+  ) +
+  scale_y_continuous(limits = c(0, 1500),
                          labels = function(y)
                            format(y, scientific = FALSE),
                          expand = c(0, 0)
