@@ -10,12 +10,26 @@ path = '/home/makavelli/Desktop/GitHub/saleos/results/'
 pd.set_option('mode.chained_assignment', None)
 
 #Cpacity per single satellite
-starlink_capacity = single_satellite_capacity(250*10**6,5.1152,8,2)
+starlink_capacity = single_satellite_capacity(
+    250 * 10 ** 6, 
+    5.1152, 
+    8, 
+    2
+)
 
-kuiper_capacity = single_satellite_capacity(250*10**6, 5.1152, 8, 2)
+kuiper_capacity = single_satellite_capacity(
+    250 * 10 ** 6, 
+    5.1152, 
+    8, 
+    2
+)
 
-oneweb_capacity = single_satellite_capacity(250*10**6, 5.1152, 8, 2)
-print(oneweb_capacity)
+oneweb_capacity = single_satellite_capacity(
+    250*10**6, 
+    5.1152, 
+    8, 
+    2
+)
 
 #Emission model test
 df = em.starlink_emission()
