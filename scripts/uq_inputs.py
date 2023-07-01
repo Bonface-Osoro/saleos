@@ -13,31 +13,42 @@ CONFIG = configparser.ConfigParser()
 CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
 BASE_PATH = CONFIG['file_locations']['base_path']
 
-def uq_inputs_generator():
 
+def uq_inputs_generator():
+    """
+    Generate all UQ inputs to run through the saleos model. 
+    
+    """
     uq_parameters = []
 
     for key, item in tqdm(parameters.items(), desc = "Processing capacity, cost and emission inputs"):
+
         altitude = [(item["altitude_km"] - 5), 
                     item["altitude_km"], 
                     (item["altitude_km"] + 5)]
+
         receiver_gain = [(item["receiver_gain"] - 5), 
                          (item["receiver_gain"]), 
                          (item["receiver_gain"] + 5)]
+
         atmospheric_loss = [item["earth_atmospheric_losses"]- 3, 
                             item["earth_atmospheric_losses"], 
                            item["earth_atmospheric_losses"] + 3]
+
         adopt_rate = [item["adoption_rate"], 
                      item["adoption_rate"]+0.49, 
                      item["adoption_rate"]+0.99]
+ 
         satellite_launch = [item["satellite_launch_cost"] - 63672000, 
                             item["satellite_launch_cost"], 
                             item["satellite_launch_cost"] + 63672000] 
+
         ground_station = [item["ground_station_cost"] - 
                           (item["ground_station_cost"] * 0.2), 
                          item["ground_station_cost"], 
                          item["ground_station_cost"] + 
                          (item["ground_station_cost"] * 0.2)]
+
         maintenance_cost = [item["maintenance"] - 3000000, 
                             item["maintenance"], 
                             item["maintenance"] + 3000000]
@@ -47,23 +58,31 @@ def uq_inputs_generator():
                       item["staff_costs"] + 10000000]
         
         for alt in altitude:
+
             altitude_km = alt
+
             if alt == 540 or alt == 1190 or alt == 600:
                 altitude_scenario = "Low"
             elif alt == 545 or alt == 1195 or alt == 605:
                 altitude_scenario = "Baseline"
             else:
                 altitude_scenario = "High"
+
             for rec_gain in receiver_gain:
+
                 receiver_gain_dB = rec_gain
+
                 if rec_gain == 25 or rec_gain == 26:
                     receiver_gain_scenario = "Low"
                 elif rec_gain == 30 or rec_gain == 31:
                     receiver_gain_scenario = "Baseline" 
                 else:
                     receiver_gain_scenario = "High"
+
                 for atm_loss in atmospheric_loss:
+
                     earth_atmospheric_losses_dB = atm_loss
+
                     if atm_loss == 7:
                         atmospheric_loss_scenario = "Low"
                         cnr_scenario = "High(>13.5 dB)"
@@ -73,10 +92,15 @@ def uq_inputs_generator():
                     else:
                         atmospheric_loss_scenario = "High"
                         cnr_scenario = "Low (<7.5 dB)"
+
                     for sat_launch in satellite_launch:
+
                         satellite_launch_cost = sat_launch
+
                         for gst in ground_station:
+
                             ground_station_cost = gst
+
                             if gst == 39088000 and sat_launch == 186328000 or gst == 16000000 and \
                                 sat_launch == 86328000 or gst == 26400000 and sat_launch == 116328000:
                                 capex_scenario = "Low"
@@ -91,8 +115,11 @@ def uq_inputs_generator():
                                 capex_scenario = "High"
                                 sat_launch_scenario = "High"
                                 ground_station_scenario = "High"
+
                             for maint_cost in maintenance_cost:
+
                                 maint_costs = maint_cost
+
                                 if maint_cost == maintenance_cost[0]:
                                     opex_scenario = "Low"
                                 elif maint_cost == maintenance_cost[1]:
@@ -101,8 +128,11 @@ def uq_inputs_generator():
                                     opex_scenario = "High"
                                 else: 
                                     opex_scenario = "None"
+
                                 for stf_cost in staff_cost:
+
                                     staff_costs = stf_cost
+                                    
                                     satellite_manufacturing = item["satellite_manufacturing"]
                                     spectrum_cost = item["spectrum_cost"] 
                                     regulation_fees = item["regulation_fees"] 
@@ -211,4 +241,10 @@ def uq_inputs_generator():
             
     return df.shape
 
-uq_inputs_generator()
+
+if __name__ == '__main__':
+
+    print('Running uq_inputs_generator()')
+    uq_inputs_generator()
+
+    print('Completed')

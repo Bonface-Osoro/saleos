@@ -1,5 +1,5 @@
 """
-saleos simulation model.
+Simulation model for saleos.
 
 Developed by Bonface Osoro and Ed Oughton.
 
