@@ -1,4 +1,3 @@
-# Ctrl + Shift + A – Does a complete reformat of the selected part of a code.
 library(ggpubr)
 library(ggplot2)
 library(dplyr)
@@ -294,7 +293,7 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = bquote("Climate Change (Mt CO"["2"]~"e)"),
+    y = bquote("Climate Change ( Mt CO"["2"]~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 2),
@@ -375,7 +374,7 @@ climate_change_wc <-
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Climate Change (Mt CO"["2"]~"eq.)"),
+    y = bquote("Climate Change ( Mt CO"["2"]~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 8.5),
@@ -456,7 +455,7 @@ ozone_depletion <-
     title = "c",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion (kt CFC-11eq)"),
+    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 5.2),
@@ -537,7 +536,7 @@ ozone_depletion_wc <-
     title = "d",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion (kt CFC-11eq)"),
+    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 13),
@@ -618,7 +617,7 @@ resource_depletion <-
     title = "e",
     subtitle = " ",
     x = NULL,
-    y = bquote("Resource Depletion (t Sbeq)"),
+    y = bquote("Resource Depletion ( t Sb eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 235),
@@ -778,7 +777,7 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
     title = "g",
     subtitle = " ",
     x = NULL,
-    y = "CASES",
+    y = "Cases of Human Ecotoxicity",
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 800),
@@ -925,17 +924,11 @@ rockets <-
     "OneWeb \n(Soyuz-FG & \nFalcon-9)",
     "Kuiper \n(Ariane-5)",
     "Kuiper \n(Ariane-5)",
-    "Kuiper \n(Ariane-5)"
-  )
-amount <-
-  c(500000 * 74,
-    218150 * 11,
-    7360 * 11,
-    500000 * 7,
-    10000 * 54,
-    480000 * 54,
-    184900 * 54)
+    "Kuiper \n(Ariane-5)")
+amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 10000*54, 480000*54, 184900*54)
 fuels_df <- data.frame(rockets, fuel, amount)
+
+write.csv(fuels_df, "fuels.csv", row.names=FALSE)
 
 totals <- fuels_df %>%
   group_by(rockets) %>%
@@ -1307,7 +1300,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Emissions / Subscriber ( t CO"["2"] ~ "eqv.)"),
+    y = bquote("Emissions / Subscriber ( t CO"["2"]~"eqv.)"),
     fill = 'Scenario'
   ) + scale_y_continuous(
     labels = function(y)
@@ -1462,7 +1455,7 @@ social_carbon_baseline <-
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = bquote("Cost ( USD Millions t / CO"['2'] ~ "eqv.)"),
+    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 350),
@@ -1544,7 +1537,7 @@ social_cost_worse <-
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Cost ( USD Millions t / CO"['2'] ~ "eqv.)"),
+    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
     fill = "Satellite Mission Stage"
   ) +
   scale_y_continuous(
