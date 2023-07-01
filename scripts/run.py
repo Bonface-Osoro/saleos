@@ -484,12 +484,12 @@ def monthly_traffic(capacity_mbps):
 
 if __name__ == '__main__':
 
-    # start = time.time() 
+    start = time.time() 
 
     run_uq_processing()
 
-    # process_mission_total()
+    process_mission_total()
 
-    # executionTime = (time.time() - start)
+    executionTime = (time.time() - start)
 
-    # print('Execution time in minutes: ' + str(round(executionTime/60, 2))) 
+    print('Execution time in minutes: ' + str(round(executionTime/60, 2))) 
