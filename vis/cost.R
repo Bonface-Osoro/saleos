@@ -74,17 +74,17 @@ constellation_capex <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -137,17 +137,17 @@ constellation_opex <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -200,17 +200,17 @@ constellation_tco <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -263,17 +263,17 @@ constellation_capex_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -326,17 +326,17 @@ constellation_opex_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -389,17 +389,17 @@ constellation_tco_per_user <-
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 7),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     axis.line = element_line(colour = "black")
   ) +
   theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
   theme(
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
@@ -426,8 +426,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 6.5,
-  height = 5,
+  width = 5.5,
+  height = 4,
   res = 480
 )
 print(cost_per_user)

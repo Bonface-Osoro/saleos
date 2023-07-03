@@ -246,13 +246,13 @@ totals <- individual_emissions %>%
   summarize(value = signif(sum(`Ozone Depletion - Ozone Depletion Potential (Steady State)`)))
 
 ozone_depletion <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = `Constellation`, y = mean )) + #/ 1e6
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
       x = Constellation,
-      y = value / 1e6,
-      label = round(value / 1e6, 1)
+      y = value,
+      label = round(value, 1)
     ),
     size = 2,
     data = totals,
@@ -1212,46 +1212,36 @@ legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
   ))
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##########################
 ##Social Carbon Cost.   ##
 ##########################
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(climate_change),
-            sd = sd(climate_change))
-totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(climate_change)))
+  group_by(`Constellation`, category) %>%
+  summarize(mean = mean(`Climate Change - Global Warming Potential 100a`))
 
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
+totals <- individual_emissions %>%
+  group_by(`Constellation`) %>%
+  summarize(value = signif(sum(`Climate Change - Global Warming Potential 100a`)))
+
 social_carbon_baseline <-
   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
-      x = constellation,
+      x = Constellation,
       y = ((value / 1e3) * 185) / 1e6,
       label = round(((value / 1e3) * 185) / 1e6, 0)
     ),
@@ -1266,9 +1256,10 @@ social_carbon_baseline <-
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
     fill = "Satellite Mission Stage"
-  ) + scale_y_continuous(
+  ) +
+    ylab("Social Cost<br>(US$ Millions/t CO<sub>2</sub>eq)") +
+    scale_y_continuous(
     limits = c(0, 350),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -1276,6 +1267,7 @@ social_carbon_baseline <-
   ) +   theme(plot.title = element_text(face = "bold")) +
   theme(legend.position = "none", axis.title = element_text(size = 6)) +
   theme(
+    axis.title.y = element_markdown(),
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
     panel.border = element_blank(),
@@ -1296,83 +1288,61 @@ social_carbon_baseline <-
 #######################
 ##Social Cost Carbon ##
 #######################
-df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(climate_change_wc),
-            sd = sd(climate_change_wc))
-
-totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(climate_change_wc)))
-
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
-social_cost_worse <-
-  ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
-  geom_bar(stat = "identity", aes(fill = category)) +
-  geom_text(
-    aes(
-      x = constellation,
-      y = ((value / 1e3) * 185) / 1e6,
-      label = round(((value / 1e3) * 185) / 1e6, 0)
-    ),
-    size = 2,
-    data = totals,
-    vjust = -0.5,
-    hjust = 0.5,
-    position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-  theme(legend.position = "right") + labs(
-    colour = NULL,
-    title = "b",
-    subtitle = " ",
-    x = NULL,
-    y = bquote("Cost ( USD Millions t / CO"['2']~"eqv.)"),
-    fill = "Satellite Mission Stage"
-  ) +
-  scale_y_continuous(
-    limits = c(0, 1500),
-    labels = function(y)
-      format(y, scientific = FALSE),
-    expand = c(0, 0)
-  ) +   theme(plot.title = element_text(face = "bold")) +
-  theme(legend.position = "none", axis.title = element_text(size = 6)) +
-  theme(
-    axis.line = element_line(colour = "black"),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    plot.subtitle = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    plot.title = element_text(size = 8)
-  )
+# df = individual_emissions %>%
+#   group_by(constellation, category) %>%
+#   summarize(mean = mean(climate_change_wc),
+#             sd = sd(climate_change_wc))
+# 
+# totals <- individual_emissions %>%
+#   group_by(constellation) %>%
+#   summarize(value = signif(sum(climate_change_wc)))
+# 
+# social_cost_worse <-
+#   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
+#   geom_bar(stat = "identity", aes(fill = category)) +
+#   geom_text(
+#     aes(
+#       x = constellation,
+#       y = ((value / 1e3) * 185) / 1e6,
+#       label = round(((value / 1e3) * 185) / 1e6, 0)
+#     ),
+#     size = 2,
+#     data = totals,
+#     vjust = -0.5,
+#     hjust = 0.5,
+#     position = position_stack()
+#   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+#   theme(legend.position = "right") + labs(
+#     colour = NULL,
+#     title = "b",
+#     subtitle = " ",
+#     x = NULL,
+#     # y = bquote("Social Cost\n(US$ Millions/t CO"['2']~"eq)"),
+#     fill = "Satellite Mission Stage"
+#   ) +
+#   ylab("Social Cost<br>(US$ Millions/t CO<sub>2</sub>eq)") +
+#   scale_y_continuous(
+#     limits = c(0, 1500),
+#     labels = function(y)
+#       format(y, scientific = FALSE),
+#     expand = c(0, 0)
+#   ) +   theme(plot.title = element_text(face = "bold")) +
+#   theme(legend.position = "none", axis.title = element_text(size = 6)) +
+#   theme(
+#     axis.line = element_line(colour = "black"),
+#     strip.text.x = element_blank(),
+#     panel.border = element_blank(),
+#     panel.grid.major = element_blank(),
+#     panel.grid.minor = element_blank(),
+#     legend.title = element_text(size = 6),
+#     legend.text = element_text(size = 6),
+#     axis.text.x = element_text(size = 6),
+#     axis.text.y = element_text(size = 6),
+#     plot.subtitle = element_text(size = 6),
+#     axis.line.x  = element_line(size = 0.15),
+#     axis.line.y  = element_line(size = 0.15),
+#     plot.title = element_text(size = 8)
+#   )
 
 
 ####################################

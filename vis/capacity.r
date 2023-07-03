@@ -1,6 +1,8 @@
 library(ggpubr)
 library(ggplot2)
 library(tidyverse)
+# install.packages("ggtext")
+library(ggtext)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -65,7 +67,7 @@ ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -133,7 +135,7 @@ sat_capacity <-
                            axis.text.y = element_text(size = 6),
                            axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -197,7 +199,7 @@ const_capacity <-
                           axis.line = element_line(colour = "black"),
                           axis.text.x = element_text(size = 6),
                           axis.text.y = element_text(size = 6),
-                          axis.title = element_text(size = 8),
+                          axis.title = element_text(size = 6),
                           axis.line.x  = element_line(size = 0.15),
                           axis.line.y  = element_line(size = 0.15),
                           legend.position = 'bottom'
@@ -270,7 +272,7 @@ capacity_subscriber <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -336,7 +338,7 @@ capacity_per_user <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -373,16 +375,14 @@ per_user_area <-
     title = " ",
     subtitle = "f",
     x = NULL,
-    y = 'Mean Subscribers\n(bquote(~km^2))',
     fill = 'Adoption\nScenario'
-  ) + ylab(bquote('Mean Subscribers\n('*km^2*')')) + 
+  ) + ylab('Mean Subscribers<br>(Users/km<sup>2</sup>)') +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    #limits = c(0, 35)
   ) + theme_minimal() +
-  theme(axis.title.y = element_text(size = 6),
+  theme(axis.title.y = element_markdown(size = 6),
         strip.text.x = element_blank(),
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
@@ -393,7 +393,7 @@ per_user_area <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
