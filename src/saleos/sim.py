@@ -657,7 +657,6 @@ def calc_scheduling_emission(name):
 
     elif name == 'Starlink':
         emission_dict0 = propellant_containment()
-        print(emission_dict0)
         emission_list0 = []
         for i in emission_dict0.keys():
             new_emissions = emission_dict0.get(i) * 530
@@ -685,7 +684,7 @@ def calc_scheduling_emission(name):
             new_emissions = emission_dict3.get(i) * 494
             emission_list3.append(new_emissions)
         emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
-        
+
         cdict1 = Counter(emission_dict0) + Counter(emission_list1)
         cdict2 = Counter(emission_list2) + Counter(emission_list3)
         emission_dict = Counter(cdict1) + Counter(cdict2)
