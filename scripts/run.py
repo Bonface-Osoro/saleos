@@ -33,11 +33,12 @@ def run_uq_processing():
     path = os.path.join(BASE_PATH, 'uq_parameters.csv')
     if not os.path.exists(path):
         print('Cannot locate uq_parameters.csv - have you run preprocess.py?')
-    df = pd.read_csv(path)[:1]
+    df = pd.read_csv(path)
+    df = df.to_dict('records')#[:2000]
 
     results = []
 
-    for idx, item in df.iterrows():#tqdm(uq_dict, desc = "Processing uncertainty results"):
+    for item in tqdm(df, desc = "Processing uncertainty results"):
 
         constellation = item["constellation"]
 
@@ -157,7 +158,7 @@ def run_uq_processing():
 
         oneweb_sz = sl.soyuz_fg()
         oneweb_f9 = sl.falcon_9()
-        
+
         total_global_warming_em = (
             emission_dict['global_warming'] + 
             scheduling_dict['global_warming'] +
@@ -314,7 +315,7 @@ def run_uq_processing():
 
         df = pd.DataFrame.from_dict(results)
 
-        filename = 'uq_results.csv'
+        filename = 'interim_results.csv'
         
         if not os.path.exists(RESULTS):
             os.makedirs(RESULTS)
@@ -330,7 +331,7 @@ def process_mission_total():
     ...
     
     """   
-    data_in = os.path.join(RESULTS, 'uq_results.csv')
+    data_in = os.path.join(RESULTS, 'interim_results.csv')
     df = pd.read_csv(data_in, index_col=False)
 
     #Select the columns to use.
@@ -378,39 +379,91 @@ def process_mission_total():
         else:
             df["mission_number"].loc[i]= 0
     print("Finished processing satellite missions")
+    # df.to_csv(os.path.join(RESULTS, 'line_381.csv'), index=False)
 
     # Classify subscribers by melting the dataframe into long format
-    df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
-        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
-        "opex_scenario", "total_cost_ownership", "mission_number", "mission_number_1", 
-        "total_global_warming_em", "total_ozone_depletion_em", 
-        "total_mineral_depletion", "total_freshwater_toxicity", 
-        "total_human_toxicity", "total_emissions",
-        "total_climate_change", "total_climate_change_wc", "oneweb_f9", "oneweb_sz"], 
-        value_vars = ["subscribers_low", "subscribers_baseline", 
-        "subscribers_high",], var_name = "subscriber_scenario", 
-        value_name = "subscribers")
+    # Switching the subscriber columns from wide format to long format
+    # n=6561 to n=19683
+    df = pd.melt(
+        df,
+        id_vars = [
+            "constellation", 
+            "constellation_capacity", 
+            "capacity_scenario", 
+            "total_opex", 
+            "capex_costs", 
+            "capex_scenario", 
+            "satellite_coverage_area_km", 
+            "opex_scenario", 
+            "total_cost_ownership", 
+            "mission_number", 
+            "mission_number_1",
+            "total_global_warming_em", 
+            "total_ozone_depletion_em", 
+            "total_mineral_depletion", 
+            "total_freshwater_toxicity", 
+            "total_human_toxicity", 
+            "total_emissions",
+            "total_climate_change", 
+            "total_climate_change_wc", 
+            "oneweb_f9", 
+            "oneweb_sz"
+        ], 
+        value_vars = [
+            "subscribers_low", 
+            "subscribers_baseline",
+            "subscribers_high",
+            ], 
+        var_name = "subscriber_scenario", 
+        value_name = "subscribers"
+    )
+    # df.to_csv(os.path.join(RESULTS, 'line_416.csv'), index=False)
 
     # Classify total emissions by impact category
-    df = pd.melt(df, id_vars = ["constellation", "constellation_capacity", 
-        "capacity_scenario", "total_opex", "capex_costs", "capex_scenario", "satellite_coverage_area_km",
-        "opex_scenario", "total_cost_ownership", "mission_number", "mission_number_1",
-        "subscriber_scenario", "subscribers", "total_emissions", 
-        "total_climate_change", "total_climate_change_wc", "oneweb_f9", "oneweb_sz"], 
-        value_vars = ["total_global_warming_em", "total_ozone_depletion_em", 
-        "total_mineral_depletion", "total_freshwater_toxicity", 
-        "total_human_toxicity"], var_name = 
-        "impact_category", value_name = "emission_totals")
+    df = pd.melt(
+        df,
+        id_vars = [
+            "constellation", 
+            "constellation_capacity", 
+            "capacity_scenario", 
+            "total_opex", 
+            "capex_costs", 
+            "capex_scenario", 
+            "satellite_coverage_area_km",
+            "opex_scenario", 
+            "total_cost_ownership", 
+            "mission_number", 
+            "mission_number_1",
+            "subscriber_scenario", 
+            "subscribers", 
+            "total_emissions",
+            "total_climate_change", 
+            "total_climate_change_wc", 
+            "oneweb_f9", 
+            "oneweb_sz"
+        ], 
+        value_vars = [
+            "total_global_warming_em", 
+            "total_ozone_depletion_em",
+            "total_mineral_depletion", 
+            "total_freshwater_toxicity", 
+            "total_human_toxicity"
+            ], 
+        var_name = "impact_category", 
+        value_name = "emission_totals"
+    )  
+    # df.to_csv(os.path.join(RESULTS, 'line_450.csv'), index=False)
 
     # Calculate the total emissions
     for i in tqdm(range(len(df)), desc = "Calculating constellation emission totals".format(i)):
-
+        # print(i, df["constellation"].loc[i])
         if df["constellation"].loc[i] == "Starlink" or df["constellation"].loc[i] == "Kuiper":
             df["total_emissions"].loc[i] = df["emission_totals"].loc[i] * df["mission_number"].loc[i]
         else:
             df["total_emissions"].loc[i] = (df["oneweb_sz"].loc[i] * df["mission_number"].loc[i]) + \
             (df["oneweb_f9"].loc[i] * df["mission_number_1"].loc[i])
     print("Finished calculating constellation emission totals")
+    # df.to_csv(os.path.join(RESULTS, 'line_460.csv'), index=False)
 
     # Select columns to use
     df = df[['constellation', 'constellation_capacity', 'capacity_scenario','satellite_coverage_area_km',
@@ -429,14 +482,20 @@ def process_mission_total():
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
 
+        #Neither .65 nor .5 are defined as parameters, and are not explained 
+        #Should be a function imo
         df["capacity_per_user"].loc[i] = (df["constellation_capacity"].loc[i] * 0.65 * 0.5) / df["subscribers"].loc[i]
 
+        #Neither 5 nor 12 are defined as parameters, and are not explained 
+        #Should be a function imo with a written explanation 
         df["monthly_gb"].loc[i] = (monthly_traffic(df["capacity_per_user"].loc[i]))/(5 * 12)
 
         df["total_climate_emissions"].loc[i] = df["total_climate_change"].loc[i] * df["mission_number"].loc[i]
 
         df["total_climate_emissions_wc"].loc[i] = df["total_climate_change_wc"].loc[i] * df["mission_number"].loc[i]
 
+        #Neither 5 nor 12 are defined as parameters, and are not explained 
+        #Should be a function imo with a written explanation 
         df["emission_per_capacity"].loc[i] = df["total_climate_emissions"].loc[i] / (df["monthly_gb"].loc[i] * 12 * 5)
         
         df["per_cost_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
@@ -457,13 +516,13 @@ def process_mission_total():
 
         df["user_per_area"].loc[i] = df["subscribers"].loc[i] / df["satellite_coverage_area_km"].loc[i]
 
-    filename = 'results.csv'
+    filename = 'final_results.csv'
 
     if not os.path.exists(RESULTS):
         os.makedirs(RESULTS)
 
     path_out = os.path.join(RESULTS, filename)
-    df.to_csv(path_out)
+    df.to_csv(path_out, index=False)
 
     return None
 
@@ -483,11 +542,13 @@ def monthly_traffic(capacity_mbps):
 
 
 if __name__ == '__main__':
-
+    
     start = time.time() 
 
+    print('Working on run_uq_processing()')
     run_uq_processing()
 
+    print('Working on process_mission_total()')
     process_mission_total()
 
     executionTime = (time.time() - start)
