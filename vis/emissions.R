@@ -24,8 +24,8 @@ individual_emissions$category = gsub('Soyuz-FG ', '', individual_emissions$categ
 individual_emissions$category = gsub(' of by train' , '', individual_emissions$category)
 individual_emissions$category = gsub('Transportation ' , 'Transportation', individual_emissions$category)
 
-df$category = factor(
-  df$category,
+individual_emissions$category = factor(
+  individual_emissions$category,
   levels =c(
     "Production",
     "Propellant Production",
@@ -47,44 +47,22 @@ df$category = factor(
 )
 
 individual_emissions <- individual_emissions %>% 
-  mutate_at(c(3:7), as.numeric)
+  mutate_at(c(3:9), as.numeric)
 
 ##########################
 ##plot1 
 ##########################
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
-  summarize(mean = mean(`Climate Change - Global Warming Potential 100a`)#,
-            # sd = sd(`Climate Change - Global Warming Potential 100a`)
+  summarize(mean = mean(`Climate Change - Global Warming Potential 100a`)
   )
-
-df$category = factor(
-  df$category,
-  levels =c(
-    "Production",
-    "Propellant Production",
-    "Launch Campaign",
-    "Transportation",
-    "AIT",
-    "SCHD of Propellant",
-    "Launches"
-  ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
   summarize(value = signif(sum(`Climate Change - Global Warming Potential 100a`)))
 
-climate_change <- ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
+climate_change <-
+  ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -132,127 +110,81 @@ climate_change <- ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
 #####################################
 ##plot2
 #####################################
-# colnames(individual_emissions)
-# df = individual_emissions %>%
-#   group_by(`Constellation`, category) %>%
-#   summarize(mean = mean(climate_change_wc))
-# 
-# totals <- individual_emissions %>%
-#   group_by(constellation) %>%
-#   summarize(value = signif(sum(climate_change_wc)))
-# 
-# df$Constellation = factor(df$constellation)
-# df$category = factor(
-#   df$category,
-#   levels =
-#     c(
-#       "launcher",
-#       "propellant",
-#       "campaign",
-#       "transportation",
-#       "ait",
-#       "scheduling",
-#       "launching"
-#     ),
-#   labels = c(
-#     "Launcher Production",
-#     "Launcher Propellant Production",
-#     "Launch Campaign",
-#     "Transportation of Launcher",
-#     "Launcher AIT",
-#     "SCHD of Propellant",
-#     "Launch Event"
-#   )
-# )
-# climate_change_wc <-
-#   ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
-#   geom_bar(stat = "identity", aes(fill = category)) +
-#   geom_text(
-#     aes(
-#       x = constellation,
-#       y = value / 1e9,
-#       label = round(value / 1e9, 1)
-#     ),
-#     size = 2,
-#     data = totals,
-#     vjust = 0.5,
-#     hjust = -0.09,
-#     position = position_stack()
-#   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
-#   theme(legend.position = "right") + labs(
-#     colour = NULL,
-#     title = "b",
-#     subtitle = " ",
-#     x = NULL,
-#     y = bquote("Climate Change ( Mt CO"["2"]~"eqv.)"),
-#     fill = "Satellite Mission Stage"
-#   ) + scale_y_continuous(
-#     limits = c(0, 8.5),
-#     labels = function(y)
-#       format(y, scientific = FALSE),
-#     expand = c(0, 0)
-#   ) +   theme(plot.title = element_text(face = "bold")) +
-#   theme(legend.position = "none", axis.title = element_text(size = 6)) +
-#   theme(
-#     axis.line = element_line(colour = "black"),
-#     strip.text.x = element_blank(),
-#     panel.border = element_blank(),
-#     panel.grid.major = element_blank(),
-#     panel.grid.minor = element_blank(),
-#     legend.title = element_text(size = 6),
-#     legend.text = element_text(size = 6),
-#     axis.text.x = element_text(size = 6),
-#     axis.text.y = element_text(size = 6),
-#     plot.subtitle = element_text(size = 6),
-#     axis.line.x  = element_line(size = 0.15),
-#     axis.line.y  = element_line(size = 0.15),
-#     plot.title = element_text(size = 8)
-#   )
+colnames(individual_emissions)
+df = individual_emissions %>%
+  group_by(`Constellation`, category) %>%
+  summarize(mean = mean(`Climate Change WC - Global Warming Potential 100a`))
+
+totals <- individual_emissions %>%
+  group_by(`Constellation`) %>%
+  summarize(value = signif(sum(`Climate Change WC - Global Warming Potential 100a`)))
+
+climate_change_wc <-
+  ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
+  geom_bar(stat = "identity", aes(fill = category)) +
+  geom_text(
+    aes(
+      x = Constellation,
+      y = value / 1e9,
+      label = round(value / 1e9, 1)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
+  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
+  theme(legend.position = "right") + labs(
+    colour = NULL,
+    title = "b",
+    subtitle = " ",
+    x = NULL,
+    y = bquote("Climate Change (Mt CO"["2"]~"eqv.)"),
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, 8.5),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) +   theme(plot.title = element_text(face = "bold")) +
+  theme(legend.position = "none", axis.title = element_text(size = 6)) +
+  theme(
+    axis.line = element_line(colour = "black"),
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    plot.subtitle = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    plot.title = element_text(size = 8)
+  )
 
 
 ###########################
-##plot2 = Ozone Depletion##
+##
 ###########################
 colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
   summarize(mean = mean(`Ozone Depletion - Ozone Depletion Potential (Steady State)`)
             )
-
-df$category = factor(
-  df$category,
-  levels =c(
-    "Production",
-    "Propellant Production",
-    "Launch Campaign",
-    "Transportation",
-    "AIT",
-    "SCHD of Propellant",
-    "Launches"
-  ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
-
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
   summarize(value = signif(sum(`Ozone Depletion - Ozone Depletion Potential (Steady State)`)))
 
 ozone_depletion <-
-  ggplot(df, aes(x = `Constellation`, y = mean )) + #/ 1e6
+  ggplot(df, aes(x = `Constellation`, y = mean/1e6)) + 
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
       x = Constellation,
-      y = value,
-      label = round(value, 1)
+      y = value/1e6,
+      label = round(value/1e6, 1)
     ),
     size = 2,
     data = totals,
@@ -260,22 +192,26 @@ ozone_depletion <-
     hjust = -0.09,
     position = position_stack()
   )  + 
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() + coord_flip() +
-  theme(legend.position = "right") + labs(
+  scale_fill_brewer(palette = "Dark2") + 
+  theme_minimal() + coord_flip() +
+  theme(legend.position = "right") + 
+  labs(
     colour = NULL,
     title = "c",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
+    y = bquote("Ozone Depletion (kt CFC-11 eqv.)"),
     fill = "Satellite Mission Stage"
-  ) + scale_y_continuous(
-    limits = c(0, 200),
+  ) + 
+  scale_y_continuous(
+    limits = c(0, max(totals$value)/1e6+1),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +  theme(plot.title = element_text(face = "bold")) +
-  theme(legend.position = "none", axis.title = element_text(size = 6)) +
+  ) +  
   theme(
+    legend.position = "none", 
+    axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
     panel.border = element_blank(),
@@ -295,46 +231,26 @@ ozone_depletion <-
 ##########################################
 ##plot2 = Ozone Depletion worst scenario##
 ##########################################
+
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(ozone_depletion_wc),
-            sd = sd(ozone_depletion_wc))
+  group_by(Constellation, category) %>%
+  summarize(mean = mean(`Ozone Depletion WC - Ozone Depletion Potential (Steady State)`))
 
 totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(ozone_depletion_wc)))
+  group_by(Constellation) %>%
+  summarize(value = signif(
+    sum(`Ozone Depletion WC - Ozone Depletion Potential (Steady State)`)))
 
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
+max_y = max(totals$value)
+
 ozone_depletion_wc <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = Constellation, y = mean/1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
-      x = constellation,
+      x = Constellation,
       y = value / 1e6,
-      label = round(value / 1e6, 1)
+      label = round(value / 1e6, 2)
     ),
     size = 2,
     data = totals,
@@ -347,15 +263,16 @@ ozone_depletion_wc <-
     title = "d",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion ( kt CFC-11 eqv.)"),
+    y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 13),
+    limits = c(0, max_y/1e6+1),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) +  theme(plot.title = element_text(face = "bold")) +
-  theme(legend.position = "none", axis.title = element_text(size = 6)) +
+  theme(legend.position = "none", 
+        axis.title = element_text(size = 6)) +
   theme(
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
@@ -376,44 +293,22 @@ ozone_depletion_wc <-
 ##############################
 ##plot3 = Resource Depletion##
 ##############################
+# colnames(individual_emissions)
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(resource_depletion),
-            sd = sd(resource_depletion))
+  group_by(Constellation, category) %>%
+  summarize(mean = mean(`Resource Depletion - Mineral Resource Depletion Potential`))
 
 totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(resource_depletion)))
+  group_by(Constellation) %>%
+  summarize(value = signif(
+    sum(`Resource Depletion - Mineral Resource Depletion Potential`)))
 
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
 resource_depletion <-
   ggplot(df, aes(x = Constellation, y = mean / 1e3)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
-      x = constellation,
+      x = Constellation,
       y = value / 1e3,
       label = round(value / 1e3, 0)
     ),
@@ -452,47 +347,26 @@ resource_depletion <-
     axis.line.y  = element_line(size = 0.15),
     plot.title = element_text(size = 8)
   )
+
 ##########################################
 ##plot4 = Freshwater Aquatic Ecotoxicity##
 ##########################################
+
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(freshwater_ecotixicity),
-            sd = sd(freshwater_ecotixicity))
+  group_by(Constellation, category) %>%
+  summarize(mean = mean(`Toxicity - Freshwater Aquatic Ecotoxicity`))
 
 totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(freshwater_ecotixicity)))
+  group_by(Constellation) %>%
+  summarize(value = signif(
+    sum(`Toxicity - Freshwater Aquatic Ecotoxicity`)))
 
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
 freshwater_ecotixicity <-
   ggplot(df, aes(x = Constellation, y = mean / 1e8)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
-      x = constellation,
+      x = Constellation,
       y = value / 1e8,
       label = round(value / 1e8, 0)
     ),
@@ -537,43 +411,21 @@ freshwater_ecotixicity <-
 ##########################
 ##plot4 = Human Toxicity##
 ##########################
+
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(human_toxicity),
-            sd = sd(human_toxicity))
+  group_by(Constellation, category) %>%
+  summarize(mean = mean(`Toxicity - Human Toxicity`))
 
 totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(human_toxicity)))
+  group_by(Constellation) %>%
+  summarize(value = signif(sum(`Toxicity - Human Toxicity`)))
 
-df$Constellation = factor(df$constellation)
-df$category = factor(
-  df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
-  labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
-human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
+human_toxicity <- 
+  ggplot(df, aes(x = Constellation, y = mean)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
-      x = constellation,
+      x = Constellation,
       y = value,
       label = round(value, 0)
     ),
@@ -618,37 +470,46 @@ human_toxicity <- ggplot(df, aes(x = Constellation, y = mean)) +
 ## Legend plot ##
 #################
 df = individual_emissions %>%
-  group_by(constellation, category) %>%
-  summarize(mean = mean(human_toxicity),
-            sd = sd(human_toxicity))
+  group_by(Constellation, category) %>%
+  summarize(mean = mean(`Toxicity - Human Toxicity`))
 
 totals <- individual_emissions %>%
-  group_by(constellation) %>%
-  summarize(value = signif(sum(human_toxicity)))
+  group_by(Constellation) %>%
+  summarize(value = signif(sum(`Toxicity - Human Toxicity`)))
 
-df$Constellation = factor(df$constellation)
+df$Category = df$category
+
 df$Category = factor(
   df$category,
-  levels =
-    c(
-      "launcher",
-      "propellant",
-      "campaign",
-      "transportation",
-      "ait",
-      "scheduling",
-      "launching"
-    ),
+  levels =c(
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
+    "Launcher AIT",
+    "SCHD of Propellant",
+    "Launch Event"
+  ),
   labels = c(
-    "Launcher \nProduction",
-    "Launcher \nPropellant \nProduction",
-    "Launch \nCampaign",
-    "Transportation \nof Launcher",
-    "Launcher \nAssembling \nIntegration \n& Testing",
-    "Scheduling \nof \nPropellant",
-    "Launch \nEvent"
+    "Launcher\nProduction",
+    "Launcher\nPropellant Production",
+    "Launch\nCampaign",
+    "Transportation\nof Launcher",
+    "Launcher\nAIT",
+    "SCHD of\nPropellant",
+    "Launch\nEvent"
   )
 )
+
+#   labels = c(
+#     "Launcher \nProduction",
+#     "Launcher \nPropellant \nProduction",
+#     "Launch \nCampaign",
+#     "Transportation \nof Launcher",
+#     "Launcher \nAssembling \nIntegration \n& Testing",
+#     "Scheduling \nof \nPropellant",
+#     "Launch \nEvent"
+
 legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
   geom_point(size = 0.005) +
   lims(x = c(0, 0), y = c(0, 0)) + labs(fill = "Satellite Mission Stage") +
@@ -1292,11 +1153,11 @@ social_carbon_baseline <-
 #   group_by(constellation, category) %>%
 #   summarize(mean = mean(climate_change_wc),
 #             sd = sd(climate_change_wc))
-# 
+#
 # totals <- individual_emissions %>%
 #   group_by(constellation) %>%
 #   summarize(value = signif(sum(climate_change_wc)))
-# 
+#
 # social_cost_worse <-
 #   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
 #   geom_bar(stat = "identity", aes(fill = category)) +
