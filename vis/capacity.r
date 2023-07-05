@@ -1,65 +1,15 @@
 library(ggpubr)
 library(ggplot2)
 library(tidyverse)
-
+# install.packages("ggtext")
+library(ggtext)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, "uq_results.csv"))
-orbit <- read.csv(file.path(folder, "space-objects_decade.csv"))
-
-
-#########################
-##plot1 = Space Objects##
-#########################
-totals <- orbit %>%
-  group_by(Decade) %>%
-  summarize(value = signif(sum(yearly_launches), 2))
-
-space_objects = ggplot(orbit, aes(x = Decade, y = yearly_launches)) +
-  geom_bar(stat = "identity", aes(fill = Region)) +
-  geom_text(
-    aes(x = Decade, y = value, label = round(after_stat(y), 2)),
-    size = 2,
-    data = totals,
-    vjust = -3.5,
-    hjust = 0.5,
-    position = position_stack()
-  ) +
-    theme(legend.position = 'bottom',
-          axis.text.x = element_text(angle = 360, hjust = 1)) + 
-      scale_fill_brewer(palette = "Paired") +
-      labs(colour = NULL,
-           title = "Global space launches from 1958 to 1922.",
-           subtitle = "Satellites launched by different governments, businesses and space agencies according to the data from \nthe United States' Space Force.", 
-           x = NULL, y = "Yearly Space Launches", 
-           fill='Continental Region') +
-      theme(panel.spacing = unit(0.6, "lines")) + 
-      expand_limits(y = 0) +
-      guides(fill = guide_legend(ncol = 3, title = 'Space Object Type')) + 
-  theme(axis.title.y = element_text(size = 7),
-        axis.text.x = element_text(size = 7),
-        axis.text.y = element_text(size = 7)) +
-      theme(legend.title = element_text(size = 7),
-      legend.text = element_text(size =6)) +
-      scale_x_discrete(expand = c(0, 0.15)) + guides(fill = guide_legend(ncol = 5, nrow = 1)) +
-      scale_y_continuous(expand = c(0, 0), labels = function(y)
-        format(y, scientific = FALSE), limits = c(0, 18000)) 
-
-# INDIVIDUAL PLOTS WITH ERROR BARS #
-data <- select(
-  data,
-  constellation,
-  cnr_scenario,
-  channel_capacity,
-  capacity_per_single_satellite,
-  constellation_capacity,
-  cnr
-)
-
+data <- read.csv(file.path(folder, '..', 'results', "uq_results.csv"))
 
 ######################################
 ##plot1 = Channel capacity with Bars
@@ -78,7 +28,7 @@ df$CNR = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
-# chn_capacity <-
+chn_capacity <-
 ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
@@ -98,7 +48,7 @@ ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
     title = " ",
     subtitle = "a",
     x = NULL,
-    y = "Channel Capacity (Gbps)",
+    y = "Channel Capacity\n(Gbps)",
     fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
@@ -117,14 +67,13 @@ ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
-
 
 
 ######################################
@@ -166,7 +115,7 @@ sat_capacity <-
     title = " ",
     subtitle = "b",
     x = NULL,
-    y = "Satellite Capacity (Gbps)",
+    y = "Satellite Capacity\n(Gbps)",
     fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
@@ -186,7 +135,7 @@ sat_capacity <-
                            axis.text.y = element_text(size = 6),
                            axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -233,7 +182,7 @@ const_capacity <-
     title = " ",
     subtitle = "c",
     x = NULL,
-    y = "Total Usable \nConstellation Capacity (Tbps)",
+    y = "Total Usable Constellation\nCapacity (Tbps)",
     fill = 'QoS\nScenario'
   ) +
   scale_y_continuous(
@@ -250,7 +199,7 @@ const_capacity <-
                           axis.line = element_line(colour = "black"),
                           axis.text.x = element_text(size = 6),
                           axis.text.y = element_text(size = 6),
-                          axis.title = element_text(size = 8),
+                          axis.title = element_text(size = 6),
                           axis.line.x  = element_line(size = 0.15),
                           axis.line.y  = element_line(size = 0.15),
                           legend.position = 'bottom'
@@ -267,7 +216,8 @@ const_capacity <-
 ##plot4 = capacity_subscriber
 ######################################
 
-data2 <- read.csv(file.path(folder, "mission_emission_results.csv"))
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+data2 <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -302,7 +252,7 @@ capacity_subscriber <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Monthly Traffic (GB/user)",
+    y = "Mean Monthly Traffic\n(GB/User)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -322,7 +272,7 @@ capacity_subscriber <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -368,7 +318,7 @@ capacity_per_user <-
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Capacity (Mbps/user)",
+    y = "Mean Capacity\n(Mbps/User)",
     fill = 'Adoption\nScenario'
   ) + 
   scale_y_continuous(
@@ -388,7 +338,7 @@ capacity_per_user <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -425,16 +375,14 @@ per_user_area <-
     title = " ",
     subtitle = "f",
     x = NULL,
-    y = 'Mean Subscribers (bquote(~Per km^2))',
     fill = 'Adoption\nScenario'
-  ) + ylab(bquote('Mean Subscribers (Per '*km^2*')')) + 
+  ) + ylab('Mean Subscribers<br>(Users/km<sup>2</sup>)') +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    #limits = c(0, 35)
   ) + theme_minimal() +
-  theme(axis.title.y = element_text(size = 6),
+  theme(axis.title.y = element_markdown(size = 6),
         strip.text.x = element_blank(),
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
@@ -445,7 +393,7 @@ per_user_area <-
         axis.line.y  = element_line(size = 0.15),
         axis.line = element_line(colour = "black")
   ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 8)) +
+  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
   theme(
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
@@ -457,6 +405,8 @@ per_user_area <-
 ####################################
 ## Combine all the capacity plots ##
 ####################################
+
+#Row 1, subplots a-c
 pub_qos <- ggarrange(
   chn_capacity,
   sat_capacity,
@@ -467,7 +417,7 @@ pub_qos <- ggarrange(
   font.label = list(size = 9)
 )
 
-
+#Row 2, subplots d-f
 pub_subs <- ggarrange(
   capacity_subscriber,
   capacity_per_user,
@@ -478,6 +428,7 @@ pub_subs <- ggarrange(
   font.label = list(size = 9)
 )
 
+#Assemble rows 1 and 2
 pub_cap <- ggarrange(
   pub_qos,
   pub_subs,
@@ -487,20 +438,9 @@ pub_cap <- ggarrange(
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'traffic_profile.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-png(
-  path,
-  units = "in",
-  width = 5.5,
-  height = 2.5,
-  res = 480
-)
-print(pub_subs)
-dev.off()
 
 path = file.path(folder, 'figures', 'capacity_profile.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
@@ -510,30 +450,3 @@ png(
 )
 print(pub_cap)
 dev.off()
-
-
-#######################
-## Space Object plot ##
-#######################
-
-space <- ggarrange(
-  space_objects,
-  nrow = 1,
-  common.legend = T,
-  legend = "bottom",
-  labels = c("a")
-)
-
-path = file.path(folder, 'figures', 'space_objects.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-png(
-  path,
-  units = "in",
-  width = 8.5,
-  height = 5.5,
-  res = 480
-)
-print(space)
-dev.off()
-
-

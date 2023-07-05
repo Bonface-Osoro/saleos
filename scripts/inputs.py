@@ -6,32 +6,27 @@ Written by Bonface Osoro & Ed Oughton.
 May 2022
 
 """
-
 parameters = {
     'starlink': {
         'number_of_satellites': 4425,
         'name':'Starlink',
-        'iterations': 100,
-        'seed_value': 42,
-        'mu': 2, #Mean of distribution
-        'sigma': 10, #Standard deviation of distribution
+        # 'iterations': 100,
+        # 'seed_value': 42,
+        # 'mu': 2, #Mean of distribution
+        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
-        'dl_frequency': 13.5*10**9, #Downlink frequency in Hertz
-        'dl_bandwidth': 0.5*10**9, #Downlink bandwidth in Hertz
+        'dl_frequency_Hz': 13.5*10**9, #Downlink frequency in Hertz
+        'dl_bandwidth_Hz': 0.5*10**9, #Downlink bandwidth in Hertz
         'speed_of_light': 3.0*10**8, #Speed of light in vacuum
-        'antenna_diameter': 0.6, #Metres
+        'antenna_diameter_m': 0.6, #Metres
         'antenna_efficiency': 0.6,
-        'power': 30, #dBw
+        'power_dBw': 30, #dBw
         'receiver_gain': 30,
         'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses': 0.53, #All other losses
+        'all_other_losses_dB': 0.53, #All other losses
         'number_of_channels': 8, #Number of channels per satellite
-        'overbooking_factor': 20, # 1 in 20 users access the network
-        'polarization':2,
-        'monthly_traffic_GB': 25,
-        'percent_of_traffic': 15,
-        'adoption_rate': 0.01,
+        'polarization': 2,
         'subscribers': [2500000, 3500000, 4500000],
         'fuel_mass': 488370,
         'fuel_mass_1': 0,
@@ -55,27 +50,23 @@ parameters = {
     'oneweb': {
         'number_of_satellites': 720,
         'name': 'OneWeb',
-        'iterations': 100,
-        'seed_value': 42,
-        'mu': 2, #Mean of distribution
-        'sigma': 10, #Standard deviation of distribution
+        # 'iterations': 100,
+        # 'seed_value': 42,
+        # 'mu': 2, #Mean of distribution
+        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 1195, #Altitude of starlink satellites in km
-        'dl_frequency': 13.5*10**9, #Downlink frequency in Hertz
-        'dl_bandwidth': 0.25*10**9,
+        'dl_frequency_Hz': 13.5*10**9, #Downlink frequency in Hertz
+        'dl_bandwidth_Hz': 0.25*10**9,
         'speed_of_light': 3.0*10**8, #Speed of light in vacuum
-        'antenna_diameter': 0.65, #Metres
+        'antenna_diameter_m': 0.65, #Metres
         'antenna_efficiency': 0.6,
-        'power': 30, #dBw
+        'power_dBw': 30, #dBw
         'receiver_gain': 30,
         'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses': 0.53, #All other losses
+        'all_other_losses_dB': 0.53, #All other losses
         'number_of_channels': 8, #Number of channels per satellite
-        'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
-        'monthly_traffic_GB': 25,
-        'percent_of_traffic': 15,
-        'adoption_rate': 0.01,
         'subscribers': [500000, 800000, 1000000],
         'fuel_mass': 218150,
         'fuel_mass_1': 7360,
@@ -99,27 +90,23 @@ parameters = {
     'kuiper': {
         'number_of_satellites': 3236,
         'name': 'Kuiper',
-        'iterations': 100,
-        'seed_value': 42,
-        'mu': 2, #Mean of distribution
-        'sigma': 10, #Standard deviation of distribution
+        # 'iterations': 100,
+        # 'seed_value': 42,
+        # 'mu': 2, #Mean of distribution
+        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 605, #Altitude of starlink satellites in km
-        'dl_frequency': 17.7*10**9, #Downlink frequency in Hertz
-        'dl_bandwidth': 0.25*10**9,
+        'dl_frequency_Hz': 17.7*10**9, #Downlink frequency in Hertz
+        'dl_bandwidth_Hz': 0.25*10**9,
         'speed_of_light': 3.0*10**8, #Speed of light in vacuum
-        'antenna_diameter': 0.9, #Metres
+        'antenna_diameter_m': 0.9, #Metres
         'antenna_efficiency': 0.6,
-        'power': 30, #dBw
+        'power_dBw': 30, #dBw
         'receiver_gain': 31,
         'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses': 0.53, #All other losses
+        'all_other_losses_dB': 0.53, #All other losses
         'number_of_channels': 8, #Number of channels per satellite
-        'overbooking_factor': 20, # 1 in 20 users access the network
         'polarization': 2,
-        'monthly_traffic_GB': 25,
-        'percent_of_traffic': 15,
-        'adoption_rate': 0.01,
         'subscribers': [1500000, 2500000, 3500000],
         'fuel_mass': 0,
         'fuel_mass_1':10000,
@@ -140,23 +127,6 @@ parameters = {
         'discount_rate': 5,
         'assessment_period': 5
     },
-    # 'telesat': {
-    #     'number_of_satellites': 300,
-    #     'iterations': 5,
-    #     'seed_value': 42,
-    #     'mu': 1, #Mean of distribution
-    #     'sigma': 7.8, #Standard deviation of distribution
-    #     'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
-    #     'portion_of_earth_covered': 0.8, #We assume the poles aren't covered
-    #     'altitude_km': 550, #Altitude of starlink satellites in km
-    #     'dl_frequency': 13.5*10**9, #Downlink frequency in Hertz
-    #     'dl_bandwidth': 0.25*10**9,
-    #     'speed_of_light': 3.0*10**8, #Speed of light in vacuum
-    #     'antenna_diameter': 0.7, #Metres
-    #     'antenna_efficiency': 0.6,
-    #     'power': 30, #dBw
-    #     'losses': 4, #dB
-    # },
 }
 
 lut = [
