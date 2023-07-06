@@ -321,7 +321,7 @@ resource_depletion <-
     title = "e",
     subtitle = " ",
     x = NULL,
-    y = bquote("Resource Depletion ( t Sb eq)"),
+    y = bquote("Resource Depletion (t Sb eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 280),
