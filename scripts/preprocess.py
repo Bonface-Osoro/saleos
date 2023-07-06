@@ -29,7 +29,7 @@ def uq_inputs_generator():
     """
     uq_parameters = []
 
-    for key, item in parameters.items(): #tqdm(parameters.items(), desc = "Processing capacity, cost and emission inputs"):
+    for key, item in parameters.items():
 
         # radio propagation variables
         altitude = [(item["altitude_km"] - 5), 
@@ -147,6 +147,7 @@ def uq_inputs_generator():
                                     subscriber_acquisition = item["subscriber_acquisition"]
                                     research_development = item["research_development"] 
                                     maintenance_costs = maint_costs
+
                                     capex_costs = (item["satellite_manufacturing"] 
                                                    + item["subscriber_acquisition"] 
                                                    + regulation_fees
@@ -160,10 +161,6 @@ def uq_inputs_generator():
                                                   + maintenance_costs) 
                                     number_of_satellites = item["number_of_satellites"]
                                     name = item["name"]
-                                    # iterations = item['iterations']
-                                    # seed_value = item['seed_value']
-                                    # mu = item['mu']
-                                    # sigma = item['sigma']
                                     total_area_earth_km_sq = item["total_area_earth_km_sq"]
                                     dl_bandwidth_Hz = item["dl_bandwidth_Hz"]
                                     speed_of_light = item["speed_of_light"]
@@ -181,10 +178,6 @@ def uq_inputs_generator():
                                     assessment_period_year = item["assessment_period"]
 
                                     uq_parameters.append({"constellation": name, 
-                                                            # "iterations": iterations,
-                                                            # "seed_value": seed_value,
-                                                            # "mu": mu,
-                                                            # "sigma": sigma,
                                                             "number_of_satellites": number_of_satellites,
                                                             "total_area_earth_km_sq": total_area_earth_km_sq,
                                                             "coverage_area_per_sat_sqkm": total_area_earth_km_sq/number_of_satellites,
