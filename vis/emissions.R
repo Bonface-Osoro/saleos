@@ -941,7 +941,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Emissions / Subscriber ( t CO"["2"]~" eq)"),
+    y = bquote("Emissions / Subscriber (t CO"["2"]~" eq)"),
     fill = 'Scenario'
   ) + scale_y_continuous(
     labels = function(y)
@@ -1086,6 +1086,7 @@ social_carbon_baseline <-
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
     panel.border = element_blank(),
+    axis.title.y = element_markdown(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
@@ -1135,7 +1136,7 @@ social_cost_worse <-
     y = bquote("Social Cost (US$ Millions/t CO"['2']~" eq)"),
     fill = "Satellite Mission Stage"
   ) +
-  #ylab("Social Cost<br>(US$ Millions/t CO<sub>2</sub>eq)") +
+  ylab("Social Cost<br>(US$ Millions/t CO<sub>2</sub>eq)") +
   scale_y_continuous(
     limits = c(0, 1500),
     labels = function(y)
@@ -1152,6 +1153,7 @@ social_cost_worse <-
     panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
+    axis.title.y = element_markdown(),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
     plot.subtitle = element_text(size = 6),
