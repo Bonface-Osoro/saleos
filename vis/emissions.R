@@ -81,7 +81,7 @@ climate_change <-
     title = "a",
     subtitle = " ",
     x = NULL,
-    y = bquote("Climate Change (Mt CO"["2"]~"eq)"),
+    y = bquote("Climate Change (Mt CO"["2"]~" e)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 2.1),
@@ -139,7 +139,7 @@ climate_change_wc <-
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Climate Change (Mt CO"["2"]~"eqv.)"),
+    y = bquote("Climate Change (Mt CO"["2"]~" e)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 8.5),
@@ -199,7 +199,7 @@ ozone_depletion <-
     title = "c",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion (kt CFC-11 eqv.)"),
+    y = bquote("Ozone Depletion (kt CFC-11 e)"),
     fill = "Satellite Mission Stage"
   ) + 
   scale_y_continuous(
@@ -261,7 +261,7 @@ ozone_depletion_wc <-
     title = "d",
     subtitle = " ",
     x = NULL,
-    y = bquote("Ozone Depletion (kt CFC-11 eq)"),
+    y = bquote("Ozone Depletion (kt CFC-11 e)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, max_y/1e6+1),
@@ -321,7 +321,7 @@ resource_depletion <-
     title = "e",
     subtitle = " ",
     x = NULL,
-    y = bquote("Resource Depletion ( t Sb eqv.)"),
+    y = bquote("Resource Depletion ( t Sb e)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 280),
@@ -489,7 +489,7 @@ df$Category = factor(
   ),
   labels = c(
     "Launcher\nProduction",
-    "Launcher\nPropellant Production",
+    "Launcher\nPropellant \nProduction",
     "Launch\nCampaign",
     "Transportation\nof Launcher",
     "Launcher\nAIT",
@@ -940,7 +940,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Emissions / Subscriber ( t CO"["2"]~"eqv.)"),
+    y = bquote("Emissions / Subscriber ( t CO"["2"]~" e)"),
     fill = 'Scenario'
   ) + scale_y_continuous(
     labels = function(y)
@@ -1012,7 +1012,7 @@ df$Category = factor(
   ),
   labels = c(
     "Launcher\nProduction",
-    "Launcher\nPropellant Production",
+    "Launcher\nPropellant \nProduction",
     "Launch\nCampaign",
     "Transportation\nof Launcher",
     "Launcher\nAIT",
@@ -1131,7 +1131,7 @@ social_cost_worse <-
     title = "b",
     subtitle = " ",
     x = NULL,
-    y = bquote("Social Cost (US$ Millions/t CO"['2']~"eq)"),
+    y = bquote("Social Cost (US$ Millions/t CO"['2']~" e)"),
     fill = "Satellite Mission Stage"
   ) +
   #ylab("Social Cost<br>(US$ Millions/t CO<sub>2</sub>eq)") +
