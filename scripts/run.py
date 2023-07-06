@@ -6,12 +6,10 @@ Written by Bonface Osoro & Ed Oughton.
 May 2022
 
 """
-# from __future__ import division
 import configparser
 import os
 import math
 import time
-# from numpy import savez_compressed
 import pandas as pd
 
 import saleos.sim as sl
@@ -48,13 +46,6 @@ def run_uq_processing():
             item["number_of_satellites"], 
             item
         )
-
-        # random_variations = sl.generate_log_normal_dist_value(
-        #     item['dl_frequency_Hz'],
-        #     item['mu'],
-        #     item['sigma'],
-        #     item['seed_value'],
-        #     item['iterations'])
 
         path_loss = (
             20 * math.log10(distance) + 20 * math.log10(item['dl_frequency_Hz']/1e9) + 92.45
@@ -147,7 +138,6 @@ def run_uq_processing():
         else:
             cost_scenario = "Baseline"
 
-        #I'm not convinced about this function. If this is to be the emissions per satellite
         emission_dict = sl.calc_per_sat_emission(item["constellation"])
         scheduling_dict = sl.calc_scheduling_emission(item["constellation"])
         transport_dict = sl.calc_transportation_emission(item["constellation"])
@@ -379,7 +369,6 @@ def process_mission_total():
         else:
             df["mission_number"].loc[i]= 0
     print("Finished processing satellite missions")
-    # df.to_csv(os.path.join(RESULTS, 'line_381.csv'), index=False)
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
@@ -417,7 +406,6 @@ def process_mission_total():
         var_name = "subscriber_scenario", 
         value_name = "subscribers"
     )
-    # df.to_csv(os.path.join(RESULTS, 'line_416.csv'), index=False)
 
     # Classify total emissions by impact category
     df = pd.melt(
@@ -452,18 +440,17 @@ def process_mission_total():
         var_name = "impact_category", 
         value_name = "emission_totals"
     )  
-    # df.to_csv(os.path.join(RESULTS, 'line_450.csv'), index=False)
 
     # Calculate the total emissions
     for i in tqdm(range(len(df)), desc = "Calculating constellation emission totals".format(i)):
-        # print(i, df["constellation"].loc[i])
+
         if df["constellation"].loc[i] == "Starlink" or df["constellation"].loc[i] == "Kuiper":
             df["total_emissions"].loc[i] = df["emission_totals"].loc[i] * df["mission_number"].loc[i]
         else:
             df["total_emissions"].loc[i] = (df["oneweb_sz"].loc[i] * df["mission_number"].loc[i]) + \
             (df["oneweb_f9"].loc[i] * df["mission_number_1"].loc[i])
+
     print("Finished calculating constellation emission totals")
-    # df.to_csv(os.path.join(RESULTS, 'line_460.csv'), index=False)
 
     # Select columns to use
     df = df[['constellation', 'constellation_capacity', 'capacity_scenario','satellite_coverage_area_km',
@@ -482,21 +469,15 @@ def process_mission_total():
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = "Processing constellation aggregate results".format(i)):
 
-        #Neither .65 nor .5 are defined as parameters, and are not explained 
-        #Should be a function imo
-        df["capacity_per_user"].loc[i] = (df["constellation_capacity"].loc[i] * 0.65 * 0.5) / df["subscribers"].loc[i]
+        df["capacity_per_user"].loc[i] = capacity_subscriber(df["constellation_capacity"].loc[i], df["subscribers"].loc[i])
 
-        #Neither 5 nor 12 are defined as parameters, and are not explained 
-        #Should be a function imo with a written explanation 
-        df["monthly_gb"].loc[i] = (monthly_traffic(df["capacity_per_user"].loc[i]))/(5 * 12)
+        df["monthly_gb"].loc[i] = (monthly_traffic(df["capacity_per_user"].loc[i]))
 
         df["total_climate_emissions"].loc[i] = df["total_climate_change"].loc[i] * df["mission_number"].loc[i]
 
         df["total_climate_emissions_wc"].loc[i] = df["total_climate_change_wc"].loc[i] * df["mission_number"].loc[i]
 
-        #Neither 5 nor 12 are defined as parameters, and are not explained 
-        #Should be a function imo with a written explanation 
-        df["emission_per_capacity"].loc[i] = df["total_climate_emissions"].loc[i] / (df["monthly_gb"].loc[i] * 12 * 5)
+        df["emission_per_capacity"].loc[i] = emission_capacity(df["total_climate_emissions"].loc[i], df["monthly_gb"].loc[i])
         
         df["per_cost_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
                                                     
@@ -525,6 +506,50 @@ def process_mission_total():
     df.to_csv(path_out, index=False)
 
     return None
+
+
+def capacity_subscriber(const_cap, subscribers):
+    """
+    This function calculates usable 
+    capacity per subscriber
+
+    Parameters
+    ---------
+    const_cap : float
+        Total constellation capacity
+    subscribers : int
+        Number of subscribers
+
+    Returns
+    -------
+    cap_sub : float
+        Capacity per subscriber
+    """
+    cap_sub = const_cap * 0.5 * subscribers
+
+    return cap_sub
+
+
+def emission_capacity(clim_emissions, monthly_traffic):
+    """
+    This function calculates usable 
+    capacity per subscriber
+
+    Parameters
+    ---------
+    clim_emissions : float
+        Total climate change emissions
+    monthly_traffic : float
+        Monthly traffic
+
+    Returns
+    -------
+    emission_cap : float
+        Emission per capacity
+    """
+    emission_cap = (clim_emissions / monthly_traffic) * 12 * 5
+
+    return emission_cap
 
 
 def monthly_traffic(capacity_mbps):
