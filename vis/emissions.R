@@ -51,7 +51,7 @@ individual_emissions <- individual_emissions %>%
   mutate_at(c(3:9), as.numeric)
 
 ##################################
-##plot1  climate change baseline##
+##climate change baseline##
 ##################################
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
@@ -109,7 +109,7 @@ climate_change <-
 
 
 #######################################
-##plot2 climate change worst scenario##
+##climate change worst scenario##
 #######################################
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
@@ -228,7 +228,7 @@ ozone_depletion <-
 
 
 ##########################################
-##plot2 = Ozone Depletion worst scenario##
+##Ozone Depletion worst scenario##
 ##########################################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
@@ -289,9 +289,8 @@ ozone_depletion_wc <-
 
 
 ##############################
-##plot3 = Resource Depletion##
+##Resource Depletion##
 ##############################
-# colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
   summarize(resources = `Resource Depletion - Mineral Resource Depletion Potential`)
@@ -348,7 +347,7 @@ resource_depletion <-
   )
 
 ##########################################
-##plot4 = Freshwater Aquatic Ecotoxicity##
+## Freshwater Aquatic Ecotoxicity ##
 ##########################################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
@@ -407,7 +406,7 @@ freshwater_ecotixicity <-
 
 
 ##########################
-##plot4 = Human Toxicity##
+## Human Toxicity ##
 ##########################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
@@ -488,31 +487,33 @@ df$Category = factor(
     "Launch Event"
   ),
   labels = c(
-    "Launcher\nProduction",
-    "Launcher\nPropellant \nProduction",
-    "Launch\nCampaign",
-    "Transportation\nof Launcher",
-    "Launcher\nAIT",
-    "SCHD of\nPropellant",
-    "Launch\nEvent"
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
+    "Launcher Assembly, Integration\nand Testing (AIT)",
+    "Storage, Containment, Handling\nand Decontamination (SCHD)\nof Propellant",
+    "Launch Event"
   )
 )
 
 legends <- ggplot(df, aes(x = toxicity, y = toxicity, color = Category)) +
   geom_point(size = 0.005) +
-  lims(x = c(0, 0), y = c(0, 0)) + labs(fill = "Satellite Mission Stage") +
-  theme_void() + scale_color_brewer(palette = "Dark2") +
+  lims(x = c(0, 0), y = c(1, 1)) + 
+  labs(fill = "Satellite Mission Stage", color=NULL) +
+  theme_void() + 
+  scale_color_brewer(palette = "Dark2") +
   theme(
     legend.direction = "vertical",
-    legend.position = c(0.57, 0.65),
-    legend.key.size = unit(1, "cm"),
+    legend.position = c(0.6, 0.4), 
+    legend.key.size = unit(.8, "cm"),
     legend.text = element_text(size =  6),
-    legend.title = element_text(size = 7, face = "bold")
+    legend.title = element_text(size = 6, face = "bold")
   ) +
   guides(colour = guide_legend(
     override.aes = list(size = 8),
-    ncol = 3,
-    nrow = 4
+    ncol = 2,
+    nrow = 8
   ))
 
 ####################################
@@ -702,10 +703,10 @@ emission_totals <-
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     plot.title = element_text(size = 8, face = "bold"),
-    legend.position = "none", 
+    legend.position = "none",
     axis.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 6)) 
+    plot.subtitle = element_text(size = 6))
 
 
 ######################################
@@ -828,7 +829,7 @@ emission_capacity <- ggplot(df, aes(x = Constellation,
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     plot.title = element_text(face = "bold", size = 8),
-    legend.position = "none", 
+    legend.position = "none",
     axis.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 6))
@@ -884,13 +885,13 @@ emission_cost <- ggplot(df, aes(x = Constellation,
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
     axis.title.y = element_text(size = 6),
-    legend.position = "none", 
+    legend.position = "none",
     axis.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
-    plot.title = element_text(size = 8, face = "bold")) 
+    plot.title = element_text(size = 8, face = "bold"))
 
 ######################################
 ##plot4 = Emission per Subscriber
@@ -963,7 +964,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 6),
     plot.title = element_text(size = 8, face = "bold"))
-    
+
 ####################################
 ## Combine all the emission plots ##
 ####################################
@@ -1080,7 +1081,7 @@ social_carbon_baseline <-
     expand = c(0, 0)
   ) +
   theme(
-    legend.position = "none", 
+    legend.position = "none",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
@@ -1142,7 +1143,7 @@ social_cost_worse <-
     expand = c(0, 0)
   ) +
   theme(
-    legend.position = "none", 
+    legend.position = "none",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
