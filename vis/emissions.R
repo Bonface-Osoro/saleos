@@ -7,6 +7,7 @@ library("readxl")
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 folder = file.path(folder, '..', 'data')
+visualizations = file.path(folder, '..', 'vis')
 filename = 'life_cycle_data.xlsx'
 path = file.path(folder, filename)
 individual_emissions <- read_excel(path, sheet = "Transpose")
@@ -54,14 +55,14 @@ individual_emissions <- individual_emissions %>%
 ##################################
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
-  summarize(mean = `Climate Change - Global Warming Potential 100a`)
+  summarize(cc_baseline = `Climate Change - Global Warming Potential 100a`)
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
   summarize(value = signif(sum(`Climate Change - Global Warming Potential 100a`)))
 
 climate_change <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
+  ggplot(df, aes(x = Constellation, y = cc_baseline / 1e9)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -110,17 +111,16 @@ climate_change <-
 #######################################
 ##plot2 climate change worst scenario##
 #######################################
-colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
-  summarize(mean = `Climate Change WC - Global Warming Potential 100a`)
+  summarize(cc_worst_case = `Climate Change WC - Global Warming Potential 100a`)
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
   summarize(value = signif(sum(`Climate Change WC - Global Warming Potential 100a`)))
 
 climate_change_wc <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e9)) +
+  ggplot(df, aes(x = Constellation, y = cc_worst_case / 1e9)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -169,17 +169,16 @@ climate_change_wc <-
 ############################
 ##Ozone depletion baseline##
 ############################
-colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
-  summarize(mean = `Ozone Depletion - Ozone Depletion Potential (Steady State)`)
+  summarize(ozone_baseline = `Ozone Depletion - Ozone Depletion Potential (Steady State)`)
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
   summarize(value = signif(sum(`Ozone Depletion - Ozone Depletion Potential (Steady State)`)))
 
 ozone_depletion <-
-  ggplot(df, aes(x = `Constellation`, y = mean/1e6)) + 
+  ggplot(df, aes(x = `Constellation`, y = ozone_baseline / 1e6)) + 
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -231,10 +230,9 @@ ozone_depletion <-
 ##########################################
 ##plot2 = Ozone Depletion worst scenario##
 ##########################################
-
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = `Ozone Depletion WC - Ozone Depletion Potential (Steady State)`)
+  summarize(ozone_worst_case = `Ozone Depletion WC - Ozone Depletion Potential (Steady State)`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
@@ -244,7 +242,7 @@ totals <- individual_emissions %>%
 max_y = max(totals$value)
 
 ozone_depletion_wc <-
-  ggplot(df, aes(x = Constellation, y = mean/1e6)) +
+  ggplot(df, aes(x = Constellation, y = ozone_worst_case / 1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -296,7 +294,7 @@ ozone_depletion_wc <-
 # colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = `Resource Depletion - Mineral Resource Depletion Potential`)
+  summarize(resources = `Resource Depletion - Mineral Resource Depletion Potential`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
@@ -304,7 +302,7 @@ totals <- individual_emissions %>%
     sum(`Resource Depletion - Mineral Resource Depletion Potential`)))
 
 resource_depletion <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e3)) +
+  ggplot(df, aes(x = Constellation, y = resources / 1e3)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -352,10 +350,9 @@ resource_depletion <-
 ##########################################
 ##plot4 = Freshwater Aquatic Ecotoxicity##
 ##########################################
-
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = `Toxicity - Freshwater Aquatic Ecotoxicity`)
+  summarize(freshwater = `Toxicity - Freshwater Aquatic Ecotoxicity`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
@@ -363,7 +360,7 @@ totals <- individual_emissions %>%
     sum(`Toxicity - Freshwater Aquatic Ecotoxicity`)))
 
 freshwater_ecotixicity <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e8)) +
+  ggplot(df, aes(x = Constellation, y = freshwater / 1e8)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -412,17 +409,16 @@ freshwater_ecotixicity <-
 ##########################
 ##plot4 = Human Toxicity##
 ##########################
-
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = `Toxicity - Human Toxicity`)
+  summarize(human = `Toxicity - Human Toxicity`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
   summarize(value = signif(sum(`Toxicity - Human Toxicity`)))
 
 human_toxicity <- 
-  ggplot(df, aes(x = Constellation, y = mean)) +
+  ggplot(df, aes(x = Constellation, y = human)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
     aes(
@@ -472,7 +468,7 @@ human_toxicity <-
 #################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = mean(`Toxicity - Human Toxicity`))
+  summarize(toxicity = `Toxicity - Human Toxicity`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
@@ -502,7 +498,7 @@ df$Category = factor(
   )
 )
 
-legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
+legends <- ggplot(df, aes(x = toxicity, y = toxicity, color = Category)) +
   geom_point(size = 0.005) +
   lims(x = c(0, 0), y = c(0, 0)) + labs(fill = "Satellite Mission Stage") +
   theme_void() + scale_color_brewer(palette = "Dark2") +
@@ -522,7 +518,6 @@ legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
 ####################################
 ## Combine all the emission plots ##
 ####################################
-
 pub_emission <- ggarrange(
   climate_change,
   climate_change_wc,
@@ -537,8 +532,8 @@ pub_emission <- ggarrange(
 )
 
 
-path = file.path(folder, 'figures', 'pub_individual_emission.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+path = file.path(visualizations, 'figures', 'pub_individual_emission.png')
+dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
@@ -553,6 +548,7 @@ dev.off()
 ######################################
 ##plot1 = Emission per Subscriber#####
 ######################################
+data <- read.csv(file.path(folder, '..', 'results', "final_results.csv"))
 # Variables to Consider
 data <-
   select(
@@ -899,7 +895,6 @@ emission_cost <- ggplot(df, aes(x = Constellation,
 ######################################
 ##plot4 = Emission per Subscriber
 ######################################
-
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(
@@ -978,8 +973,8 @@ pub_emission <-
             nrow = 1,
             ncol = 2)
 
-path = file.path(folder, 'figures', 'combined_emission.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+path = file.path(visualizations, 'figures', 'combined_emission.png')
+dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
@@ -996,7 +991,7 @@ dev.off()
 ########################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
-  summarize(mean = mean(`Toxicity - Human Toxicity`))
+  summarize(toxicity = `Toxicity - Human Toxicity`)
 
 totals <- individual_emissions %>%
   group_by(Constellation) %>%
@@ -1025,7 +1020,7 @@ df$Category = factor(
     "Launch\nEvent"
   )
 )
-legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
+legends <- ggplot(df, aes(x = toxicity, y = toxicity, color = Category)) +
   geom_point(size = 0.005) +
   lims(x = c(0, 0), y = c(0, 0)) + labs(fill = "Satellite Mission Stage") +
   theme_void() + scale_color_brewer(palette = "Dark2") +
@@ -1047,7 +1042,6 @@ legends <- ggplot(df, aes(x = mean, y = mean, color = Category)) +
 ##########################
 ##Social Carbon Cost.   ##
 ##########################
-colnames(individual_emissions)
 df = individual_emissions %>%
   group_by(`Constellation`, category) %>%
   summarize(mean = `Climate Change - Global Warming Potential 100a`)
@@ -1178,8 +1172,8 @@ pub_carbon <-
     ncol = 3
   )
 
-path = file.path(folder, 'figures', 'social_carbon.png')
-dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+path = file.path(visualizations, 'figures', 'social_carbon.png')
+dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",

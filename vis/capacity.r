@@ -9,7 +9,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "uq_results.csv"))
+data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
 
 ######################################
 ##plot1 = Channel capacity with Bars
