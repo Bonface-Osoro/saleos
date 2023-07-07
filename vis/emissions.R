@@ -652,8 +652,8 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(
-    mean = mean(per_subscriber_emission / 1e3),
-    sd = sd(per_subscriber_emission / 1e3)
+    #this isn't a mean/shouldn't be a mean
+    value = mean(per_subscriber_emission / 1e3)
   )
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
@@ -677,17 +677,10 @@ df$scenario = factor(
 )
 
 emission_subscriber <- ggplot(df, aes(x = Constellation,
-                                      y = mean, fill = scenario)) +
+                                      y = value, fill = scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
-  geom_errorbar(
-    aes(ymin = mean - sd, ymax = mean + sd),
-    width = .2,
-    position = position_dodge(.9),
-    color = 'black',
-    size = 0.2
-  ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
     labs(
     colour = NULL,
