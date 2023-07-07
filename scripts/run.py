@@ -103,17 +103,6 @@ def run_uq_processing():
             )
         ) * item["number_of_satellites"]
 
-        if channel_capacity == 823.6055 or channel_capacity == 411.80275:
-
-            capacity_scenario = "Low"
-
-        elif channel_capacity == 1810.268 or channel_capacity == 526.2125 and item["constellation"] == "OneWeb" or channel_capacity == 1183.8385:
-            capacity_scenario = "High"
-
-        else:
-
-            capacity_scenario = "Baseline"
-
         sat_capacity = sl.single_satellite_capacity(
             item["dl_bandwidth_Hz"],
             spectral_efficiency, 
@@ -243,7 +232,6 @@ def run_uq_processing():
                         "spectral_efficiency": spectral_efficiency,
                         "channel_capacity": channel_capacity,
                         "constellation_capacity": agg_capacity,
-                        "capacity_scenario": capacity_scenario,
                         "capacity_per_single_satellite": sat_capacity,
                         "capacity_per_area_mbps/sqkm": agg_capacity / item["coverage_area_per_sat_sqkm"],
                         "subscribers_low": item["subscribers_low"],
@@ -528,7 +516,7 @@ def process_mission_total():
     filename = 'final_results.csv'
 
     if not os.path.exists(RESULTS):
-        
+
         os.makedirs(RESULTS)
 
     path_out = os.path.join(RESULTS, filename)
