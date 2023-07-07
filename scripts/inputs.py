@@ -10,10 +10,6 @@ parameters = {
     'starlink': {
         'number_of_satellites': 4425,
         'name':'Starlink',
-        # 'iterations': 100,
-        # 'seed_value': 42,
-        # 'mu': 2, #Mean of distribution
-        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
         'dl_frequency_Hz': 13.5*10**9, #Downlink frequency in Hertz
@@ -50,10 +46,6 @@ parameters = {
     'oneweb': {
         'number_of_satellites': 720,
         'name': 'OneWeb',
-        # 'iterations': 100,
-        # 'seed_value': 42,
-        # 'mu': 2, #Mean of distribution
-        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 1195, #Altitude of starlink satellites in km
         'dl_frequency_Hz': 13.5*10**9, #Downlink frequency in Hertz
@@ -90,10 +82,6 @@ parameters = {
     'kuiper': {
         'number_of_satellites': 3236,
         'name': 'Kuiper',
-        # 'iterations': 100,
-        # 'seed_value': 42,
-        # 'mu': 2, #Mean of distribution
-        # 'sigma': 10, #Standard deviation of distribution
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 605, #Altitude of starlink satellites in km
         'dl_frequency_Hz': 17.7*10**9, #Downlink frequency in Hertz
