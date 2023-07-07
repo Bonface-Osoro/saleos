@@ -460,10 +460,10 @@ def process_mission_total():
         'total_climate_change', 'total_climate_change_wc']]
 
     #Create columns to store new data
-    df[["capacity_per_user", "emission_per_capacity", "per_cost_emission", 
-        "per_subscriber_emission", "capex_per_user", "opex_per_user", 
+    df[["capacity_per_user", "per_subscriber_emission", 
+        "capex_per_user", "opex_per_user", "monthly_gb",
         "tco_per_user", "capex_per_capacity", "opex_per_capacity", 
-        "tco_per_capacity", "monthly_gb", "total_climate_emissions",
+        "tco_per_capacity", "total_climate_emissions",
         "total_climate_emissions_wc", "user_per_area"]] = ""
 
     # Calculate total metrics
@@ -476,10 +476,6 @@ def process_mission_total():
         df["total_climate_emissions"].loc[i] = df["total_climate_change"].loc[i] * df["mission_number"].loc[i]
 
         df["total_climate_emissions_wc"].loc[i] = df["total_climate_change_wc"].loc[i] * df["mission_number"].loc[i]
-
-        df["emission_per_capacity"].loc[i] = emission_capacity(df["total_climate_emissions"].loc[i], df["monthly_gb"].loc[i])
-        
-        df["per_cost_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["total_cost_ownership"].loc[i]
                                                     
         df["per_subscriber_emission"].loc[i] = df["total_climate_emissions"].loc[i] / df["subscribers"].loc[i]
         
@@ -525,7 +521,7 @@ def capacity_subscriber(const_cap, subscribers):
     cap_sub : float
         Capacity per subscriber
     """
-    cap_sub = const_cap * 0.5 * subscribers
+    cap_sub = const_cap * 0.5 / subscribers
 
     return cap_sub
 
@@ -547,7 +543,7 @@ def emission_capacity(clim_emissions, monthly_traffic):
     emission_cap : float
         Emission per capacity
     """
-    emission_cap = (clim_emissions / monthly_traffic) * 12 * 5
+    emission_cap = (clim_emissions / monthly_traffic) / (12 * 5)
 
     return emission_cap
 
