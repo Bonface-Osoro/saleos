@@ -29,10 +29,13 @@ def run_uq_processing():
     
     """
     path = os.path.join(BASE_PATH, 'uq_parameters.csv')
+
     if not os.path.exists(path):
+
         print('Cannot locate uq_parameters.csv - have you run preprocess.py?')
+
     df = pd.read_csv(path)
-    df = df.to_dict('records')#[:2000]
+    df = df.to_dict('records')
 
     results = []
 
@@ -354,7 +357,7 @@ def process_mission_total():
     for i in tqdm(df.index, desc = "Processing satellite missions"):
 
         if df["constellation"].loc[i] == "Starlink":
-            df["mission_number"].loc[i] = i+1
+            df["mission_number"].loc[i] = i + 1
             df["mission_number_1"].loc[i] = i * 0
 
             if df["mission_number"].loc[i] < 74:
@@ -525,6 +528,7 @@ def process_mission_total():
     filename = 'final_results.csv'
 
     if not os.path.exists(RESULTS):
+        
         os.makedirs(RESULTS)
 
     path_out = os.path.join(RESULTS, filename)
