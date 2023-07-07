@@ -12,7 +12,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
 
 ######################################
-##plot1 = Channel capacity with Bars
+##Channel capacity with Bars
 ######################################
 
 df = data %>%
@@ -28,8 +28,7 @@ df$CNR = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
-chn_capacity <-
-ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
+chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -75,9 +74,8 @@ ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
-
 ######################################
-##plot2 = Single Satellite Capacity with bars
+##Single Satellite Capacity with bars
 ######################################
 
 df = data %>%
@@ -145,7 +143,7 @@ sat_capacity <-
 
 
 ######################################
-##plot3 = Constellation capacity with error bars
+##Constellation capacity with error bars
 ######################################
 
 df = data %>%
@@ -213,7 +211,7 @@ const_capacity <-
 
 
 ######################################
-##plot4 = capacity_subscriber
+##capacity_subscriber
 ######################################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
