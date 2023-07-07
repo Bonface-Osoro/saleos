@@ -269,7 +269,7 @@ def calc_noise():
     t = 290 #Temperature of the receiver system T0 in kelvins
     b = 0.25 #Detection bandwidth (BW) in Hz
 
-    noise = (10*(math.log10((k*t*1000)))) + (10*(math.log10(b*10**9)))
+    noise = (10 * (math.log10((k * t * 1000)))) + (10 * (math.log10(b * 10 ** 9)))
 
     return noise
 
@@ -502,30 +502,39 @@ def calc_scheduling_emission(name):
 
     """
     if name == 'onewebf9':
+
         emission_dict0 = propellant_containment()
         emission_list0 = []
+
         for i in emission_dict0.keys():
+
             new_emissions = emission_dict0.get(i) * 530
             emission_list0.append(new_emissions)
         emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
 
         emission_dict1 = waste_decontamination()
         emission_list1 = []
+
         for i in emission_dict1.keys():
+
             new_emissions = emission_dict1.get(i) * 488370
             emission_list1.append(new_emissions)
         emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
 
         emission_dict2 = propellant_handling()
         emission_list2 = []
+
         for i in emission_dict2.keys():
+
             new_emissions = emission_dict2.get(i) * 504
             emission_list2.append(new_emissions)
         emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
 
         emission_dict3 = propellant_storage()
         emission_list3 = []
+
         for i in emission_dict3.keys():
+
             new_emissions = emission_dict3.get(i) * 494
             emission_list3.append(new_emissions)
         emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
@@ -535,16 +544,19 @@ def calc_scheduling_emission(name):
         emission_dict = Counter(cdict1) + Counter(cdict2)
 
     elif name == 'Starlink':
+
         emission_dict0 = propellant_containment()
         emission_list0 = []
+
         for i in emission_dict0.keys():
+
             new_emissions = emission_dict0.get(i) * 530
-            # print(emission_dict0.get(i), new_emissions)
             emission_list0.append(new_emissions)
         emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
 
         emission_dict1 = waste_decontamination()
         emission_list1 = []
+
         for i in emission_dict1.keys():
             new_emissions = emission_dict1.get(i) * 488370
             emission_list1.append(new_emissions)
@@ -552,14 +564,18 @@ def calc_scheduling_emission(name):
 
         emission_dict2 = propellant_handling()
         emission_list2 = []
+
         for i in emission_dict2.keys():
+
             new_emissions = emission_dict2.get(i) * 504
             emission_list2.append(new_emissions)
         emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
 
         emission_dict3 = propellant_storage()
         emission_list3 = []
+
         for i in emission_dict3.keys():
+
             new_emissions = emission_dict3.get(i) * 494
             emission_list3.append(new_emissions)
         emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
@@ -569,30 +585,39 @@ def calc_scheduling_emission(name):
         emission_dict = Counter(cdict1) + Counter(cdict2)
 
     elif name == 'Kuiper':
+
         emission_dict0 = propellant_containment()
         emission_list0 = []
+
         for i in emission_dict0.keys():
+
             new_emissions = emission_dict0.get(i) * 1148
             emission_list0.append(new_emissions)
         emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
 
         emission_dict1 = waste_decontamination()
         emission_list1 = []
+
         for i in emission_dict1.keys():
+
             new_emissions = emission_dict1.get(i) * 674900
             emission_list1.append(new_emissions)
         emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
 
         emission_dict2 = propellant_handling()
         emission_list2 = []
+
         for i in emission_dict2.keys():
+
             new_emissions = emission_dict2.get(i) * 504
             emission_list2.append(new_emissions)
         emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
 
         emission_dict3 = propellant_storage()
         emission_list3 = []
+
         for i in emission_dict3.keys():
+
             new_emissions = emission_dict3.get(i) * 1105
             emission_list3.append(new_emissions)
         emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
@@ -602,30 +627,39 @@ def calc_scheduling_emission(name):
         emission_dict = Counter(cdict1) + Counter(cdict2)
 
     elif name == 'OneWeb':
+
         emission_dict0 = propellant_containment()
         emission_list0 = []
+
         for i in emission_dict0.keys():
+
             new_emissions = emission_dict0.get(i) * 304
             emission_list0.append(new_emissions)
         emission_dict0 = dict(zip(list(emission_dict0.keys()), emission_list0))
 
         emission_dict1 = waste_decontamination()
         emission_list1 = []
+
         for i in emission_dict1.keys():
+
             new_emissions = emission_dict1.get(i) * 281710
             emission_list1.append(new_emissions)
         emission_list1 = dict(zip(list(emission_dict1.keys()), emission_list1))
 
         emission_dict2 = propellant_handling()
         emission_list2 = []
+
         for i in emission_dict2.keys():
+
             new_emissions = emission_dict2.get(i) * 504
             emission_list2.append(new_emissions)
         emission_list2 = dict(zip(list(emission_dict2.keys()), emission_list2))
 
         emission_dict3 = propellant_storage()
         emission_list3 = []
+
         for i in emission_dict3.keys():
+
             new_emissions = emission_dict3.get(i) * 284
             emission_list3.append(new_emissions)
         emission_list3 = dict(zip(list(emission_dict3.keys()), emission_list3))
@@ -633,7 +667,9 @@ def calc_scheduling_emission(name):
         cdict1 = Counter(emission_dict0) + Counter(emission_list1)
         cdict2 = Counter(emission_list2) + Counter(emission_list3)
         emission_dict = Counter(cdict1) + Counter(cdict2)
+
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -658,18 +694,23 @@ def calc_transportation_emission(name):
     """
 
     if name == 'Starlink':
+
         emission_dict = falcon9_transportation()  # Emission per satellite
 
     elif name == 'Kuiper':
+
         emission_dict = ariane_transportation()
 
     elif name == 'OneWeb':
+
         emission_dict = soyuzfg_transportation()
 
     elif name == 'onewebf9':
+
         emission_dict = falcon9_transportation()  # Emission per satellite
 
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -694,18 +735,23 @@ def calc_launch_campaign_emission(name):
     """
 
     if name == 'Starlink':
+
         emission_dict = launcher_campaign()  # Emission per satellite
 
     elif name == 'Kuiper':
+
         emission_dict = launcher_campaign()
 
     elif name == 'OneWeb':
+
         emission_dict = launcher_campaign()
 
     elif name == 'onewebf9':
+
         emission_dict = launcher_campaign()  
 
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -731,18 +777,23 @@ def calc_propellant_emission(name):
     """
 
     if name == 'Starlink':
+
         emission_dict = falcon_propellant_production()  # Emission per satellite
 
     elif name == 'Kuiper':
+
         emission_dict = ariane_propellant_production()
 
     elif name == 'OneWeb':
+
         emission_dict = soyuzfg_propellant_production()
 
     elif name == 'onewebf9':
+
         emission_dict = falcon_propellant_production()  
 
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -767,18 +818,23 @@ def calc_rocket_emission(name):
     """
 
     if name == 'Starlink':
+
         emission_dict = falcon9_rocket_production()  
 
     elif name == 'Kuiper':
+
         emission_dict = ariane_rocket_production()
 
     elif name == 'OneWeb':
+
         emission_dict = soyuzfg_rocket_production()
 
     elif name == 'onewebf9':
+
         emission_dict = falcon9_rocket_production()  
 
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -1337,20 +1393,23 @@ def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_co
 
     Returns
     -------
-    results : float
+    total_cost_ownership : float
             The total cost of ownership.
 
     """
 
-    capex = satellite_manufacturing + satellite_launch_cost + ground_station_cost + spectrum_cost + regulation_fees \
-            + digital_infrastructure_cost #Addition of all capital expenditure
+    capex = (satellite_manufacturing + satellite_launch_cost 
+             + ground_station_cost + spectrum_cost 
+             + regulation_fees + digital_infrastructure_cost) #Addition of all capital expenditure
 
-    opex_costs = ground_station_energy + subscriber_acquisition + staff_costs \
-                 + research_development + maintenance #Addition of all recurrent expenditures
+    opex_costs = (ground_station_energy + subscriber_acquisition 
+                  + staff_costs + research_development 
+                  + maintenance) #Addition of all recurrent expenditures
 
     year_costs = []
+
     for time in np.arange(1, assessment_period):  #Discounted for the years
-        yearly_opex = opex_costs/(((discount_rate/100) + 1)**time)
+        yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
         year_costs.append(yearly_opex)
 
     total_cost_ownership = capex + sum(year_costs) + opex_costs
@@ -1377,18 +1436,22 @@ def subscriber_scenario(name, subscribers):
     subscriber_dict = {}
     
     if name == 'Starlink':
+
         subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
         subscriber_dict['high'] = subscribers[2]
 
     elif name == 'Kuiper':
+
         subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
         subscriber_dict['high'] = subscribers[2]
 
     elif name == 'OneWeb':
+
         subscriber_dict['low'], subscriber_dict['baseline'] = subscribers[0], subscribers[1] 
         subscriber_dict['high'] = subscribers[2]
 
     else:
+
         print('Constellation not found. Please ensure the first letter is capitalized')
     
     return subscriber_dict

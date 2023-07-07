@@ -11,9 +11,9 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
 
-######################################
-##plot1 = Channel capacity with Bars
-######################################
+##############################
+##Channel capacity with Bars##
+##############################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
@@ -28,8 +28,7 @@ df$CNR = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
-chn_capacity <-
-ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
+chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -75,10 +74,9 @@ ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
-
-######################################
-##plot2 = Single Satellite Capacity with bars
-######################################
+#######################################
+##Single Satellite Capacity with bars##
+#######################################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
@@ -144,9 +142,9 @@ sat_capacity <-
   )
 
 
-######################################
-##plot3 = Constellation capacity with error bars
-######################################
+##########################################
+##Constellation capacity with error bars##
+##########################################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
@@ -212,9 +210,9 @@ const_capacity <-
   )
 
 
-######################################
-##plot4 = capacity_subscriber
-######################################
+#######################
+##capacity_subscriber##
+#######################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data2 <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
@@ -281,9 +279,9 @@ capacity_subscriber <-
   )
 
 
-######################################
-##plot5 = Mean capacity per subscriber
-######################################
+################################
+##Mean capacity per subscriber##
+################################
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -346,9 +344,9 @@ capacity_per_user <-
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
   )
 
-##################################
-##plot6 = Average users per area##
-##################################
+##########################
+##Average users per area##
+##########################
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
