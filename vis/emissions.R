@@ -588,8 +588,6 @@ rockets <-
 amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 10000*54, 480000*54, 184900*54)
 fuels_df <- data.frame(rockets, fuel, amount)
 
-write.csv(fuels_df, "fuels.csv", row.names=FALSE)
-
 ############################
 ## Fuel quantities
 ############################

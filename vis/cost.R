@@ -27,9 +27,9 @@ data <- select(
 )
 
 
-######################################
-##plot1 = Constellation Capex 
-######################################
+#######################
+##Constellation Capex##
+#######################
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -90,9 +90,9 @@ constellation_capex <-
   )
 
 
-#############################################
-##plot2 = Constellation Total operating Costs
-#############################################
+#######################################
+##Constellation Total operating Costs##
+#######################################
 
 df = data %>%
   group_by(constellation, opex_scenario) %>%
@@ -153,9 +153,9 @@ constellation_opex <-
   )
 
 
-#############################################
-##plot3 = Constellation Total Cost of Ownership
-#############################################
+#########################################
+##Constellation Total Cost of Ownership##
+#########################################
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -216,9 +216,9 @@ constellation_tco <-
   )
 
 
-#############################################
-##plot4 = Constellation Capex per User
-#############################################
+################################
+##Constellation Capex per User##
+################################
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -279,9 +279,9 @@ constellation_capex_per_user <-
   )
 
 
-#############################################
-##plot5 = Constellation Opex per User
-#############################################
+###############################
+##Constellation Opex per User##
+###############################
 
 df = data %>%
   group_by(constellation, opex_scenario) %>%
@@ -342,9 +342,9 @@ constellation_opex_per_user <-
   )
 
 
-#############################################
-##plot6 = Constellation TCO per User
-#############################################
+##############################
+##Constellation TCO per User##
+##############################
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -404,8 +404,9 @@ constellation_tco_per_user <-
     plot.title = element_text(size = 10, face = "bold")
   )
 
-#######################
-#######################
+##################
+##Combined plots##
+##################
 cost_per_user <- ggarrange(
   constellation_capex,
   constellation_opex,
