@@ -329,7 +329,7 @@ def process_mission_total():
 
     #Select the columns to use.
     df = df[["constellation", "constellation_capacity", 
-        "capacity_scenario", "capex_costs", "capex_scenario", 
+        "cnr_scenario", "capex_costs", "capex_scenario", 
         "satellite_coverage_area_km", "subscribers_low", 
         "subscribers_baseline", "subscribers_high",
         "total_opex", "total_cost_ownership", "opex_scenario", 
@@ -345,49 +345,15 @@ def process_mission_total():
     for i in tqdm(df.index, desc = "Processing satellite missions"):
 
         if df["constellation"].loc[i] == "Starlink":
-            df["mission_number"].loc[i] = i + 1
-            df["mission_number_1"].loc[i] = i * 0
-
-            if df["mission_number"].loc[i] < 74:
-                df["mission_number"].loc[i] = i + 1
-                df["mission_number_1"].loc[i] = i * 0
-
-            else:
-
-                df["mission_number"].loc[i] = 74
-                df["mission_number_1"].loc[i] = i * 0
+            df["mission_number"].loc[i] = 74
 
         elif df["constellation"].loc[i] == "OneWeb":
 
-            df["mission_number"].loc[i] = i - (2186)
-            df["mission_number_1"].loc[i] = i - (2186)
+            df["mission_number"].loc[i] = 20
 
-            if df["mission_number"].loc[i] < 11:
-                df["mission_number"].loc[i] = i - (2186)
-                df["mission_number_1"].loc[i] = i - (2186)
-
-            else:
-
-                df["mission_number"].loc[i] = 11
-                df["mission_number_1"].loc[i] = 7
-
-        elif df["constellation"].loc[i] == "Kuiper":
-
-            df["mission_number"].loc[i] = i - (4373)
-            df["mission_number_1"].loc[i] = i * 0
-
-            if df["mission_number"].loc[i] < 54:
-
-                df["mission_number"].loc[i] = i - (4373)
-                df["mission_number_1"].loc[i] = i * 0
-
-            else:
-
-                df["mission_number"].loc[i] = 54
-                df["mission_number_1"].loc[i] = i * 0
         else:
 
-            df["mission_number"].loc[i] = 0
+            df["mission_number"].loc[i] = 54
 
     print("Finished processing satellite missions")
 
@@ -399,7 +365,7 @@ def process_mission_total():
         id_vars = [
             "constellation", 
             "constellation_capacity", 
-            "capacity_scenario", 
+            "cnr_scenario", 
             "total_opex", 
             "capex_costs", 
             "capex_scenario", 
@@ -434,7 +400,7 @@ def process_mission_total():
         id_vars = [
             "constellation", 
             "constellation_capacity", 
-            "capacity_scenario", 
+            "cnr_scenario", 
             "total_opex", 
             "capex_costs", 
             "capex_scenario", 
@@ -470,14 +436,13 @@ def process_mission_total():
 
         else:
 
-            df['total_emissions'].loc[i] = (df['oneweb_sz'].loc[i] * df['mission_number'].loc[i]) + \
-            (df['oneweb_f9'].loc[i] * df['mission_number_1'].loc[i])
+            df['total_emissions'].loc[i] = (df['oneweb_sz'].loc[i] * 11) + (df['oneweb_f9'].loc[i] * 7)
 
     print("Finished calculating constellation emission totals")
 
     # Select columns to use
     df = df[['constellation', 'constellation_capacity', 
-             'capacity_scenario','satellite_coverage_area_km',
+             'cnr_scenario','satellite_coverage_area_km',
              'total_opex', 'capex_costs', 'capex_scenario', 
              'opex_scenario', 'total_cost_ownership', 
              'mission_number', 'mission_number_1', 
@@ -489,8 +454,8 @@ def process_mission_total():
     #Create columns to store new data
     df[['capacity_per_user', 'per_subscriber_emission', 
         'capex_per_user', 'opex_per_user', 'monthly_gb',
-        'tco_per_user', 'total_climate_emissions',
-        'total_climate_emissions_wc', 'user_per_area']] = ''
+        'tco_per_user', 'total_climate_emissions_kg',
+        'total_climate_emissions_wc_kg', 'user_per_area']] = ''
 
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'.format(i)):
@@ -499,11 +464,11 @@ def process_mission_total():
 
         df['monthly_gb'].loc[i] = (monthly_traffic(df['capacity_per_user'].loc[i]))
 
-        df['total_climate_emissions'].loc[i] = df['total_climate_change'].loc[i] * df['mission_number'].loc[i]
+        df['total_climate_emissions_kg'].loc[i] = df['total_climate_change'].loc[i] * df['mission_number'].loc[i]
 
-        df['total_climate_emissions_wc'].loc[i] = df['total_climate_change_wc'].loc[i] * df['mission_number'].loc[i]
+        df['total_climate_emissions_wc_kg'].loc[i] = df['total_climate_change_wc'].loc[i] * df['mission_number'].loc[i]
                                                     
-        df['per_subscriber_emission'].loc[i] = df['total_climate_emissions'].loc[i] / df['subscribers'].loc[i]
+        df['per_subscriber_emission'].loc[i] = df['total_climate_emissions_kg'].loc[i] / df['subscribers'].loc[i]
         
         df['capex_per_user'].loc[i] = df['capex_costs'].loc[i] / df['subscribers'].loc[i] 
         

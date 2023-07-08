@@ -41,7 +41,6 @@ chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
     size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-  theme(legend.position = 'right') +
   labs(
     colour = NULL,
     title = " ",
@@ -64,15 +63,12 @@ chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
         axis.text.y = element_text(size = 6),
         axis.line.x  = element_line(size = 0.15),
         axis.line.y  = element_line(size = 0.15),
-        axis.line = element_line(colour = "black")
-  ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
-  theme(
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+        legend.position = 'bottom', 
+        axis.title = element_text(size = 6),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size =6),
+        plot.subtitle = element_text(size = 8, face = "bold"),
+        plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 #######################################
 ##Single Satellite Capacity with bars##
@@ -108,7 +104,7 @@ sat_capacity <-
     size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-  theme(legend.position = 'bottom') + labs(
+    labs(
     colour = NULL,
     title = " ",
     subtitle = "b",
@@ -122,24 +118,21 @@ sat_capacity <-
     expand = c(0, 0),
     limits = c(0, 30)
   ) +
-  theme_minimal() +  theme(axis.title.y = element_text(size = 6),
-                           strip.text.x = element_blank(),
-                           panel.border = element_blank(),
-                           panel.grid.major = element_blank(),
-                           panel.grid.minor = element_blank(),
-                           axis.line.x  = element_line(size = 0.15),
-                           axis.line.y  = element_line(size = 0.15),
-                           axis.text.x = element_text(size = 6),
-                           axis.text.y = element_text(size = 6),
-                           axis.line = element_line(colour = "black")
-  ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
-  theme(
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+  theme_minimal() + 
+  theme(axis.title.y = element_text(size = 6),
+     strip.text.x = element_blank(),
+     panel.border = element_blank(),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank(),
+     axis.line.x  = element_line(size = 0.15),
+     axis.line.y  = element_line(size = 0.15),
+     axis.text.x = element_text(size = 6),
+     axis.text.y = element_text(size = 6),
+     legend.position = 'bottom', axis.title = element_text(size = 6),
+     legend.title = element_text(size = 6),
+     legend.text = element_text(size =6),
+     plot.subtitle = element_text(size = 8, face = "bold"),
+     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 
 ##########################################
@@ -175,7 +168,7 @@ const_capacity <-
     size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") +
-  labs(
+    labs(
     colour = NULL,
     title = " ",
     subtitle = "c",
@@ -189,25 +182,22 @@ const_capacity <-
     expand = c(0, 0),
     limits = c(0, 60)
   ) +
-  theme_minimal() + theme(axis.title.y = element_text(size = 6),
-                          strip.text.x = element_blank(),
-                          panel.border = element_blank(),
-                          panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(),
-                          axis.line = element_line(colour = "black"),
-                          axis.text.x = element_text(size = 6),
-                          axis.text.y = element_text(size = 6),
-                          axis.title = element_text(size = 6),
-                          axis.line.x  = element_line(size = 0.15),
-                          axis.line.y  = element_line(size = 0.15),
-                          legend.position = 'bottom'
-  ) +
-  theme(
+  theme_minimal() + 
+  theme(axis.title.y = element_text(size = 6),
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.position = 'bottom' ,
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 
 #######################
@@ -245,7 +235,7 @@ capacity_subscriber <-
     size = 0.2
   ) +
   scale_fill_brewer(palette = "Dark2") +
-  labs(
+    labs(
     colour = NULL,
     title = " ",
     subtitle = "d",
@@ -257,26 +247,20 @@ capacity_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    #limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-        strip.text.x = element_blank(),
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.text.x = element_text(size = 6),
-        axis.text.y = element_text(size = 6),
-        axis.line.x  = element_line(size = 0.15),
-        axis.line.y  = element_line(size = 0.15),
-        axis.line = element_line(colour = "black")
-  ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
-  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.position = 'bottom', axis.title = element_text(size = 6),
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+    plot.subtitle = element_text(size = 8, face = "bold"))
 
 
 ################################
@@ -326,23 +310,20 @@ capacity_per_user <-
     #limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
-        strip.text.x = element_blank(),
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.text.x = element_text(size = 6),
-        axis.text.y = element_text(size = 6),
-        axis.line.x  = element_line(size = 0.15),
-        axis.line.y  = element_line(size = 0.15),
-        axis.line = element_line(colour = "black")
-  ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
-  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.position = 'bottom', axis.title = element_text(size = 6),
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
     plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
+
 
 ##########################
 ##Average users per area##
@@ -381,23 +362,19 @@ per_user_area <-
     expand = c(0, 0),
   ) + theme_minimal() +
   theme(axis.title.y = element_markdown(size = 6),
-        strip.text.x = element_blank(),
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.text.x = element_text(size = 6),
-        axis.text.y = element_text(size = 6),
-        axis.line.x  = element_line(size = 0.15),
-        axis.line.y  = element_line(size = 0.15),
-        axis.line = element_line(colour = "black")
-  ) +
-  theme(legend.position = 'bottom', axis.title = element_text(size = 6)) +
-  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.position = 'bottom', axis.title = element_text(size = 6),
     legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
+    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12)
-  )
+    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 
 ####################################
