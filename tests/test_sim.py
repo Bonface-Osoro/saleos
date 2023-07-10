@@ -1,5 +1,5 @@
 import pytest
-from saleos.sim import (
+from saleos.emissions import (
     system_capacity,
     calc_geographic_metrics,
     calc_free_space_path_loss,
