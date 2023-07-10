@@ -445,6 +445,66 @@ def pairwise(iterable):
     return zip(a, b)
 
 
+def capacity_subscriber(const_cap, subscribers):
+    """
+    This function calculates usable 
+    capacity per subscriber assuming 
+    that only 50%(0.5) of constellation 
+    capacity is usable.
+
+    Parameters
+    ---------
+    const_cap : float
+        Total constellation capacity in ???.
+    subscribers : int
+        Number of subscribers.
+
+    Returns
+    -------
+    cap_sub : float
+        Capacity per subscriber in ???
+
+    """
+    cap_sub = const_cap * 0.5 / subscribers
+
+    return cap_sub
+
+
+def monthly_traffic(capacity_mbps):
+    """ 
+    This function calculates the monthly 
+    traffic assuming the lifespan of all 
+    constellations is 5 years and 20% 
+    accounting for traffic taking place 
+    in the busiest hour of the day.
+
+    Conversion of Mbps to monthly traffic in GB. 
+
+    Monthly traffic (GB) = (
+        (Capacity_Mbps / 12 * 5) /  # 12 months in 1 year over 5 years
+        (8000 * #
+        (1 / 30 ) * # 30 days of the month
+        (1 / 3600) * # seconds in a 1 hour
+        (20 / 100) #  
+        )
+    )
+
+    Parameters
+    ----------
+    capacity_mbps : float
+        ??? in mbps ???
+
+    Returns
+    -------
+    Monthly traffic : float
+        Returns the monthly traffic in Gigabytes per month per user
+            
+    """
+    amount = (capacity_mbps / 12 * 5) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+
+    return amount
+
+
 def calc_per_sat_emission(name):
     """
     calculate the emission amount by 
@@ -1402,9 +1462,11 @@ def propellant_containment():
     return emission_dict
 
 
-def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_cost, spectrum_cost, regulation_fees, \
-    digital_infrastructure_cost, ground_station_energy, subscriber_acquisition, \
-    staff_costs, research_development, maintenance, discount_rate, assessment_period):
+def cost_model(satellite_manufacturing, satellite_launch_cost, 
+    ground_station_cost, spectrum_cost, regulation_fees, 
+    digital_infrastructure_cost, ground_station_energy, 
+    subscriber_acquisition, staff_costs, research_development, 
+    maintenance, discount_rate, assessment_period):
     """
     Calculate the total cost of ownership(TCO):
 
