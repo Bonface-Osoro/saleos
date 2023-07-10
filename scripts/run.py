@@ -29,10 +29,13 @@ def run_uq_processing():
     
     """
     path = os.path.join(BASE_PATH, 'uq_parameters.csv')
+
     if not os.path.exists(path):
+
         print('Cannot locate uq_parameters.csv - have you run preprocess.py?')
-    df = pd.read_csv(path)
-    df = df.to_dict('records')#[:2000]
+
+    df = pd.read_csv(path)#[:1000]
+    df = df.to_dict('records')
 
     results = []
 
@@ -99,17 +102,6 @@ def run_uq_processing():
                 item["polarization"]
             )
         ) * item["number_of_satellites"]
-
-        if channel_capacity == 823.6055 or channel_capacity == 411.80275:
-
-            capacity_scenario = "Low"
-
-        elif channel_capacity == 1810.268 or channel_capacity == 526.2125 and item["constellation"] == "OneWeb" or channel_capacity == 1183.8385:
-            capacity_scenario = "High"
-
-        else:
-
-            capacity_scenario = "Baseline"
 
         sat_capacity = sl.single_satellite_capacity(
             item["dl_bandwidth_Hz"],
@@ -240,7 +232,6 @@ def run_uq_processing():
                         "spectral_efficiency": spectral_efficiency,
                         "channel_capacity": channel_capacity,
                         "constellation_capacity": agg_capacity,
-                        "capacity_scenario": capacity_scenario,
                         "capacity_per_single_satellite": sat_capacity,
                         "capacity_per_area_mbps/sqkm": agg_capacity / item["coverage_area_per_sat_sqkm"],
                         "subscribers_low": item["subscribers_low"],
@@ -333,12 +324,12 @@ def process_mission_total():
     more satellites are placed in orbit
     
     """   
-    data_in = os.path.join(RESULTS, 'interim_results.csv')
+    data_in = os.path.join(RESULTS, 'interim_results.csv')#[:500]
     df = pd.read_csv(data_in, index_col = False)
 
     #Select the columns to use.
     df = df[["constellation", "constellation_capacity", 
-        "capacity_scenario", "capex_costs", "capex_scenario", 
+        "cnr_scenario", "capex_costs", "capex_scenario", 
         "satellite_coverage_area_km", "subscribers_low", 
         "subscribers_baseline", "subscribers_high",
         "total_opex", "total_cost_ownership", "opex_scenario", 
@@ -352,51 +343,12 @@ def process_mission_total():
 
     # Process satellite missions       
     for i in tqdm(df.index, desc = "Processing satellite missions"):
-
         if df["constellation"].loc[i] == "Starlink":
-            df["mission_number"].loc[i] = i+1
-            df["mission_number_1"].loc[i] = i * 0
-
-            if df["mission_number"].loc[i] < 74:
-                df["mission_number"].loc[i] = i + 1
-                df["mission_number_1"].loc[i] = i * 0
-
-            else:
-
-                df["mission_number"].loc[i] = 74
-                df["mission_number_1"].loc[i] = i * 0
-
+            df["mission_number"].loc[i] = 74
         elif df["constellation"].loc[i] == "OneWeb":
-
-            df["mission_number"].loc[i] = i - (2186)
-            df["mission_number_1"].loc[i] = i - (2186)
-
-            if df["mission_number"].loc[i] < 11:
-                df["mission_number"].loc[i] = i - (2186)
-                df["mission_number_1"].loc[i] = i - (2186)
-
-            else:
-
-                df["mission_number"].loc[i] = 11
-                df["mission_number_1"].loc[i] = 7
-
-        elif df["constellation"].loc[i] == "Kuiper":
-
-            df["mission_number"].loc[i] = i - (4373)
-            df["mission_number_1"].loc[i] = i * 0
-
-            if df["mission_number"].loc[i] < 54:
-
-                df["mission_number"].loc[i] = i - (4373)
-                df["mission_number_1"].loc[i] = i * 0
-
-            else:
-
-                df["mission_number"].loc[i] = 54
-                df["mission_number_1"].loc[i] = i * 0
+            df["mission_number"].loc[i] = 20
         else:
-
-            df["mission_number"].loc[i] = 0
+            df["mission_number"].loc[i] = 54
 
     print("Finished processing satellite missions")
 
@@ -408,7 +360,7 @@ def process_mission_total():
         id_vars = [
             "constellation", 
             "constellation_capacity", 
-            "capacity_scenario", 
+            "cnr_scenario", 
             "total_opex", 
             "capex_costs", 
             "capex_scenario", 
@@ -443,7 +395,7 @@ def process_mission_total():
         id_vars = [
             "constellation", 
             "constellation_capacity", 
-            "capacity_scenario", 
+            "cnr_scenario", 
             "total_opex", 
             "capex_costs", 
             "capex_scenario", 
@@ -472,47 +424,47 @@ def process_mission_total():
     )  
 
     # Calculate the total emissions
-    for i in tqdm(range(len(df)), desc = 'Calculating constellation emission totals'.format(i)):
+    for i in tqdm(range(len(df)), desc = 'Calculating constellation emission totals'):
 
         if df['constellation'].loc[i] == 'Starlink' or df['constellation'].loc[i] == 'Kuiper':
             df['total_emissions'].loc[i] = df['emission_totals'].loc[i] * df['mission_number'].loc[i]
-
         else:
-
-            df['total_emissions'].loc[i] = (df['oneweb_sz'].loc[i] * df['mission_number'].loc[i]) + \
-            (df['oneweb_f9'].loc[i] * df['mission_number_1'].loc[i])
+            df['total_emissions'].loc[i] = (df['oneweb_sz'].loc[i] * 11) + (df['oneweb_f9'].loc[i] * 7)
 
     print("Finished calculating constellation emission totals")
 
     # Select columns to use
     df = df[['constellation', 'constellation_capacity', 
-             'capacity_scenario','satellite_coverage_area_km',
+             'cnr_scenario','satellite_coverage_area_km',
              'total_opex', 'capex_costs', 'capex_scenario', 
              'opex_scenario', 'total_cost_ownership', 
              'mission_number', 'mission_number_1', 
              'subscriber_scenario', 'subscribers', 
              'impact_category', 'total_emissions', 
              'oneweb_f9', 'oneweb_sz',
-             'total_climate_change', 'total_climate_change_wc']]
+             'total_climate_change', 
+             'total_climate_change_wc'
+        ]]
 
     #Create columns to store new data
     df[['capacity_per_user', 'per_subscriber_emission', 
         'capex_per_user', 'opex_per_user', 'monthly_gb',
-        'tco_per_user', 'total_climate_emissions',
-        'total_climate_emissions_wc', 'user_per_area']] = ''
+        'tco_per_user', 'total_climate_emissions_kg',
+        'total_climate_emissions_wc_kg', 'user_per_area'
+        ]] = ''
 
     # Calculate total metrics
-    for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'.format(i)):
+    for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
 
-        df['capacity_per_user'].loc[i] = capacity_subscriber(df['constellation_capacity'].loc[i], df['subscribers'].loc[i])
+        df['capacity_per_user'].loc[i] = sl.capacity_subscriber(df['constellation_capacity'].loc[i], df['subscribers'].loc[i])
 
-        df['monthly_gb'].loc[i] = (monthly_traffic(df['capacity_per_user'].loc[i]))
+        df['monthly_gb'].loc[i] = (sl.monthly_traffic(df['capacity_per_user'].loc[i]))
 
-        df['total_climate_emissions'].loc[i] = df['total_climate_change'].loc[i] * df['mission_number'].loc[i]
+        df['total_climate_emissions_kg'].loc[i] = df['total_climate_change'].loc[i] * df['mission_number'].loc[i]
 
-        df['total_climate_emissions_wc'].loc[i] = df['total_climate_change_wc'].loc[i] * df['mission_number'].loc[i]
+        df['total_climate_emissions_wc_kg'].loc[i] = df['total_climate_change_wc'].loc[i] * df['mission_number'].loc[i]
                                                     
-        df['per_subscriber_emission'].loc[i] = df['total_climate_emissions'].loc[i] / df['subscribers'].loc[i]
+        df['per_subscriber_emission'].loc[i] = df['total_climate_emissions_kg'].loc[i] / df['subscribers'].loc[i]
         
         df['capex_per_user'].loc[i] = df['capex_costs'].loc[i] / df['subscribers'].loc[i] 
         
@@ -525,54 +477,13 @@ def process_mission_total():
     filename = 'final_results.csv'
 
     if not os.path.exists(RESULTS):
+
         os.makedirs(RESULTS)
 
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
 
     return None
-
-
-def capacity_subscriber(const_cap, subscribers):
-    """
-    This function calculates usable 
-    capacity per subscriber assuming 
-    that only 50%(0.5) of constellation 
-    capacity is usable.
-
-    Parameters
-    ---------
-    const_cap : float
-        Total constellation capacity
-    subscribers : int
-        Number of subscribers
-
-    Returns
-    -------
-    cap_sub : float
-        Capacity per subscriber
-    """
-    cap_sub = const_cap * 0.5 / subscribers
-
-    return cap_sub
-
-
-def monthly_traffic(capacity_mbps):
-    """ 
-    This function calculates the monthly 
-    traffic assuming the lifespan of all 
-    constellations is 5 years and 20% 
-    accounting for traffic taking place 
-    in the busiest hour of the day.
-
-    Returns
-    -------
-    ...
-            
-    """
-    amount = (capacity_mbps / 12 * 5) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
-
-    return amount
 
 
 if __name__ == '__main__':

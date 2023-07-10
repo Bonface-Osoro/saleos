@@ -111,8 +111,11 @@ def generate_log_normal_dist_value(frequency, mu, sigma, seed_value, draws):
 
     """
     if seed_value == None:
+
         pass
+
     else:
+
         frequency_seed_value = seed_value * frequency * 100
         np.random.seed(int(str(frequency_seed_value)[:2]))
 
@@ -319,7 +322,9 @@ def calc_spectral_efficiency(cnr, lut):
         upper_cnr, upper_se  = upper
 
         if cnr >= lower_cnr and cnr < upper_cnr:
+
             spectral_efficiency = lower_se
+
             return spectral_efficiency
 
         highest_value = lut[-1]
@@ -331,7 +336,9 @@ def calc_spectral_efficiency(cnr, lut):
         lowest_value = lut[0]
 
         if cnr < lowest_value[0]:
+
             spectral_efficiency = lowest_value[1]
+
             return spectral_efficiency
 
 
@@ -364,19 +371,19 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
 
     Parameters
     ----------
-    dl_bandwidth :
+    dl_bandwidth : float
         Bandwidth in MHz.
-    spectral_efficiency :
-        Spectral efficiency 64QAM equivalent to 5.1152,
-        assuming every constellation uses 64QAM
-    number_of_channels :
-        ...
-    number_of_channels :
-        ...
+    spectral_efficiency : float
+        Spectral efficiency assuming every 
+        constellation uses 64QAM
+    number_of_channels : int
+        Number of satellite channels
+    polarizations : int
+        Number of satellite polarizations
 
     Returns
     -------
-    sat_capacity : ...
+    sat_capacity : float
         Satellite capacity.
 
     """
@@ -438,6 +445,66 @@ def pairwise(iterable):
     return zip(a, b)
 
 
+def capacity_subscriber(const_cap, subscribers):
+    """
+    This function calculates usable 
+    capacity per subscriber assuming 
+    that only 50%(0.5) of constellation 
+    capacity is usable.
+
+    Parameters
+    ---------
+    const_cap : float
+        Total constellation capacity in ???.
+    subscribers : int
+        Number of subscribers.
+
+    Returns
+    -------
+    cap_sub : float
+        Capacity per subscriber in ???
+
+    """
+    cap_sub = const_cap * 0.5 / subscribers
+
+    return cap_sub
+
+
+def monthly_traffic(capacity_mbps):
+    """ 
+    This function calculates the monthly 
+    traffic assuming the lifespan of all 
+    constellations is 5 years and 20% 
+    accounting for traffic taking place 
+    in the busiest hour of the day.
+
+    Conversion of Mbps to monthly traffic in GB. 
+
+    Monthly traffic (GB) = (
+        (Capacity_Mbps / 12 * 5) /  # 12 months in 1 year over 5 years
+        (8000 * #
+        (1 / 30 ) * # 30 days of the month
+        (1 / 3600) * # seconds in a 1 hour
+        (20 / 100) #  
+        )
+    )
+
+    Parameters
+    ----------
+    capacity_mbps : float
+        ??? in mbps ???
+
+    Returns
+    -------
+    Monthly traffic : float
+        Returns the monthly traffic in Gigabytes per month per user
+            
+    """
+    amount = (capacity_mbps / 12 * 5) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+
+    return amount
+
+
 def calc_per_sat_emission(name):
     """
     calculate the emission amount by 
@@ -466,18 +533,23 @@ def calc_per_sat_emission(name):
     """
 
     if name == 'Starlink':
+
         emission_dict = falcon_9()  # Emission per satellite
 
     elif name == 'Kuiper':
+
         emission_dict = ariane()
 
     elif name == 'OneWeb':
+
         emission_dict = soyuz_fg()
 
     elif name == 'onewebf9':
+
         emission_dict = falcon_9()
 
     else:
+
         print('Invalid Constellation name')
 
     return emission_dict
@@ -695,7 +767,7 @@ def calc_transportation_emission(name):
 
     if name == 'Starlink':
 
-        emission_dict = falcon9_transportation()  # Emission per satellite
+        emission_dict = falcon9_transportation()  
 
     elif name == 'Kuiper':
 
@@ -707,7 +779,7 @@ def calc_transportation_emission(name):
 
     elif name == 'onewebf9':
 
-        emission_dict = falcon9_transportation()  # Emission per satellite
+        emission_dict = falcon9_transportation()  
 
     else:
 
@@ -736,7 +808,7 @@ def calc_launch_campaign_emission(name):
 
     if name == 'Starlink':
 
-        emission_dict = launcher_campaign()  # Emission per satellite
+        emission_dict = launcher_campaign()  
 
     elif name == 'Kuiper':
 
@@ -778,7 +850,7 @@ def calc_propellant_emission(name):
 
     if name == 'Starlink':
 
-        emission_dict = falcon_propellant_production()  # Emission per satellite
+        emission_dict = falcon_propellant_production()  
 
     elif name == 'Kuiper':
 
@@ -1074,7 +1146,8 @@ def ariane_propellant_production():
 
 def falcon_propellant_production():
     """
-    calculate the emissions from production of falcon propellant.
+    calculate the emissions from 
+    production of falcon propellant.
 
     Returns
     -------
@@ -1102,7 +1175,8 @@ def falcon_propellant_production():
 
 def soyuzfg_propellant_production():
     """
-    calculate the emissions from production of falcon propellant.
+    calculate the emissions from 
+    production of falcon propellant.
 
     Returns
     -------
@@ -1130,7 +1204,8 @@ def soyuzfg_propellant_production():
 
 def ariane_transportation():
     """
-    calculate the emissions from transportation of ariane.
+    calculate the emissions from 
+    transportation of ariane.
 
     Returns
     -------
@@ -1158,7 +1233,8 @@ def ariane_transportation():
 
 def falcon9_transportation():
     """
-    calculate the emissions from transportation of falcon9.
+    calculate the emissions from 
+    transportation of falcon9.
 
     Returns
     -------
@@ -1186,7 +1262,8 @@ def falcon9_transportation():
 
 def soyuzfg_transportation():
     """
-    calculate the emissions from transportation of soyuzfg.
+    calculate the emissions from 
+    transportation of soyuzfg.
 
     Returns
     -------
@@ -1242,7 +1319,8 @@ def waste_decontamination():
 
 def propellant_handling():
     """
-    calculate the emissions from general propellant handling.
+    calculate the emissions 
+    from general propellant handling.
 
     Returns
     -------
@@ -1270,7 +1348,8 @@ def propellant_handling():
 
 def propellant_storage():
     """
-    calculate the emissions from storage of 1 m^3 propellant.
+    calculate the emissions from 
+    storage of 1 m^3 propellant.
 
     Returns
     -------
@@ -1298,7 +1377,8 @@ def propellant_storage():
 
 def launcher_AIT():
     """
-    calculate the emissions due to assembling, integration and testing (AIT).
+    calculate the emissions due to 
+    assembling, integration and testing (AIT).
 
     Returns
     -------
@@ -1354,7 +1434,9 @@ def launcher_campaign():
 
 def propellant_containment():
     """
-    calculate the emissions from containment of 900 litres of propellant.
+    calculate the emissions from 
+    containment of 900 litres of 
+    propellant.
 
     Returns
     -------
@@ -1380,9 +1462,11 @@ def propellant_containment():
     return emission_dict
 
 
-def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_cost, spectrum_cost, regulation_fees, \
-    digital_infrastructure_cost, ground_station_energy, subscriber_acquisition, \
-    staff_costs, research_development, maintenance, discount_rate, assessment_period):
+def cost_model(satellite_manufacturing, satellite_launch_cost, 
+    ground_station_cost, spectrum_cost, regulation_fees, 
+    digital_infrastructure_cost, ground_station_energy, 
+    subscriber_acquisition, staff_costs, research_development, 
+    maintenance, discount_rate, assessment_period):
     """
     Calculate the total cost of ownership(TCO):
 
@@ -1400,15 +1484,15 @@ def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_co
 
     capex = (satellite_manufacturing + satellite_launch_cost 
              + ground_station_cost + spectrum_cost 
-             + regulation_fees + digital_infrastructure_cost) #Addition of all capital expenditure
+             + regulation_fees + digital_infrastructure_cost) 
 
     opex_costs = (ground_station_energy + subscriber_acquisition 
                   + staff_costs + research_development 
-                  + maintenance) #Addition of all recurrent expenditures
+                  + maintenance) 
 
     year_costs = []
 
-    for time in np.arange(1, assessment_period):  #Discounted for the years
+    for time in np.arange(1, assessment_period):  
         yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
         year_costs.append(yearly_opex)
 
@@ -1419,7 +1503,8 @@ def cost_model(satellite_manufacturing, satellite_launch_cost, ground_station_co
 
 def subscriber_scenario(name, subscribers):
     """
-    Quantify subscriber scenario for each of the constellations.
+    Quantify subscriber scenario for 
+    each of the constellations.
 
     Parameters
     ----------
@@ -1431,7 +1516,8 @@ def subscriber_scenario(name, subscribers):
     Returns
     -------
     subscriber_dict : dict.
-        a dictionary of all estimated subscriber scenario
+        a dictionary of all estimated 
+        subscriber scenario
     """
     subscriber_dict = {}
     

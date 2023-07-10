@@ -36,7 +36,7 @@ def uq_inputs_generator():
                     item["altitude_km"], 
                     (item["altitude_km"] + 5)]
         
-        atmospheric_loss = [item["earth_atmospheric_losses"]- 3, 
+        atmospheric_loss = [item["earth_atmospheric_losses"] - 3, 
                             item["earth_atmospheric_losses"], 
                            item["earth_atmospheric_losses"] + 3]
         
@@ -68,10 +68,15 @@ def uq_inputs_generator():
             altitude_km = alt
 
             if alt == 540 or alt == 1190 or alt == 600:
+
                 altitude_scenario = "Low"
+
             elif alt == 545 or alt == 1195 or alt == 605:
+
                 altitude_scenario = "Baseline"
+
             else:
+
                 altitude_scenario = "High"
 
             for rec_gain in receiver_gain:
@@ -79,9 +84,13 @@ def uq_inputs_generator():
                 receiver_gain_dB = rec_gain
 
                 if rec_gain == 25 or rec_gain == 26:
+
                     receiver_gain_scenario = "Low"
+
                 elif rec_gain == 30 or rec_gain == 31:
+
                     receiver_gain_scenario = "Baseline" 
+
                 else:
                     receiver_gain_scenario = "High"
 
@@ -90,11 +99,15 @@ def uq_inputs_generator():
                     earth_atmospheric_losses_dB = atm_loss
 
                     if atm_loss == 7:
+
                         atmospheric_loss_scenario = "Low"
                         cnr_scenario = "High(>13.5 dB)"
+
                     elif atm_loss == 10:
+
                         atmospheric_loss_scenario = "Baseline"
                         cnr_scenario = "Baseline(7.6 - 10.5 dB)"
+
                     else:
                         atmospheric_loss_scenario = "High"
                         cnr_scenario = "Low (<7.5 dB)"
@@ -109,14 +122,18 @@ def uq_inputs_generator():
 
                             if gst == 39088000 and sat_launch == 186328000 or gst == 16000000 and \
                                 sat_launch == 86328000 or gst == 26400000 and sat_launch == 116328000:
+
                                 capex_scenario = "Low"
                                 sat_launch_scenario = "Low"
                                 ground_station_scenario = "Low"
+
                             elif gst == 48860000 and sat_launch == 250000000 or gst == 20000000 and \
                                 sat_launch == 150000000 or gst == 33000000 and sat_launch == 180000000:
+
                                 capex_scenario = "Baseline"
                                 sat_launch_scenario = "Baseline"
                                 ground_station_scenario = "Baseline"
+
                             else:
                                 capex_scenario = "High"
                                 sat_launch_scenario = "High"
@@ -127,11 +144,17 @@ def uq_inputs_generator():
                                 maint_costs = maint_cost
 
                                 if maint_cost == maintenance_cost[0]:
+
                                     opex_scenario = "Low"
+
                                 elif maint_cost == maintenance_cost[1]:
+
                                     opex_scenario = "Baseline"
+
                                 elif maint_cost == maintenance_cost[2]:
+
                                     opex_scenario = "High"
+
                                 else: 
                                     opex_scenario = "None"
 
@@ -229,6 +252,7 @@ def uq_inputs_generator():
     filename = 'uq_parameters.csv'
 
     if not os.path.exists(BASE_PATH):
+        
         os.makedirs(BASE_PATH)
 
     path_out = os.path.join(BASE_PATH, filename)
