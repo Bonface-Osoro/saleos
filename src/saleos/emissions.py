@@ -3,6 +3,13 @@ Simulation model for saleos.
 
 Developed by Bonface Osoro and Ed Oughton.
 
+The emission model is based on the approach by;
+
+[1]. Wilson, Andrew Ross. "Advanced methods of life cycle assessment for space systems." (2019).
+
+[2]. Ross, Martin N., and Patti M. Sheaffer. "Radiative forcing caused by rocket engine emissions." 
+     Earth's Future 2.4 (2014): 177-196.
+
 May 2022
 
 """

@@ -5,6 +5,24 @@ Developed by Bonface Osoro and Ed Oughton.
 
 May 2022
 
+The Capacity model is based on approach and equations defined by:
+[1].  Maral, Gérard, Michel Bousquet, and Zhili Sun. Satellite communications systems: 
+      systems, techniques and technology. John Wiley & Sons, 2020.
+
+[2].  Digital Video Broadcasting Project, “Second generation framing structure, channel 
+      coding and modulation systems for Broadcasting, Interactive Services, News Gathering 
+      and other broadband satellite applications; Part 2: DVB-S2 Extensions (DVB-S2X),” 
+      DVB. https://dvb.org/?standard=second-generation-framing-structure-channel-coding
+      -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
+      other-broadband-satellite-applications-part-2-dvb-s2-extensions (accessed Sep. 14, 
+      2022)
+
+[3].  Oughton, Edward J. "Policy options for digital infrastructure strategies: 
+      A simulation model for affordable universal broadband in Africa." 
+      Telematics and Informatics 76 (2023): 101908.
+
+[4].  R. Steele, “A simple guide to satellite broadband limitations,” Telzed Limited UK, 2020.
+
 """
 import math
 import numpy as np
@@ -15,7 +33,7 @@ from collections import OrderedDict
 def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq, altitude_km):
     """
     Calculate (a) the distance between the satellite
-    and user terminal and (b) the coverage area for each satellite.
+    and user terminal and (b) the coverage area for each satellite based on [1].
 
     Parameters
     ----------
@@ -51,7 +69,7 @@ def calc_path_loss(distance_km, downlink_frequency_Hz):
 
     """
     This function calculates the free 
-    space path loss in dB.
+    space path loss in dB based on [1].
 
     Free Space Path Loss (dB) = 20log10 x 
         Distance (km) + 20log10 x 
@@ -79,7 +97,8 @@ def calc_path_loss(distance_km, downlink_frequency_Hz):
 
 def calc_antenna_gain(c, d, f, n):
     """
-    Calculates the antenna gain in dB.
+    Calculates the antenna gain in dB
+    based on [1].
 
     Antenna gain (dB) = 10log10 
         (Antenna efficiency 
@@ -115,7 +134,7 @@ def calc_antenna_gain(c, d, f, n):
 def calc_eirpd(power, antenna_gain):
     """
     Calculate the Effective Isotropic
-    Radiated Power Density.
+    Radiated Power Density based on [1].
 
     Equivalent Isotropically Radiated Power Density (EIRPD) = (
         Power + Gain
@@ -145,7 +164,7 @@ def calc_losses(earth_atmospheric_losses, all_other_losses):
     """
     This function estimates the total 
     transmission losses due to atmospheric 
-    and all other losses.
+    and all other losses based on [1].
 
     Losses (dB) = Atmospheric lossses (dB)
                   + Other Losses (dB)
@@ -171,7 +190,8 @@ def calc_losses(earth_atmospheric_losses, all_other_losses):
 
 def calc_received_power(eirp, path_loss, receiver_gain, losses):
     """
-    Calculates the power received at the User Equipment (UE).
+    Calculates the power received at the User Equipment (UE) 
+    based on [1].
 
     Power Received (dB) = EIRPD (dB) + Receiver gain (dB)
                           + Path Loss (dB) + Total Losses (dB)
@@ -200,7 +220,7 @@ def calc_received_power(eirp, path_loss, receiver_gain, losses):
 
 def calc_noise():
     """
-    Calculates the potential noise.
+    Calculates the potential noise based on [1].
 
     Terminal noise can be calculated as:
 
@@ -244,7 +264,7 @@ def calc_noise():
 
 def calc_cnr(received_power, noise):
     """
-    Calculate the Carrier-to-Noise Ratio (CNR).
+    Calculate the Carrier-to-Noise Ratio (CNR) based on [1].
 
     Carrier-to-noise ratio (dB) = Power Received (dB) - Noise (dB)
 
@@ -270,7 +290,7 @@ def calc_spectral_efficiency(cnr, lut):
     """
     Given a carrier-to-noise ratio, 
     the function calculates 
-    the spectral efficiency.
+    the spectral efficiency based on [2].
 
     Parameters
     ----------
@@ -313,7 +333,7 @@ def calc_spectral_efficiency(cnr, lut):
 
 def calc_capacity(spectral_efficiency, dl_bandwidth):
     """
-    Calculate the channel capacity in Mbps.
+    Calculate the channel capacity in Mbps based on [1],[2].
 
     Channel Capacity (Mbps) = Spectral efficiency 
                               x Channel bandwidth (MHz)
@@ -339,7 +359,7 @@ def calc_capacity(spectral_efficiency, dl_bandwidth):
 def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
     number_of_channels, polarization):
     """
-    Calculate the capacity of each satellite in Mbps.
+    Calculate the capacity of each satellite in Mbps based on [1],[2].
 
     Satellite Capacity (Mbps) = Channel bandwidth (Hz)
                                 x Spectral efficiency
@@ -380,7 +400,8 @@ def calc_constellation_capacity(channel_capacity,
                                 number_of_satellites):
     """
     Calculate the total usable constellation capacity assuming 
-    that only 50%(0.5) of constellation capacity is usable.
+    that only 50%(0.5) of constellation capacity is usable
+     based on [1]-[4].
 
     Constellation Capacity (Mbps) = Channel capacity (Mbps)
                                     x Number of channels
@@ -470,18 +491,16 @@ def monthly_traffic(capacity_mbps):
     traffic assuming the lifespan of all 
     constellations is 5 years and 20% 
     accounting for traffic taking place 
-    in the busiest hour of the day.
+    in the busiest hour of the day based on 
+    [3].
 
     Conversion of Mbps to monthly traffic in GB. 
 
-    Monthly traffic (GB) = (
-        (Capacity_Mbps / 12 * 5) /  # 12 months in 1 year over 5 years
-        (8000 * #
-        (1 / 30 ) * # 30 days of the month
-        (1 / 3600) * # seconds in a 1 hour
-        (20 / 100) #  
-        )
-    )
+    Monthly traffic (GB) = (Capacity_Mbps / 12 x 5)
+                           / (8000 x #Conversion of Gigabytes to bits
+                           1/30)     #Number of days in a month (30)
+                           x 1/3600  #Seconds in hour
+                           x 20/100  #Percentage of traffic in the busiest hour of the day
 
     Parameters
     ----------
