@@ -11,9 +11,9 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
 
-##############################
-##Channel capacity with Bars##
-##############################
+#########################
+##Channel capacity with##
+#########################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
@@ -70,9 +70,9 @@ chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
         plot.subtitle = element_text(size = 8, face = "bold"),
         plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
-#######################################
-##Single Satellite Capacity with bars##
-#######################################
+#############################
+##Single Satellite Capacity##
+#############################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
@@ -135,9 +135,9 @@ sat_capacity <-
      plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 
-##########################################
-##Constellation capacity with error bars##
-##########################################
+#######################################
+##Total Usable Constellation capacity##
+#######################################
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
