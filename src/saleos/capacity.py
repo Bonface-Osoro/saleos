@@ -505,7 +505,7 @@ def monthly_traffic(capacity_mbps):
     Parameters
     ----------
     capacity_mbps : float
-        Total usable constellation capacity in Mbps
+        Mean capacity per user in Mbps
 
     Returns
     -------
@@ -513,6 +513,7 @@ def monthly_traffic(capacity_mbps):
         Returns the monthly traffic in Gigabytes per month per user
             
     """
-    amount = (capacity_mbps / 12 * 5) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+
+    amount = (capacity_mbps / (12 * 5)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
 
     return amount
