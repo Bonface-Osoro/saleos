@@ -563,8 +563,8 @@ data <-
     impact_category,
     per_subscriber_emission,
     total_emissions,
-    total_climate_emissions,
-    total_climate_emissions_wc,
+    total_climate_emissions_kg,
+    total_climate_emissions_wc_kg,
     monthly_gb,
   )
 
