@@ -656,7 +656,9 @@ df = data %>%
     value = mean(per_subscriber_emission / 1e3)
   )
 
-df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df = df %>% 
+  spread(subscriber_scenario, value)
+
 df$Constellation = factor(
   df$constellation,
   levels = c('Kuiper', 'OneWeb', 'Starlink'),
@@ -666,21 +668,16 @@ df$Constellation = factor(
     'Starlink \n(Falcon-9)'
   )
 )
-df$scenario = factor(
-  df$subscriber_scenario,
-  levels = c(
-    'subscribers_low',
-    'subscribers_baseline',
-    'subscribers_high'
-  ),
-  labels = c('Low', 'Baseline', 'High')
-)
 
 emission_subscriber <- ggplot(df, aes(x = Constellation,
-                                      y = value, fill = scenario)) +
+                          y = subscribers_baseline)) +
   geom_bar(stat = "identity",
-           position = position_dodge(),
            width = 0.9) +
+  geom_errorbar(data=df, aes(
+    y=subscribers_baseline, ymin=subscribers_low, ymax=subscribers_high),
+    position = position_dodge(1),
+    lwd = 0.2,
+    show.legend = FALSE, width=0.1,  color="#FF0000FF") +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
     labs(
     colour = NULL,
