@@ -740,7 +740,7 @@ test_panel =   ggarrange(
   ncol = 1
 )
 
-path = file.path(visualizations, 'figures', 'test_panel.png')
+path = file.path(visualizations, 'figures', 'test_panel.jpg')
 dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 tiff(
   path,
