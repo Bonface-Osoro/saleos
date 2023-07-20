@@ -740,14 +740,16 @@ test_panel =   ggarrange(
   ncol = 1
 )
 
-path = file.path(visualizations, 'figures', 'test_panel.jpg')
+path = file.path(visualizations, 'figures', 'test_panel.png')
 dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
-tiff(
-  path,
-  units = "in",
+ggsave(
+  'test_panel.png',
+  plot = last_plot(),
+  device = "png",
+  path=file.path(visualizations, 'figures'),
+  units = c("in"),
   width = 8.3,
   height = 8.3,
-  res = 480
+  bg="white"
 )
-print(test_panel)
-dev.off()
+
