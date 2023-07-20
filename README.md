@@ -10,7 +10,7 @@ While LEO mega-constellations are fronted as an alternative to terrestrial broad
 
 #### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink.
 <p align="center">
-  <img src="/docs/fig_1.jpg" />
+  <img src="/vis/figures/readme/fig_1.jpg" />
 </p>
 
 Emissions produced during the launching of satellites depend on the utilized rocket vehicle. 
@@ -19,7 +19,7 @@ Most operators planning or launching LEO broadband satellites have used (or inte
 
 #### Figure 2 Technical details of launch rocket systems.
 <p align="center">
-  <img src="/docs/fig_2.jpg" />
+  <img src="/vis/figures/readme/fig_2.jpg" />
 </p>
 
 The `saleos` codebase provides an open-source integrated assessment model capable of concurrently estimating broadband capacity, environmental emissions, and costs for different LEO satellite networks.
@@ -34,11 +34,11 @@ The method is based on (i) a stochastic engineering simulation model estimating 
 
 #### Figure 3 Integrated assessment method
 <p align = 'center'>
-  <img src= '/docs/model.png' />
+  <img src= '/vis/figures/readme/model.png' />
 </p>
 
 ## Team
-- Bonface Osoro, George Mason University (model development)
-- Edward Oughton, George Mason University (project lead and corresponding author)
+- Bonface Osoro, George Mason University (Model development)
+- Edward Oughton, George Mason University (Project lead and corresponding author)
 - Andrew Wilson, University of Strathclyde (LCA modeling)
-- Akhil Rao, Middlebury College (policy and economics)
+- Akhil Rao, Middlebury College (Policy and economics)
