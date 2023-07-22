@@ -288,7 +288,7 @@ def calc_cnr(received_power, noise):
 
 def calc_spectral_efficiency(cnr, lut):
     """
-    Given a carrier-to-noise ratio, 
+    Given a carrier-to-noise ratio,
     the function calculates 
     the spectral efficiency based on [2].
 
