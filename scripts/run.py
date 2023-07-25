@@ -445,7 +445,7 @@ def process_mission_total():
         
         df['tco_per_user'].loc[i] = df['total_cost_ownership'].loc[i] / df['subscribers'].loc[i]
 
-        df['user_per_area'].loc[i] = df['subscribers'].loc[i] / df['satellite_coverage_area_km'].loc[i]
+        df['user_per_area'].loc[i] = df['satellite_coverage_area_km'].loc[i] / df['subscribers'].loc[i]
 
     filename = 'final_results.csv'
 
