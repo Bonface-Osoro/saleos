@@ -677,7 +677,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     y=subscribers_baseline, ymin=subscribers_low, ymax=subscribers_high),
     position = position_dodge(1),
     lwd = 0.2,
-    show.legend = FALSE, width=0.1, color = 'red') +
+    show.legend = FALSE, width=0.1,  color="#FF0000FF") +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   labs(
     colour = NULL,
@@ -853,7 +853,9 @@ df = individual_emissions %>%
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
-  summarize(value = signif(sum(`Climate Change WC - Global Warming Potential 100a`)))
+  summarize(value = signif(
+    sum(`Climate Change WC - Global Warming Potential 100a`))
+    )
 
 social_cost_worse <-
   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
