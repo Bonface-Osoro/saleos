@@ -670,7 +670,7 @@ df$Constellation = factor(
 )
 
 emission_subscriber <- ggplot(df, aes(x = Constellation,
-                          y = subscribers_baseline)) +
+                                      y = subscribers_baseline)) +
   geom_bar(stat = "identity",
            width = 0.9) +
   geom_errorbar(data=df, aes(
@@ -679,7 +679,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     lwd = 0.2,
     show.legend = FALSE, width=0.1,  color="#FF0000FF") +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-    labs(
+  labs(
     colour = NULL,
     title = "b",
     subtitle = " ",
@@ -707,6 +707,7 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
     axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 6),
     plot.title = element_text(size = 8, face = "bold"))
+
 
 ##############
 ##Panel plot##
@@ -852,7 +853,9 @@ df = individual_emissions %>%
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
-  summarize(value = signif(sum(`Climate Change WC - Global Warming Potential 100a`)))
+  summarize(value = signif(
+    sum(`Climate Change WC - Global Warming Potential 100a`))
+    )
 
 social_cost_worse <-
   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +

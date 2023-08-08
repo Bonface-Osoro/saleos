@@ -200,72 +200,12 @@ const_capacity <-
     plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
 
 
-#######################
-##capacity_subscriber##
-#######################
-
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data2 <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
-
-df = data2 %>%
-  group_by(constellation, subscriber_scenario) %>%
-  summarize(mean = mean(monthly_gb),
-            sd = sd(monthly_gb))
-
-df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
-df$subscriber_scenario = factor(
-  df$subscriber_scenario,
-  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
-  labels = c('Low', 'Baseline', 'High')
-)
-
-capacity_subscriber <-
-  ggplot(df, aes(x = Constellation, y = mean,
-                 fill = subscriber_scenario)) +
-  geom_bar(stat = "identity",
-           width = 0.98,
-           position = position_dodge()) +
-  geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
-    width = .2,
-    position = position_dodge(.98),
-    color = 'black',
-    size = 0.2
-  ) +
-  scale_fill_brewer(palette = "Dark2") +
-    labs(
-    colour = NULL,
-    title = " ",
-    subtitle = "d",
-    x = NULL,
-    y = "Mean Monthly Traffic\n(GB/User)",
-    fill = 'Adoption\nScenario'
-  ) +
-  scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
-    expand = c(0, 0),
-  ) + theme_minimal() +
-  theme(axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    legend.position = 'bottom', axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8, face = "bold"))
-
-
 ################################
 ##Mean capacity per subscriber##
 ################################
+
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+data2 <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -298,7 +238,7 @@ capacity_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "e",
+    subtitle = "d",
     x = NULL,
     y = "Mean Capacity\n(Mbps/User)",
     fill = 'Adoption\nScenario'
@@ -308,6 +248,67 @@ capacity_per_user <-
       format(y, scientific = FALSE),
     expand = c(0, 0),
     #limits = c(0, 35)
+  ) + theme_minimal() +
+  theme(axis.title.y = element_text(size = 6),
+        strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.text.y = element_text(size = 6),
+        axis.line.x  = element_line(size = 0.15),
+        axis.line.y  = element_line(size = 0.15),
+        legend.position = 'bottom', axis.title = element_text(size = 6),
+        legend.title = element_text(size = 6),
+        legend.text = element_text(size =6),
+        plot.subtitle = element_text(size = 8, face = "bold"),
+        plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
+
+
+#######################
+##capacity_subscriber##
+#######################
+
+df = data2 %>%
+  group_by(constellation, subscriber_scenario) %>%
+  summarize(mean = mean(monthly_gb),
+            sd = sd(monthly_gb))
+
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$Constellation = factor(df$constellation)
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
+
+capacity_subscriber <-
+  ggplot(df, aes(x = Constellation, y = mean,
+                 fill = subscriber_scenario)) +
+  geom_bar(stat = "identity",
+           width = 0.98,
+           position = position_dodge()) +
+  geom_errorbar(
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
+    width = .2,
+    position = position_dodge(.98),
+    color = 'black',
+    size = 0.2
+  ) +
+  scale_fill_brewer(palette = "Dark2") +
+    labs(
+    colour = NULL,
+    title = " ",
+    subtitle = "e",
+    x = NULL,
+    y = "Mean Monthly Traffic\n(GB/User)",
+    fill = 'Adoption\nScenario'
+  ) +
+  scale_y_continuous(
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0),
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
     strip.text.x = element_blank(),
@@ -321,8 +322,7 @@ capacity_per_user <-
     legend.position = 'bottom', axis.title = element_text(size = 6),
     legend.title = element_text(size = 6),
     legend.text = element_text(size =6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold", hjust = -0.45, vjust=2.12))
+    plot.subtitle = element_text(size = 8, face = "bold"))
 
 
 ##########################
@@ -394,8 +394,8 @@ pub_qos <- ggarrange(
 
 #Row 2, subplots d-f
 pub_subs <- ggarrange(
-  capacity_subscriber,
   capacity_per_user,
+  capacity_subscriber,
   per_user_area,
   ncol = 3,
   common.legend = T,

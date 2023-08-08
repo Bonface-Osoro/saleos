@@ -126,7 +126,7 @@ def calc_antenna_gain(c, d, f, n):
     lambda_wavelength = c / f
 
     #Calculate antenna_gain
-    antenna_gain = 10 * (math.log10(n * ((np.pi * d) / lambda_wavelength) ** 2))
+    antenna_gain = (math.log10((n * np.pi * d) / (lambda_wavelength ** 2))) * 10
 
     return antenna_gain
 
