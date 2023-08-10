@@ -104,7 +104,7 @@ parameters = {
 
 ###
 lut = [
-    ('MODCOD', 'Spectral efficiency', 'AWGN Linear Channel', 'Non-Linear Hard Limiter'),
+    #('MODCOD', 'Spectral efficiency', 'AWGN Linear Channel', 'Non-Linear Hard Limiter'),
     ('QPSK 2/9', 0.434841, -2.85, -2.45),
     ('QPSK 13/45', 0.567805, -2.03, -1.60),
     ('QPSK 9/20', 0.889135, 0.22, 0.69),

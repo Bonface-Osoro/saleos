@@ -30,6 +30,7 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
+
 def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq, altitude_km):
     """
     Calculate (a) the distance between the satellite
@@ -305,10 +306,18 @@ def calc_spectral_efficiency(cnr, lut):
         The number of bits per Hertz able to be transmitted.
 
     """
+    #get only APSK entries
+    lut = [
+        (modulation, se, awgn, cnr) for (modulation, se, awgn, cnr) in lut if not 'QPSK' in modulation
+        ]
+    
     for lower, upper in pairwise(lut):
 
-        lower_cnr, lower_se  = lower
-        upper_cnr, upper_se  = upper
+        lower_modulation, lower_se, lower_awgn, lower_cnr  = lower
+        upper_modulation, upper_se, upper_awgn, upper_cnr  = upper
+
+        lower_cnr = float(lower_cnr)
+        upper_cnr = float(upper_cnr)
 
         if cnr >= lower_cnr and cnr < upper_cnr:
 
@@ -318,13 +327,13 @@ def calc_spectral_efficiency(cnr, lut):
 
         highest_value = lut[-1]
 
-        if cnr >= highest_value[0]:
+        if cnr >= float(highest_value[3]):
             spectral_efficiency = highest_value[1]
             return spectral_efficiency
 
         lowest_value = lut[0]
 
-        if cnr < lowest_value[0]:
+        if cnr < float(lowest_value[3]):
 
             spectral_efficiency = lowest_value[1]
 

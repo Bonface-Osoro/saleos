@@ -15,6 +15,7 @@ import pandas as pd
 import saleos.emissions as sl
 import saleos.cost as ct
 import saleos.capacity as cy
+
 from inputs import lut
 from tqdm import tqdm
 pd.options.mode.chained_assignment = None 
@@ -30,7 +31,7 @@ def run_uq_processing_capacity():
     Run the UQ inputs through the saleos model. 
     
     """
-    path = os.path.join(BASE_PATH, 'uq_parameters_capacity.csv') 
+    path = os.path.join(BASE_PATH, 'processed', 'uq_parameters_capacity.csv') 
 
     if not os.path.exists(path):
 
@@ -343,11 +344,23 @@ if __name__ == '__main__':
     
     start = time.time() 
 
-    print('Working on run_uq_processing_capacity()')
+    print('Running on run_uq_processing_capacity()')
     run_uq_processing_capacity()
 
-    # print('Working on process_mission_total()')
-    # process_mission_total()
+    # print('Running on run_uq_processing_emissions()')
+    # run_uq_processing_emissions()
+
+    # print('Running on run_uq_processing_costs()')
+    # run_uq_processing_costs()
+
+    # print('Working on process_mission_capacity()')
+    # process_mission_capacity()
+
+    # print('Working on process_mission_emissions()')
+    # process_mission_emissions()
+
+    # print('Working on process_mission_costs()')
+    # process_mission_costs()
 
     executionTime = (time.time() - start)
 
