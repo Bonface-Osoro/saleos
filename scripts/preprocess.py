@@ -63,50 +63,52 @@ def uq_inputs_capacity():
 
                     earth_atmospheric_losses_dB = atm_loss
 
-                    for subscriber_scenario in subscriber_scenarios:
-                            
-                        if subscriber_scenario == 'low':
+                if atm_loss == 7:
 
-                            subscribers = item['subscribers'][0]
-                        elif subscriber_scenario == 'baseline':
+                    cnr_scenario = 'High(>13.5 dB)'
 
-                            subscribers = item['subscribers'][1]
-                        elif subscriber_scenario == 'high':
+                elif atm_loss == 10:
 
-                            subscribers = item['subscribers'][2]
+                    cnr_scenario = 'Baseline(7.6 - 10.5 dB)'
 
-                        number_of_satellites = item['number_of_satellites']
-                        name = item['name']
-                        total_area_earth_km_sq = item['total_area_earth_km_sq']
-                        dl_bandwidth_Hz = item['dl_bandwidth_Hz']
-                        speed_of_light = item['speed_of_light']
-                        antenna_diameter_m = item['antenna_diameter_m']
-                        antenna_efficiency = item['antenna_efficiency']
-                        power_dBw = item['power_dBw']
-                        all_other_losses_dB = item['all_other_losses_dB'] 
-                        number_of_channels = item['number_of_channels']
-                        polarization = item['polarization']
+                else:
 
-                        uq_parameters.append({
-                            'constellation': name, 
-                            'number_of_satellites': number_of_satellites,
-                            'total_area_earth_km_sq': total_area_earth_km_sq,
-                            'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
-                            'altitude_km': altitude_km,
-                            'dl_frequency_Hz': item['dl_frequency_Hz'],
-                            'dl_bandwidth_Hz': dl_bandwidth_Hz,
-                            'speed_of_light': speed_of_light,
-                            'antenna_diameter_m': antenna_diameter_m,
-                            'antenna_efficiency': antenna_efficiency,
-                            'power_dBw': power_dBw,
-                            'receiver_gain_dB': receiver_gain_dB,
-                            'earth_atmospheric_losses_dB': earth_atmospheric_losses_dB,
-                            'all_other_losses_dB': all_other_losses_dB,
-                            'number_of_channels': number_of_channels,
-                            'polarization': polarization,
-                            'subscriber_scenario': subscriber_scenario,
-                            'subscribers': subscribers,
-                        })
+                    cnr_scenario = 'Low (<7.5 dB)'
+                    
+                    number_of_satellites = item['number_of_satellites']
+                    name = item['name']
+                    total_area_earth_km_sq = item['total_area_earth_km_sq']
+                    dl_bandwidth_Hz = item['dl_bandwidth_Hz']
+                    speed_of_light = item['speed_of_light']
+                    antenna_diameter_m = item['antenna_diameter_m']
+                    antenna_efficiency = item['antenna_efficiency']
+                    power_dBw = item['power_dBw']
+                    all_other_losses_dB = item['all_other_losses_dB'] 
+                    number_of_channels = item['number_of_channels']
+                    polarization = item['polarization']
+
+                    uq_parameters.append({
+                        'constellation': name, 
+                        'number_of_satellites': number_of_satellites,
+                        'total_area_earth_km_sq': total_area_earth_km_sq,
+                        'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
+                        'altitude_km': altitude_km,
+                        'dl_frequency_Hz': item['dl_frequency_Hz'],
+                        'dl_bandwidth_Hz': dl_bandwidth_Hz,
+                        'speed_of_light': speed_of_light,
+                        'antenna_diameter_m': antenna_diameter_m,
+                        'antenna_efficiency': antenna_efficiency,
+                        'power_dBw': power_dBw,
+                        'receiver_gain_dB': receiver_gain_dB,
+                        'earth_atmospheric_losses_dB': earth_atmospheric_losses_dB,
+                        'all_other_losses_dB': all_other_losses_dB,
+                        'number_of_channels': number_of_channels,
+                        'polarization': polarization,
+                        'subscribers_low': item['subscribers'][0],
+                        'subscribers_baseline': item['subscribers'][1],
+                        'subscribers_high': item['subscribers'][2],
+                        'cnr_scenario': cnr_scenario
+                    })
 
     df = pd.DataFrame.from_dict(uq_parameters)
 
