@@ -9,7 +9,7 @@ library(ggtext)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 filename = 'life_cycle_data.xlsx'
-path = file.path(folder, '..', 'data', filename)
+path = file.path(folder, '..', 'data', 'raw', filename)
 individual_emissions <- read_excel(path, sheet = "Transpose")
 colnames(individual_emissions) <- as.character(unlist(individual_emissions[1,]))
 individual_emissions = individual_emissions[3:23,]
@@ -551,21 +551,19 @@ dev.off()
 ## Fuel and emissions plots
 ############################
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "final_results.csv"))
+data <- read.csv(file.path(folder, '..', 'results', "final_emissions_results.csv"))
 
 # Variables to Consider
 data <-
   select(
     data,
     constellation,
-    constellation_capacity,
     subscriber_scenario,
     impact_category,
     per_subscriber_emission,
     total_emissions,
     total_climate_emissions_kg,
-    total_climate_emissions_wc_kg,
-    monthly_gb,
+    total_climate_emissions_wc_kg
   )
 
 

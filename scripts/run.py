@@ -55,22 +55,22 @@ def run_uq_processing_capacity():
             item['altitude_km']
         )
 
-        path_loss = cy.calc_path_loss(distance, item['dl_frequency_Hz'])
+        path_loss = cy.calc_path_loss(distance, item['dl_frequency_hz'])
 
         losses = cy.calc_losses(
-            item['earth_atmospheric_losses_dB'], 
-            item['all_other_losses_dB']
+            item['earth_atmospheric_losses_db'], 
+            item['all_other_losses_db']
         )
 
         antenna_gain = cy.calc_antenna_gain(
             item['speed_of_light'],
             item['antenna_diameter_m'], 
-            item['dl_frequency_Hz'],
+            item['dl_frequency_hz'],
             item['antenna_efficiency']
         ) 
 
         eirp = cy.calc_eirpd(
-            item['power_dBw'], 
+            item['power_dbw'], 
             antenna_gain
         )
 
@@ -79,7 +79,7 @@ def run_uq_processing_capacity():
         received_power = cy.calc_received_power(
             eirp, 
             path_loss, 
-            item['receiver_gain_dB'], 
+            item['receiver_gain_db'], 
             losses
         )
 
@@ -95,7 +95,7 @@ def run_uq_processing_capacity():
 
         channel_capacity = cy.calc_capacity(
             spectral_efficiency, 
-            item['dl_bandwidth_Hz']
+            item['dl_bandwidth_hz']
         )
 
         constellation_capacity = (
@@ -108,7 +108,7 @@ def run_uq_processing_capacity():
         )
 
         sat_capacity = cy.single_satellite_capacity(
-            item['dl_bandwidth_Hz'],
+            item['dl_bandwidth_hz'],
             spectral_efficiency, 
             item['number_of_channels'], 
             item['polarization']
@@ -120,15 +120,15 @@ def run_uq_processing_capacity():
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
             'coverage_area_per_sat_sqkm': item['total_area_earth_km_sq']/item['number_of_satellites'],
             'altitude_km': item['altitude_km'],
-            'dl_frequency_hz': item['dl_frequency_Hz'],
-            'dl_bandwidth_hz': item['dl_bandwidth_Hz'],
+            'dl_frequency_hz': item['dl_frequency_hz'],
+            'dl_bandwidth_hz': item['dl_bandwidth_hz'],
             'speed_of_light': item['speed_of_light'],
             'antenna_diameter_m': item['antenna_diameter_m'],
             'antenna_efficiency': item['antenna_efficiency'],
-            'power_dbw': item['power_dBw'],
-            'receiver_gain_db': item['receiver_gain_dB'],
-            'earth_atmospheric_losses_db': item['earth_atmospheric_losses_dB'],
-            'all_other_losses_db': item['all_other_losses_dB'],
+            'power_dbw': item['power_dbw'],
+            'receiver_gain_db': item['receiver_gain_db'],
+            'earth_atmospheric_losses_db': item['earth_atmospheric_losses_db'],
+            'all_other_losses_db': item['all_other_losses_db'],
             'number_of_channels': item['number_of_channels'],
             'polarization': item['polarization'],
             'cnr_scenario' : item['cnr_scenario'],
@@ -303,9 +303,8 @@ def process_mission_cost():
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
-    df = pd.melt(df, id_vars = ['constellation', 'capex_costs', 
-                                'opex_costs', 'capex_scenario', 
-                                'total_cost_ownership'], 
+    df = pd.melt(df, id_vars = ['constellation', 'capex_costs', 'opex_scenario',
+                                'opex_costs', 'capex_scenario', 'total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 var_name = 'subscriber_scenario', 
@@ -441,8 +440,8 @@ if __name__ == '__main__':
     
     start = time.time() 
 
-    print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #print('Running on run_uq_processing_capacity()')
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()

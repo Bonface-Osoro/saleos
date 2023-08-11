@@ -12,15 +12,15 @@ parameters = {
         'name':'Starlink',
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
-        'dl_frequency_Hz': 13.5 * 10 **9 , #Downlink frequency in Hertz
-        'dl_bandwidth_Hz': 0.5 * 10 ** 9, #Downlink bandwidth in Hertz
+        'dl_frequency_hz': 13.5 * 10 **9 , #Downlink frequency in Hertz
+        'dl_bandwidth_hz': 0.5 * 10 ** 9, #Downlink bandwidth in Hertz
         'speed_of_light': 3.0 * 10 ** 8, #Speed of light in vacuum
         'antenna_diameter_m': 0.6, #Metres
         'antenna_efficiency': 0.6,
-        'power_dBw': 30, #dBw
+        'power_dbw': 30, #dBw
         'receiver_gain': 30,
         'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses_dB': 0.53, #All other losses
+        'all_other_losses_db': 0.53, #All other losses
         'number_of_channels': 8, #Number of channels per satellite
         'polarization': 2,
         'subscribers': [2500000, 3500000, 4500000],
@@ -41,18 +41,18 @@ parameters = {
     'oneweb': {
         'number_of_satellites': 720,
         'name': 'OneWeb',
-        'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
-        'altitude_km': 1195, #Altitude of starlink satellites in km
-        'dl_frequency_Hz': 13.5 * 10 ** 9, #Downlink frequency in Hertz
-        'dl_bandwidth_Hz': 0.25 * 10 ** 9,
-        'speed_of_light': 3.0 * 10 ** 8, #Speed of light in vacuum
-        'antenna_diameter_m': 0.65, #Metres
+        'total_area_earth_km_sq': 510000000, 
+        'altitude_km': 1195, 
+        'dl_frequency_hz': 13.5 * 10 ** 9, 
+        'dl_bandwidth_hz': 0.25 * 10 ** 9,
+        'speed_of_light': 3.0 * 10 ** 8, 
+        'antenna_diameter_m': 0.65, 
         'antenna_efficiency': 0.6,
-        'power_dBw': 30, #dBw
+        'power_dbw': 30, 
         'receiver_gain': 30,
-        'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses_dB': 0.53, #All other losses
-        'number_of_channels': 8, #Number of channels per satellite
+        'earth_atmospheric_losses': 10, 
+        'all_other_losses_db': 0.53, 
+        'number_of_channels': 8, 
         'polarization': 2,
         'subscribers': [500000, 800000, 1000000],
         'satellite_manufacturing': 400000,
@@ -72,18 +72,18 @@ parameters = {
     'kuiper': {
         'number_of_satellites': 3236,
         'name': 'Kuiper',
-        'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
-        'altitude_km': 605, #Altitude of starlink satellites in km
-        'dl_frequency_Hz': 17.7 * 10 ** 9, #Downlink frequency in Hertz
-        'dl_bandwidth_Hz': 0.25 * 10 ** 9,
-        'speed_of_light': 3.0 * 10 ** 8, #Speed of light in vacuum
-        'antenna_diameter_m': 0.9, #Metres
+        'total_area_earth_km_sq': 510000000, 
+        'altitude_km': 605, 
+        'dl_frequency_hz': 17.7 * 10 ** 9, 
+        'dl_bandwidth_hz': 0.25 * 10 ** 9,
+        'speed_of_light': 3.0 * 10 ** 8, 
+        'antenna_diameter_m': 0.9, 
         'antenna_efficiency': 0.6,
-        'power_dBw': 30, #dBw
+        'power_dbw': 30, 
         'receiver_gain': 31,
-        'earth_atmospheric_losses': 10, #Rain Attenuation
-        'all_other_losses_dB': 0.53, #All other losses
-        'number_of_channels': 8, #Number of channels per satellite
+        'earth_atmospheric_losses': 10, 
+        'all_other_losses_db': 0.53,
+        'number_of_channels': 8, 
         'polarization': 2,
         'subscribers': [1500000, 2500000, 3500000],
         'satellite_manufacturing': 400000,
@@ -102,7 +102,7 @@ parameters = {
     },
 }
 
-###
+### MODCOD, Spectral efficiency, AWGN Linear Channel, Non-Linear Hard LimiterChannel ###
 lut = [
     ('QPSK 2/9', 0.434841, -2.85, -2.45),
     ('QPSK 13/45', 0.567805, -2.03, -1.60),

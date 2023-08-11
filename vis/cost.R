@@ -7,7 +7,7 @@ library(tidyverse)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
-data <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
+data <- read.csv(file.path(folder, '..', 'results', 'final_cost_results.csv'))
 
 # INDIVIDUAL PLOTS WITH ERROR BARS #
 data <- select(
@@ -18,7 +18,7 @@ data <- select(
   capex_costs,
   capex_scenario,
   capex_per_user,
-  total_opex,
+  opex_costs,
   opex_scenario,
   opex_per_user,
 )
@@ -88,8 +88,8 @@ constellation_capex <-
 
 df = data %>%
   group_by(constellation, opex_scenario) %>%
-  summarize(mean = mean(total_opex),
-            sd = sd(total_opex))
+  summarize(mean = mean(opex_costs),
+            sd = sd(opex_costs))
 
 df$opex_scenario = as.factor(df$opex_scenario)
 df$Constellation = factor(df$constellation)

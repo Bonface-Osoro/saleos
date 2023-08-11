@@ -9,7 +9,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
+data <- read.csv(file.path(folder, '..', 'data', 'processed', 'interim_results_capacity.csv'))
 
 #########################
 ##Channel capacity with##
@@ -17,8 +17,8 @@ data <- read.csv(file.path(folder, '..', 'results', "interim_results.csv"))
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
-  summarize(mean = mean(channel_capacity),
-            sd = sd(channel_capacity))
+  summarize(mean = mean(channel_capacity_mbps),
+            sd = sd(channel_capacity_mbps))
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
 df$Constellation = factor(df$constellation)
@@ -77,8 +77,8 @@ chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
   summarise(
-    mean = mean(capacity_per_single_satellite),
-    sd = sd(capacity_per_single_satellite)
+    mean = mean(capacity_per_single_satellite_mbps),
+    sd = sd(capacity_per_single_satellite_mbps)
   ) %>%
   ungroup()
 
@@ -141,8 +141,8 @@ sat_capacity <-
 
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
-  summarise(mean = mean(constellation_capacity * 0.65),
-            sd = sd(constellation_capacity * 0.65)) %>%
+  summarise(mean = mean(constellation_capacity_mbps * 0.65),
+            sd = sd(constellation_capacity_mbps * 0.65)) %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
@@ -205,7 +205,7 @@ const_capacity <-
 ################################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data2 <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
+data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%

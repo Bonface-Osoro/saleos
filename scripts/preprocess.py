@@ -45,45 +45,39 @@ def uq_inputs_capacity():
                          (item['receiver_gain']), 
                          (item['receiver_gain'] + 5)]
 
-        subscriber_scenarios = [
-            'low',
-            'baseline',
-            'high'
-        ]
-
         for alt in altitude:
 
             altitude_km = alt
 
             for rec_gain in receiver_gain:
 
-                receiver_gain_dB = rec_gain
+                receiver_gain_db = rec_gain
 
                 for atm_loss in atmospheric_loss:
 
-                    earth_atmospheric_losses_dB = atm_loss
+                    earth_atmospheric_losses_db = atm_loss
 
-                if atm_loss == 7:
+                    if atm_loss == 7:
 
-                    cnr_scenario = 'High(>13.5 dB)'
+                        cnr_scenario = 'High(>13.5 dB)'
 
-                elif atm_loss == 10:
+                    elif atm_loss == 10:
 
-                    cnr_scenario = 'Baseline(7.6 - 10.5 dB)'
+                        cnr_scenario = 'Baseline(7.6 - 10.5 dB)'
 
-                else:
+                    else:
 
-                    cnr_scenario = 'Low (<7.5 dB)'
+                        cnr_scenario = 'Low (<7.5 dB)'
                     
                     number_of_satellites = item['number_of_satellites']
                     name = item['name']
                     total_area_earth_km_sq = item['total_area_earth_km_sq']
-                    dl_bandwidth_Hz = item['dl_bandwidth_Hz']
+                    dl_bandwidth_hz = item['dl_bandwidth_hz']
                     speed_of_light = item['speed_of_light']
                     antenna_diameter_m = item['antenna_diameter_m']
                     antenna_efficiency = item['antenna_efficiency']
-                    power_dBw = item['power_dBw']
-                    all_other_losses_dB = item['all_other_losses_dB'] 
+                    power_dbw = item['power_dbw']
+                    all_other_losses_db = item['all_other_losses_db'] 
                     number_of_channels = item['number_of_channels']
                     polarization = item['polarization']
 
@@ -93,15 +87,15 @@ def uq_inputs_capacity():
                         'total_area_earth_km_sq': total_area_earth_km_sq,
                         'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
                         'altitude_km': altitude_km,
-                        'dl_frequency_Hz': item['dl_frequency_Hz'],
-                        'dl_bandwidth_Hz': dl_bandwidth_Hz,
+                        'dl_frequency_hz': item['dl_frequency_hz'],
+                        'dl_bandwidth_hz': dl_bandwidth_hz,
                         'speed_of_light': speed_of_light,
                         'antenna_diameter_m': antenna_diameter_m,
                         'antenna_efficiency': antenna_efficiency,
-                        'power_dBw': power_dBw,
-                        'receiver_gain_dB': receiver_gain_dB,
-                        'earth_atmospheric_losses_dB': earth_atmospheric_losses_dB,
-                        'all_other_losses_dB': all_other_losses_dB,
+                        'power_dbw': power_dbw,
+                        'receiver_gain_db': receiver_gain_db,
+                        'earth_atmospheric_losses_db': earth_atmospheric_losses_db,
+                        'all_other_losses_db': all_other_losses_db,
                         'number_of_channels': number_of_channels,
                         'polarization': polarization,
                         'subscribers_low': item['subscribers'][0],
