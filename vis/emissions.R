@@ -583,12 +583,12 @@ fuel <- c("Kerosene",
           "Cryogenic",
           "Hypergolic")
 
-amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 10000*54, 480000*54, 184900*54)
+amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 480000*54, 184900*54, 10000*54)
 fuels_df <- data.frame(rockets, fuel, amount)
 
-############################
-## Fuel quantities
-############################
+#####################
+## Fuel quantities ##
+#####################
 
 totals <- fuels_df %>%
   group_by(rockets) %>%
