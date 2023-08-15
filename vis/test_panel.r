@@ -14,32 +14,7 @@ color_palette = 'Paired'
 ############################
 ## Fuel and emissions plots
 ############################
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "final_results.csv"))
 
-# Variables to Consider
-data <-
-  select(
-    data,
-    constellation,
-    constellation_capacity,
-    subscriber_scenario,
-    impact_category,
-    per_subscriber_emission,
-    total_emissions,
-    total_climate_emissions_kg,
-    total_climate_emissions_wc_kg,
-    monthly_gb,
-  )
-
-
-fuel <- c("Kerosene",
-          "Kerosene",
-          "Hypergolic",
-          "Kerosene",
-          "Solid",
-          "Cryogenic",
-          "Hypergolic")
 rockets <-
   c(
     "Starlink \n(Falcon-9)",
@@ -49,6 +24,14 @@ rockets <-
     "Kuiper \n(Ariane-5)",
     "Kuiper \n(Ariane-5)",
     "Kuiper \n(Ariane-5)")
+
+fuel <- c("Kerosene",
+          "Kerosene",
+          "Hypergolic",
+          "Kerosene",
+          "Solid",
+          "Cryogenic",
+          "Hypergolic")
 
 amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 10000*54, 480000*54, 184900*54)
 
@@ -116,6 +99,10 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
 ## Emissions / subscriber##
 ###########################
 
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_emissions_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
+
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(
@@ -182,7 +169,8 @@ emission_subscriber <- ggplot(df, aes(x = Constellation,
 #######################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
+filename = "final_capacity_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -324,24 +312,23 @@ capacity_subscriber <-
 ##Cost Panel##
 ##############
 
-# Set default folder
+# Load data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_cost_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
-#Load the data
-data <- read.csv(file.path(folder, '..', 'Results', "final_results.csv"))
-
-data <- select(
-  data,
-  constellation,
-  total_cost_ownership,
-  tco_per_user,
-  capex_costs,
-  capex_scenario,
-  capex_per_user,
-  total_opex,
-  opex_scenario,
-  opex_per_user,
-)
+# data <- select(
+#   data,
+#   constellation,
+#   total_cost_ownership,
+#   tco_per_user,
+#   capex_costs,
+#   capex_scenario,
+#   capex_per_user,
+#   total_opex,
+#   opex_scenario,
+#   opex_per_user,
+# )
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -485,13 +472,13 @@ constellation_tco_per_user <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 filename = 'life_cycle_data.xlsx'
-path = file.path(folder, '..', 'data', filename)
+path = file.path(folder, '..', 'data', 'raw', filename)
 individual_emissions <- read_excel(path, sheet = "Transpose")
 colnames(individual_emissions) <- as.character(unlist(individual_emissions[1,]))
 individual_emissions = individual_emissions[3:23,]
 
 colnames(individual_emissions)[colnames(individual_emissions) == "Impact category"] = "category"
-str(individual_emissions)
+# str(individual_emissions)
 individual_emissions$category = gsub('Ariane 5 ' , '', individual_emissions$category)
 individual_emissions$category = gsub('of Ariane 5' , '', individual_emissions$category)
 individual_emissions$category = gsub('Falcon 9 ', '', individual_emissions$category)

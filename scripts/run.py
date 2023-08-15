@@ -440,8 +440,8 @@ if __name__ == '__main__':
     
     start = time.time() 
 
-    #print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    print('Running on run_uq_processing_capacity()')
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
