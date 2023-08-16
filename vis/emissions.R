@@ -9,7 +9,7 @@ library(ggtext)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 filename = 'life_cycle_data.xlsx'
-path = file.path(folder, '..', 'data', filename)
+path = file.path(folder, '..', 'data', 'raw', filename)
 individual_emissions <- read_excel(path, sheet = "Transpose")
 colnames(individual_emissions) <- as.character(unlist(individual_emissions[1,]))
 individual_emissions = individual_emissions[3:23,]
@@ -551,23 +551,29 @@ dev.off()
 ## Fuel and emissions plots
 ############################
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "final_results.csv"))
+data <- read.csv(file.path(folder, '..', 'results', "final_emissions_results.csv"))
 
 # Variables to Consider
 data <-
   select(
     data,
     constellation,
-    constellation_capacity,
     subscriber_scenario,
     impact_category,
     per_subscriber_emission,
     total_emissions,
     total_climate_emissions_kg,
-    total_climate_emissions_wc_kg,
-    monthly_gb,
+    total_climate_emissions_wc_kg
   )
 
+rockets <- c(
+    "Starlink \n(Falcon-9)",
+    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
+    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
+    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
+    "Kuiper \n(Ariane-5)",
+    "Kuiper \n(Ariane-5)",
+    "Kuiper \n(Ariane-5)")
 
 fuel <- c("Kerosene",
           "Kerosene",
@@ -576,21 +582,13 @@ fuel <- c("Kerosene",
           "Solid",
           "Cryogenic",
           "Hypergolic")
-rockets <-
-  c(
-    "Starlink \n(Falcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "Kuiper \n(Ariane-5)",
-    "Kuiper \n(Ariane-5)",
-    "Kuiper \n(Ariane-5)")
-amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 10000*54, 480000*54, 184900*54)
+
+amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 480000*54, 184900*54, 10000*54)
 fuels_df <- data.frame(rockets, fuel, amount)
 
-############################
-## Fuel quantities
-############################
+#####################
+## Fuel quantities ##
+#####################
 
 totals <- fuels_df %>%
   group_by(rockets) %>%
