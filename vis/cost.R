@@ -390,7 +390,7 @@ cost_per_user <- ggarrange(
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'cost_per_user.png')
+path = file.path(folder, 'figures', 'h_cost_metrics.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,

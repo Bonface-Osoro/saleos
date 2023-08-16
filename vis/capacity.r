@@ -415,7 +415,7 @@ pub_cap <- ggarrange(
 
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 
-path = file.path(folder, 'figures', 'capacity_profile.png')
+path = file.path(folder, 'figures', 'g_capacity_metrics.png')
 png(
   path,
   units = "in",

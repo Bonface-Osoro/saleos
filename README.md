@@ -28,11 +28,20 @@ Citation
 ---------
 Osoro, B., & Oughton, E. (2022). Universal Broadband Assessment of Low Earth Orbit Satellite Constellations: Evaluating Capacity, Coverage, Cost, and Environmental Emissions. Coverage, Cost, and Environmental Emissions (August 2, 2022) [https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4178732].
 
+## Sustainability metrics
+
+The `saleos` codebase is capable of estimating a range of sustainability metrics. Figure 3 illustrates a selection of these including the estimated emissions per subscriber (plot b), potential mean monthly traffic per subscriber (plot d), and the financial cost per subscriber (plot f).
+
+#### Figure 3 Aggregate sustainability metrics for Kuiper, OneWeb and Starlink
+<p align = 'center'>
+  <img src= '/vis/figures/readme/c_aggregate_metrics.png' />
+</p>
+
 ## Method
 
-The method is based on (i) a stochastic engineering simulation model estimating constellation capacity using the Friss Transmission Equation, (ii) a Life Cycle Assessment (LCA) model of environmental emissions and other impacts, and (iii) a techno-economic model of the associated financial costs. `Figure 3` illustrates the approach.
+The method is based on (i) a stochastic engineering simulation model estimating constellation capacity using the Friss Transmission Equation, (ii) a Life Cycle Assessment (LCA) model of environmental emissions and other impacts, and (iii) a techno-economic model of the associated financial costs. `Figure 4` illustrates the approach.
 
-#### Figure 3 Integrated assessment method
+#### Figure 4 Integrated assessment method
 <p align = 'center'>
   <img src= '/vis/figures/readme/model.png' />
 </p>

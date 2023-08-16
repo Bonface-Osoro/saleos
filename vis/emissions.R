@@ -264,7 +264,7 @@ ozone_depletion_wc <-
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, max_y/1e6+1),
+    limits = c(0, max_y/1e6+1.5),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -535,7 +535,7 @@ pub_emission <- ggarrange(
   ncol = 4
 )
 
-path = file.path(visualizations, 'figures', 'lca_metrics_panel.png')
+path = file.path(visualizations, 'figures', 'd_lca_metrics_panel.png')
 dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 png(
   path,
@@ -547,118 +547,55 @@ png(
 print(pub_emission)
 dev.off()
 
-############################
-## Fuel and emissions plots
-############################
+######################
+##Social cost legend##
+######################
+
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data <- read.csv(file.path(folder, '..', 'results', "final_emissions_results.csv"))
+visualizations = file.path(folder, '..', 'vis')
+filename = 'life_cycle_data.xlsx'
+path = file.path(folder, '..', 'data', 'raw', filename)
+individual_emissions <- read_excel(path, sheet = "Transpose")
+colnames(individual_emissions) <- as.character(unlist(individual_emissions[1,]))
+individual_emissions = individual_emissions[3:23,]
 
-# Variables to Consider
-data <-
-  select(
-    data,
-    constellation,
-    subscriber_scenario,
-    impact_category,
-    per_subscriber_emission,
-    total_emissions,
-    total_climate_emissions_kg,
-    total_climate_emissions_wc_kg
+colnames(individual_emissions)[colnames(individual_emissions) == "Impact category"] = "category"
+# str(individual_emissions)
+individual_emissions$category = gsub('Ariane 5 ' , '', individual_emissions$category)
+individual_emissions$category = gsub('of Ariane 5' , '', individual_emissions$category)
+individual_emissions$category = gsub('Falcon 9 ', '', individual_emissions$category)
+individual_emissions$category = gsub(' of by truck' , '', individual_emissions$category)
+individual_emissions$category = gsub('Soyuz-FG ', '', individual_emissions$category)
+individual_emissions$category = gsub(' of by train' , '', individual_emissions$category)
+individual_emissions$category = gsub('Transportation ' , 'Transportation', individual_emissions$category)
+
+individual_emissions$category = factor(
+  individual_emissions$category,
+  levels =c(
+    "Production",
+    "Propellant Production",
+    "Launch Campaign",
+    "Transportation",
+    "AIT",
+    "SCHD of Propellant",
+    "Launches"
+  ),
+  labels = c(
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
+    "Launcher AIT",
+    "SCHD of Propellant",
+    "Launch Event"
   )
+)
 
-rockets <- c(
-    "Starlink \n(Falcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "OneWeb \n(Soyuz-FG & \nFalcon-9)",
-    "Kuiper \n(Ariane-5)",
-    "Kuiper \n(Ariane-5)",
-    "Kuiper \n(Ariane-5)")
+individual_emissions <- individual_emissions %>%
+  mutate_at(c(3:9), as.numeric)
 
-fuel <- c("Kerosene",
-          "Kerosene",
-          "Hypergolic",
-          "Kerosene",
-          "Solid",
-          "Cryogenic",
-          "Hypergolic")
-
-amount <- c(500000*74, 218150*11, 7360*11, 500000*7, 480000*54, 184900*54, 10000*54)
-fuels_df <- data.frame(rockets, fuel, amount)
-
-#####################
-## Fuel quantities ##
-#####################
-
-totals <- fuels_df %>%
-  group_by(rockets) %>%
-  summarize(value = signif(sum(amount / 1e6), 2))
-
-fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
-  geom_bar(stat = "identity", aes(fill = fuel)) +
-  geom_text(
-    aes(
-      x = rockets,
-      y = value,
-      label = round(after_stat(y), 2)
-    ),
-    size = 1.5,
-    data = totals,
-    vjust = -1.8,
-    hjust = 0.5,
-    position = position_stack()
-  ) +
-  scale_fill_brewer(palette = "Dark2") + labs(
-    colour = NULL,
-    title = "a",
-    subtitle = " ",
-    x = NULL,
-    y = "Fuel Quantity (Mt)",
-    fill = "Fuel"
-  ) +
-  scale_y_continuous(
-    labels = function(y)
-      format(y,
-             scientific = FALSE),
-    expand = c(0, 0),
-    limits = c(0, 50)
-  ) +
-  theme_minimal() + theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    legend.direction = "horizontal",
-    legend.position = c(0.5, 0.9),
-    axis.title = element_text(size = 4),
-    legend.title = element_text(size = 4),
-    legend.text = element_text(size = 4),
-    plot.subtitle = element_text(size = 6),
-    plot.title = element_text(size = 8, face = "bold")) +
-  guides(fill = guide_legend(ncol = 4, nrow = 1))
-
-
-
-###########################
-## Emissions / subscriber##
-###########################
-df = data %>%
-  group_by(constellation, subscriber_scenario) %>%
-  summarize(
-    #this isn't a mean/shouldn't be a mean
-    value = mean(per_subscriber_emission / 1e3)
-  )
-
-df = df %>% 
-  spread(subscriber_scenario, value)
-
-df$Constellation = factor(
-  df$constellation,
+individual_emissions$Constellation = factor(
+  individual_emissions$Constellation,
   levels = c('Kuiper', 'OneWeb', 'Starlink'),
   labels = c(
     'Kuiper \n(Ariane-5)',
@@ -667,71 +604,6 @@ df$Constellation = factor(
   )
 )
 
-emission_subscriber <- ggplot(df, aes(x = Constellation,
-                                      y = subscribers_baseline)) +
-  geom_bar(stat = "identity",
-           width = 0.9) +
-  geom_errorbar(data=df, aes(
-    y=subscribers_baseline, ymin=subscribers_low, ymax=subscribers_high),
-    position = position_dodge(1),
-    lwd = 0.2,
-    show.legend = FALSE, width=0.1,  color="#FF0000FF") +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-  labs(
-    colour = NULL,
-    title = "b",
-    subtitle = " ",
-    x = NULL,
-    y = bquote("Emissions / Subscriber (t CO"["2"]~"eq)"),
-    fill = 'Scenario'
-  ) + scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
-    expand = c(0, 0)
-  ) + theme_minimal() +
-  theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
-    legend.position = c(0.8, 0.85),
-    axis.title = element_text(size = 4),
-    legend.title = element_text(size = 4),
-    legend.text = element_text(size = 4),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    plot.subtitle = element_text(size = 6),
-    plot.title = element_text(size = 8, face = "bold"))
-
-
-##############
-##Panel plot##
-##############
-
-pub_emission <-
-  ggarrange(fuel_types,
-            emission_subscriber,
-            nrow = 1,
-            ncol = 2)
-
-path = file.path(visualizations, 'figures', 'fuel_and_emissions_panel.png')
-dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
-png(
-  path,
-  units = "in",
-  width = 6.5,
-  height = 3.5,
-  res = 480
-)
-print(pub_emission)
-dev.off()
-
-######################
-##Social cost legend##
-######################
 df = individual_emissions %>%
   group_by(Constellation, category) %>%
   summarize(toxicity = `Toxicity - Human Toxicity`)
@@ -808,15 +680,15 @@ social_carbon_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-    labs(
+  labs(
     colour = NULL,
-    title = "a",
-    subtitle = " ",
+    # title = "a",
+    subtitle = "a",
     x = NULL,
     fill = "Satellite Mission Stage"
   ) +
-    ylab("Social Cost (Baseline)<br>(US$ Millions/t CO<sub>2</sub>eq)") +
-    scale_y_continuous(
+  ylab("Social Cost of Carbon (Baseline)<br>(US$ Millions)") + # given t CO<sub>2</sub>eq
+  scale_y_continuous(
     limits = c(0, 370),
     labels = function(y)
       format(y, scientific = FALSE),
@@ -835,9 +707,9 @@ social_carbon_baseline <-
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    plot.subtitle = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
 
@@ -851,11 +723,9 @@ df = individual_emissions %>%
 
 totals <- individual_emissions %>%
   group_by(`Constellation`) %>%
-  summarize(value = signif(
-    sum(`Climate Change WC - Global Warming Potential 100a`))
-    )
+  summarize(value = signif(sum(`Climate Change WC - Global Warming Potential 100a`)))
 
-social_cost_worse <-
+social_cost_worst_case <-
   ggplot(df, aes(x = Constellation, y = ((mean / 1e3) * 185) / 1e6)) +
   geom_bar(stat = "identity", aes(fill = category)) +
   geom_text(
@@ -870,14 +740,14 @@ social_cost_worse <-
     hjust = 0.5,
     position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-    labs(
+  labs(
     colour = NULL,
-    title = "b",
-    subtitle = " ",
+    # title = "b",
+    subtitle = "b",
     x = NULL,
     fill = "Satellite Mission Stage"
   ) +
-  ylab("Social Cost (Worst Case)<br>(US$ Millions/t CO<sub>2</sub>eq)") +
+  ylab("Social Cost of Carbon (Worst Case)<br>(US$ Millions)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
     limits = c(0, 1500),
     labels = function(y)
@@ -897,29 +767,29 @@ social_cost_worse <-
     axis.title.y = element_markdown(),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    plot.subtitle = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
+    plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
 
-pub_carbon <-
+social_cost_of_carbon_panel <-
   ggarrange(
     social_carbon_baseline,
-    social_cost_worse,
+    social_cost_worst_case,
     legends,
     nrow = 1,
     ncol = 3
   )
 
-path = file.path(visualizations, 'figures', 'social_carbon.png')
+path = file.path(visualizations, 'figures', 'e_social_carbon.png')
 dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 tiff(
   path,
   units = "in",
-  width = 7,
-  height = 2.5,
+  width = 8,
+  height = 2.65,
   res = 480
 )
-print(pub_carbon)
+print(social_cost_of_carbon_panel)
 dev.off()
