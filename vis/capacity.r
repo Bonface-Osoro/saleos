@@ -180,7 +180,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 60)
+    limits = c(0, 20)
   ) +
   theme_minimal() + 
   theme(axis.title.y = element_text(size = 6),

@@ -108,13 +108,23 @@ data = data[(data$impact_category == 'total_global_warming_em'),]
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(
-    #this isn't a mean/shouldn't be a mean
     value = (total_climate_emissions_kg / subscribers)/1e3,
     value_wc = (total_climate_emissions_wc_kg / subscribers)/1e3,
+    # value_sd = sd((total_climate_emissions_kg / subscribers)/1e3),
+    # value_wc_sd = sd((total_climate_emissions_wc_kg / subscribers)/1e3),
   )
 
 df = df %>%
   pivot_longer(!c(constellation, subscriber_scenario), names_to = "value_type", values_to = "emissions_subscriber")
+
+sd_values = df %>%
+  group_by(constellation, value_type) %>%
+  summarize(
+    # value = (total_climate_emissions_kg / subscribers)/1e3,
+    # value_wc = (total_climate_emissions_wc_kg / subscribers)/1e3,
+    emissions_subscriber_sd = sd(emissions_subscriber),
+    # emissions_subscriber_wc_sd = sd(emissions_subscriber),
+  )
 
 df = df %>%
   spread(subscriber_scenario, emissions_subscriber)
@@ -132,7 +142,7 @@ df$constellation = factor(
 df$value_type = factor(
   df$value_type,
   levels = c('value', 'value_wc'),
-  labels = c('Baseline', 'Worst Case')
+  labels = c('Baseline', 'Worst-case')
 )
 
 emission_subscriber <- 

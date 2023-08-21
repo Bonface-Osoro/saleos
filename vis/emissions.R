@@ -88,7 +88,7 @@ climate_change <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -146,7 +146,7 @@ climate_change_wc <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -207,7 +207,7 @@ ozone_depletion <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -268,7 +268,7 @@ ozone_depletion_wc <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -327,7 +327,7 @@ resource_depletion <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -379,14 +379,14 @@ freshwater_ecotixicity <-
     title = "f",
     subtitle = " ",
     x = NULL,
-    y = bquote('Water Amount (PAF.M3.DAY' *  ~ 10 ^ 8 * ')'),
+    y = bquote('Water Amount (PAF.M3.Day' *  ~ 10 ^ 8 * ')'), #"["2"]~"
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
     limits = c(0, 105),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
@@ -444,7 +444,7 @@ human_toxicity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
-  ) +
+  ) + scale_x_discrete(limits=rev) +
   theme(
     legend.position = "none",
     axis.title = element_text(size = 6),
