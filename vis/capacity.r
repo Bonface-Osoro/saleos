@@ -180,7 +180,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 60)
+    limits = c(0, 20)
   ) +
   theme_minimal() + 
   theme(axis.title.y = element_text(size = 6),
@@ -415,7 +415,7 @@ pub_cap <- ggarrange(
 
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 
-path = file.path(folder, 'figures', 'capacity_profile.png')
+path = file.path(folder, 'figures', 'g_capacity_metrics.png')
 png(
   path,
   units = "in",
