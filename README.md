@@ -8,7 +8,7 @@ While LEO mega-constellations are fronted as an alternative to terrestrial broad
 
 `Figure 1` illustrates the configuration of three of the main LEO satellite constellations, including Amazon's Kuiper, OneWeb and SpaceX's Starlink. 
 
-#### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink (Deatils as of 29th August 2023).
+#### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink (Details as of 29th August 2023).
 <p align="center">
   <img src="/vis/figures/readme/fig_1.jpg" />
 </p>
