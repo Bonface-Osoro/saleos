@@ -15,7 +15,7 @@ While LEO mega-constellations are fronted as an alternative to terrestrial broad
 
 Emissions produced during the launching of satellites depend on the utilized rocket vehicle. 
 
-Most operators planning or launching LEO broadband satellites have used (or intend to use) SpaceX’s Falcon-9 or Falcon-Heavy, the European Space Agency’s Ariane-5, or prior to Spring 2022, Russia’s Soyuz-FG rocket, as detailed in `Figure 2`. 
+Most operators planning or launching LEO broadband satellites have used (or intend to use) SpaceX’s Falcon-9 or Falcon-Heavy, the European Space Agency’s Ariane rocket system, or prior to Spring 2022, Russia’s Soyuz-FG rocket, as detailed in `Figure 2`. 
 
 #### Figure 2 Technical details of launch rocket systems.
 <p align="center">
@@ -26,20 +26,20 @@ The `saleos` codebase provides an open-source integrated assessment model capabl
 
 Citation
 ---------
-Osoro, B., & Oughton, E. (2022). Universal Broadband Assessment of Low Earth Orbit Satellite Constellations: Evaluating Capacity, Coverage, Cost, and Environmental Emissions. Coverage, Cost, and Environmental Emissions (August 2, 2022) [https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4178732].
+Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. arXiv preprint arXiv:2309.02338.
 
 ## Sustainability metrics
 
-The `saleos` codebase is capable of estimating a range of sustainability metrics. Figure 3 illustrates a selection of these including the estimated emissions per subscriber (plot b), potential mean monthly traffic per subscriber (plot d), and the financial cost per subscriber (plot f).
+The `saleos` codebase is capable of estimating a range of sustainability metrics. Figure 3 illustrates a selection of these including the estimated emissions per subscriber (subplot b), potential mean monthly traffic per subscriber (subplot d), and the financial cost per subscriber (subplot f).
 
-#### Figure 3 Aggregate sustainability metrics for Kuiper, OneWeb and Starlink
+#### Figure 3 Aggregate sustainability metrics for Kuiper, OneWeb and Starlink.
 <p align = 'center'>
   <img src= '/vis/figures/readme/c_aggregate_metrics.png' />
 </p>
 
 ## Method
 
-The method is based on (i) a stochastic engineering simulation model estimating constellation capacity using the Friss Transmission Equation, (ii) a Life Cycle Assessment (LCA) model of environmental emissions and other impacts, and (iii) a techno-economic model of the associated financial costs. `Figure 4` illustrates the approach.
+The method is based on (i) a Life Cycle Assessment (LCA) model of environmental emissions and other impacts,(ii) a stochastic engineering simulation model estimating constellation capacity using the Friss Transmission Equation, (iii) demand based on different adoption scenarios, and (iv) a techno-economic model of the associated financial costs. `Figure 4` illustrates the approach.
 
 #### Figure 4 Integrated assessment method
 <p align = 'center'>
