@@ -41,7 +41,7 @@ The `saleos` codebase is capable of estimating a range of sustainability metrics
 
 The method is based on (i) a Life Cycle Assessment (LCA) model of environmental emissions and other impacts,(ii) a stochastic engineering simulation model estimating constellation capacity using the Friss Transmission Equation, (iii) demand based on different adoption scenarios, and (iv) a techno-economic model of the associated financial costs. `Figure 4` illustrates the approach.
 
-#### Figure 4 Integrated assessment method
+#### Figure 4 Integrated assessment method.
 <p align = 'center'>
   <img src= '/vis/figures/readme/model.png' />
 </p>
