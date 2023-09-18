@@ -64,7 +64,7 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
     title = "",
     subtitle = "a",
     x = NULL,
-    y = "Fuel Quantity\n(Mt)",
+    y = "Fuel Quantity\n(kt)",
     fill = "Fuel"
   ) +
   scale_y_continuous(
