@@ -71,6 +71,7 @@ def uq_inputs_capacity():
                     
                     number_of_satellites = item['number_of_satellites']
                     name = item['name']
+                    elevation_angle = item['elevation_angle']
                     total_area_earth_km_sq = item['total_area_earth_km_sq']
                     dl_bandwidth_hz = item['dl_bandwidth_hz']
                     speed_of_light = item['speed_of_light']
@@ -87,6 +88,7 @@ def uq_inputs_capacity():
                         'total_area_earth_km_sq': total_area_earth_km_sq,
                         'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
                         'altitude_km': altitude_km,
+                        'elevation_angle': elevation_angle,
                         'dl_frequency_hz': item['dl_frequency_hz'],
                         'dl_bandwidth_hz': dl_bandwidth_hz,
                         'speed_of_light': speed_of_light,
@@ -417,10 +419,10 @@ if __name__ == '__main__':
     print('Running uq_capacity_inputs_generator()')
     uq_inputs_capacity()
 
-    print('Running uq_inputs_emissions')
+    '''print('Running uq_inputs_emissions')
     uq_inputs_emissions()
 
     print('Running uq_cost_inputs_generator()')
-    uq_inputs_cost()
+    uq_inputs_cost()'''
 
     print('Completed')

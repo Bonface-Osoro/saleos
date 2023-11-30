@@ -12,6 +12,7 @@ parameters = {
         'name':'Starlink',
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
+        'elevation_angle': 20,
         'dl_frequency_hz': 13.5 * 10 **9 , #Downlink frequency in Hertz
         'dl_bandwidth_hz': 0.5 * 10 ** 9, #Downlink bandwidth in Hertz
         'speed_of_light': 3.0 * 10 ** 8, #Speed of light in vacuum
@@ -43,6 +44,7 @@ parameters = {
         'name': 'OneWeb',
         'total_area_earth_km_sq': 510000000, 
         'altitude_km': 1195, 
+        'elevation_angle': 20,
         'dl_frequency_hz': 13.5 * 10 ** 9, 
         'dl_bandwidth_hz': 0.25 * 10 ** 9,
         'speed_of_light': 3.0 * 10 ** 8, 
@@ -74,6 +76,7 @@ parameters = {
         'name': 'Kuiper',
         'total_area_earth_km_sq': 510000000, 
         'altitude_km': 605, 
+        'elevation_angle': 20,
         'dl_frequency_hz': 17.7 * 10 ** 9, 
         'dl_bandwidth_hz': 0.25 * 10 ** 9,
         'speed_of_light': 3.0 * 10 ** 8, 
