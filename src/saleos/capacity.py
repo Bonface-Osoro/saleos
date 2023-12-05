@@ -96,6 +96,79 @@ def calc_path_loss(distance_km, downlink_frequency_Hz):
     return path_loss
 
 
+def signal_distance(orbital_altitude_km, elevation_angle):
+
+    """
+    This function calculates the slant 
+    range between the satellite and the 
+    ground user
+
+    Parameters
+    ----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    distance_km : float
+        Slant path based on the satellite 
+        minimum elevation angle
+    """
+    radius_earth_km = 6371
+    angle_radians = np.radians(elevation_angle)
+    cos_value = np.cos(angle_radians)
+
+    first_term = (((orbital_altitude_km + radius_earth_km) 
+                       / radius_earth_km) ** 2)
+    
+    second_term = (cos_value ** 2)
+
+    third_term = np.sin(angle_radians)
+
+    slant_distance = round((radius_earth_km * ((np.sqrt(first_term 
+                     - second_term)) - third_term)), 4)
+
+
+    return slant_distance
+
+
+def calc_free_path_loss(frequency, distance_km):
+
+    """
+    This function calculates 
+    the free space path loss 
+    given signal path distance.
+
+    Parameters
+    ----------
+    distance_km : float
+        Slant path based on the satellite 
+        minimum elevation angle
+
+    frequency_hz : float
+        Transmission frequency in hertz
+
+    Returns
+    -------
+    free_path_loss_db : float
+        Free space path loss in dB
+    """
+    speed_light = 3 * 10 ** 8
+    frequency = (frequency / (10 ** 9))
+    wavelength = frequency / speed_light
+
+    free_path_loss = (20 * math.log((4 
+                     * math.pi * distance_km) 
+                     / wavelength))
+    
+
+    return free_path_loss
+
+
 def calc_antenna_gain(c, d, f, n):
     """
     Calculates the antenna gain in dB

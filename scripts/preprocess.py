@@ -17,6 +17,7 @@ from tqdm import tqdm
 import saleos.emissions as sl
 from saleos import emissions
 from inputs import parameters, lut
+pd.options.mode.chained_assignment = None 
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
@@ -32,14 +33,20 @@ def uq_inputs_capacity():
 
     for key, item in parameters.items():
 
-        # radio propagation variables
-        altitude = [(item['altitude_km'] - 5), 
-                    item['altitude_km'], 
-                    (item['altitude_km'] + 5)]
+        # radio propagation variables#altitude_km
+        altitude = (np.concatenate((np.arange(item['altitude_km'], 
+                   (item['altitude_km'] + 5) + 1, 1), 
+                   np.arange(item['altitude_km'] - 1, 
+                   (item['altitude_km'] - 5) - 1, -1))))
         
-        atmospheric_loss = [item['earth_atmospheric_losses'] - 3, 
-                            item['earth_atmospheric_losses'], 
-                           item['earth_atmospheric_losses'] + 3]
+        elevation_angles = (np.arange(item['elevation_angle'], 
+                           (item['elevation_angle'] + 15) 
+                           + 5, 5))
+        
+        atmospheric_loss = (np.concatenate((np.arange(item['earth_atmospheric_losses'], 
+                           (item['earth_atmospheric_losses'] + 8) + 2, 2), 
+                           np.arange(item['earth_atmospheric_losses'] - 2, 
+                           (item['earth_atmospheric_losses'] - 8) - 2, -2))))
         
         receiver_gain = [(item['receiver_gain'] - 5), 
                          (item['receiver_gain']), 
@@ -53,58 +60,61 @@ def uq_inputs_capacity():
 
                 receiver_gain_db = rec_gain
 
-                for atm_loss in atmospheric_loss:
+                for angle in elevation_angles:
 
-                    earth_atmospheric_losses_db = atm_loss
+                    elevation_angle = angle
 
-                    if atm_loss == 7:
+                    for atm_loss in atmospheric_loss:
 
-                        cnr_scenario = 'High(>13.5 dB)'
+                        earth_atmospheric_losses_db = atm_loss
 
-                    elif atm_loss == 10:
+                        if atm_loss <= 7.5:
 
-                        cnr_scenario = 'Baseline(7.6 - 10.5 dB)'
+                            cnr_scenario = 'high'
 
-                    else:
+                        elif atm_loss > 13.5:
 
-                        cnr_scenario = 'Low (<7.5 dB)'
-                    
-                    number_of_satellites = item['number_of_satellites']
-                    name = item['name']
-                    elevation_angle = item['elevation_angle']
-                    total_area_earth_km_sq = item['total_area_earth_km_sq']
-                    dl_bandwidth_hz = item['dl_bandwidth_hz']
-                    speed_of_light = item['speed_of_light']
-                    antenna_diameter_m = item['antenna_diameter_m']
-                    antenna_efficiency = item['antenna_efficiency']
-                    power_dbw = item['power_dbw']
-                    all_other_losses_db = item['all_other_losses_db'] 
-                    number_of_channels = item['number_of_channels']
-                    polarization = item['polarization']
+                            cnr_scenario = 'low' 
 
-                    uq_parameters.append({
-                        'constellation': name, 
-                        'number_of_satellites': number_of_satellites,
-                        'total_area_earth_km_sq': total_area_earth_km_sq,
-                        'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
-                        'altitude_km': altitude_km,
-                        'elevation_angle': elevation_angle,
-                        'dl_frequency_hz': item['dl_frequency_hz'],
-                        'dl_bandwidth_hz': dl_bandwidth_hz,
-                        'speed_of_light': speed_of_light,
-                        'antenna_diameter_m': antenna_diameter_m,
-                        'antenna_efficiency': antenna_efficiency,
-                        'power_dbw': power_dbw,
-                        'receiver_gain_db': receiver_gain_db,
-                        'earth_atmospheric_losses_db': earth_atmospheric_losses_db,
-                        'all_other_losses_db': all_other_losses_db,
-                        'number_of_channels': number_of_channels,
-                        'polarization': polarization,
-                        'subscribers_low': item['subscribers'][0],
-                        'subscribers_baseline': item['subscribers'][1],
-                        'subscribers_high': item['subscribers'][2],
-                        'cnr_scenario': cnr_scenario
-                    })
+                        else:
+
+                            cnr_scenario = 'baseline'
+                        
+                        number_of_satellites = item['number_of_satellites']
+                        name = item['name']
+                        total_area_earth_km_sq = item['total_area_earth_km_sq']
+                        dl_bandwidth_hz = item['dl_bandwidth_hz']
+                        speed_of_light = item['speed_of_light']
+                        antenna_diameter_m = item['antenna_diameter_m']
+                        antenna_efficiency = item['antenna_efficiency']
+                        power_dbw = item['power_dbw']
+                        all_other_losses_db = item['all_other_losses_db'] 
+                        number_of_channels = item['number_of_channels']
+                        polarization = item['polarization']
+
+                        uq_parameters.append({
+                            'constellation': name, 
+                            'number_of_satellites': number_of_satellites,
+                            'total_area_earth_km_sq': total_area_earth_km_sq,
+                            'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
+                            'altitude_km': altitude_km,
+                            'elevation_angle': elevation_angle,
+                            'dl_frequency_hz': item['dl_frequency_hz'],
+                            'dl_bandwidth_hz': dl_bandwidth_hz,
+                            'speed_of_light': speed_of_light,
+                            'antenna_diameter_m': antenna_diameter_m,
+                            'antenna_efficiency': antenna_efficiency,
+                            'power_dbw': power_dbw,
+                            'receiver_gain_db': receiver_gain_db,
+                            'earth_atmospheric_losses_db': earth_atmospheric_losses_db,
+                            'cnr_scenario': cnr_scenario,
+                            'all_other_losses_db': all_other_losses_db,
+                            'number_of_channels': number_of_channels,
+                            'polarization': polarization,
+                            'subscribers_low': item['subscribers'][0],
+                            'subscribers_baseline': item['subscribers'][1],
+                            'subscribers_high': item['subscribers'][2]
+                        })
 
     df = pd.DataFrame.from_dict(uq_parameters)
 
@@ -411,18 +421,159 @@ def uq_inputs_cost():
 
     return
 
+path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
+df = pd.read_csv(path)
+from inputs import falcon_9, soyuz
+
+def calc_emission_type(df, rocket, 
+    emission_category):
+
+    """
+    This function is for calculating emission type.
+
+    Parameters
+    ----------
+    df : panda core series
+        dataframe.
+    rocket : string
+        Launching rocket
+    emission_category : string
+        Emission type e.g 'launch event'.
+
+    Returns
+    -------
+    emission_dict : dict
+        Dictionary containing all 
+        the emission categories.
+    """
+    emission_dict = {}
+    df['climate_change_baseline'].loc[i] = (
+        rocket['climate_change_baseline'][emission_category])
+    emission_dict['climate_change_baseline'] = df['climate_change_baseline'].loc[i]
+
+    df['climate_change_worst_case'].loc[i] = (
+        rocket['climate_change_worst_case'][emission_category])
+    emission_dict['climate_change_worst_case'] = df['climate_change_worst_case'].loc[i]
+
+    df['ozone_depletion_baseline'].loc[i] = (
+        rocket['ozone_depletion_baseline'][emission_category])
+    emission_dict['ozone_depletion_baseline'] = df['ozone_depletion_baseline'].loc[i]
+
+    df['ozone_depletion_worst_case'].loc[i] = (
+        rocket['ozone_depletion_worst_case'][emission_category])
+    emission_dict['ozone_depletion_worst_case'] = df['ozone_depletion_worst_case'].loc[i]
+
+    df['resource_depletion'].loc[i] = (
+        rocket['resource_depletion'][emission_category])
+    emission_dict['resource_depletion'] = df['resource_depletion'].loc[i]
+
+    df['freshwater_toxicity'].loc[i] = (
+        rocket['freshwater_toxicity'][emission_category])
+    emission_dict['freshwater_toxicity'] = df['freshwater_toxicity'].loc[i]
+
+    df['human_toxicity'].loc[i] = (
+        rocket['human_toxicity'][emission_category])
+    emission_dict['human_toxicity'] = df['human_toxicity'].loc[i]
+
+    return emission_dict
+
+df[['launch_event', 'launcher_production', 
+    'launcher_ait', 'propellant_production', 
+    'propellant_scheduling', 'launcher_transportation', 
+    'launch_campaign']] = ''
+
+df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
+            'fcc_filling_number', 'rocket', 'representative_of', 
+            'rocket_type', 'number_of_satellites', 'number_of_launches',
+            ], value_vars = ['launch_event', 'launcher_production', 
+            'launcher_ait', 'propellant_production', 'propellant_scheduling', 
+            'launcher_transportation', 'launch_campaign'], 
+            var_name = 'impact_category', value_name = 'value')
+
+df = df.drop('value', axis = 1) 
+
+df[['climate_change_baseline', 'climate_change_worst_case', 
+    'ozone_depletion_baseline', 'ozone_depletion_worst_case',
+    'resource_depletion', 'freshwater_toxicity',
+    'human_toxicity']] = ''
+
+for i in range(len(df)):
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launch_event':
+
+        for key, item in falcon_9.items():
+
+            calc_emission_type(df, falcon_9, 'launch_event')
+
+            
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_production': 
+
+        calc_emission_type(df, falcon_9, 'launcher_production')
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_ait':
+
+        calc_emission_type(df, falcon_9, 'launcher_ait') 
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'propellant_production':
+
+        calc_emission_type(df, falcon_9, 'propellant_production') 
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'propellant_scheduling':
+
+        calc_emission_type(df, falcon_9, 'propellant_scheduling') 
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_transportation':
+
+        calc_emission_type(df, falcon_9, 'launcher_transportation') 
+
+    if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launch_campaign':
+
+        calc_emission_type(df, falcon_9, 'launch_campaign')
 
 
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launch_event':
 
-if __name__ == '__main__':
+        for key, item in soyuz.items():
+
+            calc_emission_type(df, soyuz, 'launch_event')
+            
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_production': 
+            
+        for key, item in soyuz.items():
+
+            calc_emission_type(df, soyuz, 'launcher_production')
+
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_ait': 
+
+        calc_emission_type(df, soyuz, 'launcher_ait')
+
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'propellant_production': 
+
+        calc_emission_type(df, soyuz, 'propellant_production')
+
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'propellant_scheduling': 
+
+        calc_emission_type(df, soyuz, 'propellant_scheduling')
+
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_transportation': 
+
+        calc_emission_type(df, soyuz, 'launcher_transportation')
+
+    if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launch_campaign': 
+
+        calc_emission_type(df, soyuz, 'launch_campaign')
+            
+
+df.to_csv('dfs.csv')
+'''if __name__ == '__main__':
 
     print('Running uq_capacity_inputs_generator()')
     uq_inputs_capacity()
 
-    '''print('Running uq_inputs_emissions')
+    print('Running uq_inputs_emissions')
     uq_inputs_emissions()
 
     print('Running uq_cost_inputs_generator()')
-    uq_inputs_cost()'''
+    uq_inputs_cost()
 
-    print('Completed')
+    print('Completed')'''

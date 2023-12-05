@@ -54,71 +54,60 @@ def run_uq_processing_capacity():
             item['total_area_earth_km_sq'],
             item['altitude_km']
         )
+        slant_distance = round(cy.signal_distance(item['altitude_km'], 
+                         item['elevation_angle']), 4)
+         
+        path_loss = round(cy.calc_free_path_loss(item['dl_frequency_hz'], 
+                    slant_distance), 4)
+        
 
-        path_loss = cy.calc_path_loss(distance, item['dl_frequency_hz'])
+        losses = round(cy.calc_losses(item['earth_atmospheric_losses_db'], 
+            item['all_other_losses_db']), 4)
 
-        losses = cy.calc_losses(
-            item['earth_atmospheric_losses_db'], 
-            item['all_other_losses_db']
-        )
-
-        antenna_gain = cy.calc_antenna_gain(
+        antenna_gain = round(cy.calc_antenna_gain(
             item['speed_of_light'],
             item['antenna_diameter_m'], 
             item['dl_frequency_hz'],
-            item['antenna_efficiency']
-        ) 
+            item['antenna_efficiency']), 4) 
 
-        eirp = cy.calc_eirpd(
+        eirp = round(cy.calc_eirpd(
             item['power_dbw'], 
-            antenna_gain
-        )
+            antenna_gain), 4)
 
-        noise = cy.calc_noise()
+        noise = round(cy.calc_noise(), 4)
 
-        received_power = cy.calc_received_power(
+        received_power = round(cy.calc_received_power(
             eirp, 
             path_loss, 
             item['receiver_gain_db'], 
-            losses
-        )
+            losses), 4)
 
-        cnr = cy.calc_cnr(
+        cnr = round(cy.calc_cnr(
             received_power, 
-            noise
-        )
+            noise), 4)
 
         spectral_efficiency = cy.calc_spectral_efficiency(
             cnr, 
             lut
         )
 
-        channel_capacity = cy.calc_capacity(
+        channel_capacity = round(cy.calc_capacity(
             spectral_efficiency, 
-            item['dl_bandwidth_hz']
-        )
+            item['dl_bandwidth_hz']), 4)
 
-        constellation_capacity = (
-            cy.calc_constellation_capacity(
-                channel_capacity, 
-                item['number_of_channels'], 
-                item['polarization'],
-                item['number_of_satellites']
-            )
-        )
+        constellation_capacity = round((cy.calc_constellation_capacity(
+                channel_capacity, item['number_of_channels'], 
+                item['polarization'], item['number_of_satellites'])), 4)
 
-        sat_capacity = cy.single_satellite_capacity(
-            item['dl_bandwidth_hz'],
-            spectral_efficiency, 
-            item['number_of_channels'], 
-            item['polarization']
-        )
+        sat_capacity = round(cy.single_satellite_capacity(
+            item['dl_bandwidth_hz'], spectral_efficiency, 
+            item['number_of_channels'], item['polarization']), 4)
 
         results.append({
             'constellation': item['constellation'], 
             'number_of_satellites': item['number_of_satellites'],
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
-            'coverage_area_per_sat_sqkm': item['total_area_earth_km_sq']/item['number_of_satellites'],
+            'coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
             'altitude_km': item['altitude_km'],
             'dl_frequency_hz': item['dl_frequency_hz'],
             'dl_bandwidth_hz': item['dl_bandwidth_hz'],
@@ -135,8 +124,8 @@ def run_uq_processing_capacity():
             'subscribers_low': item['subscribers_low'],
             'subscribers_baseline': item['subscribers_baseline'],
             'subscribers_high': item['subscribers_high'],
-            'distance_km': distance, 
-            'satellite_coverage_area_km': satellite_coverage_area_km,
+            'distance_km': round(slant_distance, 4), 
+            'satellite_coverage_area_km': round(satellite_coverage_area_km, 4),
             'path_loss_db': path_loss, 
             'losses_db': losses, 
             'antenna_gain_db': antenna_gain, 
