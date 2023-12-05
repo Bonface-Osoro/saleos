@@ -24,7 +24,7 @@ df$cnr_scenario = as.factor(df$cnr_scenario)
 df$Constellation = factor(df$constellation)
 df$CNR = factor(
   df$cnr_scenario,
-  levels = c('Low (<7.5 dB)', 'Baseline(7.6 - 10.5 dB)', 'High(>13.5 dB)'),
+  levels = c('low', 'baseline', 'high'),
   labels = c('Low', 'Baseline', 'High')
 )
 
@@ -86,7 +86,7 @@ df$cnr_scenario = as.factor(df$cnr_scenario)
 df$Constellation = factor(df$constellation)
 df$CNR = factor(
   df$cnr_scenario,
-  levels = c('Low (<7.5 dB)', 'Baseline(7.6 - 10.5 dB)', 'High(>13.5 dB)'),
+  levels = c('low', 'baseline', 'high'),
   labels = c('Low', 'Baseline', 'High')
 )
 
@@ -149,7 +149,7 @@ df$cnr_scenario = as.factor(df$cnr_scenario)
 df$Constellation = factor(df$constellation)
 df$CNR = factor(
   df$cnr_scenario,
-  levels = c('Low (<7.5 dB)', 'Baseline(7.6 - 10.5 dB)', 'High(>13.5 dB)'),
+  levels = c('low', 'baseline', 'high'),
   labels = c('Low', 'Baseline', 'High')
 )
 
