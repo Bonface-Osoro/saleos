@@ -16,7 +16,7 @@ data <- data[data$scenario == "scenario3", ]
 data$constellation = factor(
   data$constellation,
   levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
-  labels = c('Starlink', 'OneWeb', 'Kuiper', 'Hypothetical GEO'))
+  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO'))
 
 data$rocket_type = factor(
   data$rocket_type,

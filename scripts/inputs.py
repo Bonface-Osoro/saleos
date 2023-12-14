@@ -13,8 +13,8 @@ parameters = {
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
         'elevation_angle': 25,
-        'dl_frequency_hz': 13.5 * 10 **9 , #Downlink frequency in Hertz
-        'dl_bandwidth_hz': 0.5 * 10 ** 9, #Downlink bandwidth in Hertz
+        'dl_frequency_hz': [10.7 * 10 **9, 11.7 * 10 **9, 12.7 * 10 **9], #Downlink frequency in Hertz
+        'dl_bandwidth_hz': 0.25 * 10 ** 9, #Downlink bandwidth in Hertz
         'speed_of_light': 3.0 * 10 ** 8, #Speed of light in vacuum
         'antenna_diameter_m': 0.6, #Metres
         'antenna_efficiency': 0.6,
@@ -22,8 +22,9 @@ parameters = {
         'receiver_gain': 30,
         'earth_atmospheric_losses': 10, #Rain Attenuation
         'all_other_losses_db': 0.53, #All other losses
-        'number_of_channels': 8, #Number of channels per satellite
-        'polarization': 2,
+        'number_of_beams': 8, #Number of spot beams
+        'number_of_channels': 6, #Number of channels per satellite
+        'polarization': 1,
         'subscribers': [2500000, 3500000, 4500000],
         'satellite_manufacturing': 250000,
         'satellite_launch_cost': 250000000,
@@ -45,17 +46,18 @@ parameters = {
         'total_area_earth_km_sq': 510000000, 
         'altitude_km': 1195, 
         'elevation_angle': 45,
-        'dl_frequency_hz': 13.5 * 10 ** 9, 
+        'dl_frequency_hz': [10.7 * 10 **9, 11.7 * 10 **9, 12.7 * 10 **9], 
         'dl_bandwidth_hz': 0.25 * 10 ** 9,
         'speed_of_light': 3.0 * 10 ** 8, 
         'antenna_diameter_m': 0.65, 
         'antenna_efficiency': 0.6,
         'power_dbw': 30, 
-        'receiver_gain': 30,
+        'receiver_gain': 35,
         'earth_atmospheric_losses': 10, 
         'all_other_losses_db': 0.53, 
-        'number_of_channels': 8, 
-        'polarization': 2,
+        'number_of_beams': 8,
+        'number_of_channels': 6, 
+        'polarization': 1,
         'subscribers': [500000, 800000, 1000000],
         'satellite_manufacturing': 400000,
         'satellite_launch_cost': 150000000,
@@ -77,8 +79,8 @@ parameters = {
         'total_area_earth_km_sq': 510000000, 
         'altitude_km': 605, 
         'elevation_angle': 35,
-        'dl_frequency_hz': 17.7 * 10 ** 9, 
-        'dl_bandwidth_hz': 0.25 * 10 ** 9,
+        'dl_frequency_hz': [17.7 * 10 **9, 18.7 * 10 **9, 19.7 * 10 **9], 
+        'dl_bandwidth_hz': 0.1 * 10 ** 9,
         'speed_of_light': 3.0 * 10 ** 8, 
         'antenna_diameter_m': 0.9, 
         'antenna_efficiency': 0.6,
@@ -86,8 +88,43 @@ parameters = {
         'receiver_gain': 31,
         'earth_atmospheric_losses': 10, 
         'all_other_losses_db': 0.53,
-        'number_of_channels': 8, 
-        'polarization': 2,
+        'number_of_beams': 8,
+        'number_of_channels': 6, 
+        'polarization': 1,
+        'subscribers': [1500000, 2500000, 3500000],
+        'satellite_manufacturing': 400000,
+        'satellite_launch_cost': 180000000,
+        'ground_station_cost': 33000000,
+        'spectrum_cost': 125000000,
+        'regulation_fees': 7200000,
+        'fiber_infrastructure_cost': 2500000,
+        'ground_station_energy': 15000000,
+        'subscriber_acquisition': 50000000,
+        'staff_costs': 253000000,
+        'research_development': 60000000,
+        'maintenance': 22000000,
+        'discount_rate': 5,
+        'assessment_period': 5
+    },
+    'geo': {
+        'number_of_satellites': 56,
+        'name': 'GEO',
+        'total_area_earth_km_sq': 510000000, 
+        'altitude_km': 35786, 
+        'elevation_angle': 5,
+        'dl_frequency_hz': [10.5 * 10 **9, 11.5 * 10 **9, 
+                            12.5 * 10 **9, 13.5 * 10 **9], 
+        'dl_bandwidth_hz': 12 * 10 ** 6,
+        'speed_of_light': 3.0 * 10 ** 8, 
+        'antenna_diameter_m': 0.5, 
+        'antenna_efficiency': 0.55,
+        'power_dbw': 64.2, 
+        'receiver_gain': 33.4,
+        'earth_atmospheric_losses': 10, 
+        'all_other_losses_db': 0.53,
+        'number_of_beams': 64,
+        'number_of_channels': 32, 
+        'polarization': 1,
         'subscribers': [1500000, 2500000, 3500000],
         'satellite_manufacturing': 400000,
         'satellite_launch_cost': 180000000,
