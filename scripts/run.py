@@ -45,22 +45,27 @@ def run_uq_processing_capacity():
 
     for item in tqdm(df, desc = "Processing uncertainty results"):
 
-        constellation = item["constellation"]
-
-        number_of_satellites = item["number_of_satellites"]
-
-        distance, satellite_coverage_area_km = cy.calc_geographic_metrics(
+        satellite_coverage_area_km = cy.calc_geographic_metrics(
             item['number_of_satellites'], 
-            item['total_area_earth_km_sq'],
-            item['altitude_km']
-        )
+            item['total_area_earth_km_sq'])
+        
         slant_distance = round(cy.signal_distance(item['altitude_km'], 
                          item['elevation_angle']), 4)
+        
+        satellite_centric_angle = cy.calc_sat_centric_angle(
+                                  item['altitude_km'], 
+                                  item['elevation_angle'])
+        
+        earth_central_angle = cy.calc_earth_central_angle(
+                                  item['altitude_km'], 
+                                  item['elevation_angle'])
+        
+        sat_coverage_area = cy.calc_satellite_coverage(item['altitude_km'], 
+                                  item['elevation_angle'])
          
         path_loss = round(cy.calc_free_path_loss(item['dl_frequency_hz'], 
                     slant_distance), 4)
         
-
         losses = round(cy.calc_losses(item['earth_atmospheric_losses_db'], 
             item['all_other_losses_db']), 4)
 
@@ -88,8 +93,7 @@ def run_uq_processing_capacity():
 
         spectral_efficiency = cy.calc_spectral_efficiency(
             cnr, 
-            lut
-        )
+            lut)
 
         channel_capacity = round(cy.calc_capacity(
             spectral_efficiency, 
@@ -97,34 +101,46 @@ def run_uq_processing_capacity():
 
         constellation_capacity = round((cy.calc_constellation_capacity(
                 channel_capacity, item['number_of_channels'], 
-                item['polarization'], item['number_of_satellites'])), 4)
+                item['polarization'], item['number_of_beams'], 
+                item['number_of_satellites'])), 4)
 
         sat_capacity = round(cy.single_satellite_capacity(
             item['dl_bandwidth_hz'], spectral_efficiency, 
-            item['number_of_channels'], item['polarization']), 4)
+            item['number_of_channels'], item['polarization'],
+            item['number_of_beams']), 4)
+        
+        if spectral_efficiency <= 1.896173:
 
+            cnr_scenario = 'low'
+
+        elif spectral_efficiency >= 2.524939:
+
+            cnr_scenario = 'high'
+
+        else:
+     
+            cnr_scenario = 'baseline'
+ 
         results.append({
             'constellation': item['constellation'], 
             'number_of_satellites': item['number_of_satellites'],
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
-            'coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
+            'ideal_coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
+            'elevation_angle': item['elevation_angle'],
             'altitude_km': item['altitude_km'],
+            'satellite_centric_angle': satellite_centric_angle,
+            'earth_central_angle' : earth_central_angle,
+            'signal_path_km': round(slant_distance, 4), 
+            'coverage_area_per_sat_sqkm' : round(sat_coverage_area, 4),
             'dl_frequency_hz': item['dl_frequency_hz'],
             'dl_bandwidth_hz': item['dl_bandwidth_hz'],
-            'speed_of_light': item['speed_of_light'],
-            'antenna_diameter_m': item['antenna_diameter_m'],
-            'antenna_efficiency': item['antenna_efficiency'],
             'power_dbw': item['power_dbw'],
             'receiver_gain_db': item['receiver_gain_db'],
             'earth_atmospheric_losses_db': item['earth_atmospheric_losses_db'],
             'all_other_losses_db': item['all_other_losses_db'],
-            'number_of_channels': item['number_of_channels'],
-            'polarization': item['polarization'],
-            'cnr_scenario' : item['cnr_scenario'],
             'subscribers_low': item['subscribers_low'],
             'subscribers_baseline': item['subscribers_baseline'],
             'subscribers_high': item['subscribers_high'],
-            'distance_km': round(slant_distance, 4), 
             'satellite_coverage_area_km': round(satellite_coverage_area_km, 4),
             'path_loss_db': path_loss, 
             'losses_db': losses, 
@@ -133,11 +149,12 @@ def run_uq_processing_capacity():
             'noise_db': noise, 
             'received_power_db': received_power, 
             'cnr_db': cnr, 
+            'cnr_scenario' : cnr_scenario,
             'spectral_efficiency_bphz': spectral_efficiency, 
             'channel_capacity_mbps': channel_capacity,
             'capacity_per_single_satellite_mbps': sat_capacity,
             'constellation_capacity_mbps': constellation_capacity,
-            'capacity_per_area_mbps/sqkm': constellation_capacity / item['coverage_area_per_sat_sqkm'],
+            'capacity_per_area_mbps/sqkm': constellation_capacity / item['ideal_coverage_area_per_sat_sqkm'],
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -151,11 +168,11 @@ def run_uq_processing_capacity():
         path_out = os.path.join(DATA, filename)
         df.to_csv(path_out, index = False)
 
-    return
+    return 
 
 
 def run_uq_processing_cost():
-    """
+    """  
     Run the UQ inputs through the saleos model. 
     
     """

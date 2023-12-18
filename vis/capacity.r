@@ -1,11 +1,7 @@
 library(ggpubr)
 library(ggplot2)
 library(tidyverse)
-# install.packages("ggtext")
 library(ggtext)
-
-# Set default folder
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 #Load the data
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -116,7 +112,7 @@ sat_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 30)
+    limits = c(0, 60)
   ) +
   theme_minimal() + 
   theme(axis.title.y = element_text(size = 6),

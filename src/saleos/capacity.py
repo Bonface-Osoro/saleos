@@ -31,10 +31,10 @@ from collections import Counter
 from collections import OrderedDict
 
 
-def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq, altitude_km):
+def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq):
     """
-    Calculate (a) the distance between the satellite
-    and user terminal and (b) the coverage area for each satellite based on [1].
+    This function calculates  the coverage 
+    area for each satellite based on [1].
 
     Parameters
     ----------
@@ -42,58 +42,19 @@ def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq, altitu
         Number of satellites in the constellation.
     total_area_earth_km_sq : float
         Total area of the earth in sqkm.
-    altitude_km : float
-        Satellite orbital altitude in km
 
     Returns
     -------
-    distance : float
-        The distance between the satellite and reciever in km.
     satellite_coverage_area_km : float
         The area which each satellite covers on Earth's surface in km.
 
     """
     area_of_earth_covered = total_area_earth_km_sq
 
-    network_density = number_of_satellites / area_of_earth_covered
-
-    satellite_coverage_area_km = (area_of_earth_covered / number_of_satellites) 
-
-    mean_distance_between_assets = math.sqrt((1 / network_density)) / 2
-
-    distance = math.sqrt(((mean_distance_between_assets) ** 2) + ((altitude_km) ** 2))
-
-    return distance, satellite_coverage_area_km
+    satellite_coverage_area_km = (area_of_earth_covered / number_of_satellites)
 
 
-def calc_path_loss(distance_km, downlink_frequency_Hz):
-
-    """
-    This function calculates the free 
-    space path loss in dB based on [1].
-
-    Free Space Path Loss (dB) = 20log10 x 
-        Distance (km) + 20log10 x 
-        Downlink Frequency (GHz) + 92.45
-
-    Parameters
-    ----------
-    distance_km : float
-        Slant path based on the satellite 
-        density/minimum elevation angle
-    downlink_frequency_Hz : float
-        Downlink transmission frequency in Hz.
-
-    Returns
-    -------
-    path_loss :
-        Free space path loss in dB
-    """
-    path_loss = (20 * math.log10(distance_km) + 20 * 
-            math.log10(downlink_frequency_Hz / 1e9) 
-            + 92.45)
-    
-    return path_loss
+    return satellite_coverage_area_km
 
 
 def signal_distance(orbital_altitude_km, elevation_angle):
@@ -118,7 +79,7 @@ def signal_distance(orbital_altitude_km, elevation_angle):
         Slant path based on the satellite 
         minimum elevation angle
     """
-    radius_earth_km = 6371
+    radius_earth_km = 6378
     angle_radians = np.radians(elevation_angle)
     cos_value = np.cos(angle_radians)
 
@@ -136,17 +97,114 @@ def signal_distance(orbital_altitude_km, elevation_angle):
     return slant_distance
 
 
+def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
+    """
+    This function calculates 
+    the nadir angle between 
+    a satellite and user.
+
+    Parameters
+    -----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    nadir_angle_deg : float
+        Nadir angle in degrees
+    """
+    radius_earth_km = 6378
+    angle_radians = np.radians(elevation_angle)
+
+    first_term = (radius_earth_km / 
+                 (radius_earth_km + 
+                  orbital_altitude_km))
+    
+    second_term = np.cos(angle_radians)
+    nadir = first_term * second_term
+    nadir_angle_rad = math.asin(nadir)
+    nadir_angle_deg = math.degrees(nadir_angle_rad)
+
+    return nadir_angle_deg
+
+
+def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
+    """
+    This function calculates 
+    the earth central angle
+
+    Parameters
+    ----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    earth_central_angle : float
+        Earth Central angle in degrees
+    """
+    nadir_angle = calc_sat_centric_angle(orbital_altitude_km, 
+                                   elevation_angle)
+    
+    earth_central_angle = 90 - (elevation_angle 
+                                + nadir_angle)
+    
+    return earth_central_angle
+
+
+def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
+    """
+    This function calculate 
+    the satellite coverage 
+    for different elevation 
+    angle and orbital altitude.
+
+    Parameters
+    ----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    coverage_area : float
+        Individual satellite coverage 
+        area in km^2
+    """
+    earth_central_angle = calc_earth_central_angle(
+        orbital_altitude_km, elevation_angle)
+    
+    earth_central_angle_rad = np.radians(earth_central_angle)
+    radius_earth_km = 6378
+    cos_angle = np.cos(earth_central_angle_rad)
+    outer_term = 2 * np.pi * radius_earth_km ** 2
+    inner_term = 1 - cos_angle
+    satellite_coverage = outer_term * inner_term
+
+    return satellite_coverage
+
 def calc_free_path_loss(frequency, distance_km):
 
     """
-    This function calculates 
-    the free space path loss 
-    given signal path distance.
+    This function calculates the free 
+    space path loss in dB based on [1].
+
+    Free Space Path Loss (dB) = 20log10 x 
+        Distance (km) + 20log10 x 
+        Downlink Frequency (GHz) + 92.45
 
     Parameters
     ----------
     distance_km : float
-        Slant path based on the satellite 
+        Link distance based on the satellite 
         minimum elevation angle
 
     frequency_hz : float
@@ -159,11 +217,10 @@ def calc_free_path_loss(frequency, distance_km):
     """
     speed_light = 3 * 10 ** 8
     frequency = (frequency / (10 ** 9))
-    wavelength = frequency / speed_light
 
-    free_path_loss = (20 * math.log((4 
-                     * math.pi * distance_km) 
-                     / wavelength))
+    free_path_loss = ((20 * np.log10(frequency)) 
+                    + (20 * np.log10(distance_km)) 
+                    + (92.44))
     
 
     return free_path_loss
@@ -439,7 +496,7 @@ def calc_capacity(spectral_efficiency, dl_bandwidth):
 
 
 def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
-    number_of_channels, polarization):
+    number_of_channels, polarization, number_of_beams):
     """
     Calculate the capacity of each satellite in Mbps based on [1],[2].
 
@@ -447,6 +504,8 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
                                 x Spectral efficiency
                                 x Number of channels
                                 x Polarization
+                                x Number of beams
+    Polarization is 1 if the same bandwidth is used for feeder links.
 
     Parameters
     ----------
@@ -459,6 +518,8 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
         Number of satellite channels
     polarizations : int
         Number of satellite polarizations
+    number_of_beams : int
+        Number of spot beams
 
     Returns
     -------
@@ -470,7 +531,8 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
         (dl_bandwidth / 1000000) *
         spectral_efficiency *
         number_of_channels *
-        polarization
+        polarization * 
+        number_of_beams
     )
 
     return sat_capacity
@@ -479,15 +541,17 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
 def calc_constellation_capacity(channel_capacity, 
                                 number_of_channels, 
                                 polarization, 
+                                number_of_beams,
                                 number_of_satellites):
     """
     Calculate the total usable constellation capacity assuming 
-    that only 50%(0.5) of constellation capacity is usable
+    that only 50% (0.5) of constellation capacity is usable
      based on [1]-[4].
 
     Constellation Capacity (Mbps) = Channel capacity (Mbps)
                                     x Number of channels
                                     x Polarizations
+                                    x Number of spot beams
                                     x Number of satellites
                                     x 0.5 (50% of capacity)
 
@@ -499,6 +563,8 @@ def calc_constellation_capacity(channel_capacity,
         The number of user channels per satellite.
     polarization : int
         The number of satellite polarizations.
+    number_of_beams : int
+        Number of satellite's spot beams
     number_of_satellites : int
         The number of satellites.
 
@@ -509,7 +575,8 @@ def calc_constellation_capacity(channel_capacity,
 
     """
     constellation_capacity = (channel_capacity * number_of_channels 
-                              * polarization * number_of_satellites * 0.5) 
+                              * polarization * number_of_beams 
+                              * number_of_satellites * 0.5) 
 
     return constellation_capacity
 
