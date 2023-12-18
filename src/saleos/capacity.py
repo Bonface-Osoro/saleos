@@ -79,7 +79,7 @@ def signal_distance(orbital_altitude_km, elevation_angle):
         Slant path based on the satellite 
         minimum elevation angle
     """
-    radius_earth_km = 6371
+    radius_earth_km = 6378
     angle_radians = np.radians(elevation_angle)
     cos_value = np.cos(angle_radians)
 
@@ -96,6 +96,100 @@ def signal_distance(orbital_altitude_km, elevation_angle):
 
     return slant_distance
 
+
+def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
+    """
+    This function calculates 
+    the nadir angle between 
+    a satellite and user.
+
+    Parameters
+    -----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    nadir_angle_deg : float
+        Nadir angle in degrees
+    """
+    radius_earth_km = 6378
+    angle_radians = np.radians(elevation_angle)
+
+    first_term = (radius_earth_km / 
+                 (radius_earth_km + 
+                  orbital_altitude_km))
+    
+    second_term = np.cos(angle_radians)
+    nadir = first_term * second_term
+    nadir_angle_rad = math.asin(nadir)
+    nadir_angle_deg = math.degrees(nadir_angle_rad)
+
+    return nadir_angle_deg
+
+
+def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
+    """
+    This function calculates 
+    the earth central angle
+
+    Parameters
+    ----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    earth_central_angle : float
+        Earth Central angle in degrees
+    """
+    nadir_angle = calc_sat_centric_angle(orbital_altitude_km, 
+                                   elevation_angle)
+    
+    earth_central_angle = 90 - (elevation_angle 
+                                + nadir_angle)
+    
+    return earth_central_angle
+
+
+def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
+    """
+    This function calculate 
+    the satellite coverage 
+    for different elevation 
+    angle and orbital altitude.
+
+    Parameters
+    ----------
+    orbital_altitude_km : float 
+        Satellite orbital altitude 
+    elevation_angle : float 
+        minimum elevation angle of 
+        the satellite
+
+    Returns
+    -------
+    coverage_area : float
+        Individual satellite coverage 
+        area in km^2
+    """
+    earth_central_angle = calc_earth_central_angle(
+        orbital_altitude_km, elevation_angle)
+    
+    earth_central_angle_rad = np.radians(earth_central_angle)
+    radius_earth_km = 6378
+    cos_angle = np.cos(earth_central_angle_rad)
+    outer_term = 2 * np.pi * radius_earth_km ** 2
+    inner_term = 1 - cos_angle
+    satellite_coverage = outer_term * inner_term
+
+    return satellite_coverage
 
 def calc_free_path_loss(frequency, distance_km):
 

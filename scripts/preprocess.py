@@ -88,7 +88,7 @@ def uq_inputs_capacity():
                                 'constellation': name, 
                                 'number_of_satellites': number_of_satellites,
                                 'total_area_earth_km_sq': total_area_earth_km_sq,
-                                'coverage_area_per_sat_sqkm': total_area_earth_km_sq/number_of_satellites,
+                                'ideal_coverage_area_per_sat_sqkm': total_area_earth_km_sq / number_of_satellites,
                                 'altitude_km': altitude_km,
                                 'elevation_angle': elevation_angle,
                                 'dl_frequency_hz': dl_frequency_hz,
@@ -418,10 +418,10 @@ if __name__ == '__main__':
     print('Running uq_capacity_inputs_generator()')
     uq_inputs_capacity()
 
-    '''print('Running uq_inputs_emissions')
+    print('Running uq_inputs_emissions')
     uq_inputs_emissions()
 
     print('Running uq_cost_inputs_generator()')
     uq_inputs_cost()
 
-    print('Completed')'''
+    print('Completed')

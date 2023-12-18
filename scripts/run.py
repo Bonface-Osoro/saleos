@@ -51,6 +51,17 @@ def run_uq_processing_capacity():
         
         slant_distance = round(cy.signal_distance(item['altitude_km'], 
                          item['elevation_angle']), 4)
+        
+        satellite_centric_angle = cy.calc_sat_centric_angle(
+                                  item['altitude_km'], 
+                                  item['elevation_angle'])
+        
+        earth_central_angle = cy.calc_earth_central_angle(
+                                  item['altitude_km'], 
+                                  item['elevation_angle'])
+        
+        sat_coverage_area = cy.calc_satellite_coverage(item['altitude_km'], 
+                                  item['elevation_angle'])
          
         path_loss = round(cy.calc_free_path_loss(item['dl_frequency_hz'], 
                     slant_distance), 4)
@@ -98,7 +109,7 @@ def run_uq_processing_capacity():
             item['number_of_channels'], item['polarization'],
             item['number_of_beams']), 4)
         
-        if spectral_efficiency <= 1.647211:
+        if spectral_efficiency <= 1.896173:
 
             cnr_scenario = 'low'
 
@@ -107,17 +118,20 @@ def run_uq_processing_capacity():
             cnr_scenario = 'high'
 
         else:
-
+     
             cnr_scenario = 'baseline'
  
         results.append({
             'constellation': item['constellation'], 
             'number_of_satellites': item['number_of_satellites'],
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
-            'coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
-            'altitude_km': item['altitude_km'],
-            'signal_path_km': round(slant_distance, 4), 
+            'ideal_coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
             'elevation_angle': item['elevation_angle'],
+            'altitude_km': item['altitude_km'],
+            'satellite_centric_angle': satellite_centric_angle,
+            'earth_central_angle' : earth_central_angle,
+            'signal_path_km': round(slant_distance, 4), 
+            'coverage_area_per_sat_sqkm' : round(sat_coverage_area, 4),
             'dl_frequency_hz': item['dl_frequency_hz'],
             'dl_bandwidth_hz': item['dl_bandwidth_hz'],
             'power_dbw': item['power_dbw'],
@@ -140,7 +154,7 @@ def run_uq_processing_capacity():
             'channel_capacity_mbps': channel_capacity,
             'capacity_per_single_satellite_mbps': sat_capacity,
             'constellation_capacity_mbps': constellation_capacity,
-            'capacity_per_area_mbps/sqkm': constellation_capacity / item['coverage_area_per_sat_sqkm'],
+            'capacity_per_area_mbps/sqkm': constellation_capacity / item['ideal_coverage_area_per_sat_sqkm'],
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -435,7 +449,7 @@ if __name__ == '__main__':
     print('Running on run_uq_processing_capacity()')
     run_uq_processing_capacity()
 
-    '''print('Running on run_uq_processing_costs()')
+    print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
 
     print('Working on process_mission_capacity()')
@@ -445,7 +459,7 @@ if __name__ == '__main__':
     process_mission_emission()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()'''
+    process_mission_cost()
 
     executionTime = (time.time() - start)
 
