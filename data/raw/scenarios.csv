@@ -9,14 +9,14 @@ scenario2,Historical,starlink,FCC 18-38,falcon9,Modeled,hydrocarbon,4425,127
 scenario2,Historical,oneweb,FCC 17-77,soyuz,Modeled,hydrocarbon,394,14
 scenario2,Historical,oneweb,FCC 17-77,falcon9,Modeled,hydrocarbon,96,3
 scenario2,Historical,oneweb,FCC 17-77,unknown_hyg,Representative,hydrogen,72,2
-scenario2,scenario2,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"3,236",54
+scenario2,scenario2,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"3,236",90
 scenario2,scenario2,geo_generic,NA,unknown_hyc,Representative,hydrocarbon,56,56
 scenario3,Historical,starlink,FCC 18-38,falcon9,Modeled,hydrocarbon,4425,127
 scenario3,Historical,oneweb,FCC 17-77,soyuz,Modeled,hydrocarbon,394,14
 scenario3,Historical,oneweb,FCC 17-77,falcon9,Modeled,hydrocarbon,96,3
 scenario3,Historical,oneweb,FCC 17-77,unknown_hyg,Representative,hydrogen,72,2
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyg,Representative,hydrogen,"1,079",18
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",18
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",18
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyg,Representative,hydrogen,"1,079",30
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",30
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",30
 scenario3,scenario3,geo_generic,NA,unknown_hyc,Representative,hydrocarbon,28,28
 scenario3,scenario3,geo_generic,NA,unknown_hyg,Representative,hydrogen,28,28

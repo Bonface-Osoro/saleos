@@ -1,7 +1,6 @@
 library(ggpubr)
 library(ggplot2)
 library(tidyverse)
-# install.packages("ggtext")
 library(ggtext)
 library("readxl")
 
@@ -11,9 +10,82 @@ visualizations = file.path(folder, '..', 'vis')
 
 color_palette = 'Paired'
 
-############################
-## Fuel and emissions plots
-############################
+####################
+## No of Launches ##
+####################
+data <- read.csv(file.path(folder, '..', 'data', 'raw', 'scenarios.csv'))
+
+df = data %>%
+  group_by(constellation, rocket, rocket_type) %>%
+  summarize(no_launches = mean(no_of_launches))
+
+df$constellation = factor(
+  df$constellation,
+  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
+  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO'))
+
+df$rocket = factor(
+  df$rocket,
+  levels = c('unknown_hyc', 'unknown_hyg', 'falcon9', 'soyuz'),
+  labels = c('Hydrocarbon \nFuel Rocket', 'Hydrogen \nFuel Rocket', 'Falcon-9', 'Soyuz-FG'))
+
+df$rocket_type = factor(
+  df$rocket_type,
+  levels = c('hydrocarbon', 'hydrogen'),
+  labels = c('Hydrocarbon', 'Hydrogen'))
+
+totals <- df %>%
+  group_by(rocket) %>%
+  summarize(value = signif(sum(no_launches), 2))
+
+sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
+  geom_bar(stat = "identity", aes(fill = rocket_type)) +
+  geom_text(
+    aes(
+      x = rocket,
+      y = value,
+      label = round(after_stat(y), 2)
+    ),
+    size = 1.5,
+    data = totals,
+    vjust = -0.6,
+    hjust = 0.5,
+    position = position_stack()
+  ) +
+  scale_fill_brewer(palette = color_palette) + labs(
+    colour = NULL,
+    title = "",
+    subtitle = "a",
+    x = NULL,
+    y = "No of Launches",
+    fill = "Rocket Fuel Type"
+  ) +
+  scale_y_continuous(
+    labels = function(y)
+      format(y,
+             scientific = FALSE),
+    expand = c(0, 0),
+    limits = c(0, 180)
+  ) +
+  theme_minimal() + theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.direction = "horizontal",
+    legend.position = c(0.5, 0.9),
+    axis.title = element_text(size = 4),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold")
+  ) +
+  guides(fill = guide_legend(ncol = 2))
 
 rockets <-
   c(
@@ -44,6 +116,7 @@ fuels_df <- data.frame(rockets, fuel, amount)
 totals <- fuels_df %>%
   group_by(rockets) %>%
   summarize(value = signif(sum(amount / 1e6), 2))
+
 
 fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
   geom_bar(stat = "identity", aes(fill = fuel)) +
@@ -100,58 +173,43 @@ fuel_types = ggplot(fuels_df, aes(x = rockets, y = amount / 1e6)) +
 ###########################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "final_emissions_results.csv"
+filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
-
-data = data[(data$impact_category == 'total_global_warming_em'),]
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(
-    value = (total_climate_emissions_kg / subscribers)/1e3,
-    value_wc = (total_climate_emissions_wc_kg / subscribers)/1e3,
-    # value_sd = sd((total_climate_emissions_kg / subscribers)/1e3),
-    # value_wc_sd = sd((total_climate_emissions_wc_kg / subscribers)/1e3),
-  )
+    value = mean((climate_change_baseline / subscribers)/1e3),
+    value_wc = mean((climate_change_worst_case / subscribers)/1e3))
 
 df = df %>%
-  pivot_longer(!c(constellation, subscriber_scenario), names_to = "value_type", values_to = "emissions_subscriber")
+  pivot_longer(!c(constellation, subscriber_scenario), 
+  names_to = "value_type", values_to = "emissions_subscriber")
 
 sd_values = df %>%
   group_by(constellation, value_type) %>%
   summarize(
-    # value = (total_climate_emissions_kg / subscribers)/1e3,
-    # value_wc = (total_climate_emissions_wc_kg / subscribers)/1e3,
-    emissions_subscriber_sd = sd(emissions_subscriber),
-    # emissions_subscriber_wc_sd = sd(emissions_subscriber),
-  )
+    emissions_subscriber_sd = sd(emissions_subscriber),)
 
 df = df %>%
   spread(subscriber_scenario, emissions_subscriber)
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
+  levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
+  labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink'))
 
-df$value_type = factor(
-  df$value_type,
+df$value_type = factor(df$value_type,
   levels = c('value', 'value_wc'),
-  labels = c('Baseline', 'Worst-case')
-)
+  labels = c('Baseline', 'Worst-case'))
 
 emission_subscriber <- 
-  ggplot(df, aes(x=constellation, y=subscribers_baseline, fill=value_type)) +
-  geom_bar(position="dodge",stat="identity") + 
-  geom_errorbar(data=df, aes(
-    y=subscribers_baseline, ymin=subscribers_low, ymax=subscribers_high),
-    position = position_dodge(.9),
-    lwd = 0.2,
+  ggplot(df, aes(x = constellation, y = subscribers_baseline, 
+  fill = value_type)) +
+  geom_bar(position = "dodge", stat = "identity") + 
+  geom_errorbar(data = df, aes(y = subscribers_baseline, 
+    ymin = subscribers_low, ymax = subscribers_high),
+    position = position_dodge(.9), lwd = 0.2,
     show.legend = FALSE, width=0.1,  color="black") +
   scale_fill_brewer(palette = color_palette) + 
   theme_minimal() +
@@ -167,7 +225,7 @@ emission_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0,6.5)
+    limits = c(0,2.0)
   ) + theme_minimal() +
   theme(axis.title.y = element_markdown(),
         strip.text.x = element_blank(),
@@ -200,15 +258,7 @@ df = data %>%
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 
-df$Constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
@@ -216,7 +266,7 @@ df$subscriber_scenario = factor(
 )
 
 capacity_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean,
+  ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
@@ -242,7 +292,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 25)
+    limits = c(0, 35)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
         strip.text.x = element_blank(),
@@ -260,30 +310,25 @@ capacity_per_user <-
         legend.text = element_text(size =6),
         plot.subtitle = element_text(size = 8, face = "bold"))
 
+##########################
+## Monthly Traffic plot ##
+##########################
+
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(monthly_gb),
             sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-# df$Constellation = factor(df$constellation)
-df$Constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
   labels = c('Low', 'Baseline', 'High')
 )
 
-capacity_subscriber <-
-  ggplot(df, aes(x = Constellation, y = mean,
+subscriber_traffic <-
+  ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
@@ -309,7 +354,7 @@ capacity_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 30)
+    limits = c(0, 50)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
         strip.text.x = element_blank(),
@@ -322,7 +367,6 @@ capacity_subscriber <-
         axis.line.y  = element_line(size = 0.15),
         legend.direction = "horizontal",
         legend.position = c(0.5, 0.9),
-        # legend.position = 'bottom', 
         axis.title = element_text(size = 6),
         legend.title = element_text(size = 6),
         legend.text = element_text(size =6),
@@ -350,27 +394,22 @@ data <- read.csv(file.path(folder, '..', 'results', filename))
 #   opex_per_user,
 # )
 
+#########
+## TCO ##
+#########
+
 df = data %>%
   group_by(constellation, capex_scenario) %>%
   summarize(mean = mean(total_cost_ownership),
             sd = sd(total_cost_ownership))
 
 df$capex_scenario = as.factor(df$capex_scenario)
-# df$Constellation = factor(df$constellation)
-df$Constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
+
 df$capex = factor(df$capex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_tco <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e9, fill = capex)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e9, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -417,6 +456,9 @@ constellation_tco <-
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 10, face = "bold"))
 
+##################
+## TCO Per User ##
+##################
 
 df = data %>%
   group_by(constellation, capex_scenario) %>%
@@ -424,21 +466,11 @@ df = data %>%
             sd = sd(tco_per_user))
 
 df$capex_scenario = as.factor(df$capex_scenario)
-# df$Constellation = factor(df$constellation)
-df$Constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
 df$capex = factor(df$capex_scenario,
                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_tco_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -464,7 +496,7 @@ constellation_tco_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 4500)
+    limits = c(0, 5000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -490,7 +522,7 @@ constellation_tco_per_user <-
 ## Mega panel
 #################
 row1 = ggarrange(
-    fuel_types,
+  sat_launches,
     emission_subscriber,
     capacity_per_user,
     nrow = 1,
@@ -498,7 +530,7 @@ row1 = ggarrange(
   )
 
 row2 =   ggarrange(
-  capacity_subscriber,
+  subscriber_traffic,
   constellation_tco,
   constellation_tco_per_user,
   nrow = 1,

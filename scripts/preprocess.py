@@ -415,13 +415,13 @@ def uq_inputs_cost():
 
 if __name__ == '__main__':
 
-    print('Running uq_capacity_inputs_generator()')
-    uq_inputs_capacity()
+    #print('Running uq_capacity_inputs_generator()')
+    #uq_inputs_capacity()
 
-    '''print('Running uq_inputs_emissions')
-    uq_inputs_emissions()
+    #print('Running uq_inputs_emissions')
+    #uq_inputs_emissions()
 
     print('Running uq_cost_inputs_generator()')
     uq_inputs_cost()
 
-    print('Completed')'''
+    print('Completed')

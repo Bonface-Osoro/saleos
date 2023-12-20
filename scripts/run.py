@@ -446,10 +446,10 @@ if __name__ == '__main__':
     
     start = time.time() 
 
-    print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #print('Running on run_uq_processing_capacity()')
+    #run_uq_processing_capacity()
 
-    '''print('Running on run_uq_processing_costs()')
+    print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
 
     print('Working on process_mission_capacity()')
@@ -459,7 +459,7 @@ if __name__ == '__main__':
     process_mission_emission()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()'''
+    process_mission_cost()
 
     executionTime = (time.time() - start)
 
