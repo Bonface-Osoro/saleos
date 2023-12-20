@@ -2,111 +2,88 @@ library(ggpubr)
 library(ggplot2)
 library(dplyr)
 library(tidyverse)
-# install.packages("readxl")
 library("readxl")
 library(ggtext)
 
-######################
-##Social cost legend##
-######################
-
+###########################
+## Read and Process Data ##
+###########################
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
-filename = 'life_cycle_data.xlsx'
-path = file.path(folder, '..', 'data', 'raw', filename)
-individual_emissions <- read_excel(path, sheet = "Transpose")
-colnames(individual_emissions) <- as.character(unlist(individual_emissions[1,]))
-individual_emissions = individual_emissions[3:23,]
-
-colnames(individual_emissions)[colnames(individual_emissions) == "Impact category"] = "category"
-
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "final_emissions_results.csv"
+filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
-data$Constellation = data$constellation
-data = select(data, Constellation, subscriber_scenario, subscribers)
-data = unique(data)
-data = spread(data, key = subscriber_scenario, value = subscribers)
-individual_emissions = merge(individual_emissions, data,by="Constellation")
 
-individual_emissions$category = gsub('Ariane 5 ' , '', individual_emissions$category)
-individual_emissions$category = gsub('of Ariane 5' , '', individual_emissions$category)
-individual_emissions$category = gsub('Falcon 9 ', '', individual_emissions$category)
-individual_emissions$category = gsub(' of by truck' , '', individual_emissions$category)
-individual_emissions$category = gsub('Soyuz-FG ', '', individual_emissions$category)
-individual_emissions$category = gsub(' of by train' , '', individual_emissions$category)
-individual_emissions$category = gsub('Transportation ' , 'Transportation', individual_emissions$category)
 
-individual_emissions$category = factor(
-  individual_emissions$category,
+data = select(
+  data, 
+  constellation, 
+  impact_category,
+  climate_change_baseline,
+  climate_change_worst_case,
+  ozone_depletion_baseline,
+  ozone_depletion_worst_case,
+  subscriber_scenario,
+  subscribers
+)
+
+data$impact_category = factor(
+  data$impact_category,
   levels =c(
-    "Production",
-    "Propellant Production",
-    "Launch Campaign",
-    "Transportation",
-    "AIT",
-    "SCHD of Propellant",
-    "Launches"
-  ),
+    "launcher_production", "propellant_production",
+    "launch_campaign", "launcher_transportation",
+    "launcher_ait", "propellant_scheduling",
+    "launch_event"),
   labels = c(
-    "Launcher Production",
-    "Launcher Propellant Production",
-    "Launch Campaign",
-    "Transportation of Launcher",
-    "Launcher AIT",
-    "SCHD of Propellant",
-    "Launch Event"
-  )
-)
+    "Launcher Production", "Launcher Propellant Production",
+    "Launch Campaign", "Transportation of Launcher",
+    "Launcher AIT", "SCHD of Propellant", "Launch Event"))
 
-individual_emissions <- individual_emissions %>%
-  mutate_at(c(3:9), as.numeric)
+data$constellation = factor(
+  data$constellation,
+  levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
+  labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink'))
 
-individual_emissions$Constellation = factor(
-  individual_emissions$Constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink'),
-  labels = c(
-    'Kuiper \n(Ariane-5)',
-    'OneWeb \n(Soyuz-FG & \nFalcon-9)',
-    'Starlink \n(Falcon-9)'
-  )
-)
+data_aggregated <- data %>%
+  group_by(constellation, 
+           impact_category,
+           climate_change_baseline,
+           climate_change_worst_case,
+           ozone_depletion_baseline,
+           ozone_depletion_worst_case,
+           subscriber_scenario) %>%
+  summarize(subscribers = mean(subscribers))
+
+individual_emissions <- spread(data_aggregated, key = subscriber_scenario, value = subscribers)
 
 ###############################
 ##Social carbon cost baseline##
 ###############################
 
 df = individual_emissions %>%
-  group_by(`Constellation`, category) %>%
-  summarize(value = `Climate Change - Global Warming Potential 100a`)
+  group_by(constellation, impact_category) %>%
+  summarize(value = climate_change_baseline)
 
 #from kg to tonnes
 df$emissions_t = df$value / 1e3 
 df$social_cost_milions_usd = (df$emissions_t * 185) / 1e6
 
-# folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-# folder = file.path(folder, '..', 'vis')
-# filename = 'test_results.csv'
-# path = file.path(folder, filename)
-# write.csv(df, path)
-
 totals <- df %>%
-  group_by(`Constellation`) %>%
+  group_by(constellation) %>%
   summarize(social_cost_milions_usd = (sum(value/1e3) * 185)/1e6)
 
 social_carbon_baseline <-
-  ggplot(df, aes(x = Constellation, y = social_cost_milions_usd)) +
-  geom_bar(stat = "identity", aes(fill = category)) +
+  ggplot(df, aes(x = constellation, y = social_cost_milions_usd)) +
+  geom_bar(stat = "identity", aes(fill = impact_category)) +
   geom_text(
     aes(
-      x = Constellation,
+      x = constellation,
       y = social_cost_milions_usd,
       label = paste0("$", round(social_cost_milions_usd,0), "m")
     ),
     size = 2,
     data = totals,
     vjust = -.5,
-    hjust = 1.1,
+    hjust = 0.5,
     position = position_stack()
   )  +
   scale_fill_brewer(palette = "Dark2") + 
@@ -120,7 +97,7 @@ social_carbon_baseline <-
   ) +
   ylab("Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
-    limits = c(0, 1550),
+    limits = c(0, 1600),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -149,30 +126,31 @@ social_carbon_baseline <-
 #################################
 
 df = individual_emissions %>%
-  group_by(`Constellation`, category) %>%
-  summarize(value = `Climate Change WC - Global Warming Potential 100a`)
+  group_by(constellation, impact_category) %>%
+  summarize(value = climate_change_worst_case)
+
 
 #from kg to tonnes
 df$emissions_t = df$value / 1e3 
 df$social_cost_milions_usd = (df$emissions_t * 185) / 1e6
 
 totals <- df %>%
-  group_by(`Constellation`) %>%
+  group_by(constellation) %>%
   summarize(social_cost_milions_usd = (sum(value/1e3) * 185)/1e6)
 
 social_cost_worst_case <-
-  ggplot(df, aes(x = Constellation, y = social_cost_milions_usd)) +
-  geom_bar(stat = "identity", aes(fill = category)) +
+  ggplot(df, aes(x = constellation, y = social_cost_milions_usd)) +
+  geom_bar(stat = "identity", aes(fill = impact_category)) +
   geom_text(
     aes(
-      x = Constellation,
+      x = constellation,
       y = social_cost_milions_usd,
       label = paste0("$", round(social_cost_milions_usd,0), "m")
     ),
     size = 2,
     data = totals,
     vjust = -.5,
-    hjust = 1.1,
+    hjust = 0.5,
     position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
   labs(
@@ -184,7 +162,7 @@ social_cost_worst_case <-
   ) +
   ylab("Social Cost<br>(Worst-case) (US$ Millions)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 1550),
+    limits = c(0, 5000),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -215,26 +193,26 @@ social_cost_worst_case <-
 
 df = select(
   individual_emissions, 
-  Constellation, 
-  category,
-  `Climate Change - Global Warming Potential 100a`,
+  constellation, 
+  impact_category,
+  climate_change_baseline,
   subscribers_baseline,
   subscribers_low,
   subscribers_high
   )
 
 df$social_cost_usd_per_user_low = (
-  ((df$`Climate Change - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_low 
+  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_low 
 )
 df$social_cost_usd_per_user_baseline = (
-  ((df$`Climate Change - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_baseline 
+  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_baseline 
 )
 df$social_cost_usd_per_user_high = (
-  ((df$`Climate Change - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_high 
+  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_high 
 )
 
 totals <- df %>%
-  group_by(`Constellation`) %>%
+  group_by(constellation) %>%
   summarize(
     social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
     social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),   
@@ -242,7 +220,7 @@ totals <- df %>%
     )
 
 data_aggregated  = df %>%
-  group_by(Constellation) %>%
+  group_by(constellation) %>%
   summarise(
     social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
     social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),
@@ -251,8 +229,8 @@ data_aggregated  = df %>%
 # data_aggregated = spread(data_aggregated, percentile, cell_count)
 
 social_carbon_per_subscriber_baseline <-
-  ggplot(df, aes(x = Constellation, y = social_cost_usd_per_user_baseline)) +
-  geom_bar(stat = "identity", aes(fill = category)) +
+  ggplot(df, aes(x = constellation, y = social_cost_usd_per_user_baseline)) +
+  geom_bar(stat = "identity", aes(fill = impact_category)) +
   geom_errorbar(data=data_aggregated, 
                 aes(y=social_cost_usd_per_user_baseline, 
                     ymin=social_cost_usd_per_user_low, 
@@ -262,7 +240,7 @@ social_carbon_per_subscriber_baseline <-
                 show.legend = FALSE, width=0.05,  color="#FF0000FF") +
   geom_text(
     aes(
-      x = Constellation,
+      x = constellation,
       y = social_cost_usd_per_user_baseline,
       label = paste0("$", round(social_cost_usd_per_user_baseline,0))
     ),
@@ -282,7 +260,7 @@ social_carbon_per_subscriber_baseline <-
   ) +
   ylab("Social Cost/Subscriber<br>(Baseline) (US$)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 1000),
+    limits = c(0, 2500),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -312,26 +290,26 @@ social_carbon_per_subscriber_baseline <-
 
 df = select(
   individual_emissions, 
-  Constellation, 
-  category,
-  `Climate Change WC - Global Warming Potential 100a`,
+  constellation, 
+  impact_category,
+  climate_change_worst_case,
   subscribers_baseline,
   subscribers_low,
   subscribers_high
 )
 
 df$social_cost_usd_per_user_low = (
-  ((df$`Climate Change WC - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_low 
+  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_low 
 )
 df$social_cost_usd_per_user_baseline = (
-  ((df$`Climate Change WC - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_baseline 
+  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_baseline 
 )
 df$social_cost_usd_per_user_high = (
-  ((df$`Climate Change WC - Global Warming Potential 100a` / 1e3) * 185) / df$subscribers_high 
+  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_high 
 )
 
 totals <- df %>%
-  group_by(`Constellation`) %>%
+  group_by(constellation) %>%
   summarize(
     social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
     social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),   
@@ -339,7 +317,7 @@ totals <- df %>%
   )
 
 data_aggregated  = df %>%
-  group_by(Constellation) %>%
+  group_by(constellation) %>%
   summarise(
     social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
     social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),
@@ -347,8 +325,8 @@ data_aggregated  = df %>%
   )
 
 social_carbon_per_subscriber_worst_case <-
-  ggplot(df, aes(x = Constellation, y = social_cost_usd_per_user_baseline)) +
-    geom_bar(stat = "identity", aes(fill = category)) +
+  ggplot(df, aes(x = constellation, y = social_cost_usd_per_user_baseline)) +
+    geom_bar(stat = "identity", aes(fill = impact_category)) +
     geom_errorbar(data=data_aggregated, 
                   aes(y=social_cost_usd_per_user_baseline, 
                       ymin=social_cost_usd_per_user_low, 
@@ -358,7 +336,7 @@ social_carbon_per_subscriber_worst_case <-
                   show.legend = FALSE, width=0.05,  color="#FF0000FF") +
     geom_text(
       aes(
-        x = Constellation,
+        x = constellation,
         y = social_cost_usd_per_user_baseline,
         label = paste0("$", round(social_cost_usd_per_user_baseline,0))
       ),
@@ -378,7 +356,7 @@ social_carbon_per_subscriber_worst_case <-
     ) +
     ylab("Social Cost/Subscriber<br>(Worst-case) (US$)") + # given t CO<sub>2</sub>eq
     scale_y_continuous(
-      limits = c(0, 1000),
+      limits = c(0, 6000),
       labels = function(y)
         format(y, scientific = FALSE),
       expand = c(0, 0)

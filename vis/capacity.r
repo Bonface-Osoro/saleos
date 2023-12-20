@@ -25,26 +25,14 @@ df$CNR = factor(
 )
 
 chn_capacity <- ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
-  geom_bar(stat = "identity",
-           position = position_dodge(),
+  geom_bar(stat = "identity", position = position_dodge(),
            width = 0.98) +
-  geom_errorbar(
-    aes(ymin = mean / 1e3 - sd / 1e3,
-        ymax = mean / 1e3 + sd / 1e3),
-    width = .2,
-    position = position_dodge(.98),
-    color = 'black',
-    size = 0.2
-  ) +
+  geom_errorbar( aes(ymin = mean / 1e3 - sd / 1e3,
+        ymax = mean / 1e3 + sd / 1e3), width = .2,
+    position = position_dodge(.98), color = 'black',size = 0.2) +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-  labs(
-    colour = NULL,
-    title = " ",
-    subtitle = "a",
-    x = NULL,
-    y = "Channel Capacity\n(Gbps)",
-    fill = 'QoS\nScenario'
-  ) +
+  labs(colour = NULL, title = " ", subtitle = "a",x = NULL,
+    y = "Channel Capacity\n(Gbps)", fill = 'QoS\nScenario') +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
@@ -112,7 +100,7 @@ sat_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 60)
+    limits = c(0, 240)
   ) +
   theme_minimal() + 
   theme(axis.title.y = element_text(size = 6),
@@ -176,7 +164,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 20)
+    limits = c(0, 35)
   ) +
   theme_minimal() + 
   theme(axis.title.y = element_text(size = 6),
