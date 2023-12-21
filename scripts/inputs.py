@@ -5,6 +5,9 @@ Written by Bonface Osoro & Ed Oughton.
 
 May 2022
 
+The GEO and some LEO cost values are estimated from SES financial statements through the following link.
+https://www.ses.com/sites/default/files/2023-02/230227_SES_AR2022_Final.pdf
+
 """
 parameters = {                                            
     'starlink': {
@@ -34,7 +37,7 @@ parameters = {
         'fiber_infrastructure_cost': 3550000,
         'ground_station_energy': 3250000,
         'subscriber_acquisition': 50000000,
-        'staff_costs': 300000000, #10% of maintenance costs
+        'staff_costs': 30000000, #10% of maintenance costs
         'research_development': 60000000,
         'maintenance': 26000000, #10% of capex
         'discount_rate': 5,
@@ -67,7 +70,7 @@ parameters = {
         'fiber_infrastructure_cost': 3550000,
         'ground_station_energy': 3250000,
         'subscriber_acquisition': 50000000,
-        'staff_costs': 207000000,
+        'staff_costs': 20700000,
         'research_development': 60000000,
         'maintenance': 18000000,
         'discount_rate': 5,
@@ -100,7 +103,7 @@ parameters = {
         'fiber_infrastructure_cost': 2500000,
         'ground_station_energy': 15000000,
         'subscriber_acquisition': 50000000,
-        'staff_costs': 253000000,
+        'staff_costs': 25300000,
         'research_development': 60000000,
         'maintenance': 22000000,
         'discount_rate': 5,
@@ -126,15 +129,15 @@ parameters = {
         'number_of_channels': 48, 
         'polarization': 2,
         'subscribers': [500000, 750000, 1500000],
-        'satellite_manufacturing': 400000,
-        'satellite_launch_cost': 180000000,
-        'ground_station_cost': 33000000,
-        'spectrum_cost': 125000000,
+        'satellite_manufacturing': 450000000,
+        'satellite_launch_cost': 6160000000,
+        'ground_station_cost': 10000000,
+        'spectrum_cost': 30000000,
         'regulation_fees': 7200000,
         'fiber_infrastructure_cost': 2500000,
-        'ground_station_energy': 15000000,
+        'ground_station_energy': 1500000,
         'subscriber_acquisition': 50000000,
-        'staff_costs': 253000000,
+        'staff_costs': 20000000,
         'research_development': 60000000,
         'maintenance': 22000000,
         'discount_rate': 5,
