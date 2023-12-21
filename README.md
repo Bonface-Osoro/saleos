@@ -45,9 +45,9 @@ The method is based on (i) a Life Cycle Assessment (LCA) model of environmental 
 ## Required Data
 
 To use `saleos` the following datasets are required. 
-1. Launch history dataset : These dataset contains information about the number of launches, dates and types used by constellations that have already launched their satellites. In this case, Starlink and OneWeb.
+1. Launch history dataset : These dataset contains information about the number of launches, dates and types of rockets used by constellations that have already launched their satellites. In this case, Starlink and OneWeb.
 2. Life cycle assessment dataset : This dataset contains the emission types and impact category of major rockets and constellations. 
-3. Scenario data : This file contains the information that is used to estimate the emission of constellations (Starlink & OneWeb) that have already launched their satellites, Kuiper that is yet to launch as well as a hypothetical Geostationary Earth Orbit (GEO) communication satellite operator. It also contains the information for modelling a generic hydrocarbon and hydrogen fuel based rocket. 
+3. Scenario data : This file contains the information that is used to estimate the emission of constellations (Starlink & OneWeb) that have already launched their satellites, Kuiper that is yet to launch as well as a hypothetical Geostationary Earth Orbit (GEO) communication satellite operator. It also contains the information for modeling a generic hydrocarbon (HYC) and hydrogen (HYD) fuel based rocket. 
 
 The three datasets are stored in the folder, `data/raw`
 
@@ -62,21 +62,21 @@ packages.
 
 Create a conda environment called saleos:
 
-  conda create --name saleos python=3.7 gdal
+  `conda create --name saleos python=3.7 gdal`
 
 Activate it (run this each time you switch projects):
 
-  conda activate saleos
+  `conda activate saleos`
 
 First, to run `saleos` you need to generate uncertain capacity and cost parameters since they are not deterministic.
-So navigate to the `scripts` folder and run `preprocess.py`. This will produce two capacity and cost csv files named `uq_parameters_capacity.csv` and `uq_parameters_cost.csv` stored in the path `data/processed`
+So navigate to the `scripts` folder and run `preprocess.py`. This will produce two capacity and cost "csv files" named `uq_parameters_capacity.csv` and `uq_parameters_cost.csv` stored in the path `data/processed`
 
-Secondly, run the whole integrated model to produce capacity, emission and cost results by running the simulation (`run.py`). It should first produce the following intermediate results stored in the folder `data/processed`:
+Secondly, run the whole integrated model to produce capacity, emission and cost results by running the simulation script (`run.py`). It should first produce the following intermediate results stored in the folder `data/processed`:
 
 1. `interim_results_capacity.csv`
 2. `interim_results_cost.csv`
 
-Lastly, it should produce the following files stored in the folder path, `results`:
+Next, it should produce the following files stored in the folder path, `results`:
 
 1. `individual_emissions.csv`
 2. `final_capacity_results.csv`
@@ -98,7 +98,7 @@ To quick start, install the `saleos` package.
 
 Or if you want to develop the package:
 
-   `python setuppy develop`
+   `python setup.py develop`
 
 Then run the scripts in the order defined in the previous section (`Using conda`)
 
@@ -116,3 +116,7 @@ Background and funding
 - Edward Oughton, George Mason University (Project lead and corresponding author)
 - Andrew Wilson, University of Strathclyde (LCA modeling)
 - Akhil Rao, Middlebury College (Policy and economics)
+
+Acknowledgement
+---------------
+We would like to thank Nils Pacher and Inigo del Portillo of Massachusetts Institute of Technology, Aeronautics and Astronautics Department for providing the orbital parameter data of Starlink, OneWeb and Kuiper as well as a reproducible python code for modeling the orbit of the three LEO constellations. 
