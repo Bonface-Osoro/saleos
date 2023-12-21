@@ -10,7 +10,7 @@ While LEO mega-constellations are fronted as an alternative to terrestrial broad
 
 #### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink (Details as of 29th August 2023).
 <p align="center">
-  <img src="/docs/a_fig_1.jpg" />
+  <img src="/docs/a_fig_1.png" />
 </p>
 
 Emissions produced during the launching of satellites depend on the utilized rocket vehicle. 
@@ -23,10 +23,6 @@ Most operators planning or launching LEO broadband satellites have used (or inte
 </p>
 
 The `saleos` codebase provides an open-source integrated assessment model capable of concurrently estimating broadband capacity, environmental emissions, and costs for different LEO satellite networks.
-
-Citation
----------
-Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. arXiv preprint arXiv:2309.02338.
 
 ## Sustainability metrics
 
@@ -47,7 +43,6 @@ The method is based on (i) a Life Cycle Assessment (LCA) model of environmental 
 </p>
 
 ## Required Data
-================
 
 To use `saleos` the following datasets are required. 
 1. Launch history dataset : These dataset contains information about the number of launches, dates and types used by constellations that have already launched their satellites. In this case, Starlink and OneWeb.
@@ -84,8 +79,8 @@ Secondly, run the whole integrated model to produce capacity, emission and cost 
 Lastly, it should produce the following files stored in the folder path, `results`:
 
 1. `individual_emissions.csv`
-2. `final_capacity_results`
-3. `final_capacity_cost`
+2. `final_capacity_results.csv`
+3. `final_capacity_cost.csv`
 
 Lastly, to visualize the results, you will navigate into the `vis` folder and run the following `r` scripts in any order.
 
@@ -99,13 +94,17 @@ Quick Start
 ===========
 To quick start, install the `saleos` package.
 
-  python setup.py develop
+  `python setup.py install`
 
 Or if you want to develop the package:
 
-  python setup.py develop
+   `python setuppy develop`
 
 Then run the scripts in the order defined in the previous section (`Using conda`)
+
+Citation
+---------
+Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. arXiv preprint arXiv:2309.02338.
 
 Background and funding
 ======================
