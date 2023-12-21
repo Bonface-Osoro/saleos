@@ -46,6 +46,72 @@ The method is based on (i) a Life Cycle Assessment (LCA) model of environmental 
   <img src= '/docs/model.png' />
 </p>
 
+## Required Data
+================
+
+To use `saleos` the following datasets are required. 
+1. Launch history dataset : These dataset contains information about the number of launches, dates and types used by constellations that have already launched their satellites. In this case, Starlink and OneWeb.
+2. Life cycle assessment dataset : This dataset contains the emission types and impact category of major rockets and constellations. 
+3. Scenario data : This file contains the information that is used to estimate the emission of constellations (Starlink & OneWeb) that have already launched their satellites, Kuiper that is yet to launch as well as a hypothetical Geostationary Earth Orbit (GEO) communication satellite operator. It also contains the information for modelling a generic hydrocarbon and hydrogen fuel based rocket. 
+
+The three datasets are stored in the folder, `data/raw`
+
+Now you should be ready to start running the codebase.
+
+Using conda
+===========
+
+The recommended installation method is to use conda, which handles packages and virtual
+environments, along with the conda-forge channel which has a host of pre-built libraries and
+packages.
+
+Create a conda environment called saleos:
+
+  conda create --name saleos python=3.7 gdal
+
+Activate it (run this each time you switch projects):
+
+  conda activate saleos
+
+First, to run `saleos` you need to generate uncertain capacity and cost parameters since they are not deterministic.
+So navigate to the `scripts` folder and run `preprocess.py`. This will produce two capacity and cost csv files named `uq_parameters_capacity.csv` and `uq_parameters_cost.csv` stored in the path `data/processed`
+
+Secondly, run the whole integrated model to produce capacity, emission and cost results by running the simulation (`run.py`). It should first produce the following intermediate results stored in the folder `data/processed`:
+
+1. `interim_results_capacity.csv`
+2. `interim_results_cost.csv`
+
+Lastly, it should produce the following files stored in the folder path, `results`:
+
+1. `individual_emissions.csv`
+2. `final_capacity_results`
+3. `final_capacity_cost`
+
+Lastly, to visualize the results, you will navigate into the `vis` folder and run the following `r` scripts in any order.
+
+1. `aggregate_metrics.r`
+2. `emissions.r`
+3. `capacity.r`
+4. `social_cost.r`
+5. `cost.r`
+
+Quick Start
+===========
+To quick start, install the `saleos` package.
+
+  python setup.py develop
+
+Or if you want to develop the package:
+
+  python setup.py develop
+
+Then run the scripts in the order defined in the previous section (`Using conda`)
+
+Background and funding
+======================
+
+**saleos** has been developed by researchers at George Mason University, University of Strathclyde and Middlebury College.
+
 ## Team
 - Bonface Osoro, George Mason University (Model development)
 - Edward Oughton, George Mason University (Project lead and corresponding author)

@@ -258,7 +258,6 @@ df = data %>%
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 
-
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),

@@ -6,7 +6,7 @@ Written by Bonface Osoro & Ed Oughton.
 May 2022
 
 """
-parameters = {
+parameters = {                                            
     'starlink': {
         'number_of_satellites': 4425,
         'name':'Starlink',

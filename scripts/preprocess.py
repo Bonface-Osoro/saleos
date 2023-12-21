@@ -8,15 +8,10 @@ May 2022
 """
 import configparser
 import os
-from random import*
-import decimal
+from random import *
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
-
-import saleos.emissions as sl
-from saleos import emissions
-from inputs import parameters, lut
+from inputs import parameters
 pd.options.mode.chained_assignment = None 
 
 CONFIG = configparser.ConfigParser()
@@ -113,152 +108,6 @@ def uq_inputs_capacity():
     filename = 'uq_parameters_capacity.csv'
 
     if not os.path.exists(BASE_PATH):
-        os.makedirs(BASE_PATH)
-    
-    path_out = os.path.join(BASE_PATH, 'processed', filename)
-    df.to_csv(path_out, index = False)
-
-    return 
-
-
-def uq_inputs_emissions():
-    """
-    Generate all UQ emissions inputs to run through the saleos model. 
-    
-    """
-    results = []
-
-    for key, item in parameters.items():
-
-        # Generate emission results
-        emission_dict = sl.calc_per_sat_emission(item['name'])
-        scheduling_dict = sl.calc_scheduling_emission(item['name'])
-        transport_dict = sl.calc_transportation_emission(item['name'])
-        launch_campaign_dict = sl.calc_launch_campaign_emission(item['name'])
-        propellant_dict = sl.calc_propellant_emission(item['name'])
-        ait_dict = sl.launcher_AIT()
-        rocket_dict = sl.calc_rocket_emission(item['name'])
-
-        oneweb_sz = sl.soyuz_fg()
-        oneweb_f9 = sl.falcon_9()
-
-        total_global_warming_em = (
-            emission_dict['global_warming'] + 
-            scheduling_dict['global_warming'] +
-            transport_dict['global_warming'] +
-            launch_campaign_dict['global_warming'] + 
-            propellant_dict['global_warming'] + 
-            ait_dict['global_warming'] +
-            rocket_dict['global_warming']
-            )
-
-        total_global_warming_wc = (
-            emission_dict['global_warming_wc'] + 
-            scheduling_dict['global_warming'] +
-            transport_dict['global_warming'] +
-            launch_campaign_dict['global_warming'] + 
-            propellant_dict['global_warming'] + 
-            ait_dict['global_warming'] +
-            rocket_dict['global_warming']
-            )
-
-        total_ozone_depletion_em = (
-            emission_dict['ozone_depletion'] + 
-            scheduling_dict['ozone_depletion'] +
-            transport_dict['ozone_depletion'] +
-            launch_campaign_dict['ozone_depletion'] + 
-            propellant_dict['ozone_depletion'] + 
-            ait_dict['ozone_depletion'] +
-            rocket_dict['ozone_depletion']
-            )
-        
-        total_mineral_depletion = (
-            emission_dict['mineral_depletion'] + 
-            scheduling_dict['mineral_depletion'] +
-            transport_dict['mineral_depletion'] +
-            launch_campaign_dict['mineral_depletion'] + 
-            propellant_dict['mineral_depletion'] + 
-            ait_dict['mineral_depletion'] +
-            rocket_dict['mineral_depletion']
-            )
-        
-        total_freshwater_toxicity = (
-            emission_dict['freshwater_toxicity'] + 
-            scheduling_dict['freshwater_toxicity'] +
-            transport_dict['freshwater_toxicity'] +
-            launch_campaign_dict['freshwater_toxicity'] + 
-            propellant_dict['freshwater_toxicity'] + 
-            ait_dict['freshwater_toxicity'] +
-            rocket_dict['freshwater_toxicity']
-            )
-        
-        total_human_toxicity = (
-            emission_dict['human_toxicity'] + 
-            scheduling_dict['human_toxicity'] +
-            transport_dict['human_toxicity'] +
-            launch_campaign_dict['human_toxicity'] + 
-            propellant_dict['human_toxicity'] + 
-            ait_dict['human_toxicity'] +
-            rocket_dict['human_toxicity']
-            )
-
-        results.append({'constellation': item['name'],
-                        'subscribers_low': item['subscribers'][0],
-                        'subscribers_baseline': item['subscribers'][1],
-                        'subscribers_high': item['subscribers'][2],          
-                        'global_warming': emission_dict['global_warming'],
-                        'global_warming_wc': emission_dict['global_warming_wc'],
-                        'ozone_depletion': emission_dict['ozone_depletion'],
-                        'mineral_depletion': emission_dict['mineral_depletion'],
-                        'freshwater_toxicity': emission_dict['freshwater_toxicity'],
-                        'human_toxicity': emission_dict['human_toxicity'],
-                        'global_warming_roct': rocket_dict['global_warming'], 
-                        'ozone_depletion_roct': rocket_dict['ozone_depletion'], 
-                        'mineral_depletion_roct': rocket_dict['mineral_depletion'], 
-                        'freshwater_toxicity_roct': rocket_dict['freshwater_toxicity'], 
-                        'human_toxicity_roct': rocket_dict['human_toxicity'], 
-                        'global_warming_ait': ait_dict['global_warming'], 
-                        'ozone_depletion_ait': ait_dict['ozone_depletion'],  
-                        'mineral_depletion_ait': ait_dict['mineral_depletion'],
-                        'freshwater_toxicity_ait': ait_dict['freshwater_toxicity'],
-                        'human_toxicity_ait': ait_dict['human_toxicity'], 
-                        'global_warming_propellant': propellant_dict['global_warming'], 
-                        'ozone_depletion_propellant': propellant_dict['ozone_depletion'], 
-                        'mineral_depletion_propellant': propellant_dict['mineral_depletion'], 
-                        'freshwater_toxicity_propellant': propellant_dict['freshwater_toxicity'], 
-                        'human_toxicity_propellant': propellant_dict['human_toxicity'], 
-                        'global_warming_schd': scheduling_dict['global_warming'],
-                        'ozone_depletion_schd': scheduling_dict['ozone_depletion'],
-                        'mineral_depletion_schd': scheduling_dict['mineral_depletion'],
-                        'freshwater_toxicity_schd': scheduling_dict['freshwater_toxicity'],
-                        'human_toxicity_schd': scheduling_dict['human_toxicity'],
-                        'global_warming_trans': transport_dict['global_warming'],
-                        'ozone_depletion_trans': transport_dict['ozone_depletion'], 
-                        'mineral_depletion_trans': transport_dict['mineral_depletion'], 
-                        'freshwater_toxicity_trans': transport_dict['freshwater_toxicity'], 
-                        'human_toxicity_trans': transport_dict['human_toxicity'], 
-                        'global_warming_campaign': launch_campaign_dict['global_warming'],
-                        'ozone_depletion_campaign': launch_campaign_dict['ozone_depletion'],  
-                        'mineral_depletion_campaign': launch_campaign_dict['mineral_depletion'], 
-                        'freshwater_toxicity_campaign': launch_campaign_dict['freshwater_toxicity'], 
-                        'human_toxicity_campaign': launch_campaign_dict['human_toxicity'], 
-                        'oneweb_f9': oneweb_f9['global_warming'] + oneweb_f9['ozone_depletion'],
-                        'oneweb_sz': oneweb_sz['global_warming'] + oneweb_sz['ozone_depletion'], 
-                        'total_global_warming_em': total_global_warming_em,
-                        'total_ozone_depletion_em': total_ozone_depletion_em,
-                        'total_mineral_depletion': total_mineral_depletion,
-                        'total_freshwater_toxicity': total_freshwater_toxicity,
-                        'total_human_toxicity': total_human_toxicity,
-                        'total_climate_change': total_global_warming_em,
-                        'total_climate_change_wc': total_global_warming_wc,
-                        })
-
-    df = pd.DataFrame.from_dict(results)
-
-    filename = 'uq_parameters_emissions.csv'
-
-    if not os.path.exists(BASE_PATH):
-
         os.makedirs(BASE_PATH)
     
     path_out = os.path.join(BASE_PATH, 'processed', filename)
@@ -411,15 +260,14 @@ def uq_inputs_cost():
     path_out = os.path.join(BASE_PATH, 'processed', filename)
     df.to_csv(path_out, index = False)
 
+
     return None
+
 
 if __name__ == '__main__':
 
-    #print('Running uq_capacity_inputs_generator()')
-    #uq_inputs_capacity()
-
-    #print('Running uq_inputs_emissions')
-    #uq_inputs_emissions()
+    print('Running uq_capacity_inputs_generator()')
+    uq_inputs_capacity()
 
     print('Running uq_cost_inputs_generator()')
     uq_inputs_cost()
