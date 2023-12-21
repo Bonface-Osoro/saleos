@@ -12,11 +12,10 @@ import math
 import time
 import pandas as pd
 
-import saleos.emissions as sl
 import saleos.cost as ct
 import saleos.capacity as cy
 
-from inputs import lut
+from inputs import falcon_9, soyuz, unknown_hyc, unknown_hyg, lut, parameters
 from tqdm import tqdm
 pd.options.mode.chained_assignment = None 
 
@@ -170,6 +169,299 @@ def run_uq_processing_capacity():
 
     return 
 
+def calc_emission_type(df, rocket, datapoint,
+    emission_category, no_launches):
+
+    """
+    This function is for calculating emission type.
+
+    Parameters
+    ----------
+    df : panda core series
+        dataframe.
+    rocket : string
+        Launching rocket
+    datapoint : int
+        individual data values
+    emission_category : string
+        Emission type e.g 'launch event'.
+    no_launches : 1
+        Number of satellite launches
+
+    Returns
+    -------
+    emission_dict : dict
+        Dictionary containing all 
+        the emission categories.
+    """
+    emission_dict = {}
+
+    df['climate_change_baseline'].loc[datapoint] = (
+        rocket['climate_change_baseline'][emission_category] 
+        * no_launches) 
+    emission_dict['climate_change_baseline'] = (
+        df['climate_change_baseline'].loc[datapoint])
+
+    df['climate_change_worst_case'].loc[datapoint] = (
+        rocket['climate_change_worst_case'][emission_category] 
+        * no_launches)
+    emission_dict['climate_change_worst_case'] = (
+        df['climate_change_worst_case'].loc[datapoint])
+
+    df['ozone_depletion_baseline'].loc[datapoint] = (
+        rocket['ozone_depletion_baseline'][emission_category] 
+        * no_launches)
+    emission_dict['ozone_depletion_baseline'] = (
+        df['ozone_depletion_baseline'].loc[datapoint])
+
+    df['ozone_depletion_worst_case'].loc[datapoint] = (
+        rocket['ozone_depletion_worst_case'][emission_category]
+        * no_launches)
+    emission_dict['ozone_depletion_worst_case'] = (
+        df['ozone_depletion_worst_case'].loc[datapoint])
+
+    df['resource_depletion'].loc[datapoint] = (
+        rocket['resource_depletion'][emission_category]
+        * no_launches)
+    emission_dict['resource_depletion'] = (
+        df['resource_depletion'].loc[datapoint])
+
+    df['freshwater_toxicity'].loc[datapoint] = (
+        rocket['freshwater_toxicity'][emission_category]
+        * no_launches)
+    emission_dict['freshwater_toxicity'] = (
+        df['freshwater_toxicity'].loc[datapoint])
+
+    df['human_toxicity'].loc[datapoint] = (
+        rocket['human_toxicity'][emission_category]
+        * no_launches)
+    emission_dict['human_toxicity'] = (
+        df['human_toxicity'].loc[datapoint])
+
+
+    return emission_dict
+
+
+def calc_emissions():
+
+    """
+    This function calculates the 
+    amount of emission by rocket 
+    types for all the launches.
+    """
+    path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
+    df = pd.read_csv(path)
+
+    df[['launch_event', 'launcher_production', 
+        'launcher_ait', 'propellant_production', 
+        'propellant_scheduling', 'launcher_transportation', 
+        'launch_campaign']] = ''
+
+    df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
+         'rocket', 'representative_of', 
+         'rocket_type', 'no_of_satellites', 'no_of_launches',], 
+         value_vars = ['launch_event', 'launcher_production', 
+         'launcher_ait', 'propellant_production', 'propellant_scheduling', 
+         'launcher_transportation', 'launch_campaign'], 
+         var_name = 'impact_category', value_name = 'value')
+
+    df = df.drop('value', axis = 1) 
+
+    df[['climate_change_baseline', 'climate_change_worst_case', 
+        'ozone_depletion_baseline', 'ozone_depletion_worst_case',
+        'resource_depletion', 'freshwater_toxicity',
+        'human_toxicity', 'subscribers_low', 'subscribers_baseline', 
+        'subscribers_high']] = ''
+
+    for i in range(len(df)):
+
+        ################################### Falcon-9 Rocket ###################################
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launch_event':
+
+            for key, item in falcon_9.items():
+
+                calc_emission_type(df, falcon_9, i, 'launch_event', df['no_of_launches'].loc[i])
+                
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_production': 
+
+            calc_emission_type(df, falcon_9, i, 'launcher_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_ait':
+
+            calc_emission_type(df, falcon_9, i, 'launcher_ait', df['no_of_launches'].loc[i]) 
+
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'propellant_production':
+
+            calc_emission_type(df, falcon_9, i, 'propellant_production', df['no_of_launches'].loc[i]) 
+
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'propellant_scheduling':
+
+            calc_emission_type(df, falcon_9, i, 'propellant_scheduling', df['no_of_launches'].loc[i]) 
+
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launcher_transportation':
+
+            calc_emission_type(df, falcon_9, i, 'launcher_transportation', df['no_of_launches'].loc[i]) 
+
+        if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launch_campaign':
+
+            calc_emission_type(df, falcon_9, i, 'launch_campaign', df['no_of_launches'].loc[i])
+
+        ################################### Soyuz-FG Rocket #################################
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launch_event':
+
+            for key, item in soyuz.items():
+
+                calc_emission_type(df, soyuz, i, 'launch_event', df['no_of_launches'].loc[i])
+                
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_production': 
+
+            calc_emission_type(df, soyuz, i, 'launcher_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_ait': 
+
+            calc_emission_type(df, soyuz, i, 'launcher_ait', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'propellant_production': 
+
+            calc_emission_type(df, soyuz, i, 'propellant_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'propellant_scheduling': 
+
+            calc_emission_type(df, soyuz, i, 'propellant_scheduling', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launcher_transportation': 
+
+            calc_emission_type(df, soyuz, i, 'launcher_transportation', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'soyuz' and df['impact_category'].loc[i] == 'launch_campaign': 
+
+            calc_emission_type(df, soyuz, i, 'launch_campaign', df['no_of_launches'].loc[i])
+
+        ############################ Unknown Hydrocarbon Rocket ##################################
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'launch_event':
+
+            for key, item in unknown_hyc.items():
+
+                calc_emission_type(df, unknown_hyc, i, 'launch_event', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'launcher_production':
+
+            calc_emission_type(df, unknown_hyc, i, 'launcher_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'launcher_ait':
+
+            calc_emission_type(df, unknown_hyc, i, 'launcher_ait', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'propellant_production':
+
+            calc_emission_type(df, unknown_hyc, i, 'propellant_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'propellant_scheduling':
+
+            calc_emission_type(df, unknown_hyc, i, 'propellant_scheduling', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'launcher_transportation':
+
+            calc_emission_type(df, unknown_hyc, i, 'launcher_transportation', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyc' and df['impact_category'].loc[i] == 'launch_campaign':
+
+            calc_emission_type(df, unknown_hyc, i, 'launch_campaign', df['no_of_launches'].loc[i])
+
+        ################################# Unknown Hydrogen Rocket ################################
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'launch_event':
+
+            for key, item in unknown_hyg.items():
+
+                calc_emission_type(df, unknown_hyg, i, 'launch_event', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'launcher_production':
+
+            calc_emission_type(df, unknown_hyg, i, 'launcher_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'launcher_ait':
+
+            calc_emission_type(df, unknown_hyg, i, 'launcher_ait', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'propellant_production':
+
+            calc_emission_type(df, unknown_hyg, i, 'propellant_production', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'propellant_scheduling':
+
+            calc_emission_type(df, unknown_hyg, i, 'propellant_scheduling', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'launcher_transportation':
+
+            calc_emission_type(df, unknown_hyg, i, 'launcher_transportation', df['no_of_launches'].loc[i])
+
+        if df['rocket'].loc[i] == 'unknown_hyg' and df['impact_category'].loc[i] == 'launch_campaign':
+
+            calc_emission_type(df, unknown_hyg, i, 'launch_campaign', df['no_of_launches'].loc[i])
+
+        ################################################# Emission per Subsriber##############################
+        for key, item in parameters.items():
+
+            if key == 'starlink':
+
+                if df['constellation'].loc[i] == 'starlink':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'oneweb':
+
+                if df['constellation'].loc[i] == 'oneweb':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'kuiper':
+
+                if df['constellation'].loc[i] == 'kuiper':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'geo':
+
+                if df['constellation'].loc[i] == 'geo_generic':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+    df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
+         'rocket', 'representative_of', 'rocket_type', 'no_of_satellites', 
+         'no_of_launches', 'impact_category', 'climate_change_baseline',
+         'climate_change_worst_case', 'ozone_depletion_baseline', 
+         'ozone_depletion_worst_case', 'resource_depletion', 
+         'freshwater_toxicity', 'human_toxicity'], 
+         value_vars = ['subscribers_low', 'subscribers_baseline', 
+         'subscribers_high'], 
+         var_name = 'subscriber_scenario', value_name = 'subscribers')
+    
+    df['per_subscriber_emission'] = ''
+    
+    for i in range(len(df)):
+
+        df['per_subscriber_emission'].loc[i] = df['climate_change_baseline'].loc[i] / df['subscribers'].loc[i]
+
+    filename = 'individual_emissions.csv'
+
+    if not os.path.exists(BASE_PATH):
+
+        os.makedirs(BASE_PATH)
+    
+    path_out = os.path.join(BASE_PATH, '..', 'results', filename)
+    df.to_csv(path_out, index = False)
+
+
+    return None
+
 
 def run_uq_processing_cost():
     """  
@@ -226,6 +518,7 @@ def run_uq_processing_cost():
         path_out = os.path.join(DATA, filename)
         df.to_csv(path_out, index = False)
 
+
     return
 
 
@@ -276,7 +569,8 @@ def process_mission_capacity():
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
 
-         df['capacity_per_user'].loc[i] = cy.capacity_subscriber(df['constellation_capacity_mbps'].loc[i], df['subscribers'].loc[i])
+         df['capacity_per_user'].loc[i] = (cy.capacity_subscriber(df['constellation_capacity_mbps'].loc[i], 
+                                          df['subscribers'].loc[i]))
 
          df['monthly_gb'].loc[i] = (cy.monthly_traffic(df['capacity_per_user'].loc[i]))
 
@@ -341,122 +635,21 @@ def process_mission_cost():
     return None
 
 
-def process_mission_emission():
-    """
-    This function process the 
-    total emissions. 
-    
-    """
-    data_in = os.path.join(DATA, 'uq_parameters_emissions.csv')#[:500]
-    df = pd.read_csv(data_in, index_col = False)
-
-    #Select the columns to use.
-    df = df[['constellation', 'subscribers_low', 
-        'subscribers_baseline', 'subscribers_high',
-        'total_global_warming_em', 'total_ozone_depletion_em',
-        'total_mineral_depletion', 'total_climate_change_wc',
-        'total_freshwater_toxicity', 'total_human_toxicity', 
-        'total_climate_change', 'oneweb_f9', 'oneweb_sz']]
-
-    # Create future columns to use
-    df[['mission_number', 'total_emissions']] = ''
-
-    # # Process satellite missions       
-    for i in tqdm(df.index, desc = 'Processing satellite missions'):
-         
-         if df['constellation'].loc[i] == 'Starlink':
-             
-             df['mission_number'].loc[i] = 74
-         elif df['constellation'].loc[i] == 'OneWeb':
-             
-             df['mission_number'].loc[i] = 20
-         else:
-             
-             df['mission_number'].loc[i] = 54
-
-    print("Finished processing satellite missions")
-
-    # # Classify subscribers by melting the dataframe into long format
-    # # Switching the subscriber columns from wide format to long format
-
-    df = pd.melt(df, id_vars = ['constellation', 'mission_number',
-                                'total_global_warming_em', 'total_ozone_depletion_em', 
-                                'total_mineral_depletion', 'total_freshwater_toxicity', 
-                                'total_human_toxicity', 'total_emissions', 
-                                'total_climate_change', 'total_climate_change_wc', 
-                                'oneweb_f9', 'oneweb_sz'], value_vars = ['subscribers_low', 
-                                                                         'subscribers_baseline', 
-                                                                         'subscribers_high'], 
-                                                                         var_name = 'subscriber_scenario', 
-                                                                         value_name = 'subscribers')
-
-    # # Classify total emissions by impact category
-    df = pd.melt(df, id_vars = ['constellation', 'mission_number', 'subscriber_scenario', 'subscribers', 
-                                'total_emissions', 'total_climate_change', 'total_climate_change_wc',
-                                'oneweb_f9', 'oneweb_sz'], value_vars = ['total_global_warming_em', 
-                                                                         'total_ozone_depletion_em', 
-                                                                         'total_mineral_depletion', 
-                                                                         'total_freshwater_toxicity',
-                                                                         'total_human_toxicity'], 
-                                                                         var_name = 'impact_category',
-                                                                         value_name = 'emission_totals')  
-
-    # Calculate the total emissions
-    for i in tqdm(range(len(df)), desc = 'Calculating constellation emission totals'):
-
-         if df['constellation'].loc[i] == 'Starlink' or df['constellation'].loc[i] == 'Kuiper':
-             
-             df['total_emissions'].loc[i] = df['emission_totals'].loc[i] * df['mission_number'].loc[i]
-         else:
-             
-             df['total_emissions'].loc[i] = (df['oneweb_sz'].loc[i] * 11) + (df['oneweb_f9'].loc[i] * 7)
-
-    print('Finished calculating constellation emission totals')
-
-    # # Select columns to use
-    df = df[['constellation', 'mission_number', 'subscriber_scenario', 'subscribers', 'impact_category', 
-             'total_emissions', 'oneweb_f9', 'oneweb_sz', 'total_climate_change', 'total_climate_change_wc']]
-
-    # Create columns to store new data
-    df[['per_subscriber_emission', 'total_climate_emissions_kg', 'total_climate_emissions_wc_kg']] = ''
-
-    #  Calculate total metrics
-    for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
-
-         df['total_climate_emissions_kg'].loc[i] = df['total_climate_change'].loc[i] * df['mission_number'].loc[i]
-
-         df['total_climate_emissions_wc_kg'].loc[i] = df['total_climate_change_wc'].loc[i] * df['mission_number'].loc[i]
-                                                    
-         df['per_subscriber_emission'].loc[i] = df['total_climate_emissions_kg'].loc[i] / df['subscribers'].loc[i]
-        
-
-    filename = 'final_emissions_results.csv'
-
-    if not os.path.exists(RESULTS):
-
-         os.makedirs(RESULTS)
-
-    path_out = os.path.join(RESULTS, filename)
-    df.to_csv(path_out, index = False)
-
-    return None
-
-
 if __name__ == '__main__':
     
     start = time.time() 
 
-    #print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    print('Running on run_uq_processing_capacity()')
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
 
+    print('Processing Emission results')
+    calc_emissions()
+
     print('Working on process_mission_capacity()')
     process_mission_capacity()
-
-    print('Working on process_mission_emissions()')
-    process_mission_emission()
 
     print('Working on process_mission_costs()')
     process_mission_cost()
