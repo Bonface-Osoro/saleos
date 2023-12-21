@@ -54,7 +54,7 @@ The three datasets are stored in the folder, `data/raw`
 Now you should be ready to start running the codebase.
 
 Using conda
-===========
+-----------
 
 The recommended installation method is to use conda, which handles packages and virtual
 environments, along with the conda-forge channel which has a host of pre-built libraries and
@@ -91,7 +91,7 @@ Lastly, to visualize the results, you will navigate into the `vis` folder and ru
 5. `cost.r`
 
 Quick Start
-===========
+-----------
 To quick start, install the `saleos` package.
 
   `python setup.py install`
@@ -107,7 +107,7 @@ Citation
 Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. arXiv preprint arXiv:2309.02338.
 
 Background and funding
-======================
+----------------------
 
 **saleos** has been developed by researchers at George Mason University, University of Strathclyde and Middlebury College.
 

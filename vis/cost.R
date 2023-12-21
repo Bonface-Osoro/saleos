@@ -395,7 +395,7 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 5.5,
+  width = 6.5,
   height = 4,
   res = 480
 )

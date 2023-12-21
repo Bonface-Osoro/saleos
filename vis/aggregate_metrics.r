@@ -291,7 +291,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 35)
+    limits = c(0, 40)
   ) + theme_minimal() +
   theme(axis.title.y = element_text(size = 6),
         strip.text.x = element_blank(),
@@ -435,7 +435,7 @@ constellation_tco <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 3.2)
+    limits = c(0, 12)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -495,7 +495,7 @@ constellation_tco_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 5000)
+    limits = c(0, 25000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -543,16 +543,20 @@ aggregate_metrics =   ggarrange(
   ncol = 1
 )
 
-path = file.path(visualizations, 'figures', 'c_aggregate_metrics.png')
-dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
-ggsave(
-  'c_aggregate_metrics.png',
-  plot = last_plot(),
-  device = "png",
-  path=file.path(visualizations, 'figures'),
-  units = c("in"),
+path = file.path(folder, 'figures', 'c_aggregate_metrics.png')
+dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
+png(
+  path,
+  units = "in",
   width = 8,
   height = 5.3,
-  bg="white"
+  res = 480
 )
+print(aggregate_metrics)
+dev.off()
+
+
+
+
+
 
