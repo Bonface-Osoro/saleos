@@ -98,15 +98,24 @@ def run_uq_processing_capacity():
             spectral_efficiency, 
             item['dl_bandwidth_hz']), 4)
 
-        constellation_capacity = round((cy.calc_constellation_capacity(
-                channel_capacity, item['number_of_channels'], 
-                item['polarization'], item['number_of_beams'], 
-                item['number_of_satellites'])), 4)
-
         sat_capacity = round(cy.single_satellite_capacity(
             item['dl_bandwidth_hz'], spectral_efficiency, 
             item['number_of_channels'], item['polarization'],
             item['number_of_beams']), 4)
+        
+        if item['constellation'] == 'GEO':
+
+            constellation_capacity = (round((cy.calc_constellation_capacity(
+                    channel_capacity, item['number_of_channels'], 
+                    item['polarization'], item['number_of_beams'], 
+                    item['number_of_satellites'])), 4)) * 2
+            
+        else:
+
+            constellation_capacity = round((cy.calc_constellation_capacity(
+                    channel_capacity, item['number_of_channels'], 
+                    item['polarization'], item['number_of_beams'], 
+                    item['number_of_satellites'])), 4)
         
         if spectral_efficiency <= 1.896173:
 
@@ -643,10 +652,10 @@ if __name__ == '__main__':
     #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    #run_uq_processing_cost()
+    run_uq_processing_cost()
 
     print('Processing Emission results')
-    #calc_emissions()
+    calc_emissions()
 
     print('Working on process_mission_capacity()')
     #process_mission_capacity()

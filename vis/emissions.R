@@ -13,27 +13,40 @@ visualizations = file.path(folder, '..', 'vis')
 data <- read.csv(file.path(folder, '..', 'results', 'individual_emissions.csv'))
 data <- data[data$scenario == "scenario3", ]
 
+#Rename the constellation and emission type column values
 data$constellation = factor(
   data$constellation,
   levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
-  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO'))
+  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO')
+)
 
 data$rocket_type = factor(
   data$rocket_type,
   levels = c('hydrocarbon', 'hydrogen'),
-  labels = c('Hydrocarbon', 'Hydrogen'))
+  labels = c('Hydrocarbon', 'Hydrogen')
+)
 
 data$impact_category = factor(
   data$impact_category,
-  levels =c(
-    "launcher_production", "propellant_production",
-    "launch_campaign", "launcher_transportation",
-    "launcher_ait", "propellant_scheduling",
-    "launch_event"),
+  levels = c(
+    "launcher_production",
+    "propellant_production",
+    "launch_campaign",
+    "launcher_transportation",
+    "launcher_ait",
+    "propellant_scheduling",
+    "launch_event"
+  ),
   labels = c(
-    "Launcher Production", "Launcher Propellant Production",
-    "Launch Campaign", "Transportation of Launcher",
-    "Launcher AIT", "SCHD of Propellant", "Launch Event"))
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
+    "Launcher AIT",
+    "SCHD of Propellant",
+    "Launch Event"
+  )
+)
 
 
 ###########################
@@ -51,15 +64,31 @@ totals <- data %>%
 climate_change <-
   ggplot(df, aes(x = constellation, y = cc_baseline / 1e9)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value / 1e9,
-      label = round(value / 1e9, 3)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e9,
+      label = round(value / 1e9, 3)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs( colour = NULL, title = "a", subtitle = " ",
-    x = NULL, y = bquote("Climate Change (Mt CO"["2"]~" eq)"),
-    fill = "Satellite Mission Stage") + scale_y_continuous(limits = c(0, 3.8),
-    labels = function(y) format(y, scientific = FALSE),
-    expand = c(0, 0)) + scale_x_discrete(limits=rev) +
+  labs(
+    colour = NULL,
+    title = "a",
+    subtitle = " ",
+    x = NULL,
+    y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, 3.8),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
     axis.text.x = element_text(size = 6),
@@ -71,7 +100,7 @@ climate_change <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 
 #############################
@@ -89,16 +118,31 @@ totals <- data %>%
 climate_change_wc <-
   ggplot(df1, aes(x = constellation, y = cc_worst_case / 1e9)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes( x = constellation, y = value / 1e9,
-      label = round(value / 1e9, 1)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e9,
+      label = round(value / 1e9, 1)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "b", subtitle = " ",
-    x = NULL, y = bquote("Climate Change (Mt CO"["2"]~" eq)"),
-    fill = "Satellite Mission Stage") + scale_y_continuous(
-    limits = c(0, 8.5), labels = function(y)
-    format(y, scientific = FALSE), expand = c(0, 0)
-  ) + scale_x_discrete(limits=rev) +
+  labs(
+    colour = NULL,
+    title = "b",
+    subtitle = " ",
+    x = NULL,
+    y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, 8.5),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
     axis.text.x = element_text(size = 6),
@@ -110,7 +154,7 @@ climate_change_wc <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ############################
 ##ozone depletion baseline##
@@ -127,16 +171,33 @@ totals <- data %>%
 ozone_depletion <-
   ggplot(df2, aes(x = constellation, y = ozone_baseline / 1e6)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value/1e6,
-      label = round(value/1e6, 1)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()) +
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e6,
+      label = round(value / 1e6, 1)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
+  ) +
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "c", subtitle = " ",
-    x = NULL, y = bquote("Ozone Depletion (kt CFC-11 eq)"),
-    fill = "Satellite Mission Stage") +
-  scale_y_continuous(limits = c(0, max(totals$value)/1e6+1),
-    labels = function(y) format(y, scientific = FALSE),
-    expand = c(0, 0)) + scale_x_discrete(limits=rev) +
+  labs(
+    colour = NULL,
+    title = "c",
+    subtitle = " ",
+    x = NULL,
+    y = bquote("Ozone Depletion (kt CFC-11 eq)"),
+    fill = "Satellite Mission Stage"
+  ) +
+  scale_y_continuous(
+    limits = c(0, max(totals$value) / 1e6 + 1),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
     axis.text.x = element_text(size = 6),
@@ -148,7 +209,7 @@ ozone_depletion <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ##############################
 ##ozone depletion worst case##
@@ -167,16 +228,31 @@ max_y = max(totals$value)
 ozone_depletion_wc <-
   ggplot(df3, aes(x = constellation, y = ozone_worst_case / 1e6)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value / 1e6,
-      label = round(value / 1e6, 2)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e6,
+      label = round(value / 1e6, 2)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "d", subtitle = " ", x = NULL,
+  labs(
+    colour = NULL,
+    title = "d",
+    subtitle = " ",
+    x = NULL,
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
-    fill = "Satellite Mission Stage") + scale_y_continuous(
-    limits = c(0, max_y/1e6+1.5), labels = function(y)
-    format(y, scientific = FALSE), expand = c(0, 0)
-  ) + scale_x_discrete(limits=rev) +
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, max_y / 1e6 + 1.5),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
     axis.text.x = element_text(size = 6),
@@ -188,7 +264,7 @@ ozone_depletion_wc <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ######################
 ##Resource depletion##
@@ -205,15 +281,30 @@ totals <- data %>%
 resource_depletion <-
   ggplot(df4, aes(x = constellation, y = resources / 1e3)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value / 1e3,
-      label = round(value / 1e3, 0)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e3,
+      label = round(value / 1e3, 0)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "e", subtitle = " ", x = NULL,
+  labs(
+    colour = NULL,
+    title = "e",
+    subtitle = " ",
+    x = NULL,
     y = bquote("Resource Depletion (t Sb eq)"),
-    fill = "Satellite Mission Stage") + scale_y_continuous(
-    limits = c(0, 500), labels = function(y)
-    format(y, scientific = FALSE), expand = c(0, 0)
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, 500),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
@@ -226,7 +317,7 @@ resource_depletion <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 #######################
 ##Freshwater toxicity##
@@ -243,16 +334,32 @@ totals <- data %>%
 freshwater_ecotixicity <-
   ggplot(df5, aes(x = constellation, y = freshwater / 1e8)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value / 1e8,
-      label = round(value / 1e8, 0)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()
+  geom_text(
+    aes(
+      x = constellation,
+      y = value / 1e8,
+      label = round(value / 1e8, 0)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "f", subtitle = " ", x = NULL,
-    y = bquote('Water Amount (PAF.M3.Day' *  ~ 10 ^ 8 * ')'), #"["2"]~"
+  labs(
+    colour = NULL,
+    title = "f",
+    subtitle = " ",
+    x = NULL,
+    y = bquote('Water Amount (PAF.M3.Day' *  ~ 10 ^ 8 * ')'),
+    #"["2"]~"
     fill = "Satellite Mission Stage"
-  ) + scale_y_continuous(limits = c(0, 145), labels = function(y)
-      format(y, scientific = FALSE), expand = c(0, 0)
-  ) + scale_x_discrete(limits=rev) +
+  ) + scale_y_continuous(
+    limits = c(0, 145),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
+  ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
     axis.text.x = element_text(size = 6),
@@ -264,7 +371,7 @@ freshwater_ecotixicity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ##################
 ##Human Toxicity##
@@ -281,15 +388,31 @@ totals <- data %>%
 human_toxicity <-
   ggplot(df6, aes(x = constellation, y = human)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_text(aes(x = constellation, y = value,
-      label = round(value, 0)), size = 2, data = totals,
-    vjust = 0.5, hjust = -0.09, position = position_stack()) + 
+  geom_text(
+    aes(
+      x = constellation,
+      y = value,
+      label = round(value, 0)
+    ),
+    size = 2,
+    data = totals,
+    vjust = 0.5,
+    hjust = -0.09,
+    position = position_stack()
+  ) +
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
-  labs(colour = NULL, title = "g", subtitle = " ", x = NULL,
+  labs(
+    colour = NULL,
+    title = "g",
+    subtitle = " ",
+    x = NULL,
     y = "Cases of Human Ecotoxicity",
-    fill = "Satellite Mission Stage") + scale_y_continuous(
-    limits = c(0, 1100), labels = function(y)
-    format(y, scientific = FALSE), expand = c(0, 0)
+    fill = "Satellite Mission Stage"
+  ) + scale_y_continuous(
+    limits = c(0, 1100),
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
@@ -302,7 +425,7 @@ human_toxicity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 6)
-  ) + facet_wrap(~ rocket_type, ncol = 2)
+  ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ####################
 ##Emissions Legend##
@@ -320,21 +443,31 @@ df$impact_category = df$impact_category
 
 df$impact_category = factor(
   df$impact_category,
-  levels =c(
-    "Launcher Production", "Launcher Propellant Production",
-    "Launch Campaign", "Transportation of Launcher",
-    "Launcher AIT", "SCHD of Propellant","Launch Event"),
+  levels = c(
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
+    "Launcher AIT",
+    "SCHD of Propellant",
+    "Launch Event"
+  ),
   labels = c(
-    "Launcher Production", "Launcher Propellant Production",
-    "Launch Campaign", "Transportation of Launcher",
+    "Launcher Production",
+    "Launcher Propellant Production",
+    "Launch Campaign",
+    "Transportation of Launcher",
     "Launcher Assembly, Integration\nand Testing (AIT)",
     "Storage, Containment, Handling\nand Decontamination (SCHD)\nof Propellant",
-    "Launch Event"))
+    "Launch Event"
+  )
+)
 
-legends <- ggplot(df, aes(x = toxicity, y = toxicity, color = impact_category)) +
+legends <-
+  ggplot(df, aes(x = toxicity, y = toxicity, color = impact_category)) +
   geom_point(size = 0.005) +
   lims(x = c(0, 0), y = c(1, 1)) +
-  labs(fill = "Satellite Mission Stage", color=NULL) +
+  labs(fill = "Satellite Mission Stage", color = NULL) +
   theme_void() +
   scale_color_brewer(palette = "Dark2") +
   theme(
@@ -345,11 +478,15 @@ legends <- ggplot(df, aes(x = toxicity, y = toxicity, color = impact_category)) 
     legend.title = element_text(size = 6, face = "bold")
   ) +
   guides(colour = guide_legend(
-    override.aes = list(size = 8), ncol = 2, nrow = 4))
+    override.aes = list(size = 8),
+    ncol = 2,
+    nrow = 4
+  ))
 
 ##################
 ##Combined plots##
 ##################
+
 
 pub_emission <- ggarrange(
   climate_change,
@@ -371,7 +508,8 @@ png(
   units = "in",
   width = 9,
   height = 10,
-  res = 480)
+  res = 480
+)
 
 print(pub_emission)
 dev.off()
