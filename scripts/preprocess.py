@@ -168,9 +168,9 @@ def uq_inputs_cost():
                       item['spectrum_cost'], 
                       item['spectrum_cost'] + 5000000]
         
-        ground_station_energy_costs = [item['spectrum_cost'] - 5000000, 
-                      item['spectrum_cost'], 
-                      item['spectrum_cost'] + 5000000]
+        ground_station_energy_costs = [item['ground_station_energy'] - 500000, 
+                      item['ground_station_energy'], 
+                      item['ground_station_energy'] + 500000]
 
         for sat_launch in satellite_launch:
 
