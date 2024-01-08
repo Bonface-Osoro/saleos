@@ -117,12 +117,10 @@ def run_uq_processing_capacity():
                     item['polarization'], item['number_of_beams'], 
                     item['number_of_satellites'])), 4)
             
-        '''
-        1.896173 and .524939 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
-        ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
-      -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
-      other-broadband-satellite-applications-part-2-dvb-s2-extensions)
-        '''
+        # 1.896173 and .524939 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
+        # ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
+        # -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
+        # other-broadband-satellite-applications-part-2-dvb-s2-extensions)
         if spectral_efficiency <= 1.896173:
 
             cnr_scenario = 'low'
@@ -183,6 +181,7 @@ def run_uq_processing_capacity():
         df.to_csv(path_out, index = False)
 
     return 
+
 
 def calc_emission_type(df, rocket, datapoint,
     emission_category, no_launches):
