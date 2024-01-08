@@ -57,7 +57,7 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
     ),
     size = 1.5,
     data = totals,
-    vjust = -0.6,
+    vjust = - 1.2,
     hjust = 0.5,
     position = position_stack()
   ) +

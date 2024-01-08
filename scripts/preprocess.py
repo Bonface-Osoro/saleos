@@ -29,20 +29,36 @@ def uq_inputs_capacity():
     for key, item in parameters.items():
 
         # radio propagation variables#altitude_km
+        '''
+        Generate a list containing satellite altitude values that are above 
+        and below the provided input value by 6 km at an interval of 2 km.
+        '''
         altitude = (np.concatenate((np.arange(item['altitude_km'], 
                    (item['altitude_km'] + 6) + 2, 2), 
                    np.arange(item['altitude_km'] - 2, 
                    (item['altitude_km'] - 6) - 2, -2))))
         
+        '''
+        Generate a list containing satellite elevation angle values that are above 
+        the provided input value by 15 degrees at an interval of 5 degrees.
+        '''
         elevation_angles = (np.arange(item['elevation_angle'], 
                            (item['elevation_angle'] + 15) 
                            + 5, 5))
         
+        '''
+        Generate a list containing atmospheric loss values that are above 
+        and below the provided input value by 8 dB at an interval of 3 dB.
+        '''
         atmospheric_loss = (np.concatenate((np.arange(item['earth_atmospheric_losses'], 
                            (item['earth_atmospheric_losses'] + 8) + 3, 3), 
                            np.arange(item['earth_atmospheric_losses'] - 3, 
                            (item['earth_atmospheric_losses'] - 8) - 3, -3))))
         
+        '''
+        Generate a list containing receiver gain values that are above 
+        and below the provided input value by 3 dB.
+        '''
         receiver_gain = [(item['receiver_gain'] - 3), 
                          (item['receiver_gain']), 
                          (item['receiver_gain'] + 3)]
@@ -128,46 +144,82 @@ def uq_inputs_cost():
         # Cost variables
         if key == 'geo':
 
+            '''
+            Generate a list containing satellite launch cost values that are above 
+            and below the provided input value by $USD 1,680,000,000 for a GEO operator.
+            '''
             satellite_launch = [item['satellite_launch_cost'] - 1680000000, 
                                 item['satellite_launch_cost'], 
                                 item['satellite_launch_cost'] + 1680000000] 
             
         else:
 
+            '''
+            Generate a list containing satellite launch cost values that are above 
+            and below the provided input value by $USD 63,672,000 for a LEO operator.
+            '''
             satellite_launch = [item['satellite_launch_cost'] - 63672000, 
                                 item['satellite_launch_cost'], 
                                 item['satellite_launch_cost'] + 63672000] 
             
+        '''
+        Generate a list containing ground station cost values that are above 
+        and below the provided input value by 20% of the given cost.
+        '''
         ground_station = [item['ground_station_cost'] - 
                           (item['ground_station_cost'] * 0.2), 
                          item['ground_station_cost'], 
                          item['ground_station_cost'] + 
                          (item['ground_station_cost'] * 0.2)]
-
+        
+        '''
+        Generate a list containing maintenance cost values that are above 
+        and below the provided input value by $USD 3,000,000.
+        '''
         maintenance_cost = [item['maintenance'] - 3000000, 
                             item['maintenance'], 
                             item['maintenance'] + 3000000]
-
+        
+        '''
+        Generate a list containing staff cost values that are above 
+        and below the provided input value by $USD 1,000,000.
+        '''
         staff_cost = [item['staff_costs'] - 10000000, 
                       item['staff_costs'], 
                       item['staff_costs'] + 10000000]
         
         if key == 'geo':
-        
+
+            '''
+            Generate a list containing satellite manufacturing cost values that are above 
+            and below the provided input value by $USD 150,000,000 for a GEO operator.
+            '''
             satellite_manufacturing_costs = [item['satellite_manufacturing'] - 150000000, 
                         item['satellite_manufacturing'], 
                         item['satellite_manufacturing'] + 150000000]
             
         else: 
 
-            satellite_manufacturing_costs = [item['satellite_manufacturing'] - 100000, 
+            '''
+            Generate a list containing satellite manufacturing cost values that are above 
+            and below the provided input value by $USD 1,000,000 for a LEO operator.
+            '''
+            satellite_manufacturing_costs = [item['satellite_manufacturing'] - 1000000, 
                         item['satellite_manufacturing'], 
                         item['satellite_manufacturing'] + 1000000]
             
+        '''
+        Generate a list containing spectrum cost values that are above 
+        and below the provided input value by $USD 5,000,000.
+        '''
         spectrum_costs = [item['spectrum_cost'] - 5000000, 
                       item['spectrum_cost'], 
                       item['spectrum_cost'] + 5000000]
         
+        '''
+        Generate a list containing ground station energy values that are above 
+        and below the provided input value by $USD 500,000.
+        '''
         ground_station_energy_costs = [item['ground_station_energy'] - 500000, 
                       item['ground_station_energy'], 
                       item['ground_station_energy'] + 500000]
