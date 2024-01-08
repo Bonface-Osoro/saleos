@@ -116,7 +116,13 @@ def run_uq_processing_capacity():
                     channel_capacity, item['number_of_channels'], 
                     item['polarization'], item['number_of_beams'], 
                     item['number_of_satellites'])), 4)
-        
+            
+        '''
+        1.896173 and .524939 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
+        ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
+      -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
+      other-broadband-satellite-applications-part-2-dvb-s2-extensions)
+        '''
         if spectral_efficiency <= 1.896173:
 
             cnr_scenario = 'low'
@@ -408,7 +414,7 @@ def calc_emissions():
 
             calc_emission_type(df, unknown_hyg, i, 'launch_campaign', df['no_of_launches'].loc[i])
 
-        ################################################# Emission per Subsriber##############################
+        ################################################# Emission per Subscriber##############################
         for key, item in parameters.items():
 
             if key == 'starlink':
@@ -545,28 +551,12 @@ def process_mission_capacity():
              'constellation_capacity_mbps',
              'subscribers_low', 'subscribers_baseline',
              'subscribers_high', 'satellite_coverage_area_km']]
-    
-    df['mission_number'] = ''
-    # Process satellite missions       
-    for i in tqdm(df.index, desc = 'Processing satellite missions'):
-
-        if df['constellation'].loc[i] == 'Starlink':
-            
-            df['mission_number'].loc[i] = 74
-        elif df['constellation'].loc[i] == 'OneWeb':
-            
-            df['mission_number'].loc[i] = 20
-        else:
-            
-            df['mission_number'].loc[i] = 54
-
-    print("Finished processing satellite missions")
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
     df = pd.melt(df, id_vars = ['constellation', 'constellation_capacity_mbps', 
-                                'cnr_scenario', 'satellite_coverage_area_km', 
-                                'mission_number'], value_vars = ['subscribers_low', 
+                                'cnr_scenario', 'satellite_coverage_area_km'], 
+                                value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 var_name = 'subscriber_scenario', 
                                 value_name = 'subscribers')
@@ -649,7 +639,7 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
@@ -658,7 +648,7 @@ if __name__ == '__main__':
     calc_emissions()
 
     print('Working on process_mission_capacity()')
-    #process_mission_capacity()
+    process_mission_capacity()
 
     print('Working on process_mission_costs()')
     process_mission_cost()

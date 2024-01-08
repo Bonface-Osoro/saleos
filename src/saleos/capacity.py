@@ -215,7 +215,6 @@ def calc_free_path_loss(frequency, distance_km):
     free_path_loss_db : float
         Free space path loss in dB
     """
-    speed_light = 3 * 10 ** 8
     frequency = (frequency / (10 ** 9))
 
     free_path_loss = ((20 * np.log10(frequency)) 
