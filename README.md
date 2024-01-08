@@ -26,7 +26,7 @@ The `saleos` codebase provides an open-source integrated assessment model capabl
 
 ## Sustainability metrics
 
-The `saleos` codebase is capable of estimating a range of sustainability metrics. Figure 3 illustrates a selection of these including the estimated emissions per subscriber (subplot b), potential mean monthly traffic per subscriber (subplot d), and the financial cost per subscriber (subplot f).
+The `saleos` codebase is capable of estimating a range of sustainability metrics. `Figure 3` illustrates a selection of these including the estimated emissions per subscriber (subplot b), potential mean monthly traffic per subscriber (subplot d), and the financial cost per subscriber (subplot f).
 
 #### Figure 3 Aggregate sustainability metrics for Kuiper, OneWeb, Starlink and a hypothetical GEO operator.
 <p align = 'center'>
@@ -51,7 +51,7 @@ To use `saleos` the following datasets are required.
 4. Kuiper, OneWeb and Starlink constellation description dataset: These datasets contains basic technical and orbital parameter details of the three LEO constellations.
 5. Rocket details: This dataset contains information on the characteristics of the rockets previously used in launching LEO satellites. 
 
-The three datasets are stored in the folder, `data/raw`
+The five datasets are stored in the folder, `data/raw`
 
 Now you should be ready to start running the codebase.
 
@@ -74,7 +74,7 @@ Alternatively, to install a conda environment capable of running the model, you 
 
   `conda env create -f saleos.yml`
 
-The `saleos.yml` file represents an existing virtual environment with a variety of packages, necessary for these tutorials (e.g., pandas, numpy etc.).
+The `saleos.yml` file represents an existing virtual environment with a variety of packages, necessary for running the model (e.g., pandas, numpy etc.).
 
 First, to run `saleos` you need to generate uncertain capacity and cost parameters since they are not deterministic.
 So navigate to the `scripts` folder and run `preprocess.py`. This will produce two capacity and cost.csv files named `uq_parameters_capacity.csv` and `uq_parameters_cost.csv` stored in the path `data/processed`
