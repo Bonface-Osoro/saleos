@@ -70,7 +70,7 @@ climate_change <-
       y = value / 1e9,
       label = round(value / 1e9, 3)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -84,22 +84,22 @@ climate_change <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 3.8),
+    limits = c(0, 14),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 9),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 
@@ -124,7 +124,7 @@ climate_change_wc <-
       y = value / 1e9,
       label = round(value / 1e9, 1)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -138,22 +138,22 @@ climate_change_wc <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 8.5),
+    limits = c(0, 22),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 9),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ############################
@@ -177,7 +177,7 @@ ozone_depletion <-
       y = value / 1e6,
       label = round(value / 1e6, 1)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -200,15 +200,15 @@ ozone_depletion <-
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 9),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ##############################
@@ -234,7 +234,7 @@ ozone_depletion_wc <-
       y = value / 1e6,
       label = round(value / 1e6, 2)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -248,22 +248,22 @@ ozone_depletion_wc <-
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, max_y / 1e6 + 1.5),
+    limits = c(0, max_y / 1e6 + 2.8),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 9),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ######################
@@ -287,7 +287,7 @@ resource_depletion <-
       y = value / 1e3,
       label = round(value / 1e3, 0)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -301,22 +301,22 @@ resource_depletion <-
     y = bquote("Resource Depletion (t Sb eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 500),
+    limits = c(0, 1950),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 12),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 #######################
@@ -340,7 +340,7 @@ freshwater_ecotixicity <-
       y = value / 1e8,
       label = round(value / 1e8, 0)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -355,22 +355,22 @@ freshwater_ecotixicity <-
     #"["2"]~"
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 145),
+    limits = c(0, 485),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 12),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ##################
@@ -394,7 +394,7 @@ human_toxicity <-
       y = value,
       label = round(value, 0)
     ),
-    size = 2,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -409,22 +409,22 @@ human_toxicity <-
     y = "Cases of Human Ecotoxicity",
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 1100),
+    limits = c(0, 3500),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
   ) + scale_x_discrete(limits = rev) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(size = 6),
+    axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
     plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title.y = element_markdown(size = 6),
+    axis.text.y = element_text(size = 9),
+    axis.title.y = element_markdown(size = 12),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.x = element_text(size = 6)
+    axis.title.x = element_text(size = 8)
   ) + facet_wrap( ~ rocket_type, ncol = 2)
 
 ####################
@@ -472,10 +472,10 @@ legends <-
   scale_color_brewer(palette = "Dark2") +
   theme(
     legend.direction = "vertical",
-    legend.position = c(0.6, 0.4),
+    legend.position = c(0.5, 0.6),
     legend.key.size = unit(.8, "cm"),
-    legend.text = element_text(size =  6),
-    legend.title = element_text(size = 6, face = "bold")
+    legend.text = element_text(size =  9),
+    legend.title = element_text(size = 9, face = "bold")
   ) +
   guides(colour = guide_legend(
     override.aes = list(size = 8),
