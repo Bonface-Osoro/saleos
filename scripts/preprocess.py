@@ -175,18 +175,22 @@ def uq_inputs_cost():
         if key == 'geo':
 
             # Generate a list containing satellite manufacturing cost values that are above 
-            # and below the provided input value by $USD 150,000,000 for a GEO operator.
-            satellite_manufacturing_costs = [item['satellite_manufacturing'] - 150000000, 
-                        item['satellite_manufacturing'], 
-                        item['satellite_manufacturing'] + 150000000]
+            # and below the provided input value by $USD 5,600,000,000 for a GEO operator.
+            total_satellite_cost = item['satellite_manufacturing'] * item['number_of_satellites']
+            total_variation_cost = item['number_of_satellites'] * 10000000
+
+            satellite_manufacturing_costs = [total_satellite_cost - total_variation_cost, 
+                        total_satellite_cost, total_satellite_cost + total_variation_cost]
             
         else: 
 
             # Generate a list containing satellite manufacturing cost values that are above 
-            # and below the provided input value by $USD 1,000,000 for a LEO operator.
-            satellite_manufacturing_costs = [item['satellite_manufacturing'] - 1000000, 
-                        item['satellite_manufacturing'], 
-                        item['satellite_manufacturing'] + 1000000]
+            # and below the provided input value by $USD 100,000 for a LEO operator.
+            total_satellite_cost = item['satellite_manufacturing'] * item['number_of_satellites']
+            total_variation_cost = item['number_of_satellites'] * 100000
+
+            satellite_manufacturing_costs = [total_satellite_cost - total_variation_cost, 
+                        total_satellite_cost, total_satellite_cost + total_variation_cost]
             
         # Generate a list containing spectrum cost values that are above 
         # and below the provided input value by $USD 5,000,000.
