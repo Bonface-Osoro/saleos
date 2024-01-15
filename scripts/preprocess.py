@@ -139,18 +139,18 @@ def uq_inputs_cost():
         if key == 'geo':
 
             # Generate a list containing satellite launch cost values that are above 
-            # and below the provided input value by $USD 1,680,000,000 for a GEO operator.
-            satellite_launch = [item['satellite_launch_cost'] - 1680000000, 
+            # and below the provided input value by $USD 10,000,000 for a GEO operator.
+            satellite_launch = [item['satellite_launch_cost'] - 10000000, 
                                 item['satellite_launch_cost'], 
-                                item['satellite_launch_cost'] + 1680000000] 
+                                item['satellite_launch_cost'] + 10000000] 
             
         else:
 
             # Generate a list containing satellite launch cost values that are above 
-            # and below the provided input value by $USD 63,672,000 for a LEO operator.
-            satellite_launch = [item['satellite_launch_cost'] - 63672000, 
+            # and below the provided input value by $USD 5,000,000 for a LEO operator.
+            satellite_launch = [item['satellite_launch_cost'] - 5000000, 
                                 item['satellite_launch_cost'], 
-                                item['satellite_launch_cost'] + 63672000] 
+                                item['satellite_launch_cost'] + 5000000] 
             
         # Generate a list containing ground station cost values that are above 
         # and below the provided input value by 20% of the given cost.
@@ -161,16 +161,16 @@ def uq_inputs_cost():
                          (item['ground_station_cost'] * 0.2)]
         
         # Generate a list containing maintenance cost values that are above 
-        # and below the provided input value by $USD 3,000,000.
-        maintenance_cost = [item['maintenance'] - 3000000, 
+        # and below the provided input value by $USD 10,000,000.
+        maintenance_cost = [item['maintenance'] - 10000000, 
                             item['maintenance'], 
-                            item['maintenance'] + 3000000]
+                            item['maintenance'] + 10000000]
         
         # Generate a list containing staff cost values that are above 
-        # and below the provided input value by $USD 1,000,000.
-        staff_cost = [item['staff_costs'] - 10000000, 
+        # and below the provided input value by $USD 5,000,000.
+        staff_cost = [item['staff_costs'] - 50000000, 
                       item['staff_costs'], 
-                      item['staff_costs'] + 10000000]
+                      item['staff_costs'] + 50000000]
         
         if key == 'geo':
 
@@ -193,16 +193,16 @@ def uq_inputs_cost():
                         total_satellite_cost, total_satellite_cost + total_variation_cost]
             
         # Generate a list containing spectrum cost values that are above 
-        # and below the provided input value by $USD 5,000,000.
-        spectrum_costs = [item['spectrum_cost'] - 5000000, 
+        # and below the provided input value by $USD 1,000,000.
+        spectrum_costs = [item['spectrum_cost'] - 1000000, 
                       item['spectrum_cost'], 
-                      item['spectrum_cost'] + 5000000]
+                      item['spectrum_cost'] + 1000000]
         
         # Generate a list containing ground station energy values that are above 
-        # and below the provided input value by $USD 500,000.
-        ground_station_energy_costs = [item['ground_station_energy'] - 500000, 
+        # and below the provided input value by $USD 5,000.
+        ground_station_energy_costs = [item['ground_station_energy'] - 5000, 
                       item['ground_station_energy'], 
-                      item['ground_station_energy'] + 500000]
+                      item['ground_station_energy'] + 5000]
 
         for sat_launch in satellite_launch:
 
