@@ -161,10 +161,10 @@ def uq_inputs_cost():
                          (item['ground_station_cost'] * 0.2)]
         
         # Generate a list containing maintenance cost values that are above 
-        # and below the provided input value by $USD 10,000,000.
-        maintenance_cost = [item['maintenance'] - 10000000, 
+        # and below the provided input value by $USD 100,000.
+        maintenance_cost = [item['maintenance'] - 100000, 
                             item['maintenance'], 
-                            item['maintenance'] + 10000000]
+                            item['maintenance'] + 100000]
         
         # Generate a list containing staff cost values that are above 
         # and below the provided input value by $USD 5,000,000.
