@@ -638,16 +638,16 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
 
     print('Processing Emission results')
-    calc_emissions()
+    #calc_emissions()
 
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
     process_mission_cost()

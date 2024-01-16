@@ -55,7 +55,7 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
       y = value,
       label = round(after_stat(y), 2)
     ),
-    size = 3,
+    size = 2,
     data = totals,
     vjust = - 1.2,
     hjust = 0.5,
@@ -370,7 +370,7 @@ constellation_tco <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 12)
+    limits = c(0, 25)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -431,7 +431,7 @@ constellation_tco_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 25000)
+    limits = c(0, 45000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
