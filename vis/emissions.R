@@ -55,11 +55,12 @@ data$impact_category = factor(
 
 df = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(cc_baseline = climate_change_baseline)
+  summarize(cc_baseline = climate_change_baseline) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(climate_change_baseline)))
+  summarize(value = signif(sum(cc_baseline)))
 
 climate_change <-
   ggplot(df, aes(x = constellation, y = cc_baseline / 1e9)) +

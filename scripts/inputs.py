@@ -141,7 +141,7 @@ parameters = {
         'research_development': 8624000,
         'fiber_infrastructure_cost': 500000,
         'discount_rate': 5,
-        'assessment_period': 10
+        'assessment_period': 15
     },
 }
 

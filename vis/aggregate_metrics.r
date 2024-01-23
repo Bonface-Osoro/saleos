@@ -104,11 +104,12 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+data <- data[data$scenario == "scenario3", ]
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(value = mean((climate_change_baseline / subscribers) / 1e3),
-            value_wc = mean((climate_change_worst_case / subscribers) / 1e3))
+  summarize(value = sum((climate_change_baseline / subscribers) / 1e3),
+            value_wc = sum((climate_change_worst_case / subscribers) / 1e3))
 
 df = df %>%
   pivot_longer(!c(constellation, subscriber_scenario),
