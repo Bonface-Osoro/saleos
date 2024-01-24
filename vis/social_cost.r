@@ -18,10 +18,10 @@ data = select(
   data, 
   constellation, 
   impact_category,
-  climate_change_baseline,
-  climate_change_worst_case,
-  ozone_depletion_baseline,
-  ozone_depletion_worst_case,
+  climate_change_baseline_kg,
+  climate_change_worst_case_kg,
+  ozone_depletion_baseline_kg,
+  ozone_depletion_worst_case_kg,
   subscriber_scenario,
   subscribers
 )
@@ -46,10 +46,10 @@ data$constellation = factor(
 data_aggregated <- data %>%
   group_by(constellation, 
            impact_category,
-           climate_change_baseline,
-           climate_change_worst_case,
-           ozone_depletion_baseline,
-           ozone_depletion_worst_case,
+           climate_change_baseline_kg,
+           climate_change_worst_case_kg,
+           ozone_depletion_baseline_kg,
+           ozone_depletion_worst_case_kg,
            subscriber_scenario) %>%
   summarize(subscribers = mean(subscribers))
 
@@ -61,7 +61,7 @@ individual_emissions <- spread(data_aggregated, key = subscriber_scenario, value
 
 df = individual_emissions %>%
   group_by(constellation, impact_category) %>%
-  summarize(value = climate_change_baseline)
+  summarize(value = climate_change_baseline_kg)
 
 #from kg to tonnes
 df$emissions_t = df$value / 1e3 
@@ -127,7 +127,7 @@ social_carbon_baseline <-
 
 df = individual_emissions %>%
   group_by(constellation, impact_category) %>%
-  summarize(value = climate_change_worst_case)
+  summarize(value = climate_change_worst_case_kg)
 
 
 #from kg to tonnes
@@ -195,20 +195,20 @@ df = select(
   individual_emissions, 
   constellation, 
   impact_category,
-  climate_change_baseline,
+  climate_change_baseline_kg,
   subscribers_baseline,
   subscribers_low,
   subscribers_high
   )
 
 df$social_cost_usd_per_user_low = (
-  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_low 
+  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_low 
 )
 df$social_cost_usd_per_user_baseline = (
-  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_baseline 
+  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_baseline 
 )
 df$social_cost_usd_per_user_high = (
-  ((df$climate_change_baseline / 1e3) * 185) / df$subscribers_high 
+  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_high 
 )
 
 totals <- df %>%
@@ -292,20 +292,20 @@ df = select(
   individual_emissions, 
   constellation, 
   impact_category,
-  climate_change_worst_case,
+  climate_change_worst_case_kg,
   subscribers_baseline,
   subscribers_low,
   subscribers_high
 )
 
 df$social_cost_usd_per_user_low = (
-  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_low 
+  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_low 
 )
 df$social_cost_usd_per_user_baseline = (
-  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_baseline 
+  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_baseline 
 )
 df$social_cost_usd_per_user_high = (
-  ((df$climate_change_worst_case / 1e3) * 185) / df$subscribers_high 
+  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_high 
 )
 
 totals <- df %>%
