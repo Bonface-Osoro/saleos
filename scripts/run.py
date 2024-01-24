@@ -448,12 +448,12 @@ def calc_emissions():
                     df['subscribers_baseline'].loc[i] = item['subscribers'][1]
                     df['subscribers_high'].loc[i] = item['subscribers'][2]
 
-    df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
-         'rocket', 'representative_of', 'rocket_type', 'no_of_satellites', 
-         'no_of_launches', 'impact_category', 'climate_change_baseline',
+    df = pd.melt(df, id_vars = ['constellation', 'rocket', 'no_of_satellites', 
+         'no_of_launches', 'climate_change_baseline',
          'climate_change_worst_case', 'ozone_depletion_baseline', 
          'ozone_depletion_worst_case', 'resource_depletion', 
-         'freshwater_toxicity', 'human_toxicity'], 
+         'freshwater_toxicity', 'human_toxicity', 'scenario', 'status', 
+         'representative_of', 'rocket_type', 'impact_category', ], 
          value_vars = ['subscribers_low', 'subscribers_baseline', 
          'subscribers_high'], 
          var_name = 'subscriber_scenario', value_name = 'subscribers')
@@ -469,6 +469,21 @@ def calc_emissions():
     if not os.path.exists(BASE_PATH):
 
         os.makedirs(BASE_PATH)
+
+    df = df[['constellation', 'no_of_satellites', 'no_of_launches', 'climate_change_baseline', 
+             'climate_change_worst_case', 'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
+             'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 'subscribers', 
+             'subscriber_scenario', 'impact_category', 'scenario', 'status', 'representative_of', 
+             'rocket_type']]
+    
+    renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
+                       'climate_change_worst_case': 'climate_change_worst_case_kg',
+                       'ozone_depletion_baseline': 'ozone_depletion_baseline_kg',
+                       'ozone_depletion_worst_case': 'ozone_depletion_worst_case_kg',
+                       'resource_depletion': 'resource_depletion_kg',
+                       'freshwater_toxicity': 'freshwater_toxicity_m3'}
+    
+    df.rename(columns = renamed_columns, inplace=True)
     
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
@@ -516,9 +531,9 @@ def run_uq_processing_cost():
             'subscribers_high': item['subscribers_high'],
             'capex_costs': item['capex_costs'],
             'opex_costs': item['opex_costs'],
+            'total_cost_ownership': total_cost_ownership,
             'capex_scenario': item['capex_scenario'],
-            'opex_scenario': item['opex_scenario'],
-            'total_cost_ownership': total_cost_ownership
+            'opex_scenario': item['opex_scenario']
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -544,10 +559,9 @@ def process_mission_capacity():
     data_in = os.path.join(DATA, 'interim_results_capacity.csv')
     df = pd.read_csv(data_in, index_col = False)
 
-    df = df[['constellation', 'cnr_scenario',
-             'channel_capacity_mbps', 
+    df = df[['constellation', 'channel_capacity_mbps', 
              'capacity_per_single_satellite_mbps',
-             'constellation_capacity_mbps',
+             'constellation_capacity_mbps', 'cnr_scenario',
              'subscribers_low', 'subscribers_baseline',
              'subscribers_high', 'satellite_coverage_area_km']]
 
@@ -557,8 +571,8 @@ def process_mission_capacity():
                                 'cnr_scenario', 'satellite_coverage_area_km'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
-                                var_name = 'subscriber_scenario', 
-                                value_name = 'subscribers')
+                                value_name = 'subscribers',
+                                var_name = 'subscriber_scenario')
     
     # Create columns to store new data
     df[['capacity_per_user', 'monthly_gb',
@@ -580,6 +594,8 @@ def process_mission_capacity():
 
          os.makedirs(RESULTS)
 
+    df = df[['constellation', 'constellation_capacity_mbps', 'satellite_coverage_area_km', 'capacity_per_user', 
+            'subscribers', 'monthly_gb', 'user_per_area', 'cnr_scenario', 'subscriber_scenario']]
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
 
@@ -601,8 +617,9 @@ def process_mission_cost():
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
-    df = pd.melt(df, id_vars = ['constellation', 'capex_costs', 'opex_scenario',
-                                'opex_costs', 'capex_scenario', 'total_cost_ownership'], 
+    df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
+                                'opex_costs', 'capex_scenario', 
+                                'opex_scenario', 'total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 var_name = 'subscriber_scenario', 
@@ -627,6 +644,10 @@ def process_mission_cost():
 
          os.makedirs(RESULTS)
 
+    df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 'subscribers', 
+            'capex_per_user', 'opex_per_user', 'tco_per_user', 'opex_scenario', 'capex_scenario', 
+            'subscriber_scenario']]
+    
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
 
@@ -638,19 +659,19 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    run_uq_processing_cost()
+    #run_uq_processing_cost()
 
     print('Processing Emission results')
     calc_emissions()
 
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()
+    #process_mission_cost()
 
     executionTime = (time.time() - start)
 

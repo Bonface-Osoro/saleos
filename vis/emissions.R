@@ -55,7 +55,7 @@ data$impact_category = factor(
 
 df = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(cc_baseline = climate_change_baseline) %>%
+  summarize(cc_baseline = climate_change_baseline_kg) %>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df %>%
@@ -85,7 +85,7 @@ climate_change <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 14),
+    limits = c(0, 4.5),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -110,11 +110,12 @@ climate_change <-
 
 df1 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(cc_worst_case = climate_change_worst_case)
+  summarize(cc_worst_case = climate_change_worst_case_kg) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df1 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(climate_change_worst_case)))
+  summarize(value = signif(sum(cc_worst_case)))
 
 climate_change_wc <-
   ggplot(df1, aes(x = constellation, y = cc_worst_case / 1e9)) +
@@ -139,7 +140,7 @@ climate_change_wc <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 22),
+    limits = c(0, 7.5),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -163,11 +164,12 @@ climate_change_wc <-
 
 df2 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(ozone_baseline = ozone_depletion_baseline)
+  summarize(ozone_baseline = ozone_depletion_baseline_kg) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df2 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(ozone_depletion_baseline)))
+  summarize(value = signif(sum(ozone_baseline)))
 
 ozone_depletion <-
   ggplot(df2, aes(x = constellation, y = ozone_baseline / 1e6)) +
@@ -176,7 +178,7 @@ ozone_depletion <-
     aes(
       x = constellation,
       y = value / 1e6,
-      label = round(value / 1e6, 1)
+      label = round(value / 1e6, 2)
     ),
     size = 3,
     data = totals,
@@ -194,7 +196,7 @@ ozone_depletion <-
     fill = "Satellite Mission Stage"
   ) +
   scale_y_continuous(
-    limits = c(0, max(totals$value) / 1e6 + 1),
+    limits = c(0, 1.1),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -218,11 +220,12 @@ ozone_depletion <-
 
 df3 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(ozone_worst_case = ozone_depletion_worst_case)
+  summarize(ozone_worst_case = ozone_depletion_worst_case_kg)%>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df3 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(ozone_depletion_worst_case)))
+  summarize(value = signif(sum(ozone_worst_case)))
 
 max_y = max(totals$value)
 
@@ -249,7 +252,7 @@ ozone_depletion_wc <-
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, max_y / 1e6 + 2.8),
+    limits = c(0, 4.8),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -273,11 +276,12 @@ ozone_depletion_wc <-
 
 df4 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(resources = resource_depletion)
+  summarize(resources = resource_depletion_kg)%>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df4 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(resource_depletion)))
+  summarize(value = signif(sum(resources)))
 
 resource_depletion <-
   ggplot(df4, aes(x = constellation, y = resources / 1e3)) +
@@ -302,7 +306,7 @@ resource_depletion <-
     y = bquote("Resource Depletion (t Sb eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 1950),
+    limits = c(0, 350),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -326,11 +330,12 @@ resource_depletion <-
 
 df5 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(freshwater = freshwater_toxicity)
+  summarize(freshwater = freshwater_toxicity_m3)%>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df5 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(freshwater_toxicity)))
+  summarize(value = signif(sum(freshwater)))
 
 freshwater_ecotixicity <-
   ggplot(df5, aes(x = constellation, y = freshwater / 1e8)) +
@@ -356,7 +361,7 @@ freshwater_ecotixicity <-
     #"["2"]~"
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 485),
+    limits = c(0, 155),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -380,11 +385,12 @@ freshwater_ecotixicity <-
 
 df6 = data %>%
   group_by(constellation, rocket_type, impact_category) %>%
-  summarize(human = human_toxicity)
+  summarize(human = human_toxicity)%>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df6 %>%
   group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(human_toxicity)))
+  summarize(value = signif(sum(human)))
 
 human_toxicity <-
   ggplot(df6, aes(x = constellation, y = human)) +
@@ -410,7 +416,7 @@ human_toxicity <-
     y = "Cases of Human Ecotoxicity",
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 3500),
+    limits = c(0, 1100),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -434,11 +440,12 @@ human_toxicity <-
 
 df = data %>%
   group_by(constellation, impact_category) %>%
-  summarize(toxicity = human_toxicity)
+  summarize(toxicity = human_toxicity)%>%
+  distinct(impact_category, .keep_all = TRUE)
 
-totals <- data %>%
+totals <- df %>%
   group_by(constellation) %>%
-  summarize(value = signif(sum(human_toxicity)))
+  summarize(value = signif(sum(toxicity)))
 
 df$impact_category = df$impact_category
 
@@ -487,7 +494,6 @@ legends <-
 ##################
 ##Combined plots##
 ##################
-
 
 pub_emission <- ggarrange(
   climate_change,
