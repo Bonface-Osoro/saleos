@@ -2,6 +2,7 @@ library(ggpubr)
 library(ggplot2)
 library(tidyverse)
 library(ggtext)
+library(scales)
 library("readxl")
 
 # Set default folder
@@ -396,7 +397,7 @@ constellation_tco <-
 ##################
 
 
-df = data %>%
+df <- data %>%
   group_by(constellation, capex_scenario) %>%
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
@@ -429,10 +430,9 @@ constellation_tco_per_user <-
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0),
-    limits = c(0, 45000)
+    limits = c(0, 49000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),

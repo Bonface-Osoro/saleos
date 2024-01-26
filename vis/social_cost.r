@@ -4,6 +4,7 @@ library(dplyr)
 library(tidyverse)
 library("readxl")
 library(ggtext)
+library(scales)
 
 ###########################
 ## Read and Process Data ##
@@ -78,7 +79,7 @@ social_carbon_baseline <-
     aes(
       x = constellation,
       y = social_cost_milions_usd,
-      label = paste0("$", round(social_cost_milions_usd,0), "m")
+      label = paste0("$", comma(round(social_cost_milions_usd,0)), " mn")
     ),
     size = 2,
     data = totals,
@@ -97,9 +98,8 @@ social_carbon_baseline <-
   ) +
   ylab("Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
+    labels = comma,
     limits = c(0, 1600),
-    labels = function(y)
-      format(y, scientific = FALSE),
     expand = c(0, 0)
   ) +
   theme(
@@ -145,7 +145,7 @@ social_cost_worst_case <-
     aes(
       x = constellation,
       y = social_cost_milions_usd,
-      label = paste0("$", round(social_cost_milions_usd,0), "m")
+      label = paste0("$", comma(round(social_cost_milions_usd,0)), " mn")
     ),
     size = 2,
     data = totals,
@@ -163,8 +163,7 @@ social_cost_worst_case <-
   ylab("Social Cost<br>(Worst-case) (US$ Millions)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
     limits = c(0, 5000),
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0)
   ) +
   theme(
@@ -242,12 +241,12 @@ social_carbon_per_subscriber_baseline <-
     aes(
       x = constellation,
       y = social_cost_usd_per_user_baseline,
-      label = paste0("$", round(social_cost_usd_per_user_baseline,0))
-    ),
+      label = paste0("$", comma(round(social_cost_usd_per_user_baseline,0))
+    )),
     size = 2,
     data = totals,
     vjust = -.5,
-    hjust = 1.3,
+    hjust = 1.1,
     position = position_stack()
   )  +
   scale_fill_brewer(palette = "Dark2") + theme_minimal() +
@@ -261,8 +260,7 @@ social_carbon_per_subscriber_baseline <-
   ylab("Social Cost/Subscriber<br>(Baseline) (US$)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
     limits = c(0, 2500),
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0)
   ) +
   theme(
@@ -338,12 +336,12 @@ social_carbon_per_subscriber_worst_case <-
       aes(
         x = constellation,
         y = social_cost_usd_per_user_baseline,
-        label = paste0("$", round(social_cost_usd_per_user_baseline,0))
-      ),
+        label = paste0("$", comma(round(social_cost_usd_per_user_baseline,0))
+      )),
       size = 2,
       data = totals,
       vjust = -.5,
-      hjust = 1.3,
+      hjust = 1.1,
       position = position_stack()
     )  +
     scale_fill_brewer(palette = "Dark2") + theme_minimal() +
@@ -357,8 +355,7 @@ social_carbon_per_subscriber_worst_case <-
     ylab("Social Cost/Subscriber<br>(Worst-case) (US$)") + # given t CO<sub>2</sub>eq
     scale_y_continuous(
       limits = c(0, 6000),
-      labels = function(y)
-        format(y, scientific = FALSE),
+      labels = comma,
       expand = c(0, 0)
     ) +
     theme(

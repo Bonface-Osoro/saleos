@@ -1,10 +1,10 @@
 ﻿Properties,Details
 Constellation Name,Kuiper
 Operator,Amazon
-Satellites,3236
-Earth Radius,6378 km
+Satellites,"3,236"
+Earth Radius,"6,378 km"
 Orbital Altitude,610 km
-Orbital Radius,6988 km
+Orbital Radius,"6,988 km"
 Path Distance,982 km
 Satellite Centric Angle,48.4 Deg
 Earth Centric Angle,6.61 Deg
