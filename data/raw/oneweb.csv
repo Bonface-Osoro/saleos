@@ -3,12 +3,11 @@ Constellation Name,OneWeb
 Operator,Eutelsat Group
 Satellites,720
 Earth Radius,6378 km
-Orbital Altitude,1200
+Orbital Altitude,1200 km
 Orbital Radius,7578 km
 Path Distance,1580 km
-Satellite Centric Angle,36.5 ⁰
-Earth Centric Angle,8.48 ⁰
-Satellite Coverage Area,2792849 km2
-Average Satellites per Launch,36
+Satellite Centric Angle,36.5 Deg
+Earth Centric Angle,8.48 Deg
+Mean Satellites per Launch,36
 Satellites in Orbit (phase 1),>630
 Launch Vehicle,Soyuz-FG/Falcon-9/LVM3

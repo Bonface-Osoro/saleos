@@ -6,9 +6,8 @@ Earth Radius,6378 km
 Orbital Altitude,550 km
 Orbital Radius,6988 km
 Path Distance,1123 km
-Satellite Centric Angle,56.5 ⁰
-Earth Centric Angle,8.45 ⁰
-Satellite Coverage Area,2775231 km2
-Average Satellites per Launch,23
+Satellite Centric Angle,56.5 Deg
+Earth Centric Angle,8.45 Deg
+Mean Satellites per Launch,23
 Satellites in Orbit (Phase 1),4425
 Launch Vehicle,Falcon-9
