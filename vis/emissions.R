@@ -71,7 +71,7 @@ climate_change <-
       y = value / 1e9,
       label = round(value / 1e9, 3)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -126,7 +126,7 @@ climate_change_wc <-
       y = value / 1e9,
       label = round(value / 1e9, 1)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -180,7 +180,7 @@ ozone_depletion <-
       y = value / 1e6,
       label = round(value / 1e6, 2)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -238,7 +238,7 @@ ozone_depletion_wc <-
       y = value / 1e6,
       label = round(value / 1e6, 2)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -292,7 +292,7 @@ resource_depletion <-
       y = value / 1e3,
       label = round(value / 1e3, 0)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -346,7 +346,7 @@ freshwater_ecotixicity <-
       y = value / 1e8,
       label = round(value / 1e8, 0)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -401,7 +401,7 @@ human_toxicity <-
       y = value,
       label = round(value, 0)
     ),
-    size = 3,
+    size = 2.5,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,

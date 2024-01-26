@@ -2,10 +2,10 @@
 Constellation Name,OneWeb
 Operator,Eutelsat Group
 Satellites,720
-Earth Radius,6378 km
-Orbital Altitude,1200 km
-Orbital Radius,7578 km
-Path Distance,1580 km
+Earth Radius,"6,378 km"
+Orbital Altitude,"1,200 km"
+Orbital Radius,"7,578 km"
+Path Distance,"1,580 km"
 Satellite Centric Angle,36.5 Deg
 Earth Centric Angle,8.48 Deg
 Mean Satellites per Launch,36

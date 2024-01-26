@@ -1,13 +1,13 @@
 ﻿Properties,Details
 Constellation Name,Starlink
 Operator,SpaceX
-Satellites,4425
-Earth Radius,6378 km
+Satellites,"4,425"
+Earth Radius,"6,378 km"
 Orbital Altitude,550 km
-Orbital Radius,6988 km
-Path Distance,1123 km
+Orbital Radius,"6,928 km"
+Path Distance,"1,123 km"
 Satellite Centric Angle,56.5 Deg
 Earth Centric Angle,8.45 Deg
 Mean Satellites per Launch,23
-Satellites in Orbit (Phase 1),4425
+Satellites in Orbit (Phase 1),"4,425"
 Launch Vehicle,Falcon-9
