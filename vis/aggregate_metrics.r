@@ -233,7 +233,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 40)
+    limits = c(0, 39)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -301,7 +301,7 @@ subscriber_traffic <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 50)
+    limits = c(0, 49)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -432,7 +432,7 @@ constellation_tco_per_user <-
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
-    limits = c(0, 49000)
+    limits = c(0, 14900)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
