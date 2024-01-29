@@ -392,7 +392,7 @@ social_cost_of_carbon_panel <-
 
 path = file.path(visualizations, 'figures', 'e_social_carbon.png')
 dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
-tiff(
+png(
   path,
   units = "in",
   width = 5.5,
