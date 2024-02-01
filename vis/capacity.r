@@ -45,7 +45,7 @@ chn_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -116,7 +116,7 @@ sat_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -195,7 +195,7 @@ const_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Paired") +
   labs(
     colour = NULL,
     title = " ",
@@ -274,13 +274,13 @@ capacity_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Paired") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Capacity\n(Mbps/User)",
+    y = "Mean Capacity\n(Mbps/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -347,13 +347,13 @@ monthly_traffic <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Paired") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Monthly Traffic\n(GB/User)",
+    y = "Mean Monthly Traffic\n(GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -415,14 +415,14 @@ per_user_area <-
     hjust = -0.1,
     angle = 90
   ) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Paired") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "f",
     x = NULL,
     fill = 'Adoption\nScenario'
-  ) + ylab('Mean Subscribers<br>(Users/km<sup>2</sup>)') +
+  ) + ylab('Mean Subscribers<br>(Subscribers/km<sup>2</sup>)') +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
