@@ -53,7 +53,7 @@ constellation_capex <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -114,7 +114,7 @@ constellation_opex <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -175,7 +175,7 @@ constellation_tco <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -236,13 +236,13 @@ constellation_capex_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "Capex\n(US$/User)",
+    y = "Capex\n(US$/Subscriber)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
@@ -297,13 +297,13 @@ constellation_opex_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "Opex\n(US$/User)",
+    y = "Opex\n(US$/Subscriber)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
@@ -358,13 +358,13 @@ constellation_tco_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "TCO\n(US$/User)",
+    y = "TCO\n(US$/Subscriber)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(

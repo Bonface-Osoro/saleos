@@ -156,7 +156,7 @@ emission_subscriber <-
     x = NULL,
     fill = 'Emissions\nScenario'
   ) +
-  ylab("Emissions/Subscriber<br>(t CO<sub>2</sub> eq)") +
+  ylab("Emissions<br>(t CO<sub>2</sub> eq/Subscriber)") +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
@@ -226,7 +226,7 @@ capacity_per_user <-
     title = " ",
     subtitle = "c",
     x = NULL,
-    y = "Mean Capacity\n(Mbps/User)",
+    y = "Mean Capacity\n(Mbps/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -294,7 +294,7 @@ subscriber_traffic <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Monthly Traffic\n(GB/User)",
+    y = "Mean Monthly Traffic\n(GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -426,13 +426,74 @@ constellation_tco_per_user <-
     title = " ",
     subtitle = 'f',
     x = NULL,
-    y = "TCO\n(US$/User)",
+    y = "TCO\n(US$/Subscriber)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
     limits = c(0, 14900)
+  ) + theme_minimal() +
+  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.direction = "horizontal",
+    legend.position = c(0.5, 0.9),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 10, face = "bold")
+  )
+
+###################################
+## Average Monthly Cost per User ##
+###################################
+
+
+df <- data %>%
+  group_by(constellation, capex_scenario) %>%
+  summarize(mean = mean(user_monthly_cost),
+            sd = sd(user_monthly_cost))
+
+df$capex_scenario = as.factor(df$capex_scenario)
+df$capex = factor(df$capex_scenario,
+                  levels = c('Low', 'Baseline', 'High'))
+
+constellation_monthly_cost_per_user <-
+  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
+  geom_bar(stat = "identity",
+           position = position_dodge(),
+           width = 0.9) +
+  geom_errorbar(
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
+    width = .2,
+    position = position_dodge(.9),
+    color = 'black',
+    size = 0.2
+  ) +
+  scale_fill_brewer(palette = color_palette) +
+  theme_minimal() +
+  labs(
+    colour = NULL,
+    title = " ",
+    subtitle = 'f',
+    x = NULL,
+    y = "Average Monthly Cost \nper Subscriber(US$/Subscriber)",
+    fill = 'Cost\nScenario'
+  ) +
+  scale_y_continuous(
+    labels = comma,
+    expand = c(0, 0),
+    limits = c(0, 120)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -468,7 +529,7 @@ row1 = ggarrange(
 row2 =   ggarrange(
   subscriber_traffic,
   constellation_tco,
-  constellation_tco_per_user,
+  constellation_monthly_cost_per_user,
   nrow = 1,
   ncol = 3
 )

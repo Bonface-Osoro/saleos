@@ -532,6 +532,7 @@ def run_uq_processing_cost():
             'capex_costs': item['capex_costs'],
             'opex_costs': item['opex_costs'],
             'total_cost_ownership': total_cost_ownership,
+            'assessment_period_year': item['assessment_period_year'],
             'capex_scenario': item['capex_scenario'],
             'opex_scenario': item['opex_scenario']
         })
@@ -611,15 +612,17 @@ def process_mission_cost():
     df = pd.read_csv(data_in, index_col = False)
 
     df = df[['constellation', 'capex_costs', 'opex_costs',
-             'capex_scenario', 'opex_scenario',
-             'total_cost_ownership', 'subscribers_low', 
-             'subscribers_baseline', 'subscribers_high']]
+             'capex_scenario', 'opex_scenario', 
+             'assessment_period_year', 'total_cost_ownership', 
+             'subscribers_low', 'subscribers_baseline', 
+             'subscribers_high']]
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
     df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
-                                'opex_costs', 'capex_scenario', 
-                                'opex_scenario', 'total_cost_ownership'], 
+                                'opex_costs', 'assessment_period_year', 
+                                'capex_scenario', 'opex_scenario', 
+                                'total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 var_name = 'subscriber_scenario', 
@@ -627,7 +630,7 @@ def process_mission_cost():
     
     # Create columns to store new data
     df[[ 'capex_per_user', 'opex_per_user',
-         'tco_per_user']] = ''
+         'tco_per_user', 'user_monthly_cost']] = ''
     
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
@@ -638,15 +641,19 @@ def process_mission_cost():
         
          df['tco_per_user'].loc[i] = df['total_cost_ownership'].loc[i] / df['subscribers'].loc[i]
 
+         df['user_monthly_cost'].loc[i] = ct.user_monthly_cost(df['tco_per_user'].loc[i], 
+                                          df['assessment_period_year'].loc[i])
+
     filename = 'final_cost_results.csv'
 
     if not os.path.exists(RESULTS):
 
          os.makedirs(RESULTS)
 
-    df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 'subscribers', 
-            'capex_per_user', 'opex_per_user', 'tco_per_user', 'opex_scenario', 'capex_scenario', 
-            'subscriber_scenario']]
+    df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 
+             'assessment_period_year', 'subscribers', 'capex_per_user', 
+             'opex_per_user', 'tco_per_user', 'user_monthly_cost', 
+             'opex_scenario', 'capex_scenario', 'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)

@@ -128,7 +128,7 @@ parameters = {
         'number_of_beams': 64,
         'number_of_channels': 48, 
         'polarization': 2,
-        'subscribers': [1500000, 3500000, 4500000],
+        'subscribers': [1500000, 2500000, 3500000], #[1500000, 3500000, 4500000]
         'satellite_manufacturing': 200000000,
         'satellite_launch_cost': 5880000000,
         'ground_station_cost': 10000000,

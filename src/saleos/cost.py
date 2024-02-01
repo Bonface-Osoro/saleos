@@ -77,3 +77,26 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
     total_cost_ownership = capex + sum(year_costs) + opex_costs
 
     return total_cost_ownership
+
+
+def user_monthly_cost(tco_per_user, lifespan):
+    """
+    Calculate average monthly cost per user:
+
+    Parameters
+    ----------
+    tco_per_user : float.
+        Total cost per user.
+    lifespan : int
+        The lifespan of the satellite accounting 
+        for period of assessment
+
+    Returns
+    -------
+    user_monthly_cost : float
+            Average monthly amount per user.
+
+    """
+    user_monthly_cost = tco_per_user / (lifespan * 12)
+
+    return user_monthly_cost
