@@ -2,6 +2,7 @@ library(ggpubr)
 library(ggplot2)
 library(dplyr)
 library(tidyverse)
+library(scales)
 
 # Set default folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -390,6 +391,69 @@ constellation_tco_per_user <-
     plot.title = element_text(size = 10, face = "bold")
   )
 
+
+###################################
+## Average Monthly Cost per User ##
+###################################
+data <-
+  read.csv(file.path(folder, '..', 'results', 'final_cost_results.csv'))
+
+df <- data %>%
+  group_by(constellation, capex_scenario) %>%
+  summarize(mean = mean(user_monthly_cost),
+            sd = sd(user_monthly_cost))
+
+df$capex_scenario = as.factor(df$capex_scenario)
+df$capex = factor(df$capex_scenario,
+                  levels = c('Low', 'Baseline', 'High'))
+
+constellation_monthly_cost_per_user <-
+  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
+  geom_bar(stat = "identity",
+           position = position_dodge(),
+           width = 0.9) +
+  geom_errorbar(
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
+    width = .2,
+    position = position_dodge(.9),
+    color = 'black',
+    size = 0.2
+  ) +
+  scale_fill_brewer(palette = "Paired") +
+  theme_minimal() +
+  labs(
+    colour = NULL,
+    title = " ",
+    subtitle = 'f',
+    x = NULL,
+    y = "Average Monthly Cost \nper Subscriber(US$/Subscriber)",
+    fill = 'Cost\nScenario'
+  ) +
+  scale_y_continuous(
+    labels = comma,
+    expand = c(0, 0),
+    limits = c(0, 120)
+  ) + theme_minimal() +
+  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.direction = "horizontal",
+    legend.position = c(0.5, 0.9),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 10, face = "bold")
+  )
+
 ##################
 ##Combined plots##
 ##################
@@ -400,11 +464,12 @@ cost_per_user <- ggarrange(
   constellation_capex_per_user,
   constellation_opex_per_user,
   constellation_tco_per_user,
-  nrow = 2,
+  constellation_monthly_cost_per_user,
+  nrow = 3,
   ncol = 3,
   common.legend = T,
   legend = "bottom",
-  labels = c("a", "b", "c", "d", "e", "f"),
+  labels = c("a", "b", "c", "d", "e", "f", "g"),
   font.label = list(size = 9)
 )
 
@@ -414,7 +479,7 @@ png(
   path,
   units = "in",
   width = 6.5,
-  height = 4,
+  height = 5,
   res = 480
 )
 print(cost_per_user)

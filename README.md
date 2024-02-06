@@ -10,7 +10,7 @@ While LEO megaconstellations are fronted as an alternative to terrestrial broadb
 
 #### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink (Details as of December 2023).
 <p align="center">
-  <img src="/docs/a_fig_1.png" />
+  <img src="/docs/a_fig_1.jpg" />
 </p>
 
 Emissions produced during the launching of satellites depend on the utilized rocket vehicle. 
