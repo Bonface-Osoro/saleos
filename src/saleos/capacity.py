@@ -357,7 +357,7 @@ def calc_noise():
     “`K (Boltzmann constant)` x `T (290K)` x `bandwidth`”.
 
     The bandwidth depends on bit rate, which defines the number
-    of resource blocks. We assume 50 resource blocks, equal 9 MHz,
+    of resource blocks. We use 50 resource blocks, equal 9 MHz,
     transmission for 1 Mbps downlink.
 
     Required SNR (dB)
@@ -543,7 +543,7 @@ def calc_constellation_capacity(channel_capacity,
                                 number_of_beams,
                                 number_of_satellites):
     """
-    Calculate the total usable constellation capacity assuming 
+    Calculate the total usable constellation capacity given 
     that only 50% (0.5) of constellation capacity is usable
      based on [1]-[4].
 
@@ -636,8 +636,8 @@ def capacity_subscriber(const_cap, subscribers):
 def monthly_traffic(capacity_mbps):
     """ 
     This function calculates the monthly 
-    traffic assuming the lifespan of all 
-    constellations is 5 years and 20% 
+    traffic given that the lifespan of all 
+    LEO constellations is 5 years and 20% 
     accounting for traffic taking place 
     in the busiest hour of the day based on 
     [3].
