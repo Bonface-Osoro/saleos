@@ -38,7 +38,7 @@ parameters = {
         'staff_costs': 2072400000, 
         'subscriber_acquisition': 23000000,
         'ground_station_energy': 115500,
-        'research_development': 681000000,
+        'research_development': 642000000,
         'fiber_infrastructure_cost': 3750000,
         'discount_rate': 5,
         'assessment_period': 5
@@ -71,7 +71,7 @@ parameters = {
         'staff_costs': 99500000,
         'subscriber_acquisition': 3300000,
         'ground_station_energy': 33880,
-        'research_development': 99800000,
+        'research_development': 94000000,
         'fiber_infrastructure_cost': 1100000,
         'discount_rate': 5,
         'assessment_period': 5
@@ -104,7 +104,7 @@ parameters = {
         'staff_costs': 22608000,
         'subscriber_acquisition': 16000000,
         'ground_station_energy': 9240,
-        'research_development': 498344000,
+        'research_development': 469000000,
         'fiber_infrastructure_cost': 300000,
         'discount_rate': 5,
         'assessment_period': 5
@@ -138,7 +138,7 @@ parameters = {
         'staff_costs': 376800000,
         'subscriber_acquisition': 3300000,
         'ground_station_energy': 15400,
-        'research_development': 8624000,
+        'research_development': 8000000,
         'fiber_infrastructure_cost': 500000,
         'discount_rate': 5,
         'assessment_period': 15
