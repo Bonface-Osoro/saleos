@@ -233,7 +233,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 39)
+    limits = c(0, 48)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -372,7 +372,7 @@ constellation_tco <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 29)
+    limits = c(0, 35)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),

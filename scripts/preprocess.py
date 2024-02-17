@@ -191,13 +191,7 @@ def uq_inputs_cost():
 
             satellite_manufacturing_costs = [total_satellite_cost - total_variation_cost, 
                         total_satellite_cost, total_satellite_cost + total_variation_cost]
-            
-        # Generate a list containing spectrum cost values that are above 
-        # and below the provided input value by $USD 1,000,000.
-        spectrum_costs = [item['spectrum_cost'] - 1000000, 
-                      item['spectrum_cost'], 
-                      item['spectrum_cost'] + 1000000]
-        
+
         # Generate a list containing ground station energy values that are above 
         # and below the provided input value by $USD 5,000.
         ground_station_energy_costs = [item['ground_station_energy'] - 5000, 
@@ -257,62 +251,56 @@ def uq_inputs_cost():
 
                             satellite_manufacturing = sat_cost
 
-                            for spec_costs in spectrum_costs:
+                            for gst_energy_costs in ground_station_energy_costs:
 
-                                spectrum_cost = spec_costs
+                                ground_station_energy = gst_energy_costs
 
-                                for gst_energy_costs in ground_station_energy_costs:
+                                regulation_fees = item['regulation_fees'] 
+                                fiber_infrastructure_cost = item['fiber_infrastructure_cost']
+                                subscriber_acquisition = item['subscriber_acquisition']
+                                research_development = item['research_development'] 
+                                maintenance_costs = maint_costs
 
-                                    ground_station_energy = gst_energy_costs
+                                capex_costs = (satellite_manufacturing
+                                                + item['subscriber_acquisition'] 
+                                                + regulation_fees
+                                                + satellite_launch_cost 
+                                                + ground_station_cost)
+                                
+                                opex_costs = (ground_station_energy 
+                                                + staff_costs 
+                                                + research_development 
+                                                + fiber_infrastructure_cost 
+                                                + maintenance_costs) 
+                                
+                                number_of_satellites = item['number_of_satellites']
+                                name = item['name']
+                                discount_rate = item['discount_rate']
+                                assessment_period_year = item['assessment_period']
 
-                                    regulation_fees = item['regulation_fees'] 
-                                    fiber_infrastructure_cost = item['fiber_infrastructure_cost']
-                                    subscriber_acquisition = item['subscriber_acquisition']
-                                    research_development = item['research_development'] 
-                                    maintenance_costs = maint_costs
-
-                                    capex_costs = (satellite_manufacturing
-                                                    + item['subscriber_acquisition'] 
-                                                    + regulation_fees
-                                                    + satellite_launch_cost 
-                                                    + ground_station_cost 
-                                                    + spectrum_cost)
-                                    
-                                    opex_costs = (ground_station_energy 
-                                                    + staff_costs 
-                                                    + research_development 
-                                                    + fiber_infrastructure_cost 
-                                                    + maintenance_costs) 
-                                    
-                                    number_of_satellites = item['number_of_satellites']
-                                    name = item['name']
-                                    discount_rate = item['discount_rate']
-                                    assessment_period_year = item['assessment_period']
-
-                                    uq_parameters.append({'constellation': name, 
-                                                            'number_of_satellites': number_of_satellites,
-                                                            'subscribers_low': item['subscribers'][0],
-                                                            'subscribers_baseline': item['subscribers'][1],
-                                                            'subscribers_high': item['subscribers'][2],
-                                                            'satellite_manufacturing': satellite_manufacturing,
-                                                            'satellite_launch_cost': satellite_launch_cost,
-                                                            'satellite_launch_scenario': sat_launch_scenario,
-                                                            'ground_station_cost': ground_station_cost,
-                                                            'ground_station_scenario': ground_station_scenario,
-                                                            'spectrum_cost': spectrum_cost,
-                                                            'regulation_fees': regulation_fees,
-                                                            'fiber_infrastructure_cost': fiber_infrastructure_cost,
-                                                            'ground_station_energy': ground_station_energy,
-                                                            'subscriber_acquisition': subscriber_acquisition,
-                                                            'staff_costs': staff_costs,
-                                                            'research_development': research_development,
-                                                            'maintenance_costs': maintenance_costs,
-                                                            'discount_rate': discount_rate,
-                                                            'assessment_period_year': assessment_period_year,
-                                                            'opex_costs': opex_costs,
-                                                            'capex_costs': capex_costs,
-                                                            'opex_scenario': opex_scenario,
-                                                            'capex_scenario': capex_scenario})
+                                uq_parameters.append({'constellation': name, 
+                                                        'number_of_satellites': number_of_satellites,
+                                                        'subscribers_low': item['subscribers'][0],
+                                                        'subscribers_baseline': item['subscribers'][1],
+                                                        'subscribers_high': item['subscribers'][2],
+                                                        'satellite_manufacturing': satellite_manufacturing,
+                                                        'satellite_launch_cost': satellite_launch_cost,
+                                                        'satellite_launch_scenario': sat_launch_scenario,
+                                                        'ground_station_cost': ground_station_cost,
+                                                        'ground_station_scenario': ground_station_scenario,
+                                                        'regulation_fees': regulation_fees,
+                                                        'fiber_infrastructure_cost': fiber_infrastructure_cost,
+                                                        'ground_station_energy': ground_station_energy,
+                                                        'subscriber_acquisition': subscriber_acquisition,
+                                                        'staff_costs': staff_costs,
+                                                        'research_development': research_development,
+                                                        'maintenance_costs': maintenance_costs,
+                                                        'discount_rate': discount_rate,
+                                                        'assessment_period_year': assessment_period_year,
+                                                        'opex_costs': opex_costs,
+                                                        'capex_costs': capex_costs,
+                                                        'opex_scenario': opex_scenario,
+                                                        'capex_scenario': capex_scenario})
 
 
     df = pd.DataFrame.from_dict(uq_parameters)

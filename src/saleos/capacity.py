@@ -437,8 +437,7 @@ def calc_spectral_efficiency(cnr, lut):
     """
     #get only APSK entries
     lut = [
-        (modulation, se, awgn, cnr) for (modulation, se, awgn, cnr) in lut if not 'QPSK' in modulation
-        ]
+        (modulation, se, awgn, cnr) for (modulation, se, awgn, cnr) in lut]
     
     for lower, upper in pairwise(lut):
 
@@ -552,7 +551,7 @@ def calc_constellation_capacity(channel_capacity,
                                     x Polarizations
                                     x Number of spot beams
                                     x Number of satellites
-                                    x 0.5 (50% of capacity)
+                                    x 0.67 (2/3 of capacity)
 
     Parameters
     ----------
@@ -575,7 +574,7 @@ def calc_constellation_capacity(channel_capacity,
     """
     constellation_capacity = (channel_capacity * number_of_channels 
                               * polarization * number_of_beams 
-                              * number_of_satellites * 0.5) 
+                              * number_of_satellites * 0.67) 
 
     return constellation_capacity
 
@@ -633,18 +632,18 @@ def capacity_subscriber(const_cap, subscribers):
     return cap_sub
 
 
-def monthly_traffic(capacity_mbps):
+def monthly_traffic(capacity_mbps, orbit):
     """ 
     This function calculates the monthly 
     traffic given that the lifespan of all 
-    LEO constellations is 5 years and 20% 
-    accounting for traffic taking place 
-    in the busiest hour of the day based on 
-    [3].
+    LEO constellations is 5 years and 15 
+    years for GEO and 20% accounting for 
+    traffic taking place in the busiest 
+    hour of the day based on [3].
 
     Conversion of Mbps to monthly traffic in GB. 
 
-    Monthly traffic (GB) = (Capacity_Mbps / 12 x 5)
+    Monthly traffic (GB) = (Capacity_Mbps / 12 x 5 or 15)
                            / (8000 x #Conversion of Gigabytes to bits
                            1/30)     #Number of days in a month (30)
                            x 1/3600  #Seconds in hour
@@ -652,6 +651,8 @@ def monthly_traffic(capacity_mbps):
 
     Parameters
     ----------
+    orbit : string
+        satellite orbit (either LEO, MEO or GEO)
     capacity_mbps : float
         Mean capacity per user in Mbps
 
@@ -662,6 +663,12 @@ def monthly_traffic(capacity_mbps):
             
     """
 
-    amount = (capacity_mbps / (12 * 5)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+    if orbit == 'GEO':
+
+        amount = (capacity_mbps / (12 * 15)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+
+    else:
+
+        amount = (capacity_mbps / (12 * 5)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
 
     return amount

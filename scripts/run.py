@@ -513,7 +513,6 @@ def run_uq_processing_cost():
         total_cost_ownership = ct.cost_model(item['satellite_manufacturing'],
                                              item['satellite_launch_cost'],
                                              item['ground_station_cost'],
-                                             item['spectrum_cost'],
                                              item['regulation_fees'],
                                              item['fiber_infrastructure_cost'],
                                              item['ground_station_energy'],
@@ -585,7 +584,7 @@ def process_mission_capacity():
          df['capacity_per_user'].loc[i] = (cy.capacity_subscriber(df['constellation_capacity_mbps'].loc[i], 
                                           df['subscribers'].loc[i]))
 
-         df['monthly_gb'].loc[i] = (cy.monthly_traffic(df['capacity_per_user'].loc[i]))
+         df['monthly_gb'].loc[i] = cy.monthly_traffic(df['capacity_per_user'].loc[i], df['constellation'].loc[i])
 
          df['user_per_area'].loc[i] = df['subscribers'].loc[i] / df['satellite_coverage_area_km'].loc[i]
 
@@ -666,7 +665,7 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
