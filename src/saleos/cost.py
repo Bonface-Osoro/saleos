@@ -14,7 +14,7 @@ from collections import OrderedDict
 
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
-    ground_station_cost, spectrum_cost, regulation_fees, 
+    ground_station_cost, regulation_fees, 
     fiber_infrastructure_cost, ground_station_energy, 
     subscriber_acquisition, staff_costs, research_development, 
     maintenance, discount_rate, assessment_period):
@@ -30,8 +30,6 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
         cost of launching satellites.
     ground_station_cost : int.
         cost of constructing a ground station.
-    spectrum_cost : int.
-        spectrum cost.
     regulation_fees : int.
         Orbital fees cost.
     fiber_infrastructure_cost : int.
@@ -60,8 +58,8 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
     """
 
     capex = (satellite_manufacturing + satellite_launch_cost 
-             + ground_station_cost + spectrum_cost 
-             + regulation_fees + fiber_infrastructure_cost) 
+             + ground_station_cost + regulation_fees 
+             + fiber_infrastructure_cost) 
 
     opex_costs = (ground_station_energy + subscriber_acquisition 
                   + staff_costs + research_development 

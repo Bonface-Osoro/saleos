@@ -425,7 +425,7 @@ constellation_monthly_cost_per_user <-
   labs(
     colour = NULL,
     title = " ",
-    subtitle = 'f',
+    subtitle = ' ',
     x = NULL,
     y = "Average Monthly Cost \nper Subscriber(US$/Subscriber)",
     fill = 'Cost\nScenario'

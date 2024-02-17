@@ -208,7 +208,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 35)
+    limits = c(0, 45)
   ) +
   theme_minimal() +
   theme(
