@@ -259,7 +259,7 @@ social_carbon_per_subscriber_baseline <-
   ) +
   ylab("Social Cost/Subscriber<br>(Baseline) (US$)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 2500),
+    limits = c(0, 1000),
     labels = comma,
     expand = c(0, 0)
   ) +
@@ -354,7 +354,7 @@ social_carbon_per_subscriber_worst_case <-
     ) +
     ylab("Social Cost/Subscriber<br>(Worst-case) (US$)") + # given t CO<sub>2</sub>eq
     scale_y_continuous(
-      limits = c(0, 6000),
+      limits = c(0, 3000),
       labels = comma,
       expand = c(0, 0)
     ) +

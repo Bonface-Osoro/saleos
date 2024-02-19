@@ -103,19 +103,10 @@ def run_uq_processing_capacity():
             item['number_of_channels'], item['polarization'],
             item['number_of_beams']), 4)
         
-        if item['constellation'] == 'GEO':
-
-            constellation_capacity = (round((cy.calc_constellation_capacity(
-                    channel_capacity, item['number_of_channels'], 
-                    item['polarization'], item['number_of_beams'], 
-                    item['number_of_satellites'])), 4)) * 2
-            
-        else:
-
-            constellation_capacity = round((cy.calc_constellation_capacity(
-                    channel_capacity, item['number_of_channels'], 
-                    item['polarization'], item['number_of_beams'], 
-                    item['number_of_satellites'])), 4)
+        constellation_capacity = round((cy.calc_constellation_capacity(
+                channel_capacity, item['number_of_channels'], 
+                item['polarization'], item['number_of_beams'], 
+                item['number_of_satellites'], item['constellation'])), 4)
             
         # 1.896173 and .524939 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
         # ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
@@ -518,7 +509,6 @@ def run_uq_processing_cost():
                                              item['ground_station_energy'],
                                              item['subscriber_acquisition'],
                                              item['staff_costs'],
-                                             item['research_development'],
                                              item['maintenance_costs'],
                                              item['discount_rate'],
                                              item['assessment_period_year'])
@@ -665,7 +655,7 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()

@@ -16,7 +16,7 @@ from collections import OrderedDict
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
     ground_station_cost, regulation_fees, 
     fiber_infrastructure_cost, ground_station_energy, 
-    subscriber_acquisition, staff_costs, research_development, 
+    subscriber_acquisition, staff_costs,
     maintenance, discount_rate, assessment_period):
     """
     Calculate the total cost of ownership(TCO)
@@ -40,8 +40,6 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
         customer marketing and promotion cost.
     staff_costs : int.
         staff costs.
-    research_development : int.
-        cost of research and development.
     maintenance : int.
         maintenance cost.
     discount_rate : float.
@@ -62,8 +60,7 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
              + fiber_infrastructure_cost) 
 
     opex_costs = (ground_station_energy + subscriber_acquisition 
-                  + staff_costs + research_development 
-                  + maintenance) 
+                  + staff_costs + maintenance) 
 
     year_costs = []
 
