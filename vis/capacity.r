@@ -129,7 +129,7 @@ sat_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 240)
+    limits = c(0, 840)
   ) +
   theme_minimal() +
   theme(

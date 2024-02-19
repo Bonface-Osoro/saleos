@@ -161,7 +161,7 @@ emission_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 13.5)
+    limits = c(0, 6.5)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_markdown(),
@@ -372,7 +372,7 @@ constellation_tco <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 35)
+    limits = c(0, 20)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -493,7 +493,7 @@ constellation_monthly_cost_per_user <-
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
-    limits = c(0, 120)
+    limits = c(0, 80)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),

@@ -258,7 +258,6 @@ def uq_inputs_cost():
                                 regulation_fees = item['regulation_fees'] 
                                 fiber_infrastructure_cost = item['fiber_infrastructure_cost']
                                 subscriber_acquisition = item['subscriber_acquisition']
-                                research_development = item['research_development'] 
                                 maintenance_costs = maint_costs
 
                                 capex_costs = (satellite_manufacturing
@@ -269,7 +268,6 @@ def uq_inputs_cost():
                                 
                                 opex_costs = (ground_station_energy 
                                                 + staff_costs 
-                                                + research_development 
                                                 + fiber_infrastructure_cost 
                                                 + maintenance_costs) 
                                 
@@ -293,7 +291,6 @@ def uq_inputs_cost():
                                                         'ground_station_energy': ground_station_energy,
                                                         'subscriber_acquisition': subscriber_acquisition,
                                                         'staff_costs': staff_costs,
-                                                        'research_development': research_development,
                                                         'maintenance_costs': maintenance_costs,
                                                         'discount_rate': discount_rate,
                                                         'assessment_period_year': assessment_period_year,
