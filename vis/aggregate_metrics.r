@@ -395,7 +395,9 @@ constellation_tco <-
 ##################
 ## TCO Per User ##
 ##################
-
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_cost_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df <- data %>%
   group_by(constellation, capex_scenario) %>%
