@@ -395,19 +395,25 @@ constellation_tco <-
 ##################
 ## TCO Per User ##
 ##################
-
+# Load data
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_cost_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df <- data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
 
-df$capex_scenario = as.factor(df$capex_scenario)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$subscriber = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_tco_per_user <-
-  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +

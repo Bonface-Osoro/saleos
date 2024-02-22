@@ -23,12 +23,21 @@ BASE_PATH = CONFIG['file_locations']['base_path']
 def uq_inputs_cost(parameters):
     """
     Generate all UQ cost inputs in preparation for running through the saleos model. 
-    
+
+    Parameters
+    ----------
+    parameters : dict
+        dictionary of dictionary containing constellation cost values
+
+    Return
+    ------
+        None
     """
     iterations = []
 
 
     for key, constellation_params in parameters.items():
+        
         
         for i in range(0, constellation_params['iteration_quantity']):
 
@@ -43,6 +52,7 @@ def uq_inputs_cost(parameters):
     filename = 'uq_parameters_cost.csv'
 
     if not os.path.exists(BASE_PATH):
+
         os.makedirs(BASE_PATH)
     
     path_out = os.path.join(BASE_PATH, 'processed', filename)
@@ -56,6 +66,17 @@ def multiorbit_sat_costs(i, constellation_params):
     This function generates random values within the 
     given parameter ranges. 
 
+    Parameters
+    ----------
+    i : int.
+        number of iterations
+    constellation_params : dict
+        Dictionary containing satellite cost details
+
+    Return
+    ------
+        output : list
+            List containing cost outputs
     """
     output = []
 
@@ -139,6 +160,7 @@ def multiorbit_sat_costs(i, constellation_params):
         'discount_rate': constellation_params['discount_rate'],
         'assessment_period_year': constellation_params['assessment_period'],
     })
+    
 
     return output
 

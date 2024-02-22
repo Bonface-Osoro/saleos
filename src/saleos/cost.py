@@ -19,6 +19,9 @@ def opex_cost(subscriber_acquisition,
               assessment_period):
     """
     This function calculates operating expenditures
+
+    Parameters
+    ----------
     fiber_infrastructure_cost : int.
         cost of connecting the ground stations to fiber backbone.
     ground_station_energy : int.
@@ -45,16 +48,17 @@ def opex_cost(subscriber_acquisition,
                   + subscriber_acquisition) 
 
     year_costs = []
-
-    for time in np.arange(1, assessment_period):  
-
+ 
+    for time in range(0, assessment_period):  
+        
         yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
         year_costs.append(yearly_opex)
-
+   
     annual_opex = sum(year_costs)
 
 
     return annual_opex
+x = opex_cost(110100,  23092204,  289130600,  8511616, 7, 5)
 
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
