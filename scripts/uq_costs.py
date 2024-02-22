@@ -137,7 +137,7 @@ def multiorbit_sat_costs(i, constellation_params):
                               maintenance_costs, 
                               constellation_params['discount_rate'], 
                               constellation_params['assessment_period'])
-
+    
     output.append({
         'iteration': i,
         'constellation': constellation_params['name'], 
