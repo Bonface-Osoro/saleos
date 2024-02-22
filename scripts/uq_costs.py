@@ -37,18 +37,12 @@ def uq_inputs_cost(parameters):
 
 
     for key, constellation_params in parameters.items():
-
-        if not key == 'starlink': #just doing this now to keep this small. 
-            continue
         
         for i in range(0, constellation_params['iteration_quantity']):
 
-            if key in ['starlink', 'oneweb', 'kuiper']:
-                data = generate_leo(i, constellation_params)
-            # elif key in ['geo']:
-            #     data = generate_geo(parameters)   # for you to do later
-            # else:
-            #     print('constellation not found')
+            if key in ['starlink', 'oneweb', 'kuiper', 'geo']:
+
+                data = geo_leo_costs(i, constellation_params)
 
             iterations = iterations + data
 
@@ -65,7 +59,7 @@ def uq_inputs_cost(parameters):
     return
 
 
-def generate_leo(i, constellation_params):
+def geo_leo_costs(i, constellation_params):
     """
     This function generates random values within the 
     given parameter ranges. 
@@ -89,6 +83,47 @@ def generate_leo(i, constellation_params):
         constellation_params['ground_station_cost_high']
     ) * constellation_params['number_of_ground_stations']
 
+    regulation_fees = random.randint(
+        constellation_params['regulation_fees_low'], 
+        constellation_params['regulation_fees_high']
+    ) * constellation_params['number_of_planes']
+
+    fiber_infrastructure_cost = random.randint(
+        constellation_params['fiber_infrastructure_low'], 
+        constellation_params['fiber_infrastructure_high']
+    ) * constellation_params['number_of_ground_stations']
+
+    ground_station_energy = random.randint(
+        constellation_params['ground_station_energy_low'], 
+        constellation_params['ground_station_energy_high']
+    ) * constellation_params['number_of_ground_stations']
+
+    subscriber_acquisition = random.randint(
+        constellation_params['subscriber_acquisition_low'], 
+        constellation_params['subscriber_acquisition_high']
+    )
+
+    staff_costs = random.randint(
+        constellation_params['staff_costs_low'], 
+        constellation_params['staff_costs_high']
+    ) * constellation_params['number_of_employees']
+
+    maintenance_costs = random.randint(
+        constellation_params['maintenance_low'], 
+        constellation_params['maintenance_high']
+    )
+
+    capex_costs = (satellite_manufacturing
+                    + subscriber_acquisition
+                    + regulation_fees
+                    + satellite_launch 
+                    + ground_station_cost)
+    
+    opex_costs = (ground_station_energy 
+                + staff_costs 
+                + fiber_infrastructure_cost 
+                + maintenance_costs) 
+
     output.append({
         'iteration': i,
         'constellation': constellation_params['name'], 
@@ -97,18 +132,17 @@ def generate_leo(i, constellation_params):
         'subscribers_low': constellation_params['subscribers'][0],
         'subscribers_baseline': constellation_params['subscribers'][1],
         'subscribers_high': constellation_params['subscribers'][2],
-        #costs
         'satellite_manufacturing': satellite_manufacturing,
         'satellite_launch': satellite_launch,
         'ground_station_cost': ground_station_cost,
-
-        # 'regulation_fees': regulation_fees,
-        # 'fiber_infrastructure_cost': fiber_infrastructure_cost,
-        # 'ground_station_energy': ground_station_energy,
-        # 'subscriber_acquisition': subscriber_acquisition,
-        # 'staff_costs': staff_costs,
-        # 'maintenance_costs': maintenance_costs,
-
+        'regulation_fees': regulation_fees,
+        'fiber_infrastructure_cost': fiber_infrastructure_cost,
+        'ground_station_energy': ground_station_energy,
+        'subscriber_acquisition': subscriber_acquisition,
+        'staff_costs': staff_costs,
+        'maintenance_costs': maintenance_costs,
+        'capex_costs': capex_costs,
+        'opex_costs': opex_costs,
         'discount_rate': constellation_params['discount_rate'],
         'assessment_period_year': constellation_params['assessment_period'],
     })
