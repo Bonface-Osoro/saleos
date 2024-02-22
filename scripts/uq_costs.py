@@ -1,13 +1,4 @@
 """
-Uncertainty quantification of costs. 
-
-February 2024
-
-Written by Ed Oughton. 
-
-"""
-
-"""
 Preprocess all Uncertainty Quantification (UQ) inputs. 
 
 Written by Bonface Osoro & Ed Oughton.
@@ -20,6 +11,7 @@ import os
 import random
 import numpy as np
 import pandas as pd
+import saleos.cost as ct
 from inputs import parameters
 pd.options.mode.chained_assignment = None 
 
@@ -42,7 +34,7 @@ def uq_inputs_cost(parameters):
 
             if key in ['starlink', 'oneweb', 'kuiper', 'geo']:
 
-                data = geo_leo_costs(i, constellation_params)
+                data = multiorbit_sat_costs(i, constellation_params)
 
             iterations = iterations + data
 
@@ -59,7 +51,7 @@ def uq_inputs_cost(parameters):
     return
 
 
-def geo_leo_costs(i, constellation_params):
+def multiorbit_sat_costs(i, constellation_params):
     """
     This function generates random values within the 
     given parameter ranges. 
@@ -73,7 +65,7 @@ def geo_leo_costs(i, constellation_params):
         constellation_params['satellite_manufacturing_high']
     ) * constellation_params['number_of_satellites']
 
-    satellite_launch = random.randint(
+    satellite_launch_cost = random.randint(
         constellation_params['satellite_launch_cost_low'], 
         constellation_params['satellite_launch_cost_high']
     ) * constellation_params['number_of_satellites']
@@ -110,19 +102,20 @@ def geo_leo_costs(i, constellation_params):
 
     maintenance_costs = random.randint(
         constellation_params['maintenance_low'], 
-        constellation_params['maintenance_high']
-    )
+        constellation_params['maintenance_high']) 
 
     capex_costs = (satellite_manufacturing
-                    + subscriber_acquisition
+                    + fiber_infrastructure_cost
                     + regulation_fees
-                    + satellite_launch 
+                    + satellite_launch_cost 
                     + ground_station_cost)
     
-    opex_costs = (ground_station_energy 
-                + staff_costs 
-                + fiber_infrastructure_cost 
-                + maintenance_costs) 
+    opex_costs = ct.opex_cost(subscriber_acquisition, 
+                              ground_station_energy, 
+                              staff_costs, 
+                              maintenance_costs, 
+                              constellation_params['discount_rate'], 
+                              constellation_params['assessment_period'])
 
     output.append({
         'iteration': i,
@@ -133,7 +126,7 @@ def geo_leo_costs(i, constellation_params):
         'subscribers_baseline': constellation_params['subscribers'][1],
         'subscribers_high': constellation_params['subscribers'][2],
         'satellite_manufacturing': satellite_manufacturing,
-        'satellite_launch': satellite_launch,
+        'satellite_launch_cost': satellite_launch_cost,
         'ground_station_cost': ground_station_cost,
         'regulation_fees': regulation_fees,
         'fiber_infrastructure_cost': fiber_infrastructure_cost,

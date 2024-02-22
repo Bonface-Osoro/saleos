@@ -522,8 +522,8 @@ def run_uq_processing_cost():
             'opex_costs': item['opex_costs'],
             'total_cost_ownership': total_cost_ownership,
             'assessment_period_year': item['assessment_period_year'],
-            'capex_scenario': item['capex_scenario'],
-            'opex_scenario': item['opex_scenario']
+            #'capex_scenario': item['capex_scenario'],
+            #'opex_scenario': item['opex_scenario']
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -655,19 +655,19 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     run_uq_processing_cost()
 
     print('Processing Emission results')
-    calc_emissions()
+    #calc_emissions()
 
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()
+    #process_mission_cost()
 
     executionTime = (time.time() - start)
 

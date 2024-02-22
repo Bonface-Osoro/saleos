@@ -12,6 +12,50 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
+def opex_cost(subscriber_acquisition, 
+              ground_station_energy, 
+              staff_costs, maintenance, 
+              discount_rate, 
+              assessment_period):
+    """
+    This function calculates operating expenditures
+    fiber_infrastructure_cost : int.
+        cost of connecting the ground stations to fiber backbone.
+    ground_station_energy : int.
+        ground station cost.
+    staff_costs : int.
+        staff costs.
+    maintenance : int.
+        maintenance cost.
+    discount_rate : float.
+        discount rate.
+    assessment_period : int.
+        assessment period equivalent 
+        to the satellite lifespan.
+
+    Returns
+    -------
+    annual_opex : float
+            The operating expenditure costs annually.
+    """
+
+    opex_costs = (ground_station_energy 
+                  + staff_costs 
+                  + maintenance
+                  + subscriber_acquisition) 
+
+    year_costs = []
+
+    for time in np.arange(1, assessment_period):  
+
+        yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
+        year_costs.append(yearly_opex)
+
+    annual_opex = sum(year_costs)
+
+
+    return annual_opex
+
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
     ground_station_cost, regulation_fees, 
@@ -70,6 +114,7 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
         year_costs.append(yearly_opex)
 
     total_cost_ownership = capex + sum(year_costs) + opex_costs
+
 
     return total_cost_ownership
 

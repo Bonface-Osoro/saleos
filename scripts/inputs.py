@@ -5,8 +5,8 @@ Written by Bonface Osoro & Ed Oughton.
 
 May 2022
 
-The GEO and some LEO cost values are estimated from SES financial statements through the following link.
-https://www.ses.com/sites/default/files/2023-02/230227_SES_AR2022_Final.pdf
+The full unit constellation costs can be found by reading the paper through the link below.
+https://arxiv.org/abs/2309.02338 
 
 """
 parameters = {                                            
@@ -60,6 +60,7 @@ parameters = {
         'fiber_infrastructure_low': 31250, #5km * 0.00625
         'fiber_infrastructure_base': 46875, #7.5km * 0.00625
         'fiber_infrastructure_high': 62500, #10km * 0.00625
+        'opex_as_a_percent_of_capex' : 10,
         'discount_rate': 7,
         'assessment_period': 5
     },
@@ -113,6 +114,7 @@ parameters = {
         'fiber_infrastructure_low': 31250, 
         'fiber_infrastructure_base': 46875, 
         'fiber_infrastructure_high': 62500,
+        'opex_as_a_percent_of_capex' : 10,
         'discount_rate': 7,
         'assessment_period': 5
     },
@@ -166,6 +168,7 @@ parameters = {
         'fiber_infrastructure_low': 31250, 
         'fiber_infrastructure_base': 46875, 
         'fiber_infrastructure_high': 62500,
+        'opex_as_a_percent_of_capex' : 10,
         'discount_rate': 7,
         'assessment_period': 5
     },
@@ -220,6 +223,7 @@ parameters = {
         'fiber_infrastructure_low': 31250, 
         'fiber_infrastructure_base': 46875, 
         'fiber_infrastructure_high': 62500,
+        'opex_as_a_percent_of_capex' : 10,
         'discount_rate': 7,
         'assessment_period': 15
     },
