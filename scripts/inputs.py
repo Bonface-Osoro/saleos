@@ -12,7 +12,9 @@ https://www.ses.com/sites/default/files/2023-02/230227_SES_AR2022_Final.pdf
 parameters = {                                            
     'starlink': {
         'number_of_satellites': 4425,
+        'number_of_ground_stations': 150,
         'name':'Starlink',
+        'iteration_quantity': 100,
         'total_area_earth_km_sq': 510000000, #Area of Earth in km^2
         'altitude_km': 545, #Altitude of starlink satellites in km
         'elevation_angle': 25,
@@ -29,15 +31,27 @@ parameters = {
         'number_of_channels': 6, #Number of channels per satellite
         'polarization': 1,
         'subscribers': [2500000, 3500000, 4500000],
-        'satellite_manufacturing': 250000,
-        'satellite_launch_cost': 1210000000,
-        'ground_station_cost': 75000000,
-        'regulation_fees': 2320850,
-        'maintenance': 8440000, #10% of capex
-        'staff_costs': 413600000, 
-        'subscriber_acquisition': 23000000,
-        'ground_station_energy': 115500,
-        'fiber_infrastructure_cost': 9380000,
+
+        # Just put the same numbers here are in the UQ table in the paper SI. 
+        'satellite_manufacturing_low': 150000,
+        'satellite_manufacturing_base': 250000,
+        'satellite_manufacturing_high': 350000,
+        'satellite_launch_cost_low': 260000, 
+        'satellite_launch_cost_base': 270000,
+        'satellite_launch_cost_high': 280000,
+        'ground_station_cost_low': 400000,
+        'ground_station_cost_base': 500000,
+        'ground_station_cost_high': 600000,
+
+        # Please finish these
+
+        # 'regulation_fees': 2320850,
+        # 'maintenance': 8440000, #10% of capex
+        # 'staff_costs': 413600000, 
+        # 'subscriber_acquisition': 23000000,
+        # 'ground_station_energy': 115500,
+        # 'fiber_infrastructure_cost': 9380000,
+
         'discount_rate': 7,
         'assessment_period': 5
     },
