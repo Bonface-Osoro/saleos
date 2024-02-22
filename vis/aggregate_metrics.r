@@ -432,7 +432,7 @@ constellation_monthly_cost_per_user <-
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
-    limits = c(0, 80)
+    limits = c(0, 79)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -473,10 +473,7 @@ row2 =   ggarrange(
   ncol = 3
 )
 
-aggregate_metrics =   ggarrange(row1,
-                                row2,
-                                nrow = 2,
-                                ncol = 1)
+aggregate_metrics = ggarrange(row1, row2, nrow = 2, ncol = 1)
 
 path = file.path(folder, 'figures', 'c_aggregate_metrics.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
