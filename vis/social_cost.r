@@ -395,8 +395,8 @@ dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 5.5,
-  height = 4,
+  width = 9,
+  height = 6,
   res = 480
 )
 print(social_cost_of_carbon_panel)

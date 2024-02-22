@@ -659,7 +659,7 @@ if __name__ == '__main__':
     #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    #run_uq_processing_cost()
+    run_uq_processing_cost()
 
     print('Processing Emission results')
     #calc_emissions()

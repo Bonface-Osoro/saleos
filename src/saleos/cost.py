@@ -53,12 +53,10 @@ def opex_cost(subscriber_acquisition,
         
         yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
         year_costs.append(yearly_opex)
-   
+
     annual_opex = sum(year_costs)
 
-
     return annual_opex
-x = opex_cost(110100,  23092204,  289130600,  8511616, 7, 5)
 
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
@@ -144,3 +142,10 @@ def user_monthly_cost(tco_per_user, lifespan):
     user_monthly_cost = tco_per_user / (lifespan * 12)
 
     return user_monthly_cost
+
+
+if __name__ == "__main__":
+        
+    x = opex_cost(110100,  23092204,  289130600,  8511616, 7, 5)
+    # x = opex_cost(100,  100,  100,  100, 7, 5)
+    print(x)
