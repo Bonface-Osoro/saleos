@@ -256,6 +256,9 @@ capacity_per_user <-
 ##########################
 ## Monthly Traffic plot ##
 ##########################
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_capacity_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%

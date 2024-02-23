@@ -93,7 +93,7 @@ df = data %>%
 df$Constellation = factor(df$constellation)
 
 constellation_opex <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + #Constellation
+  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + 
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -148,10 +148,7 @@ df = data %>%
   summarize(mean = mean(total_cost_ownership),
             sd = sd(total_cost_ownership))
 
-# df$capex_scenario = as.factor(df$capex_scenario)
 df$Constellation = factor(df$constellation)
-# df$capex = factor(df$capex_scenario,
-#                   levels = c('Low', 'Baseline', 'High'))
 
 constellation_tco <-
   ggplot(df, aes(x = Constellation, y = mean / 1e6)) + #, fill = capex
@@ -211,17 +208,6 @@ total_cost <- ggarrange(
   font.label = list(size = 9)
 )
 
-# path = file.path(folder, 'figures', 'h_aggregate_cost_metrics.png')
-# dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
-# png(
-#   path,
-#   units = "in",
-#   width = 6.5,
-#   height = 2.5,
-#   res = 480
-# )
-# print(cost_per_user)
-# dev.off()
 
 ################################
 ##Constellation Capex per User##
