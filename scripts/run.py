@@ -522,8 +522,8 @@ def run_uq_processing_cost():
             'opex_costs': item['opex_costs'],
             'total_cost_ownership': total_cost_ownership,
             'assessment_period_year': item['assessment_period_year'],
-            'capex_scenario': item['capex_scenario'],
-            'opex_scenario': item['opex_scenario']
+            #'capex_scenario': item['capex_scenario'],
+            #'opex_scenario': item['opex_scenario']
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -601,7 +601,7 @@ def process_mission_cost():
     df = pd.read_csv(data_in, index_col = False)
 
     df = df[['constellation', 'capex_costs', 'opex_costs',
-             'capex_scenario', 'opex_scenario', 
+             #'capex_scenario', 'opex_scenario', 
              'assessment_period_year', 'total_cost_ownership', 
              'subscribers_low', 'subscribers_baseline', 
              'subscribers_high']]
@@ -610,7 +610,7 @@ def process_mission_cost():
     # Switching the subscriber columns from wide format to long format
     df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
                                 'opex_costs', 'assessment_period_year', 
-                                'capex_scenario', 'opex_scenario', 
+                                #'capex_scenario', 'opex_scenario', 
                                 'total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
@@ -642,7 +642,8 @@ def process_mission_cost():
     df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 
              'assessment_period_year', 'subscribers', 'capex_per_user', 
              'opex_per_user', 'tco_per_user', 'user_monthly_cost', 
-             'opex_scenario', 'capex_scenario', 'subscriber_scenario']]
+             #'opex_scenario', 'capex_scenario', 
+             'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)

@@ -18,31 +18,25 @@ data <- select(
   total_cost_ownership,
   tco_per_user,
   capex_costs,
-  capex_scenario,
   capex_per_user,
   opex_costs,
-  opex_scenario,
   opex_per_user,
+  subscriber_scenario
 )
-
 
 #######################
 ##Constellation Capex##
 #######################
 
-
 df = data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation) %>%
   summarize(mean = mean(capex_costs),
             sd = sd(capex_costs))
 
-df$capex_scenario = as.factor(df$capex_scenario)
 df$Constellation = factor(df$constellation)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
 
 constellation_capex <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean / 1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -91,19 +85,15 @@ constellation_capex <-
 ##Constellation Total operating Costs##
 #######################################
 
-
 df = data %>%
-  group_by(constellation, opex_scenario) %>%
+  group_by(constellation) %>%
   summarize(mean = mean(opex_costs),
             sd = sd(opex_costs))
 
-df$opex_scenario = as.factor(df$opex_scenario)
 df$Constellation = factor(df$constellation)
-df$opex = factor(df$opex_scenario,
-                 levels = c('Low', 'Baseline', 'High'))
 
 constellation_opex <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = opex)) +
+  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + 
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -154,17 +144,14 @@ constellation_opex <-
 
 
 df = data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation) %>%
   summarize(mean = mean(total_cost_ownership),
             sd = sd(total_cost_ownership))
 
-df$capex_scenario = as.factor(df$capex_scenario)
 df$Constellation = factor(df$constellation)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
 
 constellation_tco <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + #, fill = capex
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -209,23 +196,58 @@ constellation_tco <-
     plot.title = element_text(size = 10, face = "bold")
   )
 
+total_cost <- ggarrange(
+  constellation_capex,
+  constellation_opex,
+  constellation_tco,
+  nrow = 1,
+  ncol = 3,
+  common.legend = T,
+  legend = "bottom",
+  labels = c("a", "b", "c"),
+  font.label = list(size = 9)
+)
+
+
 ################################
 ##Constellation Capex per User##
 ################################
 
+# Set default folder
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+
+#Load the data
+data <-
+  read.csv(file.path(folder, '..', 'results', 'final_cost_results.csv'))
+
+# Select columns to use #
+data <- select(
+  data,
+  constellation,
+  total_cost_ownership,
+  tco_per_user,
+  capex_costs,
+  capex_per_user,
+  opex_costs,
+  opex_per_user,
+  subscriber_scenario
+)
 
 df = data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(capex_per_user),
             sd = sd(capex_per_user))
 
-df$capex_scenario = as.factor(df$capex_scenario)
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+                  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+                  labels = c('Low', 'Baseline', 'High')
+  )
 
 constellation_capex_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -244,7 +266,7 @@ constellation_capex_per_user <-
     subtitle = NULL,
     x = NULL,
     y = "Capex\n(US$/Subscriber)",
-    fill = 'Cost\nScenario'
+    fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -274,19 +296,21 @@ constellation_capex_per_user <-
 ##Constellation Opex per User##
 ###############################
 
-
 df = data %>%
-  group_by(constellation, opex_scenario) %>%
+  group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(opex_per_user),
             sd = sd(opex_per_user))
 
-df$opex_scenario = as.factor(df$opex_scenario)
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
-df$opex = factor(df$opex_scenario,
-                 levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_opex_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = opex)) +
+  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -305,7 +329,7 @@ constellation_opex_per_user <-
     subtitle = NULL,
     x = NULL,
     y = "Opex\n(US$/Subscriber)",
-    fill = 'Cost\nScenario'
+    fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -330,24 +354,25 @@ constellation_opex_per_user <-
     plot.title = element_text(size = 10, face = "bold")
   )
 
-
 ##############################
 ##Constellation TCO per User##
 ##############################
 
-
 df = data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
 
-df$capex_scenario = as.factor(df$capex_scenario)
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_tco_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -392,96 +417,42 @@ constellation_tco_per_user <-
   )
 
 
-###################################
-## Average Monthly Cost per User ##
-###################################
-data <-
-  read.csv(file.path(folder, '..', 'results', 'final_cost_results.csv'))
-
-df <- data %>%
-  group_by(constellation, capex_scenario) %>%
-  summarize(mean = mean(user_monthly_cost),
-            sd = sd(user_monthly_cost))
-
-df$capex_scenario = as.factor(df$capex_scenario)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
-
-constellation_monthly_cost_per_user <-
-  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
-  geom_bar(stat = "identity",
-           position = position_dodge(),
-           width = 0.9) +
-  geom_errorbar(
-    aes(ymin = mean - sd,
-        ymax = mean + sd),
-    width = .2,
-    position = position_dodge(.9),
-    color = 'black',
-    size = 0.2
-  ) +
-  scale_fill_brewer(palette = "Paired") +
-  theme_minimal() +
-  labs(
-    colour = NULL,
-    title = " ",
-    subtitle = ' ',
-    x = NULL,
-    y = "Average Monthly Cost \nper Subscriber(US$/Subscriber)",
-    fill = 'Cost\nScenario'
-  ) +
-  scale_y_continuous(
-    labels = comma,
-    expand = c(0, 0),
-    limits = c(0, 60)
-  ) + theme_minimal() +
-  theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    legend.direction = "horizontal",
-    legend.position = c(0.5, 0.9),
-    axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold")
-  )
-
 ##################
 ##Combined plots##
 ##################
+
 cost_per_user <- ggarrange(
-  constellation_capex,
-  constellation_opex,
-  constellation_tco,
   constellation_capex_per_user,
   constellation_opex_per_user,
   constellation_tco_per_user,
-  constellation_monthly_cost_per_user,
-  nrow = 3,
+  nrow = 1,
   ncol = 3,
   common.legend = T,
   legend = "bottom",
-  labels = c("a", "b", "c", "d", "e", "f", "g"),
+  labels = c("d", "e", "f"),
   font.label = list(size = 9)
 )
 
-path = file.path(folder, 'figures', 'h_cost_metrics.png')
+output <- ggarrange(
+  total_cost,
+  cost_per_user,
+  nrow = 2,
+  ncol = 1,
+  common.legend = F,
+  legend = "bottom",
+  font.label = list(size = 9),
+  heights = c(.8, 1)
+)
+
+path = file.path(folder, 'figures', 'i_cost_metrics.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 6.5,
-  height = 5,
+  width = 9,
+  height = 6,
   res = 480
 )
-print(cost_per_user)
+print(output)
 dev.off()
 

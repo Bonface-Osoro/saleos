@@ -29,12 +29,12 @@ df$constellation = factor(
 
 df$rocket = factor(
   df$rocket,
-  levels = c('unknown_hyc', 'unknown_hyg', 'falcon9', 'soyuz'),
+  levels = c('falcon9', 'soyuz', 'unknown_hyc', 'unknown_hyg'),
   labels = c(
-    'Hydrocarbon \nFuel Rocket',
-    'Hydrogen \nFuel Rocket',
     'Falcon-9',
-    'Soyuz-FG'
+    'Soyuz-FG',
+    'Generic\nRocket 1',
+    'Generic\nRocket 2'
   )
 )
 
@@ -67,7 +67,7 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
     title = "",
     subtitle = "a",
     x = NULL,
-    y = "No of Launches",
+    y = "Total Launches",
     fill = "Rocket Fuel Type"
   ) +
   scale_y_continuous(
@@ -256,6 +256,9 @@ capacity_per_user <-
 ##########################
 ## Monthly Traffic plot ##
 ##########################
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_capacity_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -330,11 +333,10 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "final_cost_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
-#########
-## TCO ##
-#########
-
 df = data %>%
+<<<<<<< HEAD
+  group_by(constellation, subscriber_scenario) %>%
+=======
   group_by(constellation, capex_scenario) %>%
   summarize(mean = mean(total_cost_ownership),
             sd = sd(total_cost_ownership))
@@ -401,15 +403,20 @@ data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df <- data %>%
   group_by(constellation, capex_scenario) %>%
+>>>>>>> main
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
 
-df$capex_scenario = as.factor(df$capex_scenario)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$Constellation = factor(df$constellation)
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_tco_per_user <-
-  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -421,20 +428,19 @@ constellation_tco_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = color_palette) +
-  theme_minimal() +
+  scale_fill_brewer(palette = "Paired") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
-    subtitle = 'f',
+    subtitle = 'e',
     x = NULL,
     y = "TCO\n(US$/Subscriber)",
-    fill = 'Cost\nScenario'
+    fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = comma,
-    expand = c(0, 0),
-    limits = c(0, 14900)
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0), limits = c(0, 5900)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -459,18 +465,21 @@ constellation_tco_per_user <-
 ## Average Monthly Cost per User ##
 ###################################
 
-
 df <- data %>%
-  group_by(constellation, capex_scenario) %>%
+  group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(user_monthly_cost),
             sd = sd(user_monthly_cost))
 
-df$capex_scenario = as.factor(df$capex_scenario)
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$Constellation = factor(df$constellation)
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_monthly_cost_per_user <-
-  ggplot(df, aes(x = constellation, y = mean, fill = capex)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -489,13 +498,13 @@ constellation_monthly_cost_per_user <-
     title = " ",
     subtitle = 'f',
     x = NULL,
-    y = "Average Monthly Cost \nper Subscriber(US$/Subscriber)",
-    fill = 'Cost\nScenario'
+    y = "Average Monthly TCO \n(US$/Subscriber)",
+    fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
-    limits = c(0, 80)
+    limits = c(0, 79)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -530,16 +539,13 @@ row1 = ggarrange(
 
 row2 =   ggarrange(
   subscriber_traffic,
-  constellation_tco,
+  constellation_tco_per_user,
   constellation_monthly_cost_per_user,
   nrow = 1,
   ncol = 3
 )
 
-aggregate_metrics =   ggarrange(row1,
-                                row2,
-                                nrow = 2,
-                                ncol = 1)
+aggregate_metrics = ggarrange(row1, row2, nrow = 2, ncol = 1)
 
 path = file.path(folder, 'figures', 'c_aggregate_metrics.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
@@ -547,7 +553,7 @@ png(
   path,
   units = "in",
   width = 9,
-  height = 6.3,
+  height = 6,
   res = 480
 )
 print(aggregate_metrics)

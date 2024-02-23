@@ -12,6 +12,59 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
+def opex_cost(regulation_fees, 
+              ground_station_energy, 
+              staff_costs,
+              subscriber_acquisition, 
+              maintenance, 
+              discount_rate, 
+              assessment_period):
+    """
+    This function calculates operating expenditures
+
+    Parameters
+    ----------
+    regulation_fees : int.
+        Orbital fees cost.
+    ground_station_energy : int.
+        ground station cost.
+    staff_costs : int.
+        staff costs.
+    subscriber_acquisition : int.
+        customer marketing and promotion cost.
+    maintenance : int.
+        maintenance cost.
+    discount_rate : float.
+        discount rate.
+    assessment_period : int.
+        assessment period equivalent 
+        to the satellite lifespan.
+
+    Returns
+    -------
+    annual_opex : float
+            The operating expenditure costs annually.
+    """
+
+    opex_costs = (regulation_fees 
+                  + ground_station_energy 
+                  + staff_costs 
+                  + subscriber_acquisition
+                  + maintenance
+                  ) 
+
+    year_costs = []
+ 
+    for time in range(0, assessment_period):  
+        
+        yearly_opex = opex_costs / (((discount_rate / 100) + 1) ** time)
+        year_costs.append(yearly_opex)
+   
+    annual_opex = sum(year_costs)
+
+
+    return annual_opex
+
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
     ground_station_cost, regulation_fees, 
@@ -55,12 +108,16 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
 
     """
 
-    capex = (satellite_manufacturing + satellite_launch_cost 
-             + ground_station_cost + regulation_fees 
+    capex = (satellite_manufacturing 
+             + satellite_launch_cost 
+             + ground_station_cost 
              + fiber_infrastructure_cost) 
 
-    opex_costs = (ground_station_energy + subscriber_acquisition 
-                  + staff_costs + maintenance) 
+    opex_costs = (regulation_fees 
+                  + ground_station_energy 
+                  + staff_costs 
+                  + subscriber_acquisition 
+                  + maintenance) 
 
     year_costs = []
 
@@ -70,6 +127,7 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
         year_costs.append(yearly_opex)
 
     total_cost_ownership = capex + sum(year_costs) + opex_costs
+
 
     return total_cost_ownership
 
@@ -93,5 +151,6 @@ def user_monthly_cost(tco_per_user, lifespan):
 
     """
     user_monthly_cost = tco_per_user / (lifespan * 12)
+
 
     return user_monthly_cost

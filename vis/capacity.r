@@ -493,8 +493,8 @@ path = file.path(folder, 'figures', 'g_capacity_metrics.png')
 png(
   path,
   units = "in",
-  width = 6.5,
-  height = 4,
+  width = 9,
+  height = 6,
   res = 480
 )
 print(pub_cap)

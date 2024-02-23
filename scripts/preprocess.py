@@ -8,9 +8,11 @@ May 2022
 """
 import configparser
 import os
-from random import *
+import random
+#from random import *
 import numpy as np
 import pandas as pd
+import saleos.cost as ct
 from inputs import parameters
 pd.options.mode.chained_assignment = None 
 
@@ -126,181 +128,32 @@ def uq_inputs_capacity():
     return 
 
 
-def uq_inputs_cost():
+def uq_inputs_cost(parameters):
     """
-    Generate all UQ cost inputs to run through the saleos model. 
-    
+    Generate all UQ cost inputs in preparation for running 
+    through the saleos model. 
+
+    Parameters
+    ----------
+    parameters : dict
+        dictionary of dictionary containing constellation cost values.
+
     """
-    uq_parameters = []
+    iterations = []
 
-    for key, item in parameters.items():
 
-        # Cost variables
-        if key == 'geo':
-
-            # Generate a list containing satellite launch cost values that are above 
-            # and below the provided input value by $USD 10,000,000 for a GEO operator.
-            satellite_launch = [item['satellite_launch_cost'] - 10000000, 
-                                item['satellite_launch_cost'], 
-                                item['satellite_launch_cost'] + 10000000] 
-            
-        else:
-
-            # Generate a list containing satellite launch cost values that are above 
-            # and below the provided input value by $USD 5,000,000 for a LEO operator.
-            satellite_launch = [item['satellite_launch_cost'] - 5000000, 
-                                item['satellite_launch_cost'], 
-                                item['satellite_launch_cost'] + 5000000] 
-            
-        # Generate a list containing ground station cost values that are above 
-        # and below the provided input value by 20% of the given cost.
-        ground_station = [item['ground_station_cost'] - 
-                          (item['ground_station_cost'] * 0.2), 
-                         item['ground_station_cost'], 
-                         item['ground_station_cost'] + 
-                         (item['ground_station_cost'] * 0.2)]
+    for key, constellation_params in parameters.items():
         
-        # Generate a list containing maintenance cost values that are above 
-        # and below the provided input value by $USD 100,000.
-        maintenance_cost = [item['maintenance'] - 100000, 
-                            item['maintenance'], 
-                            item['maintenance'] + 100000]
         
-        # Generate a list containing staff cost values that are above 
-        # and below the provided input value by $USD 5,000,000.
-        staff_cost = [item['staff_costs'] - 50000000, 
-                      item['staff_costs'], 
-                      item['staff_costs'] + 50000000]
-        
-        if key == 'geo':
+        for i in range(0, constellation_params['iteration_quantity']):
 
-            # Generate a list containing satellite manufacturing cost values that are above 
-            # and below the provided input value by $USD 5,600,000,000 for a GEO operator.
-            total_satellite_cost = item['satellite_manufacturing'] * item['number_of_satellites']
-            total_variation_cost = item['number_of_satellites'] * 10000000
+            if key in ['starlink', 'oneweb', 'kuiper', 'geo']:
 
-            satellite_manufacturing_costs = [total_satellite_cost - total_variation_cost, 
-                        total_satellite_cost, total_satellite_cost + total_variation_cost]
-            
-        else: 
+                data = multiorbit_sat_costs(i, constellation_params)
 
-            # Generate a list containing satellite manufacturing cost values that are above 
-            # and below the provided input value by $USD 100,000 for a LEO operator.
-            total_satellite_cost = item['satellite_manufacturing'] * item['number_of_satellites']
-            total_variation_cost = item['number_of_satellites'] * 100000
+            iterations = iterations + data
 
-            satellite_manufacturing_costs = [total_satellite_cost - total_variation_cost, 
-                        total_satellite_cost, total_satellite_cost + total_variation_cost]
-
-        # Generate a list containing ground station energy values that are above 
-        # and below the provided input value by $USD 5,000.
-        ground_station_energy_costs = [item['ground_station_energy'] - 5000, 
-                      item['ground_station_energy'], 
-                      item['ground_station_energy'] + 5000]
-
-        for sat_launch in satellite_launch:
-
-            satellite_launch_cost = sat_launch
-
-            for gst in ground_station:
-
-                ground_station_cost = gst
-
-                if gst == (ground_station[0]) and sat_launch == (satellite_launch[0]):
-
-                    capex_scenario = 'Low'
-                    sat_launch_scenario = 'Low'
-                    ground_station_scenario = 'Low'
-
-                elif gst == (ground_station[1]) and sat_launch == (satellite_launch[1]):
-
-                    capex_scenario = 'Baseline'
-                    sat_launch_scenario = 'Baseline'
-                    ground_station_scenario = 'Baseline'
-
-                else:
-
-                    capex_scenario = 'High'
-                    sat_launch_scenario = 'High'
-                    ground_station_scenario = 'High'
-
-                for maint_cost in maintenance_cost:
-
-                    maint_costs = maint_cost
-
-                    if maint_cost == maintenance_cost[0]:
-
-                        opex_scenario = 'Low'
-
-                    elif maint_cost == maintenance_cost[1]:
-
-                        opex_scenario = 'Baseline'
-
-                    elif maint_cost == maintenance_cost[2]:
-
-                        opex_scenario = 'High'
-
-                    else: 
-                        opex_scenario = 'None'
-
-                    for stf_cost in staff_cost:
-
-                        staff_costs = stf_cost
-
-                        for sat_cost in satellite_manufacturing_costs:
-
-                            satellite_manufacturing = sat_cost
-
-                            for gst_energy_costs in ground_station_energy_costs:
-
-                                ground_station_energy = gst_energy_costs
-
-                                regulation_fees = item['regulation_fees'] 
-                                fiber_infrastructure_cost = item['fiber_infrastructure_cost']
-                                subscriber_acquisition = item['subscriber_acquisition']
-                                maintenance_costs = maint_costs
-
-                                capex_costs = (satellite_manufacturing
-                                                + item['subscriber_acquisition'] 
-                                                + regulation_fees
-                                                + satellite_launch_cost 
-                                                + ground_station_cost)
-                                
-                                opex_costs = (ground_station_energy 
-                                                + staff_costs 
-                                                + fiber_infrastructure_cost 
-                                                + maintenance_costs) 
-                                
-                                number_of_satellites = item['number_of_satellites']
-                                name = item['name']
-                                discount_rate = item['discount_rate']
-                                assessment_period_year = item['assessment_period']
-
-                                uq_parameters.append({'constellation': name, 
-                                                        'number_of_satellites': number_of_satellites,
-                                                        'subscribers_low': item['subscribers'][0],
-                                                        'subscribers_baseline': item['subscribers'][1],
-                                                        'subscribers_high': item['subscribers'][2],
-                                                        'satellite_manufacturing': satellite_manufacturing,
-                                                        'satellite_launch_cost': satellite_launch_cost,
-                                                        'satellite_launch_scenario': sat_launch_scenario,
-                                                        'ground_station_cost': ground_station_cost,
-                                                        'ground_station_scenario': ground_station_scenario,
-                                                        'regulation_fees': regulation_fees,
-                                                        'fiber_infrastructure_cost': fiber_infrastructure_cost,
-                                                        'ground_station_energy': ground_station_energy,
-                                                        'subscriber_acquisition': subscriber_acquisition,
-                                                        'staff_costs': staff_costs,
-                                                        'maintenance_costs': maintenance_costs,
-                                                        'discount_rate': discount_rate,
-                                                        'assessment_period_year': assessment_period_year,
-                                                        'opex_costs': opex_costs,
-                                                        'capex_costs': capex_costs,
-                                                        'opex_scenario': opex_scenario,
-                                                        'capex_scenario': capex_scenario})
-
-
-    df = pd.DataFrame.from_dict(uq_parameters)
+    df = pd.DataFrame.from_dict(iterations)
 
     filename = 'uq_parameters_cost.csv'
 
@@ -311,8 +164,112 @@ def uq_inputs_cost():
     path_out = os.path.join(BASE_PATH, 'processed', filename)
     df.to_csv(path_out, index = False)
 
+    return
 
-    return None
+
+def multiorbit_sat_costs(i, constellation_params):
+    """
+    This function generates random values within the 
+    given parameter ranges. 
+
+    Parameters
+    ----------
+    i : int.
+        number of iterations
+    constellation_params : dict
+        Dictionary containing satellite cost details
+
+    Return
+    ------
+        output : list
+            List containing cost outputs
+
+    """
+    output = []
+
+    #these calcs are unit input cost * number of units. 
+    satellite_manufacturing = random.randint(
+        constellation_params['satellite_manufacturing_low'], 
+        constellation_params['satellite_manufacturing_high']
+    ) * constellation_params['number_of_satellites']
+
+    satellite_launch_cost = random.randint(
+        constellation_params['satellite_launch_cost_low'], 
+        constellation_params['satellite_launch_cost_high']
+    ) * constellation_params['number_of_satellites']
+
+    ground_station_cost = random.randint(
+        constellation_params['ground_station_cost_low'], 
+        constellation_params['ground_station_cost_high']
+    ) * constellation_params['number_of_ground_stations']
+
+    regulation_fees = random.randint(
+        constellation_params['regulation_fees_low'], 
+        constellation_params['regulation_fees_high']
+    ) * constellation_params['number_of_planes']
+
+    fiber_infrastructure_cost = random.randint(
+        constellation_params['fiber_infrastructure_low'], 
+        constellation_params['fiber_infrastructure_high']
+    ) * constellation_params['number_of_ground_stations']
+
+    ground_station_energy = random.randint(
+        constellation_params['ground_station_energy_low'], 
+        constellation_params['ground_station_energy_high']
+    ) * constellation_params['number_of_ground_stations']
+
+    subscriber_acquisition = random.randint(
+        constellation_params['subscriber_acquisition_low'], 
+        constellation_params['subscriber_acquisition_high']
+    )
+
+    staff_costs = random.randint(
+        constellation_params['staff_costs_low'], 
+        constellation_params['staff_costs_high']
+    ) * constellation_params['number_of_employees']
+
+    maintenance_costs = random.randint(
+        constellation_params['maintenance_low'], 
+        constellation_params['maintenance_high']) 
+
+    capex_costs = (satellite_manufacturing 
+                   + satellite_launch_cost 
+                   + ground_station_cost
+                   + fiber_infrastructure_cost
+                   )
+    
+    opex_costs = ct.opex_cost(regulation_fees, 
+                              ground_station_energy, 
+                              staff_costs, 
+                              subscriber_acquisition, 
+                              maintenance_costs, 
+                              constellation_params['discount_rate'], 
+                              constellation_params['assessment_period'])
+    
+    output.append({
+        'iteration': i,
+        'constellation': constellation_params['name'], 
+        'number_of_satellites': constellation_params['number_of_satellites'],
+        'number_of_ground_stations': constellation_params['number_of_ground_stations'],
+        'subscribers_low': constellation_params['subscribers'][0],
+        'subscribers_baseline': constellation_params['subscribers'][1],
+        'subscribers_high': constellation_params['subscribers'][2],
+        'satellite_manufacturing': satellite_manufacturing,
+        'satellite_launch_cost': satellite_launch_cost,
+        'ground_station_cost': ground_station_cost,
+        'regulation_fees': regulation_fees,
+        'fiber_infrastructure_cost': fiber_infrastructure_cost,
+        'ground_station_energy': ground_station_energy,
+        'subscriber_acquisition': subscriber_acquisition,
+        'staff_costs': staff_costs,
+        'maintenance_costs': maintenance_costs,
+        'capex_costs': capex_costs,
+        'opex_costs': opex_costs,
+        'discount_rate': constellation_params['discount_rate'],
+        'assessment_period_year': constellation_params['assessment_period'],
+    })
+
+    return output
 
 
 if __name__ == '__main__':
@@ -321,6 +278,6 @@ if __name__ == '__main__':
     uq_inputs_capacity()
 
     print('Running uq_cost_inputs_generator()')
-    uq_inputs_cost()
+    uq_inputs_cost(parameters)
 
     print('Completed')
