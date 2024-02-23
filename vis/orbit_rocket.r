@@ -17,6 +17,9 @@ kp = read.csv(file.path(folder, '..', 'data', 'raw', "kuiper.csv"),
 rct = read.csv(file.path(folder, '..', 'data', 'raw', "rockets_table.csv"),
                row.names = 1)
 
+new_names <- c('Falcon-9', 'Falcon-Heavy', 'Soyuz-FG', 'Ariane-5', 'Unit')
+colnames(rct) <- new_names
+
 # Create Tables
 path = file.path(folder, 'figures', 'aa_starlink_table.png')
 dir.create(file.path(folder, 'figures'), showWarnings = FALSE)

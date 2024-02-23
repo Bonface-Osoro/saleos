@@ -31,7 +31,12 @@ data <- select(
 df = data %>%
   group_by(constellation) %>%
   summarize(mean = mean(capex_costs),
-            sd = sd(capex_costs))
+  
+                      sd = sd(capex_costs))
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 df$Constellation = factor(df$constellation)
 
@@ -90,10 +95,13 @@ df = data %>%
   summarize(mean = mean(opex_costs),
             sd = sd(opex_costs))
 
-df$Constellation = factor(df$constellation)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 constellation_opex <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + 
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) + 
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -148,10 +156,13 @@ df = data %>%
   summarize(mean = mean(total_cost_ownership),
             sd = sd(total_cost_ownership))
 
-df$Constellation = factor(df$constellation)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 constellation_tco <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) + #, fill = capex
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) + #, fill = capex
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -239,7 +250,11 @@ df = data %>%
             sd = sd(capex_per_user))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
                   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
@@ -247,7 +262,7 @@ df$subscriber_scenario = factor(
   )
 
 constellation_capex_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -302,7 +317,11 @@ df = data %>%
             sd = sd(opex_per_user))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
@@ -310,7 +329,7 @@ df$subscriber_scenario = factor(
 )
 
 constellation_opex_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -364,7 +383,11 @@ df = data %>%
             sd = sd(tco_per_user))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
@@ -372,7 +395,7 @@ df$subscriber_scenario = factor(
 )
 
 constellation_tco_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean, fill = subscriber_scenario)) +
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +

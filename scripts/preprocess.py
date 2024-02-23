@@ -21,111 +21,135 @@ CONFIG.read(os.path.join(os.path.dirname(__file__), 'script_config.ini'))
 BASE_PATH = CONFIG['file_locations']['base_path']
 
 
-def uq_inputs_capacity():
+def uq_inputs_capacity(parameters):
     """
-    Generate all UQ capacity inputs to run through the saleos model. 
-    
+    Generate all UQ capacity inputs in preparation for running 
+    through the saleos model. 
+
+    Parameters
+    ----------
+    parameters : dict
+        dictionary of dictionary containing 
+        constellation engineering values.
+
     """
-    uq_parameters = []
+    iterations = []
 
-    for key, item in parameters.items():
 
-        # radio propagation variables#altitude_km
-    
-        # Generate a list containing satellite altitude values that are above 
-        # and below the provided input value by 6 km at an interval of 2 km.
-        altitude = (np.concatenate((np.arange(item['altitude_km'], 
-                   (item['altitude_km'] + 6) + 2, 2), 
-                   np.arange(item['altitude_km'] - 2, 
-                   (item['altitude_km'] - 6) - 2, -2))))
-        
-        # Generate a list containing satellite elevation angle values that are above 
-        # the provided input value by 15 degrees at an interval of 5 degrees.
-        elevation_angles = (np.arange(item['elevation_angle'], 
-                           (item['elevation_angle'] + 15) 
-                           + 5, 5))
-        
-        # Generate a list containing atmospheric loss values that are above 
-        # and below the provided input value by 8 dB at an interval of 3 dB.
+    for key, constellation_params in parameters.items():
 
-        atmospheric_loss = (np.concatenate((np.arange(item['earth_atmospheric_losses'], 
-                           (item['earth_atmospheric_losses'] + 8) + 3, 3), 
-                           np.arange(item['earth_atmospheric_losses'] - 3, 
-                           (item['earth_atmospheric_losses'] - 8) - 3, -3))))
-        
-        # Generate a list containing receiver gain values that are above 
-        # and below the provided input value by 3 dB.
-        receiver_gain = [(item['receiver_gain'] - 3), 
-                         (item['receiver_gain']), 
-                         (item['receiver_gain'] + 3)]
+        for i in range(0, constellation_params['iteration_quantity']):
 
-        for alt in altitude:
+            if key in ['starlink', 'oneweb', 'kuiper', 'geo']:
+                
+                data = multiorbit_sat_capacity(i, constellation_params)
 
-            altitude_km = alt
+            iterations = iterations + data
 
-            for rec_gain in receiver_gain:
-
-                receiver_gain_db = rec_gain
-
-                for angle in elevation_angles:
-
-                    elevation_angle = angle
-
-                    for freq in item['dl_frequency_hz']:
-
-                        dl_frequency_hz = freq
-
-                        for atm_loss in atmospheric_loss:
-
-                            earth_atmospheric_losses_db = atm_loss
-                            
-                            number_of_satellites = item['number_of_satellites']
-                            name = item['name']
-                            total_area_earth_km_sq = item['total_area_earth_km_sq']
-                            dl_bandwidth_hz = item['dl_bandwidth_hz']
-                            speed_of_light = item['speed_of_light']
-                            antenna_diameter_m = item['antenna_diameter_m']
-                            antenna_efficiency = item['antenna_efficiency']
-                            power_dbw = item['power_dbw']
-                            all_other_losses_db = item['all_other_losses_db'] 
-                            number_of_channels = item['number_of_channels']
-                            polarization = item['polarization']
-
-                            uq_parameters.append({
-                                'constellation': name, 
-                                'number_of_satellites': number_of_satellites,
-                                'total_area_earth_km_sq': total_area_earth_km_sq,
-                                'ideal_coverage_area_per_sat_sqkm': total_area_earth_km_sq / number_of_satellites,
-                                'altitude_km': altitude_km,
-                                'elevation_angle': elevation_angle,
-                                'dl_frequency_hz': dl_frequency_hz,
-                                'dl_bandwidth_hz': dl_bandwidth_hz,
-                                'speed_of_light': speed_of_light,
-                                'antenna_diameter_m': antenna_diameter_m,
-                                'antenna_efficiency': antenna_efficiency,
-                                'power_dbw': power_dbw,
-                                'receiver_gain_db': receiver_gain_db,
-                                'earth_atmospheric_losses_db': earth_atmospheric_losses_db,
-                                'all_other_losses_db': all_other_losses_db,
-                                'number_of_beams' : item['number_of_beams'],
-                                'number_of_channels': number_of_channels,
-                                'polarization': polarization,
-                                'subscribers_low': item['subscribers'][0],
-                                'subscribers_baseline': item['subscribers'][1],
-                                'subscribers_high': item['subscribers'][2]
-                            })
-
-    df = pd.DataFrame.from_dict(uq_parameters)
+    df = pd.DataFrame.from_dict(iterations)
 
     filename = 'uq_parameters_capacity.csv'
 
     if not os.path.exists(BASE_PATH):
+
         os.makedirs(BASE_PATH)
     
     path_out = os.path.join(BASE_PATH, 'processed', filename)
     df.to_csv(path_out, index = False)
 
-    return 
+    return
+
+
+def multiorbit_sat_capacity(i, constellation_params):
+    """
+    This function generates random values within the 
+    given parameter ranges. 
+
+    Parameters
+    ----------
+    i : int.
+        number of iterations
+    constellation_params : dict
+        Dictionary containing satellite 
+        engineering details
+
+    Return
+    ------
+        output : list
+            List containing capacity outputs
+
+    """
+    output = []
+
+    #these calcs are unit input cost * number of units. 
+    altitude_km = random.randint(
+        constellation_params['altitude_km_low'], 
+        constellation_params['altitude_km_high']
+    )
+
+    elevation_angle = random.randint(
+        constellation_params['elevation_angle_low'], 
+        constellation_params['elevation_angle_high']
+    ) 
+
+    dl_frequency_hz = random.randint(
+        constellation_params['dl_frequency_hz_low'], 
+        constellation_params['dl_frequency_hz_high']
+    )
+
+    power_dbw = random.randint(
+        constellation_params['power_dbw_low'], 
+        constellation_params['power_dbw_high']
+    ) 
+
+    receiver_gain = random.randint(
+        constellation_params['receiver_gain_low'], 
+        constellation_params['receiver_gain_high']
+    )
+
+    earth_atmospheric_losses = random.randint(
+        constellation_params['earth_atmospheric_losses_low'], 
+        constellation_params['earth_atmospheric_losses_high']
+    ) 
+
+    antenna_diameter_m = random.uniform(
+        constellation_params['antenna_diameter_m_low'], 
+        constellation_params['antenna_diameter_m_high']
+    )
+
+    ideal_coverage_area_per_sat_sqkm = (constellation_params['total_area_earth_km_sq'] 
+                                        / constellation_params['number_of_satellites'])
+
+    
+    output.append({
+        'iteration': i,
+        'constellation': constellation_params['name'], 
+        'number_of_satellites': constellation_params['number_of_satellites'],
+        'number_of_ground_stations': constellation_params['number_of_ground_stations'],
+        'subscribers_low': constellation_params['subscribers'][0],
+        'subscribers_baseline': constellation_params['subscribers'][1],
+        'subscribers_high': constellation_params['subscribers'][2],
+        'altitude_km': altitude_km,
+        'elevation_angle': elevation_angle,
+        'dl_frequency_hz': dl_frequency_hz,
+        'power_dbw': power_dbw,
+        'receiver_gain_db': receiver_gain,
+        'earth_atmospheric_losses_db': earth_atmospheric_losses,
+        'antenna_diameter_m': antenna_diameter_m,
+        'total_area_earth_km_sq' : constellation_params['total_area_earth_km_sq'],
+        'ideal_coverage_area_per_sat_sqkm': ideal_coverage_area_per_sat_sqkm,
+        'speed_of_light': constellation_params['speed_of_light'],
+        'antenna_efficiency' : constellation_params['antenna_efficiency'],
+        'all_other_losses_db' : constellation_params['all_other_losses_db'],
+        'number_of_beams' : constellation_params['number_of_beams'],
+        'number_of_channels' : constellation_params['number_of_channels'],
+        'polarization' : constellation_params['polarization'],
+        'dl_bandwidth_hz' : constellation_params['dl_bandwidth_hz'],
+        'subscriber_traffic_percent' : constellation_params['subscriber_traffic_percent']
+    })
+
+
+    return output
 
 
 def uq_inputs_cost(parameters):
@@ -275,7 +299,7 @@ def multiorbit_sat_costs(i, constellation_params):
 if __name__ == '__main__':
 
     print('Running uq_capacity_inputs_generator()')
-    uq_inputs_capacity()
+    uq_inputs_capacity(parameters)
 
     print('Running uq_cost_inputs_generator()')
     uq_inputs_cost(parameters)

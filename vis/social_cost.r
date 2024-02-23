@@ -13,7 +13,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
-
+data <- data[data$scenario == "scenario3", ]
 
 data = select(
   data, 
@@ -39,10 +39,10 @@ data$impact_category = factor(
     "Launch Campaign", "Transportation of Launcher",
     "Launcher AIT", "SCHD of Propellant", "Launch Event"))
 
-data$constellation = factor(
-  data$constellation,
-  levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
-  labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink'))
+#data$constellation = factor(
+  #data$constellation,
+  #levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
+  #labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink'))
 
 data_aggregated <- data %>%
   group_by(constellation, 
@@ -128,7 +128,6 @@ social_carbon_baseline <-
 df = individual_emissions %>%
   group_by(constellation, impact_category) %>%
   summarize(value = climate_change_worst_case_kg)
-
 
 #from kg to tonnes
 df$emissions_t = df$value / 1e3 
@@ -305,7 +304,10 @@ df$social_cost_usd_per_user_baseline = (
 df$social_cost_usd_per_user_high = (
   ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_high 
 )
-
+#df$constellation = factor(
+  #df$constellation,
+  #labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+#)
 totals <- df %>%
   group_by(constellation) %>%
   summarize(
