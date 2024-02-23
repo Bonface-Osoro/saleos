@@ -23,8 +23,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
-  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO')
+  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 df$rocket = factor(
@@ -122,8 +122,8 @@ df = df %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
-  labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink')
+  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 df$value_type = factor(
@@ -206,6 +206,12 @@ df$subscriber_scenario = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
+
+
 capacity_per_user <-
   ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
@@ -266,6 +272,10 @@ df = data %>%
             sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
@@ -334,78 +344,14 @@ filename = "final_cost_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
 df = data %>%
-<<<<<<< HEAD
   group_by(constellation, subscriber_scenario) %>%
-=======
-  group_by(constellation, capex_scenario) %>%
-  summarize(mean = mean(total_cost_ownership),
-            sd = sd(total_cost_ownership))
-
-df$capex_scenario = as.factor(df$capex_scenario)
-
-df$capex = factor(df$capex_scenario,
-                  levels = c('Low', 'Baseline', 'High'))
-
-constellation_tco <-
-  ggplot(df, aes(x = constellation, y = mean / 1e9, fill = capex)) +
-  geom_bar(stat = "identity",
-           position = position_dodge(),
-           width = 0.9) +
-  geom_errorbar(
-    aes(ymin = mean / 1e9 - sd / 1e9,
-        ymax = mean / 1e9 + sd / 1e9),
-    width = .2,
-    position = position_dodge(.9),
-    color = 'black',
-    size = 0.2
-  ) +
-  scale_fill_brewer(palette = color_palette) + 
-  theme_minimal() +
-  theme(legend.position = 'right') +
-  labs(
-    colour = NULL,
-    title = " ",
-    subtitle = 'e',
-    x = NULL,
-    y = "TCO\n(US$ Billion)",
-    fill = 'Cost\nScenario'
-  ) +
-  scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
-    expand = c(0, 0),
-    limits = c(0, 20)
-  ) + theme_minimal() +
-  theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
-    legend.direction = "horizontal",
-    legend.position = c(0.5, 0.9),
-    axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold"))
-
-##################
-## TCO Per User ##
-##################
-folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "final_cost_results.csv"
-data <- read.csv(file.path(folder, '..', 'results', filename))
-
-df <- data %>%
-  group_by(constellation, capex_scenario) %>%
->>>>>>> main
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
+
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
@@ -469,6 +415,11 @@ df <- data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(user_monthly_cost),
             sd = sd(user_monthly_cost))
+
+df$constellation = factor(
+  df$constellation,
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+)
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)

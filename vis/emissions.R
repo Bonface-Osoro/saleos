@@ -16,8 +16,8 @@ data <- data[data$scenario == "scenario3", ]
 #Rename the constellation and emission type column values
 data$constellation = factor(
   data$constellation,
-  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
-  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO')
+  levels = c('geo_generic', 'starlink', 'oneweb', 'kuiper'),
+  labels = c('GEO', 'Starlink', 'OneWeb', 'Kuiper')
 )
 
 data$rocket_type = factor(
