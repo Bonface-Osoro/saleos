@@ -12,9 +12,11 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
-def opex_cost(subscriber_acquisition, 
+def opex_cost(regulation_fees, 
               ground_station_energy, 
-              staff_costs, maintenance, 
+              staff_costs,
+              subscriber_acquisition, 
+              maintenance, 
               discount_rate, 
               assessment_period):
     """
@@ -22,12 +24,14 @@ def opex_cost(subscriber_acquisition,
 
     Parameters
     ----------
-    fiber_infrastructure_cost : int.
-        cost of connecting the ground stations to fiber backbone.
+    regulation_fees : int.
+        Orbital fees cost.
     ground_station_energy : int.
         ground station cost.
     staff_costs : int.
         staff costs.
+    subscriber_acquisition : int.
+        customer marketing and promotion cost.
     maintenance : int.
         maintenance cost.
     discount_rate : float.
@@ -42,10 +46,12 @@ def opex_cost(subscriber_acquisition,
             The operating expenditure costs annually.
     """
 
-    opex_costs = (ground_station_energy 
+    opex_costs = (regulation_fees 
+                  + ground_station_energy 
                   + staff_costs 
+                  + subscriber_acquisition
                   + maintenance
-                  + subscriber_acquisition) 
+                  ) 
 
     year_costs = []
  
@@ -102,12 +108,16 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
 
     """
 
-    capex = (satellite_manufacturing + satellite_launch_cost 
-             + ground_station_cost + regulation_fees 
+    capex = (satellite_manufacturing 
+             + satellite_launch_cost 
+             + ground_station_cost 
              + fiber_infrastructure_cost) 
 
-    opex_costs = (ground_station_energy + subscriber_acquisition 
-                  + staff_costs + maintenance) 
+    opex_costs = (regulation_fees 
+                  + ground_station_energy 
+                  + staff_costs 
+                  + subscriber_acquisition 
+                  + maintenance) 
 
     year_costs = []
 
@@ -141,5 +151,6 @@ def user_monthly_cost(tco_per_user, lifespan):
 
     """
     user_monthly_cost = tco_per_user / (lifespan * 12)
+
 
     return user_monthly_cost
