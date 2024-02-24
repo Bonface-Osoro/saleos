@@ -540,8 +540,7 @@ def calc_constellation_capacity(channel_capacity,
                                 number_of_channels, 
                                 polarization, 
                                 number_of_beams,
-                                number_of_satellites,
-                                orbit):
+                                number_of_satellites):
     """
     Calculate the total usable constellation capacity given 
     that only 50% (0.5) of constellation capacity is usable
@@ -566,8 +565,6 @@ def calc_constellation_capacity(channel_capacity,
         Number of satellite's spot beams
     number_of_satellites : int
         The number of satellites.
-    orbit : string
-        satellite orbit (either LEO, MEO or GEO)
 
     Returns
     -------
@@ -575,15 +572,7 @@ def calc_constellation_capacity(channel_capacity,
         The constellation capacity in Mbps.
 
     """
-    if orbit == 'GEO':
-
-        constellation_capacity = (channel_capacity * number_of_channels 
-                                * polarization * number_of_beams 
-                                * number_of_satellites) 
-        
-    else:
-
-        constellation_capacity = (channel_capacity * number_of_channels 
+    constellation_capacity = (channel_capacity * number_of_channels 
                                 * polarization * number_of_beams 
                                 * number_of_satellites * 0.67) 
 
@@ -629,7 +618,7 @@ def capacity_subscriber(const_cap,
              / Number of subscribers
 
     Parameters
-    ---------
+    ----------
     const_cap : float
         Total usable constellation capacity in Mbps.
     subscribers : int
