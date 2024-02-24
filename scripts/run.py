@@ -106,7 +106,7 @@ def run_uq_processing_capacity():
         constellation_capacity = round((cy.calc_constellation_capacity(
                 channel_capacity, item['number_of_channels'], 
                 item['polarization'], item['number_of_beams'], 
-                item['number_of_satellites'], item['constellation'])), 4)
+                item['number_of_satellites'])), 4)
             
         # 0.567805 and 1.647211 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
         # ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
