@@ -302,6 +302,6 @@ if __name__ == '__main__':
     uq_inputs_capacity(parameters)
 
     print('Running uq_cost_inputs_generator()')
-    uq_inputs_cost(parameters)
+    #uq_inputs_cost(parameters)
 
     print('Completed')

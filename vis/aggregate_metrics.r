@@ -188,6 +188,8 @@ emission_subscriber <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "final_capacity_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+data$constellation = factor(data$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -205,12 +207,6 @@ df$subscriber_scenario = factor(
   ),
   labels = c('Low', 'Baseline', 'High')
 )
-
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
-
 
 capacity_per_user <-
   ggplot(df, aes(x = constellation, y = mean,
@@ -239,7 +235,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 48)
+    limits = c(0, 225)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -265,6 +261,8 @@ capacity_per_user <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "final_capacity_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+data$constellation = factor(data$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -272,10 +270,6 @@ df = data %>%
             sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
 
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
@@ -307,14 +301,14 @@ subscriber_traffic <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Monthly Traffic\n(GB/Subscriber)",
+    y = "Mean Monthly Traffic (GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 49)
+    limits = c(0, 244)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -342,16 +336,13 @@ subscriber_traffic <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "final_cost_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+data$constellation = factor(data$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(tco_per_user),
             sd = sd(tco_per_user))
-
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
@@ -380,7 +371,7 @@ constellation_tco_per_user <-
     title = " ",
     subtitle = 'e',
     x = NULL,
-    y = "TCO\n(US$/Subscriber)",
+    y = "TCO (US$/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -410,19 +401,19 @@ constellation_tco_per_user <-
 ###################################
 ## Average Monthly Cost per User ##
 ###################################
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_cost_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
+data$constellation = factor(data$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df <- data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(user_monthly_cost),
             sd = sd(user_monthly_cost))
 
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
