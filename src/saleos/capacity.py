@@ -617,7 +617,9 @@ def pairwise(iterable):
     return zip(a, b)
 
 
-def capacity_subscriber(const_cap, subscribers):
+def capacity_subscriber(const_cap, 
+                        subscribers, 
+                        traffic_percentage):
     """
     This function calculates usable 
     capacity per subscriber in Mbps/subscriber.
@@ -632,6 +634,9 @@ def capacity_subscriber(const_cap, subscribers):
         Total usable constellation capacity in Mbps.
     subscribers : int
         Number of subscribers.
+    traffic_percentage : int
+        Number subscribers accessing 
+        the network at a busy hour
 
     Returns
     -------
@@ -639,7 +644,8 @@ def capacity_subscriber(const_cap, subscribers):
         Capacity per subscriber in Mbps/Subscriber
 
     """
-    cap_sub = const_cap / subscribers
+    cap_sub = const_cap / (subscribers * 
+                           (traffic_percentage / 100))
 
     return cap_sub
 

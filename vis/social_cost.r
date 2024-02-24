@@ -39,10 +39,10 @@ data$impact_category = factor(
     "Launch Campaign", "Transportation of Launcher",
     "Launcher AIT", "SCHD of Propellant", "Launch Event"))
 
-#data$constellation = factor(
-  #data$constellation,
-  #levels = c('geo_generic', 'kuiper', 'oneweb', 'starlink'),
-  #labels = c('GEO', 'Kuiper', 'OneWeb', 'Starlink'))
+data$constellation = factor(
+  data$constellation,
+  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 data_aggregated <- data %>%
   group_by(constellation, 
@@ -99,7 +99,7 @@ social_carbon_baseline <-
   ylab("Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 1600),
+    limits = c(0, 700),
     expand = c(0, 0)
   ) +
   theme(
@@ -161,7 +161,7 @@ social_cost_worst_case <-
   ) +
   ylab("Social Cost<br>(Worst-case) (US$ Millions)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 5000),
+    limits = c(0, 1199),
     labels = comma,
     expand = c(0, 0)
   ) +
@@ -198,6 +198,10 @@ df = select(
   subscribers_low,
   subscribers_high
   )
+
+df$constellation = factor(
+  df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df$social_cost_usd_per_user_low = (
   ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_low 
@@ -258,7 +262,7 @@ social_carbon_per_subscriber_baseline <-
   ) +
   ylab("Social Cost/Subscriber<br>(Baseline) (US$)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 1000),
+    limits = c(0, 399),
     labels = comma,
     expand = c(0, 0)
   ) +
@@ -295,6 +299,10 @@ df = select(
   subscribers_high
 )
 
+df$constellation = factor(
+  df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+
 df$social_cost_usd_per_user_low = (
   ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_low 
 )
@@ -304,10 +312,7 @@ df$social_cost_usd_per_user_baseline = (
 df$social_cost_usd_per_user_high = (
   ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_high 
 )
-#df$constellation = factor(
-  #df$constellation,
-  #labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-#)
+
 totals <- df %>%
   group_by(constellation) %>%
   summarize(
@@ -356,7 +361,7 @@ social_carbon_per_subscriber_worst_case <-
     ) +
     ylab("Social Cost/Subscriber<br>(Worst-case) (US$)") + # given t CO<sub>2</sub>eq
     scale_y_continuous(
-      limits = c(0, 3000),
+      limits = c(0, 799),
       labels = comma,
       expand = c(0, 0)
     ) +

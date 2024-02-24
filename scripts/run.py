@@ -108,15 +108,15 @@ def run_uq_processing_capacity():
                 item['polarization'], item['number_of_beams'], 
                 item['number_of_satellites'], item['constellation'])), 4)
             
-        # 1.896173 and .524939 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
+        # 0.567805 and 1.647211 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
         # ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
         # -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
         # other-broadband-satellite-applications-part-2-dvb-s2-extensions)
-        if spectral_efficiency <= 1.896173:
+        if spectral_efficiency <= 0.567805:
 
             cnr_scenario = 'low'
 
-        elif spectral_efficiency >= 2.524939:
+        elif spectral_efficiency >= 1.647211:
 
             cnr_scenario = 'high'
 
@@ -144,6 +144,7 @@ def run_uq_processing_capacity():
             'subscribers_low': item['subscribers_low'],
             'subscribers_baseline': item['subscribers_baseline'],
             'subscribers_high': item['subscribers_high'],
+            'subscriber_traffic_percent' : item['subscriber_traffic_percent'],
             'satellite_coverage_area_km': round(satellite_coverage_area_km, 4),
             'path_loss_db': path_loss, 
             'losses_db': losses, 
@@ -170,6 +171,7 @@ def run_uq_processing_capacity():
 
         path_out = os.path.join(DATA, filename)
         df.to_csv(path_out, index = False)
+
 
     return 
 
@@ -522,8 +524,6 @@ def run_uq_processing_cost():
             'opex_costs': item['opex_costs'],
             'total_cost_ownership': total_cost_ownership,
             'assessment_period_year': item['assessment_period_year'],
-            #'capex_scenario': item['capex_scenario'],
-            #'opex_scenario': item['opex_scenario']
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -553,30 +553,33 @@ def process_mission_capacity():
              'capacity_per_single_satellite_mbps',
              'constellation_capacity_mbps', 'cnr_scenario',
              'subscribers_low', 'subscribers_baseline',
-             'subscribers_high', 'satellite_coverage_area_km']]
+             'subscribers_high', 'subscriber_traffic_percent', 
+             'satellite_coverage_area_km']]
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
     df = pd.melt(df, id_vars = ['constellation', 'constellation_capacity_mbps', 
-                                'cnr_scenario', 'satellite_coverage_area_km'], 
+                                'cnr_scenario', 'subscriber_traffic_percent', 
+                                'satellite_coverage_area_km'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 value_name = 'subscribers',
                                 var_name = 'subscriber_scenario')
     
     # Create columns to store new data
-    df[['capacity_per_user', 'monthly_gb',
-        'user_per_area']] = ''
+    df[['capacity_per_user', 'monthly_gb', 'user_per_area']] = ''
     
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
 
          df['capacity_per_user'].loc[i] = (cy.capacity_subscriber(df['constellation_capacity_mbps'].loc[i], 
-                                          df['subscribers'].loc[i]))
+                                        df['subscribers'].loc[i], df['subscriber_traffic_percent'].loc[i]))
 
          df['monthly_gb'].loc[i] = cy.monthly_traffic(df['capacity_per_user'].loc[i], df['constellation'].loc[i])
 
-         df['user_per_area'].loc[i] = df['subscribers'].loc[i] / df['satellite_coverage_area_km'].loc[i]
+         df['user_per_area'].loc[i] = ((df['subscribers'].loc[i] 
+                           * df['subscriber_traffic_percent'].loc[i] 
+                           * 0.2) / df['satellite_coverage_area_km'].loc[i])
 
     filename = 'final_capacity_results.csv'
 
@@ -586,6 +589,7 @@ def process_mission_capacity():
 
     df = df[['constellation', 'constellation_capacity_mbps', 'satellite_coverage_area_km', 'capacity_per_user', 
             'subscribers', 'monthly_gb', 'user_per_area', 'cnr_scenario', 'subscriber_scenario']]
+    
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
 
@@ -601,7 +605,6 @@ def process_mission_cost():
     df = pd.read_csv(data_in, index_col = False)
 
     df = df[['constellation', 'capex_costs', 'opex_costs',
-             #'capex_scenario', 'opex_scenario', 
              'assessment_period_year', 'total_cost_ownership', 
              'subscribers_low', 'subscribers_baseline', 
              'subscribers_high']]
@@ -610,7 +613,6 @@ def process_mission_cost():
     # Switching the subscriber columns from wide format to long format
     df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
                                 'opex_costs', 'assessment_period_year', 
-                                #'capex_scenario', 'opex_scenario', 
                                 'total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
@@ -642,7 +644,6 @@ def process_mission_cost():
     df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 
              'assessment_period_year', 'subscribers', 'capex_per_user', 
              'opex_per_user', 'tco_per_user', 'user_monthly_cost', 
-             #'opex_scenario', 'capex_scenario', 
              'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
@@ -659,16 +660,16 @@ if __name__ == '__main__':
     run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    #run_uq_processing_cost()
+    run_uq_processing_cost()
 
     print('Processing Emission results')
-    #calc_emissions()
+    calc_emissions()
 
     print('Working on process_mission_capacity()')
-    #process_mission_capacity()
+    process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    #process_mission_cost()
+    process_mission_cost()
 
     executionTime = (time.time() - start)
 

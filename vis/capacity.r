@@ -13,6 +13,8 @@ data <-
     'processed',
     'interim_results_capacity.csv'
   ))
+data$constellation = factor(data$constellation, 
+     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 #########################
 ##Channel capacity with##
@@ -23,10 +25,6 @@ df = data %>%
             sd = sd(channel_capacity_mbps))
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -97,10 +95,7 @@ df = data %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -133,7 +128,7 @@ sat_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 840)
+    limits = c(0, 980)
   ) +
   theme_minimal() +
   theme(
@@ -173,10 +168,7 @@ df = data %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -247,8 +239,9 @@ const_capacity <-
 ################################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data2 <-
-  read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
+data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
+data2$constellation = factor(data2$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -256,10 +249,7 @@ df = data2 %>%
             sd = sd(capacity_per_user))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -332,10 +322,7 @@ df = data2 %>%
             sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -403,10 +390,7 @@ df = data2 %>%
             sd = sd(user_per_area))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$constellation = factor(
-  df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -443,7 +427,7 @@ per_user_area <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 50)
+    limits = c(0, 179)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_markdown(size = 6),
