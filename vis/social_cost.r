@@ -161,7 +161,7 @@ social_cost_worst_case <-
   ) +
   ylab("Social Cost<br>(Worst-case) (US$ Millions)") + # given t CO<sub>2</sub>eq
   scale_y_continuous(
-    limits = c(0, 1199),
+    limits = c(0, 1239),
     labels = comma,
     expand = c(0, 0)
   ) +
@@ -402,8 +402,8 @@ dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 9,
-  height = 6,
+  width = 5.5,
+  height = 4,
   res = 480
 )
 print(social_cost_of_carbon_panel)
