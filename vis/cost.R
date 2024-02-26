@@ -35,13 +35,11 @@ df = data %>%
                       sd = sd(capex_costs))
 df$constellation = factor(
   df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
-df$Constellation = factor(df$constellation)
-
 constellation_capex <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -97,7 +95,7 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_opex <-
@@ -162,7 +160,7 @@ df$constellation = factor(
 )
 
 constellation_tco <-
-  ggplot(df, aes(x = constellation, y = mean / 1e6)) + #, fill = capex
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
