@@ -353,12 +353,11 @@ monthly_traffic <-
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Monthly Traffic\n(GB/Subscriber)",
+    y = "Mean Monthly Traffic (GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0),
   ) + theme_minimal() +
   theme(

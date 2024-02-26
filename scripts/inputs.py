@@ -5,8 +5,8 @@ Written by Bonface Osoro & Ed Oughton.
 
 May 2022
 
-The full unit constellation costs can be found by reading the paper through the link below.
-https://arxiv.org/abs/2309.02338 
+The full unit constellation costs can be found by reading the paper through the 
+link below. https://arxiv.org/abs/2309.02338 
 
 """
 parameters = {                                            
@@ -46,6 +46,7 @@ parameters = {
         'number_of_channels': 6, 
         'polarization': 1,
         'subscriber_traffic_percent' : 20,
+        'percent_coverage' : 67,
         'subscribers': [2500000, 3500000, 4500000],
         'number_of_employees' : 2200,
         'satellite_manufacturing_low': 150000,
@@ -115,6 +116,7 @@ parameters = {
         'number_of_channels': 3, 
         'polarization': 1,
         'subscriber_traffic_percent' : 20,
+        'percent_coverage' : 67,
         'subscribers': [500000, 800000, 1000000],
         'number_of_employees' : 1200,
         'satellite_manufacturing_low': 300000,
@@ -184,6 +186,7 @@ parameters = {
         'number_of_channels': 6, 
         'polarization': 1,
         'subscriber_traffic_percent' : 20,
+        'percent_coverage' : 67,
         'subscribers': [1500000, 2500000, 3500000],
         'number_of_employees' : 1200,
         'satellite_manufacturing_low': 300000,
@@ -253,6 +256,7 @@ parameters = {
         'number_of_channels': 155, 
         'polarization': 2,
         'subscriber_traffic_percent' : 20,
+        'percent_coverage' : 67,
         'subscribers': [1500000, 2500000, 3500000],
         'number_of_employees' : 2000,
         'satellite_manufacturing_low': 20000000,
@@ -289,7 +293,8 @@ parameters = {
 }
 
 
-### MODCOD, Spectral efficiency, AWGN Linear Channel, Non-Linear Hard LimiterChannel ###
+### MODCOD, Spectral efficiency, AWGN Linear Channel, Non-Linear Hard 
+###  LimiterChannel ###
 lut = [
     ('QPSK 2/9', 0.434841, -2.85, -2.45),
     ('QPSK 13/45', 0.567805, -2.03, -1.60),

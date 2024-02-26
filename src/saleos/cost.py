@@ -12,12 +12,8 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
-def opex_cost(regulation_fees, 
-              ground_station_energy, 
-              staff_costs,
-              subscriber_acquisition, 
-              maintenance, 
-              discount_rate, 
+def opex_cost(regulation_fees, ground_station_energy, staff_costs,
+              subscriber_acquisition, maintenance, discount_rate, 
               assessment_period):
     """
     This function calculates operating expenditures
@@ -46,12 +42,8 @@ def opex_cost(regulation_fees,
             The operating expenditure costs annually.
     """
 
-    opex_costs = (regulation_fees 
-                  + ground_station_energy 
-                  + staff_costs 
-                  + subscriber_acquisition
-                  + maintenance
-                  ) 
+    opex_costs = (regulation_fees + ground_station_energy + staff_costs 
+                  + subscriber_acquisition + maintenance) 
 
     year_costs = []
  
@@ -67,13 +59,11 @@ def opex_cost(regulation_fees,
 
 
 def cost_model(satellite_manufacturing, satellite_launch_cost, 
-    ground_station_cost, regulation_fees, 
-    fiber_infrastructure_cost, ground_station_energy, 
-    subscriber_acquisition, staff_costs,
+    ground_station_cost, regulation_fees, fiber_infrastructure_cost, 
+    ground_station_energy, subscriber_acquisition, staff_costs,
     maintenance, discount_rate, assessment_period):
     """
-    Calculate the total cost of ownership(TCO)
-    in US$:
+    Calculate the total cost of ownership(TCO) in US$:
 
     Parameters
     ----------
@@ -98,8 +88,7 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
     discount_rate : float.
         discount rate.
     assessment_period : int.
-        assessment period equivalent 
-        to the satellite lifespan.
+        assessment period equivalent to the satellite lifespan.
 
     Returns
     -------
@@ -108,16 +97,11 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
 
     """
 
-    capex = (satellite_manufacturing 
-             + satellite_launch_cost 
-             + ground_station_cost 
-             + fiber_infrastructure_cost) 
+    capex = (satellite_manufacturing + satellite_launch_cost 
+             + ground_station_cost + fiber_infrastructure_cost) 
 
-    opex_costs = (regulation_fees 
-                  + ground_station_energy 
-                  + staff_costs 
-                  + subscriber_acquisition 
-                  + maintenance) 
+    opex_costs = (regulation_fees + ground_station_energy + staff_costs 
+                  + subscriber_acquisition + maintenance) 
 
     year_costs = []
 

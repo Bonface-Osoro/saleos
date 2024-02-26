@@ -6,22 +6,24 @@ Developed by Bonface Osoro and Ed Oughton.
 May 2022
 
 The Capacity model is based on approach and equations defined by:
-[1].  Maral, Gérard, Michel Bousquet, and Zhili Sun. Satellite communications systems: 
-      systems, techniques and technology. John Wiley & Sons, 2020.
+[1].  Maral, Gérard, Michel Bousquet, and Zhili Sun. Satellite communications 
+      systems: systems, techniques and technology. John Wiley & Sons, 2020.
 
-[2].  Digital Video Broadcasting Project, “Second generation framing structure, channel 
-      coding and modulation systems for Broadcasting, Interactive Services, News Gathering 
-      and other broadband satellite applications; Part 2: DVB-S2 Extensions (DVB-S2X),” 
-      DVB. https://dvb.org/?standard=second-generation-framing-structure-channel-coding
-      -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
-      other-broadband-satellite-applications-part-2-dvb-s2-extensions (accessed Sep. 14, 
-      2022)
+[2].  Digital Video Broadcasting Project, “Second generation framing structure, 
+      channel coding and modulation systems for Broadcasting, Interactive 
+      Services, News Gathering and other broadband satellite applications; 
+      Part 2: DVB-S2 Extensions (DVB-S2X),” 
+      DVB. https://dvb.org/?standard=second-generation-framing-structure-channel
+      -coding-and-modulation-systems-for-broadcasting-interactive-services-news
+      -gathering-and-other-broadband-satellite-applications-part-2-dvb-s2
+      -extensions(accessed Sep. 14, 2022)
 
 [3].  Oughton, Edward J. "Policy options for digital infrastructure strategies: 
       A simulation model for affordable universal broadband in Africa." 
       Telematics and Informatics 76 (2023): 101908.
 
-[4].  R. Steele, “A simple guide to satellite broadband limitations,” Telzed Limited UK, 2020.
+[4].  R. Steele, “A simple guide to satellite broadband limitations,” Telzed 
+      Limited UK, 2020.
 
 """
 import math
@@ -33,8 +35,8 @@ from collections import OrderedDict
 
 def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq):
     """
-    This function calculates  the coverage 
-    area for each satellite based on [1].
+    This function calculates  the coverage area for each satellite 
+    based on [1].
 
     Parameters
     ----------
@@ -58,7 +60,6 @@ def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq):
 
 
 def signal_distance(orbital_altitude_km, elevation_angle):
-
     """
     This function calculates the slant 
     range between the satellite and the 
@@ -67,8 +68,7 @@ def signal_distance(orbital_altitude_km, elevation_angle):
     Parameters
     ----------
     orbital_altitude_km : float 
-        Satellite orbital altitude 
-
+        Satellite orbital altitude. 
     elevation_angle : float 
         minimum elevation angle of 
         the satellite
@@ -84,12 +84,9 @@ def signal_distance(orbital_altitude_km, elevation_angle):
     cos_value = np.cos(angle_radians)
 
     first_term = (((orbital_altitude_km + radius_earth_km) 
-                       / radius_earth_km) ** 2)
-    
+                       / radius_earth_km) ** 2)    
     second_term = (cos_value ** 2)
-
     third_term = np.sin(angle_radians)
-
     slant_distance = round((radius_earth_km * ((np.sqrt(first_term 
                      - second_term)) - third_term)), 4)
 
@@ -99,14 +96,12 @@ def signal_distance(orbital_altitude_km, elevation_angle):
 
 def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
     """
-    This function calculates 
-    the nadir angle between 
-    a satellite and user.
+    This function calculates the nadir angle between a satellite and user.
 
     Parameters
     -----------
     orbital_altitude_km : float 
-        Satellite orbital altitude 
+        Satellite orbital altitude.
     elevation_angle : float 
         minimum elevation angle of 
         the satellite
@@ -118,15 +113,12 @@ def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
     """
     radius_earth_km = 6378
     angle_radians = np.radians(elevation_angle)
-
-    first_term = (radius_earth_km / 
-                 (radius_earth_km + 
-                  orbital_altitude_km))
-    
+    first_term = (radius_earth_km / (radius_earth_km + orbital_altitude_km)) 
     second_term = np.cos(angle_radians)
     nadir = first_term * second_term
     nadir_angle_rad = math.asin(nadir)
     nadir_angle_deg = math.degrees(nadir_angle_rad)
+
 
     return nadir_angle_deg
 
@@ -139,7 +131,7 @@ def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
     Parameters
     ----------
     orbital_altitude_km : float 
-        Satellite orbital altitude 
+        Satellite orbital altitude. 
     elevation_angle : float 
         minimum elevation angle of 
         the satellite
@@ -149,35 +141,30 @@ def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
     earth_central_angle : float
         Earth Central angle in degrees
     """
-    nadir_angle = calc_sat_centric_angle(orbital_altitude_km, 
-                                   elevation_angle)
-    
-    earth_central_angle = 90 - (elevation_angle 
-                                + nadir_angle)
-    
+    nadir_angle = calc_sat_centric_angle(orbital_altitude_km, elevation_angle)   
+    earth_central_angle = 90 - (elevation_angle + nadir_angle)
+
+
     return earth_central_angle
 
 
 def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
     """
-    This function calculate 
-    the satellite coverage 
-    for different elevation 
-    angle and orbital altitude.
+    This function calculate the satellite coverage for different elevation angle 
+    and orbital altitude.
 
     Parameters
     ----------
     orbital_altitude_km : float 
         Satellite orbital altitude 
     elevation_angle : float 
-        minimum elevation angle of 
-        the satellite
+        minimum elevation angle of the satellite
 
     Returns
     -------
     coverage_area : float
-        Individual satellite coverage 
-        area in km^2
+        Individual satellite coverage area in km^2
+
     """
     earth_central_angle = calc_earth_central_angle(
         orbital_altitude_km, elevation_angle)
@@ -189,23 +176,22 @@ def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
     inner_term = 1 - cos_angle
     satellite_coverage = outer_term * inner_term
 
+
     return satellite_coverage
+
 
 def calc_free_path_loss(frequency, distance_km):
 
     """
-    This function calculates the free 
-    space path loss in dB based on [1].
+    This function calculates the free space path loss in dB based on [1].
 
-    Free Space Path Loss (dB) = 20log10 x 
-        Distance (km) + 20log10 x 
-        Downlink Frequency (GHz) + 92.45
+    Free Space Path Loss (dB) = 20log10 x Distance (km) + 20log10 x Downlink 
+    Frequency (GHz) + 92.45
 
     Parameters
     ----------
     distance_km : float
-        Link distance based on the satellite 
-        minimum elevation angle
+        Link distance based on the satellite minimum elevation angle
 
     frequency_hz : float
         Transmission frequency in hertz
@@ -214,11 +200,10 @@ def calc_free_path_loss(frequency, distance_km):
     -------
     free_path_loss_db : float
         Free space path loss in dB
+
     """
     frequency = (frequency / (10 ** 9))
-
-    free_path_loss = ((20 * np.log10(frequency)) 
-                    + (20 * np.log10(distance_km)) 
+    free_path_loss = ((20 * np.log10(frequency)) + (20 * np.log10(distance_km)) 
                     + (92.44))
     
 
@@ -227,12 +212,9 @@ def calc_free_path_loss(frequency, distance_km):
 
 def calc_antenna_gain(c, d, f, n):
     """
-    Calculates the antenna gain in dB
-    based on [1].
+    Calculates the antenna gain in dB based on [1].
 
-    Antenna gain (dB) = 10log10 
-        (Antenna efficiency 
-        x pie x Antenna diameter (m))
+    Antenna gain (dB) = 10log10(Antenna efficiency x pi x Antenna diameter (m))
         / (wavelength x wavelength)
 
     Parameters
@@ -254,21 +236,18 @@ def calc_antenna_gain(c, d, f, n):
     """
     #Define signal wavelength
     lambda_wavelength = c / f
-
     #Calculate antenna_gain
     antenna_gain = (math.log10((n * np.pi * d) / (lambda_wavelength ** 2))) * 10
+
 
     return antenna_gain
 
 
 def calc_eirpd(power, antenna_gain):
     """
-    Calculate the Effective Isotropic
-    Radiated Power Density based on [1].
+    Calculate the Effective Isotropic Radiated Power Density based on [1].
 
-    Equivalent Isotropically Radiated Power Density (EIRPD) = (
-        Power + Gain
-    )
+    Equivalent Isotropically Radiated Power Density (EIRPD) = (Power + Gain)
 
     Parameters
     ----------
@@ -287,25 +266,24 @@ def calc_eirpd(power, antenna_gain):
     """
     eirp = power + antenna_gain
 
+
     return eirp
 
 
 def calc_losses(earth_atmospheric_losses, all_other_losses):
     """
-    This function estimates the total 
-    transmission losses due to atmospheric 
+    This function estimates the total transmission losses due to atmospheric 
     and all other losses based on [1].
 
-    Losses (dB) = Atmospheric lossses (dB)
-                  + Other Losses (dB)
+    Losses (dB) = Atmospheric lossses (dB) + Other Losses (dB)
 
     Parameters
     ----------
     earth_atmospheric_losses : int
         Signal losses from rain attenuation in dB.
     all_other_losses : float
-        All other signal losses (cloud, ionospheric 
-        and gaseous attenuation) in dB.
+        All other signal losses (cloud, ionospheric and gaseous attenuation) in 
+        dB.
 
     Returns
     -------
@@ -315,16 +293,16 @@ def calc_losses(earth_atmospheric_losses, all_other_losses):
     """
     losses = earth_atmospheric_losses + all_other_losses
 
+
     return losses
 
 
 def calc_received_power(eirp, path_loss, receiver_gain, losses):
     """
-    Calculates the power received at the User Equipment (UE) 
-    based on [1].
+    Calculates the power received at the User Equipment (UE) based on [1].
 
-    Power Received (dB) = EIRPD (dB) + Receiver gain (dB)
-                          + Path Loss (dB) + Total Losses (dB)
+    Power Received (dB) = EIRPD (dB) + Receiver gain (dB) + Path Loss (dB) + 
+    Total Losses (dB)
 
     Parameters
     ----------
@@ -345,6 +323,7 @@ def calc_received_power(eirp, path_loss, receiver_gain, losses):
     """
     received_power = eirp + receiver_gain - path_loss - losses
 
+
     return received_power
 
 
@@ -352,13 +331,12 @@ def calc_noise():
     """
     Calculates the potential noise based on [1].
 
-    Terminal noise can be calculated as:
+    Terminal noise can be calculated as: “`K (Boltzmann constant)` x `T (290K)` 
+    x `bandwidth`”.
 
-    “`K (Boltzmann constant)` x `T (290K)` x `bandwidth`”.
-
-    The bandwidth depends on bit rate, which defines the number
-    of resource blocks. We use 50 resource blocks, equal 9 MHz,
-    transmission for 1 Mbps downlink.
+    The bandwidth depends on bit rate, which defines the number of resource 
+    blocks. We use 50 resource blocks, equal 9 MHz, transmission for 1 Mbps 
+    downlink.
 
     Required SNR (dB)
     Detection bandwidth (BW) (Hz)
@@ -368,9 +346,8 @@ def calc_noise():
 
     NoiseFloor (dBm) = 10log10(k x T x 1000) + NF + 10log10BW
 
-    NoiseFloor (dBm) = (
-        10log10(1.38 x 10e-23 x 290 x 1x10e3) + 1.5 + 10log10(10 x 10e6)
-    )
+    NoiseFloor (dBm) = (10log10(1.38 x 10e-23 x 290 x 1x10e3) + 1.5 + 10log10(10 
+    x 10e6))
 
     Parameters
     ----------
@@ -386,8 +363,8 @@ def calc_noise():
     k = 1.38e-23  #Boltzmann's constant k = 1.38×10−23 joules per kelvin
     t = 290  #Temperature of the receiver system T0 in kelvins
     b = 0.25 #Detection bandwidth (BW) in Hz
-
-    noise = (10 * (math.log10((k * t * 1000)))) + (10 * (math.log10(b * 10 ** 9)))
+    noise = (10 * (math.log10((k * t * 1000)))) + (10 * (math.log10(b * 10 ** 9)
+                                                         ))
 
     return noise
 
@@ -413,14 +390,14 @@ def calc_cnr(received_power, noise):
     """
     cnr = received_power - noise
 
+
     return cnr
 
 
 def calc_spectral_efficiency(cnr, lut):
     """
-    Given a carrier-to-noise ratio,
-    the function calculates 
-    the spectral efficiency based on [2].
+    Given a carrier-to-noise ratio, the function calculates the spectral 
+    efficiency based on [2].
 
     Parameters
     ----------
@@ -456,7 +433,10 @@ def calc_spectral_efficiency(cnr, lut):
         highest_value = lut[-1]
 
         if cnr >= float(highest_value[3]):
+
             spectral_efficiency = highest_value[1]
+
+
             return spectral_efficiency
 
         lowest_value = lut[0]
@@ -465,6 +445,7 @@ def calc_spectral_efficiency(cnr, lut):
 
             spectral_efficiency = lowest_value[1]
 
+
             return spectral_efficiency
 
 
@@ -472,8 +453,7 @@ def calc_capacity(spectral_efficiency, dl_bandwidth):
     """
     Calculate the channel capacity in Mbps based on [1],[2].
 
-    Channel Capacity (Mbps) = Spectral efficiency 
-                              x Channel bandwidth (MHz)
+    Channel Capacity (Mbps) = Spectral efficiency x Channel bandwidth (MHz)
 
     Parameters
     ----------
@@ -490,19 +470,19 @@ def calc_capacity(spectral_efficiency, dl_bandwidth):
     """
     channel_capacity = spectral_efficiency * dl_bandwidth / (10 ** 6)
 
+
     return channel_capacity
 
 
 def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
-    number_of_channels, polarization, number_of_beams):
+                              number_of_channels, polarization, 
+                              number_of_beams):
     """
     Calculate the capacity of each satellite in Mbps based on [1],[2].
 
-    Satellite Capacity (Mbps) = Channel bandwidth (Hz)
-                                x Spectral efficiency
-                                x Number of channels
-                                x Polarization
-                                x Number of beams
+    Satellite Capacity (Mbps) = Channel bandwidth (Hz) x Spectral efficiency
+                                x Number of channels x Polarization x Number of 
+                                beams
     Polarization is 1 if the same bandwidth is used for feeder links.
 
     Parameters
@@ -525,33 +505,23 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
         Satellite capacity in Mbps.
 
     """
-    sat_capacity = (
-        (dl_bandwidth / 1000000) *
-        spectral_efficiency *
-        number_of_channels *
-        polarization * 
-        number_of_beams
-    )
+    sat_capacity = ((dl_bandwidth / 1000000) * spectral_efficiency *
+        number_of_channels * polarization * number_of_beams)
+
 
     return sat_capacity
 
 
-def calc_constellation_capacity(channel_capacity, 
-                                number_of_channels, 
-                                polarization, 
-                                number_of_beams,
-                                number_of_satellites):
+def calc_constellation_capacity(channel_capacity, number_of_channels,
+                                polarization, number_of_beams,
+                                number_of_satellites, percent_coverage):
     """
-    Calculate the total usable constellation capacity given 
-    that only 50% (0.5) of constellation capacity is usable
-     based on [1]-[4].
+    Calculate the total usable constellation capacity given that only 67% (0.67) 
+    of constellation capacity is usable based on [1]-[4].
 
-    Constellation Capacity (Mbps) = Channel capacity (Mbps)
-                                    x Number of channels
-                                    x Polarizations
-                                    x Number of spot beams
-                                    x Number of satellites
-                                    x 0.67 (2/3 of capacity)
+    Constellation Capacity (Mbps) = Channel capacity (Mbps) x Number of channels
+                                x Polarizations x Number of spot beams
+                                x Number of satellites x 0.67 (2/3 of capacity)
 
     Parameters
     ----------
@@ -565,6 +535,8 @@ def calc_constellation_capacity(channel_capacity,
         Number of satellite's spot beams
     number_of_satellites : int
         The number of satellites.
+    percent_coverage : int
+        percentage of the population on 
 
     Returns
     -------
@@ -572,9 +544,9 @@ def calc_constellation_capacity(channel_capacity,
         The constellation capacity in Mbps.
 
     """
-    constellation_capacity = (channel_capacity * number_of_channels 
-                                * polarization * number_of_beams 
-                                * number_of_satellites * 0.67) 
+    constellation_capacity = (channel_capacity * number_of_channels * 
+                              polarization * number_of_beams 
+                              * number_of_satellites * (percent_coverage / 100)) 
 
 
     return constellation_capacity
@@ -596,8 +568,7 @@ def pairwise(iterable):
 
     Example
     -------
-    >>> list(pairwise([1,2,3,4]))
-        [(1,2),(2,3),(3,4)]
+    >>> list(pairwise([1,2,3,4])) [(1,2),(2,3),(3,4)]
 
     """
     a, b = tee(iterable)
@@ -606,15 +577,11 @@ def pairwise(iterable):
     return zip(a, b)
 
 
-def capacity_subscriber(const_cap, 
-                        subscribers, 
-                        traffic_percentage):
+def capacity_subscriber(const_cap, subscribers, traffic_percentage):
     """
-    This function calculates usable 
-    capacity per subscriber in Mbps/subscriber.
+    This function calculates usable capacity per subscriber in Mbps/subscriber.
 
-    Capacity per subscriber (Mbps/Subscriber) =
-             Constellation capacity 
+    Capacity per subscriber (Mbps/Subscriber) = Constellation capacity 
              / Number of subscribers
 
     Parameters
@@ -624,8 +591,7 @@ def capacity_subscriber(const_cap,
     subscribers : int
         Number of subscribers.
     traffic_percentage : int
-        Number subscribers accessing 
-        the network at a busy hour
+        Number subscribers accessing the network at a busy hour
 
     Returns
     -------
@@ -633,33 +599,29 @@ def capacity_subscriber(const_cap,
         Capacity per subscriber in Mbps/Subscriber
 
     """
-    cap_sub = const_cap / (subscribers * 
-                           (traffic_percentage / 100))
+    cap_sub = const_cap / (subscribers * (traffic_percentage / 100))
+
 
     return cap_sub
 
 
-def monthly_traffic(capacity_mbps, orbit):
+def monthly_traffic(capacity_mbps):
     """ 
-    This function calculates the monthly 
-    traffic given that the lifespan of all 
-    LEO constellations is 5 years and 15 
-    years for GEO and 20% accounting for 
-    traffic taking place in the busiest 
-    hour of the day based on [3].
+    This function calculates the monthly traffic for LEO constellations and GEO 
+    given 20% of traffic taking place in the busiest hour of the day based on 
+    [3].
 
     Conversion of Mbps to monthly traffic in GB. 
 
-    Monthly traffic (GB) = (Capacity_Mbps / 12 x 5 or 15)
+    Monthly traffic (GB) = (Capacity_Mbps)
                            / (8000 x #Conversion of Gigabytes to bits
                            1/30)     #Number of days in a month (30)
                            x 1/3600  #Seconds in hour
-                           x 20/100  #Percentage of traffic in the busiest hour of the day
+                           x 20/100  #Percentage of traffic in the busiest hour 
+                           of the day
 
     Parameters
     ----------
-    orbit : string
-        satellite orbit (either LEO, MEO or GEO)
     capacity_mbps : float
         Mean capacity per user in Mbps
 
@@ -670,12 +632,36 @@ def monthly_traffic(capacity_mbps, orbit):
             
     """
 
-    if orbit == 'GEO':
+    amount = (capacity_mbps) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
 
-        amount = (capacity_mbps / (12 * 15)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
-
-    else:
-
-        amount = (capacity_mbps / (12 * 5)) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
 
     return amount
+
+
+def capacity_area(sat_capacity, total_area_earth_km_sq, number_of_satellites, 
+                  traffic_percentage):
+    """
+    This function calculates the capacity per square kilometer
+
+    Parameters
+    ----------
+    sat_capacity : float
+        Single satellite capacity in Mbps.
+    number_of_satellites : int
+        Number of satellites in the constellation.
+    traffic_percentage : int
+        Number subscribers accessing the network at a busy hour
+    total_area_earth_km_sq : int
+        Total area of the earth in square kilometers.
+
+    Returns
+    -------
+    cap_area_mbps_sqkm : float
+        Capacity per square kilometer
+
+    """
+    per_area = (sat_capacity) / (total_area_earth_km_sq / number_of_satellites)
+    cap_area_mbps_sqkm = (traffic_percentage / 100) / per_area
+
+
+    return cap_area_mbps_sqkm
