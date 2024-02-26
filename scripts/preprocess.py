@@ -9,7 +9,6 @@ May 2022
 import configparser
 import os
 import random
-#from random import *
 import numpy as np
 import pandas as pd
 import saleos.cost as ct
@@ -23,14 +22,13 @@ BASE_PATH = CONFIG['file_locations']['base_path']
 
 def uq_inputs_capacity(parameters):
     """
-    Generate all UQ capacity inputs in preparation for running 
-    through the saleos model. 
+    Generate all UQ capacity inputs in preparation for running through the 
+    saleos model. 
 
     Parameters
     ----------
     parameters : dict
-        dictionary of dictionary containing 
-        constellation engineering values.
+        dictionary of dictionary containing constellation engineering values.
 
     """
     iterations = []
@@ -62,16 +60,14 @@ def uq_inputs_capacity(parameters):
 
 def multiorbit_sat_capacity(i, constellation_params):
     """
-    This function generates random values within the 
-    given parameter ranges. 
+    This function generates random values within the given parameter ranges. 
 
     Parameters
     ----------
     i : int.
         number of iterations
     constellation_params : dict
-        Dictionary containing satellite 
-        engineering details
+        Dictionary containing satellite engineering details
 
     Return
     ------
@@ -82,10 +78,8 @@ def multiorbit_sat_capacity(i, constellation_params):
     output = []
 
     #these calcs are unit input cost * number of units. 
-    altitude_km = random.randint(
-        constellation_params['altitude_km_low'], 
-        constellation_params['altitude_km_high']
-    )
+    altitude_km = random.randint(constellation_params['altitude_km_low'], 
+        constellation_params['altitude_km_high'])
 
     elevation_angle = random.randint(
         constellation_params['elevation_angle_low'], 
@@ -97,13 +91,11 @@ def multiorbit_sat_capacity(i, constellation_params):
         constellation_params['dl_frequency_hz_high']
     )
 
-    power_dbw = random.randint(
-        constellation_params['power_dbw_low'], 
+    power_dbw = random.randint(constellation_params['power_dbw_low'], 
         constellation_params['power_dbw_high']
     ) 
 
-    receiver_gain = random.randint(
-        constellation_params['receiver_gain_low'], 
+    receiver_gain = random.randint(constellation_params['receiver_gain_low'], 
         constellation_params['receiver_gain_high']
     )
 
@@ -117,15 +109,17 @@ def multiorbit_sat_capacity(i, constellation_params):
         constellation_params['antenna_diameter_m_high']
     )
 
-    ideal_coverage_area_per_sat_sqkm = (constellation_params['total_area_earth_km_sq'] 
-                                        / constellation_params['number_of_satellites'])
+    ideal_coverage_area_per_sat_sqkm = (
+        constellation_params['total_area_earth_km_sq'] 
+        / constellation_params['number_of_satellites'])
 
     
     output.append({
         'iteration': i,
         'constellation': constellation_params['name'], 
         'number_of_satellites': constellation_params['number_of_satellites'],
-        'number_of_ground_stations': constellation_params['number_of_ground_stations'],
+        'number_of_ground_stations': (
+            constellation_params['number_of_ground_stations']),
         'subscribers_low': constellation_params['subscribers'][0],
         'subscribers_baseline': constellation_params['subscribers'][1],
         'subscribers_high': constellation_params['subscribers'][2],
@@ -136,8 +130,10 @@ def multiorbit_sat_capacity(i, constellation_params):
         'receiver_gain_db': receiver_gain,
         'earth_atmospheric_losses_db': earth_atmospheric_losses,
         'antenna_diameter_m': antenna_diameter_m,
-        'total_area_earth_km_sq' : constellation_params['total_area_earth_km_sq'],
+        'total_area_earth_km_sq' : (
+            constellation_params['total_area_earth_km_sq']),
         'ideal_coverage_area_per_sat_sqkm': ideal_coverage_area_per_sat_sqkm,
+        'percent_coverage' : constellation_params['percent_coverage'],
         'speed_of_light': constellation_params['speed_of_light'],
         'antenna_efficiency' : constellation_params['antenna_efficiency'],
         'all_other_losses_db' : constellation_params['all_other_losses_db'],
@@ -145,7 +141,8 @@ def multiorbit_sat_capacity(i, constellation_params):
         'number_of_channels' : constellation_params['number_of_channels'],
         'polarization' : constellation_params['polarization'],
         'dl_bandwidth_hz' : constellation_params['dl_bandwidth_hz'],
-        'subscriber_traffic_percent' : constellation_params['subscriber_traffic_percent']
+        'subscriber_traffic_percent' : (
+            constellation_params['subscriber_traffic_percent'])
     })
 
 
@@ -154,8 +151,8 @@ def multiorbit_sat_capacity(i, constellation_params):
 
 def uq_inputs_cost(parameters):
     """
-    Generate all UQ cost inputs in preparation for running 
-    through the saleos model. 
+    Generate all UQ cost inputs in preparation for running through the saleos 
+    model. 
 
     Parameters
     ----------
@@ -193,8 +190,7 @@ def uq_inputs_cost(parameters):
 
 def multiorbit_sat_costs(i, constellation_params):
     """
-    This function generates random values within the 
-    given parameter ranges. 
+    This function generates random values within the given parameter ranges. 
 
     Parameters
     ----------
@@ -256,16 +252,11 @@ def multiorbit_sat_costs(i, constellation_params):
         constellation_params['maintenance_low'], 
         constellation_params['maintenance_high']) 
 
-    capex_costs = (satellite_manufacturing 
-                   + satellite_launch_cost 
-                   + ground_station_cost
-                   + fiber_infrastructure_cost
-                   )
+    capex_costs = (satellite_manufacturing + satellite_launch_cost 
+                   + ground_station_cost + fiber_infrastructure_cost)
     
-    opex_costs = ct.opex_cost(regulation_fees, 
-                              ground_station_energy, 
-                              staff_costs, 
-                              subscriber_acquisition, 
+    opex_costs = ct.opex_cost(regulation_fees, ground_station_energy, 
+                              staff_costs, subscriber_acquisition, 
                               maintenance_costs, 
                               constellation_params['discount_rate'], 
                               constellation_params['assessment_period'])
@@ -274,7 +265,8 @@ def multiorbit_sat_costs(i, constellation_params):
         'iteration': i,
         'constellation': constellation_params['name'], 
         'number_of_satellites': constellation_params['number_of_satellites'],
-        'number_of_ground_stations': constellation_params['number_of_ground_stations'],
+        'number_of_ground_stations': (
+            constellation_params['number_of_ground_stations']),
         'subscribers_low': constellation_params['subscribers'][0],
         'subscribers_baseline': constellation_params['subscribers'][1],
         'subscribers_high': constellation_params['subscribers'][2],
@@ -302,6 +294,6 @@ if __name__ == '__main__':
     uq_inputs_capacity(parameters)
 
     print('Running uq_cost_inputs_generator()')
-    #uq_inputs_cost(parameters)
+    uq_inputs_cost(parameters)
 
     print('Completed')

@@ -307,8 +307,7 @@ subscriber_traffic <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0),
-    limits = c(0, 244)
+    expand = c(0, 0), limits = c(0, 13500)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),

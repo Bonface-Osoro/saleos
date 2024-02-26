@@ -11,7 +11,6 @@ import os
 import math
 import time
 import pandas as pd
-
 import saleos.cost as ct
 import saleos.capacity as cy
 
@@ -35,7 +34,7 @@ def run_uq_processing_capacity():
 
     if not os.path.exists(path):
 
-        print('Cannot locate uq_parameters_capacity.csv - have you run preprocess.py?')
+        print('Cannot locate uq_parameters_capacity.csv')
 
     df = pd.read_csv(path)
     df = df.to_dict('records')
@@ -45,19 +44,16 @@ def run_uq_processing_capacity():
     for item in tqdm(df, desc = "Processing uncertainty results"):
 
         satellite_coverage_area_km = cy.calc_geographic_metrics(
-            item['number_of_satellites'], 
-            item['total_area_earth_km_sq'])
+            item['number_of_satellites'], item['total_area_earth_km_sq'])
         
         slant_distance = round(cy.signal_distance(item['altitude_km'], 
                          item['elevation_angle']), 4)
         
         satellite_centric_angle = cy.calc_sat_centric_angle(
-                                  item['altitude_km'], 
-                                  item['elevation_angle'])
+                                  item['altitude_km'], item['elevation_angle'])
         
         earth_central_angle = cy.calc_earth_central_angle(
-                                  item['altitude_km'], 
-                                  item['elevation_angle'])
+                                  item['altitude_km'], item['elevation_angle'])
         
         sat_coverage_area = cy.calc_satellite_coverage(item['altitude_km'], 
                                   item['elevation_angle'])
@@ -69,33 +65,21 @@ def run_uq_processing_capacity():
             item['all_other_losses_db']), 4)
 
         antenna_gain = round(cy.calc_antenna_gain(
-            item['speed_of_light'],
-            item['antenna_diameter_m'], 
-            item['dl_frequency_hz'],
-            item['antenna_efficiency']), 4) 
+            item['speed_of_light'], item['antenna_diameter_m'], 
+            item['dl_frequency_hz'], item['antenna_efficiency']), 4) 
 
-        eirp = round(cy.calc_eirpd(
-            item['power_dbw'], 
-            antenna_gain), 4)
+        eirp = round(cy.calc_eirpd(item['power_dbw'], antenna_gain), 4)
 
         noise = round(cy.calc_noise(), 4)
 
         received_power = round(cy.calc_received_power(
-            eirp, 
-            path_loss, 
-            item['receiver_gain_db'], 
-            losses), 4)
+            eirp, path_loss, item['receiver_gain_db'], losses), 4)
 
-        cnr = round(cy.calc_cnr(
-            received_power, 
-            noise), 4)
+        cnr = round(cy.calc_cnr(received_power, noise), 4)
 
-        spectral_efficiency = cy.calc_spectral_efficiency(
-            cnr, 
-            lut)
+        spectral_efficiency = cy.calc_spectral_efficiency(cnr, lut)
 
-        channel_capacity = round(cy.calc_capacity(
-            spectral_efficiency, 
+        channel_capacity = round(cy.calc_capacity(spectral_efficiency, 
             item['dl_bandwidth_hz']), 4)
 
         sat_capacity = round(cy.single_satellite_capacity(
@@ -106,12 +90,14 @@ def run_uq_processing_capacity():
         constellation_capacity = round((cy.calc_constellation_capacity(
                 channel_capacity, item['number_of_channels'], 
                 item['polarization'], item['number_of_beams'], 
-                item['number_of_satellites'])), 4)
+                item['number_of_satellites'], item['percent_coverage'])), 4)
             
-        # 0.567805 and 1.647211 are spectral efficiency threshold values obtained from page 53 of DVB-S2 documentation
-        # ( https://dvb.org/?standard=second-generation-framing-structure-channel-coding
-        # -and-modulation-systems-for-broadcasting-interactive-services-news-gathering-and-
-        # other-broadband-satellite-applications-part-2-dvb-s2-extensions)
+        # 0.567805 and 1.647211 are spectral efficiency threshold values o
+        # btained from page 53 of DVB-S2 documentation
+        # ( https://dvb.org/?standard=second-generation-framing-structure
+        #   -channel-coding-and-modulation-systems-for-broadcasting-interactive
+        #   -services-news-gathering-and-other-broadband-satellite-applications
+        #   -part-2-dvb-s2-extensions)
         if spectral_efficiency <= 0.567805:
 
             cnr_scenario = 'low'
@@ -128,7 +114,9 @@ def run_uq_processing_capacity():
             'constellation': item['constellation'], 
             'number_of_satellites': item['number_of_satellites'],
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
-            'ideal_coverage_area_per_sat_sqkm': round(item['total_area_earth_km_sq'] / item['number_of_satellites'], 4),
+            'ideal_coverage_area_per_sat_sqkm': (round(
+                item['total_area_earth_km_sq'] / item['number_of_satellites'], 
+                4)),
             'elevation_angle': item['elevation_angle'],
             'altitude_km': item['altitude_km'],
             'satellite_centric_angle': satellite_centric_angle,
@@ -158,7 +146,10 @@ def run_uq_processing_capacity():
             'channel_capacity_mbps': channel_capacity,
             'capacity_per_single_satellite_mbps': sat_capacity,
             'constellation_capacity_mbps': constellation_capacity,
-            'capacity_per_area_mbps/sqkm': constellation_capacity / item['ideal_coverage_area_per_sat_sqkm'],
+            'capacity_per_area_mbps/sqkm': (cy.capacity_area(sat_capacity, 
+                                           item['total_area_earth_km_sq'], 
+                                           item['number_of_satellites'], 
+                                           item['subscriber_traffic_percent'])),
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -176,8 +167,7 @@ def run_uq_processing_capacity():
     return 
 
 
-def calc_emission_type(df, rocket, datapoint,
-    emission_category, no_launches):
+def calc_emission_type(df, rocket, datapoint, emission_category, no_launches):
 
     """
     This function is for calculating emission type.
@@ -198,50 +188,56 @@ def calc_emission_type(df, rocket, datapoint,
     Returns
     -------
     emission_dict : dict
-        Dictionary containing all 
-        the emission categories.
+        Dictionary containing all the emission categories.
     """
     emission_dict = {}
 
     df['climate_change_baseline'].loc[datapoint] = (
         rocket['climate_change_baseline'][emission_category] 
         * no_launches) 
+    
     emission_dict['climate_change_baseline'] = (
         df['climate_change_baseline'].loc[datapoint])
 
     df['climate_change_worst_case'].loc[datapoint] = (
         rocket['climate_change_worst_case'][emission_category] 
         * no_launches)
+    
     emission_dict['climate_change_worst_case'] = (
         df['climate_change_worst_case'].loc[datapoint])
 
     df['ozone_depletion_baseline'].loc[datapoint] = (
         rocket['ozone_depletion_baseline'][emission_category] 
         * no_launches)
+    
     emission_dict['ozone_depletion_baseline'] = (
         df['ozone_depletion_baseline'].loc[datapoint])
 
     df['ozone_depletion_worst_case'].loc[datapoint] = (
         rocket['ozone_depletion_worst_case'][emission_category]
         * no_launches)
+    
     emission_dict['ozone_depletion_worst_case'] = (
         df['ozone_depletion_worst_case'].loc[datapoint])
 
     df['resource_depletion'].loc[datapoint] = (
         rocket['resource_depletion'][emission_category]
         * no_launches)
+    
     emission_dict['resource_depletion'] = (
         df['resource_depletion'].loc[datapoint])
 
     df['freshwater_toxicity'].loc[datapoint] = (
         rocket['freshwater_toxicity'][emission_category]
         * no_launches)
+    
     emission_dict['freshwater_toxicity'] = (
         df['freshwater_toxicity'].loc[datapoint])
 
     df['human_toxicity'].loc[datapoint] = (
         rocket['human_toxicity'][emission_category]
         * no_launches)
+    
     emission_dict['human_toxicity'] = (
         df['human_toxicity'].loc[datapoint])
 
@@ -252,25 +248,23 @@ def calc_emission_type(df, rocket, datapoint,
 def calc_emissions():
 
     """
-    This function calculates the 
-    amount of emission by rocket 
-    types for all the launches.
+    This function calculates the amount of emission by rocket types for all the 
+    launches.
+
     """
     path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
     df = pd.read_csv(path)
 
-    df[['launch_event', 'launcher_production', 
-        'launcher_ait', 'propellant_production', 
-        'propellant_scheduling', 'launcher_transportation', 
-        'launch_campaign']] = ''
+    df[['launch_event', 'launcher_production', 'launcher_ait', 
+        'propellant_production', 'propellant_scheduling', 
+        'launcher_transportation', 'launch_campaign']] = ''
 
     df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
-         'rocket', 'representative_of', 
-         'rocket_type', 'no_of_satellites', 'no_of_launches',], 
-         value_vars = ['launch_event', 'launcher_production', 
+         'rocket', 'representative_of', 'rocket_type', 'no_of_satellites', 
+         'no_of_launches',], value_vars = ['launch_event', 'launcher_production', 
          'launcher_ait', 'propellant_production', 'propellant_scheduling', 
-         'launcher_transportation', 'launch_campaign'], 
-         var_name = 'impact_category', value_name = 'value')
+         'launcher_transportation', 'launch_campaign'], var_name = 
+         'impact_category', value_name = 'value')
 
     df = df.drop('value', axis = 1) 
 
@@ -282,7 +276,7 @@ def calc_emissions():
 
     for i in range(len(df)):
 
-        ################################### Falcon-9 Rocket ###################################
+        ################################### Falcon-9 Rocket ####################
         if df['rocket'].loc[i] == 'falcon9' and df['impact_category'].loc[i] == 'launch_event':
 
             for key, item in falcon_9.items():
@@ -454,8 +448,9 @@ def calc_emissions():
     df['per_subscriber_emission'] = ''
     
     for i in range(len(df)):
-
-        df['per_subscriber_emission'].loc[i] = df['climate_change_baseline'].loc[i] / df['subscribers'].loc[i]
+        
+        df['per_subscriber_emission'].loc[i] = (
+            df['climate_change_baseline'].loc[i] / df['subscribers'].loc[i])
 
     filename = 'individual_emissions.csv'
 
@@ -463,18 +458,19 @@ def calc_emissions():
 
         os.makedirs(BASE_PATH)
 
-    df = df[['constellation', 'no_of_satellites', 'no_of_launches', 'climate_change_baseline', 
-             'climate_change_worst_case', 'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
-             'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 'subscribers', 
-             'subscriber_scenario', 'impact_category', 'scenario', 'status', 'representative_of', 
-             'rocket_type']]
+    df = df[['constellation', 'no_of_satellites', 'no_of_launches', 
+             'climate_change_baseline', 'climate_change_worst_case', 
+             'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
+             'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 
+             'subscribers', 'subscriber_scenario', 'impact_category', 
+             'scenario', 'status', 'representative_of', 'rocket_type']]
     
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
-                       'climate_change_worst_case': 'climate_change_worst_case_kg',
-                       'ozone_depletion_baseline': 'ozone_depletion_baseline_kg',
-                       'ozone_depletion_worst_case': 'ozone_depletion_worst_case_kg',
-                       'resource_depletion': 'resource_depletion_kg',
-                       'freshwater_toxicity': 'freshwater_toxicity_m3'}
+                'climate_change_worst_case': 'climate_change_worst_case_kg',
+                'ozone_depletion_baseline': 'ozone_depletion_baseline_kg',
+                'ozone_depletion_worst_case': 'ozone_depletion_worst_case_kg',
+                'resource_depletion': 'resource_depletion_kg',
+                'freshwater_toxicity': 'freshwater_toxicity_m3'}
     
     df.rename(columns = renamed_columns, inplace=True)
     
@@ -494,7 +490,7 @@ def run_uq_processing_cost():
 
     if not os.path.exists(path):
 
-        print('Cannot locate uq_parameters_cost.csv - have you run preprocess.py?')
+        print('Cannot locate uq_parameters_cost.csv')
 
     df = pd.read_csv(path)
     df = df.to_dict('records')
@@ -570,12 +566,14 @@ def process_mission_capacity():
     df[['capacity_per_user', 'monthly_gb', 'user_per_area']] = ''
     
     # Calculate total metrics
-    for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
+    for i in tqdm(range(len(df)), desc = 'Processing constellation results'):
 
-         df['capacity_per_user'].loc[i] = (cy.capacity_subscriber(df['constellation_capacity_mbps'].loc[i], 
-                                        df['subscribers'].loc[i], df['subscriber_traffic_percent'].loc[i]))
+         df['capacity_per_user'].loc[i] = ((cy.capacity_subscriber(
+             df['constellation_capacity_mbps'].loc[i], 
+            df['subscribers'].loc[i], df['subscriber_traffic_percent'].loc[i])))
 
-         df['monthly_gb'].loc[i] = cy.monthly_traffic(df['capacity_per_user'].loc[i], df['constellation'].loc[i])
+         df['monthly_gb'].loc[i] = (cy.monthly_traffic(
+             df['capacity_per_user'].loc[i]))
 
          df['user_per_area'].loc[i] = ((df['subscribers'].loc[i] 
                            * df['subscriber_traffic_percent'].loc[i] 
@@ -587,8 +585,10 @@ def process_mission_capacity():
 
          os.makedirs(RESULTS)
 
-    df = df[['constellation', 'constellation_capacity_mbps', 'satellite_coverage_area_km', 'capacity_per_user', 
-            'subscribers', 'monthly_gb', 'user_per_area', 'cnr_scenario', 'subscriber_scenario']]
+    df = df[['constellation', 'constellation_capacity_mbps', 
+             'satellite_coverage_area_km', 'capacity_per_user', 
+            'subscribers', 'monthly_gb', 'user_per_area', 
+            'cnr_scenario', 'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
@@ -609,8 +609,8 @@ def process_mission_cost():
              'subscribers_low', 'subscribers_baseline', 
              'subscribers_high']]
 
-    # Classify subscribers by melting the dataframe into long format
-    # Switching the subscriber columns from wide format to long format
+    # Classify subscribers by melting the dataframe into long format.
+    # Switching the subscriber columns from wide format to long format.
     df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
                                 'opex_costs', 'assessment_period_year', 
                                 'total_cost_ownership'], 
@@ -624,16 +624,19 @@ def process_mission_cost():
          'tco_per_user', 'user_monthly_cost']] = ''
     
     # Calculate total metrics
-    for i in tqdm(range(len(df)), desc = 'Processing constellation aggregate results'):
+    for i in tqdm(range(len(df)), desc = 'Processing constellation results'):
 
-         df['capex_per_user'].loc[i] = df['capex_costs'].loc[i] / df['subscribers'].loc[i] 
+         df['capex_per_user'].loc[i] = (df['capex_costs'].loc[i] / 
+                                        df['subscribers'].loc[i]) 
         
-         df['opex_per_user'].loc[i] = df['opex_costs'].loc[i] / df['subscribers'].loc[i] 
+         df['opex_per_user'].loc[i] = (df['opex_costs'].loc[i] /
+                                        df['subscribers'].loc[i]) 
         
-         df['tco_per_user'].loc[i] = df['total_cost_ownership'].loc[i] / df['subscribers'].loc[i]
+         df['tco_per_user'].loc[i] = (df['total_cost_ownership'].loc[i] / 
+                                      df['subscribers'].loc[i])
 
-         df['user_monthly_cost'].loc[i] = ct.user_monthly_cost(df['tco_per_user'].loc[i], 
-                                          df['assessment_period_year'].loc[i])
+         df['user_monthly_cost'].loc[i] = (ct.user_monthly_cost(
+             df['tco_per_user'].loc[i], df['assessment_period_year'].loc[i]))
 
     filename = 'final_cost_results.csv'
 
@@ -641,10 +644,10 @@ def process_mission_cost():
 
          os.makedirs(RESULTS)
 
-    df = df[['constellation', 'capex_costs', 'opex_costs', 'total_cost_ownership', 
-             'assessment_period_year', 'subscribers', 'capex_per_user', 
-             'opex_per_user', 'tco_per_user', 'user_monthly_cost', 
-             'subscriber_scenario']]
+    df = df[['constellation', 'capex_costs', 'opex_costs', 
+             'total_cost_ownership', 'assessment_period_year', 'subscribers', 
+             'capex_per_user', 'opex_per_user', 'tco_per_user', 
+             'user_monthly_cost', 'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
