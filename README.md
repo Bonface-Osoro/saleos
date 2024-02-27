@@ -120,10 +120,10 @@ Background and funding
 **saleos** has been developed by researchers at George Mason University, University of Strathclyde and Middlebury College.
 
 ## Team
-- Bonface Osoro, George Mason University (Model development)
-- Edward Oughton, George Mason University (Project lead and corresponding author)
-- Andrew Wilson, University of Strathclyde (LCA modeling)
-- Akhil Rao, Middlebury College (Policy and economics)
+- Bonface Osoro, George Mason University (Model development).
+- Edward Oughton, George Mason University (Project lead and corresponding author).
+- Andrew Wilson, University of Strathclyde (LCA modeling).
+- Akhil Rao, Middlebury College (Policy and economics).
 
 Acknowledgement
 ---------------

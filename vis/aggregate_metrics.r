@@ -305,9 +305,8 @@ subscriber_traffic <-
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 13500)
+    labels = comma,
+    expand = c(0, 0), limits = c(0, 2799)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -374,8 +373,7 @@ constellation_tco_per_user <-
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0), limits = c(0, 5900)
   ) + theme_minimal() +
   theme(
