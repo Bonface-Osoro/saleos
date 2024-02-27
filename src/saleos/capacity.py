@@ -629,7 +629,7 @@ def monthly_traffic(capacity_mbps):
             
     """
 
-    amount = (capacity_mbps) / (8000 * (1 / 30) * (1 / 3600))
+    amount = (capacity_mbps * 30 * 3600) / (8000)
 
 
     return amount
