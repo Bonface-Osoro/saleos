@@ -457,14 +457,14 @@ def calc_emissions():
     if not os.path.exists(BASE_PATH):
 
         os.makedirs(BASE_PATH)
-
+    
     df = df[['constellation', 'no_of_satellites', 'no_of_launches', 
              'climate_change_baseline', 'climate_change_worst_case', 
              'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
              'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 
              'subscribers', 'subscriber_scenario', 'impact_category', 
              'scenario', 'status', 'representative_of', 'rocket_type']]
-    
+    df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg']] = ''
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
                 'climate_change_worst_case': 'climate_change_worst_case_kg',
                 'ozone_depletion_baseline': 'ozone_depletion_baseline_kg',
@@ -472,7 +472,25 @@ def calc_emissions():
                 'resource_depletion': 'resource_depletion_kg',
                 'freshwater_toxicity': 'freshwater_toxicity_m3'}
     
-    df.rename(columns = renamed_columns, inplace=True)
+    df.rename(columns = renamed_columns, inplace = True)
+    
+    for i in range(len(df)):
+
+        if df['constellation'].loc[i] == 'geo_generic':
+
+            df['annual_baseline_emission_kg'].loc[i] = (
+                df['climate_change_baseline_kg'].loc[i] / 15)
+            
+            df['annual_worst_case_emission_kg'].loc[i] = (
+                df['climate_change_worst_case_kg'].loc[i] / 15)
+            
+        else:
+
+            df['annual_baseline_emission_kg'].loc[i] = (
+                df['climate_change_baseline_kg'].loc[i] / 5)
+            
+            df['annual_worst_case_emission_kg'].loc[i] = (
+                df['climate_change_worst_case_kg'].loc[i] / 5)
     
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)

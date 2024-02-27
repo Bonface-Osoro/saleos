@@ -109,8 +109,8 @@ data <- data[data$scenario == "scenario3", ]
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(value = sum((climate_change_baseline_kg / subscribers) / 1e3),
-            value_wc = sum((climate_change_worst_case_kg / subscribers) / 1e3))
+  summarize(value = sum((annual_baseline_emission_kg / subscribers) / 1e3),
+            value_wc = sum((annual_worst_case_emission_kg / subscribers) / 1e3))
 
 df = df %>%
   pivot_longer(!c(constellation, subscriber_scenario),
@@ -156,12 +156,12 @@ emission_subscriber <-
     x = NULL,
     fill = 'Emissions\nScenario'
   ) +
-  ylab("Emissions<br>(t CO<sub>2</sub> eq/Subscriber)") +
+  ylab("Annual Emissions<br>(t CO<sub>2</sub> eq/Subscriber)") +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 6.5)
+    limits = c(0, 1.4)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_markdown(),
