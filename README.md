@@ -122,7 +122,7 @@ Background and funding
 ## Team
 - Bonface Osoro, George Mason University (Model development).
 - Edward Oughton, George Mason University (Project lead and corresponding author).
-- Andrew Wilson, University of Strathclyde / Glasgow Caledonian University (LCA modeling).
+- Andrew Wilson, University of Strathclyde / Glasgow Caledonian University (LCIA modeling).
 - Akhil Rao, Middlebury College (Policy and economics).
 
 Acknowledgement
