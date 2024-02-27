@@ -608,8 +608,7 @@ def capacity_subscriber(const_cap, subscribers, traffic_percentage):
 def monthly_traffic(capacity_mbps):
     """ 
     This function calculates the monthly traffic for LEO constellations and GEO 
-    given 20% of traffic taking place in the busiest hour of the day based on 
-    [3].
+    given everyone accessing the network at the same time.
 
     Conversion of Mbps to monthly traffic in GB. 
 
@@ -617,8 +616,6 @@ def monthly_traffic(capacity_mbps):
                            / (8000 x #Conversion of Gigabytes to bits
                            1/30)     #Number of days in a month (30)
                            x 1/3600  #Seconds in hour
-                           x 20/100  #Percentage of traffic in the busiest hour 
-                           of the day
 
     Parameters
     ----------
@@ -632,7 +629,7 @@ def monthly_traffic(capacity_mbps):
             
     """
 
-    amount = (capacity_mbps) / (8000 * (1 / 30) * (1 / 3600) * (20 / 100))
+    amount = (capacity_mbps) / (8000 * (1 / 30) * (1 / 3600))
 
 
     return amount
