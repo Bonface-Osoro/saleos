@@ -120,11 +120,11 @@ Background and funding
 **saleos** has been developed by researchers at George Mason University, University of Strathclyde and Middlebury College.
 
 ## Team
-- Bonface Osoro, George Mason University (Model development)
-- Edward Oughton, George Mason University (Project lead and corresponding author)
-- Andrew Wilson, University of Strathclyde (LCA modeling)
-- Akhil Rao, Middlebury College (Policy and economics)
+- Bonface Osoro, George Mason University (Model development).
+- Edward Oughton, George Mason University (Project lead and corresponding author).
+- Andrew Wilson, University of Strathclyde / Glasgow Caledonian University (LCIA modeling).
+- Akhil Rao, Middlebury College (Policy and economics).
 
 Acknowledgement
 ---------------
-We would like to thank George Mason University's department of Geography and Geoinformation Science for funding the project. Secondly, we would like to thank Nils Pacher and Inigo del Portillo of Massachusetts Institute of Technology (MIT), Aeronautics and Astronautics Department for providing the orbital parameter data of Starlink, OneWeb and Kuiper as well as a reproducible python code for modeling the orbit of the three LEO constellations. Lastly, we would like to thank two anonymous reviewers and one satellite industry expert who provided substantial scientific feedback on the peer-reviewed manuscript and capacity model respectively that helped in enhancing quality and key contribution to the literature. 
+We would like to thank George Mason University's department of Geography and Geoinformation Science for funding the project. Secondly, we would like to thank Nils Pacher and Dr. Inigo del Portillo of Massachusetts Institute of Technology (MIT), Aeronautics and Astronautics Department for providing the orbital parameter data of Starlink, OneWeb and Kuiper as well as a reproducible python code for modeling the orbit of the three LEO constellations. We would also like to thank Dr. Whitney Lohmeyer of Olin College of Engineering for informally reviewing the capacity model. Lastly, we would like to thank two anonymous reviewers and one satellite industry expert who provided substantial scientific feedback on the peer-reviewed manuscript and capacity model respectively that helped in enhancing quality and key contribution to the literature. 

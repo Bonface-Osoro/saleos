@@ -13,19 +13,18 @@ data <-
     'processed',
     'interim_results_capacity.csv'
   ))
+data$constellation = factor(data$constellation, 
+     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 #########################
 ##Channel capacity with##
 #########################
-
-
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
   summarize(mean = mean(channel_capacity_mbps),
             sd = sd(channel_capacity_mbps))
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$Constellation = factor(df$constellation)
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -33,7 +32,7 @@ df$CNR = factor(
 )
 
 chn_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -96,7 +95,7 @@ df = data %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$Constellation = factor(df$constellation)
+
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -104,7 +103,7 @@ df$CNR = factor(
 )
 
 sat_capacity <-
-  ggplot(df, aes(x = Constellation, y = mean / 1e3, fill = CNR)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e3, fill = CNR)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.98) +
@@ -129,7 +128,7 @@ sat_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 840)
+    limits = c(0, 980)
   ) +
   theme_minimal() +
   theme(
@@ -169,7 +168,7 @@ df = data %>%
   ungroup()
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
-df$Constellation = factor(df$constellation)
+
 df$CNR = factor(
   df$cnr_scenario,
   levels = c('low', 'baseline', 'high'),
@@ -178,7 +177,7 @@ df$CNR = factor(
 
 const_capacity <-
   ggplot(df, aes(
-    x = Constellation,
+    x = constellation,
     y = (mean) * 0.65 / 1e6,
     fill = CNR
   )) +
@@ -240,8 +239,9 @@ const_capacity <-
 ################################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-data2 <-
-  read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
+data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
+data2$constellation = factor(data2$constellation, 
+    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -249,7 +249,7 @@ df = data2 %>%
             sd = sd(capacity_per_user))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -261,7 +261,7 @@ df$subscriber_scenario = factor(
 )
 
 capacity_per_user <-
-  ggplot(df, aes(x = Constellation, y = mean,
+  ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
@@ -322,7 +322,7 @@ df = data2 %>%
             sd = sd(monthly_gb))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -334,7 +334,7 @@ df$subscriber_scenario = factor(
 )
 
 monthly_traffic <-
-  ggplot(df, aes(x = Constellation, y = mean,
+  ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
@@ -353,12 +353,11 @@ monthly_traffic <-
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Monthly Traffic\n(GB/Subscriber)",
+    y = "Mean Monthly Traffic \n(GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = function(y)
-      format(y, scientific = FALSE),
+    labels = comma,
     expand = c(0, 0),
   ) + theme_minimal() +
   theme(
@@ -390,7 +389,7 @@ df = data2 %>%
             sd = sd(user_per_area))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
-df$Constellation = factor(df$constellation)
+
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
   levels = c(
@@ -402,7 +401,7 @@ df$subscriber_scenario = factor(
 )
 
 per_user_area <-
-  ggplot(df, aes(x = Constellation, y = mean,
+  ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
   geom_bar(stat = "identity",
            width = 0.98,
@@ -427,7 +426,7 @@ per_user_area <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 50)
+    limits = c(0, 179)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_markdown(size = 6),
@@ -493,8 +492,8 @@ path = file.path(folder, 'figures', 'g_capacity_metrics.png')
 png(
   path,
   units = "in",
-  width = 6.5,
-  height = 4,
+  width = 9,
+  height = 6,
   res = 480
 )
 print(pub_cap)
