@@ -108,7 +108,7 @@ Or if you want to develop the package:
 
    `python setup.py develop`
 
-Then run the scripts in the order defined in the previous section (`Using conda`)
+Then run the scripts in the order defined in the previous section (`Using conda`).
 
 Citation
 ---------
