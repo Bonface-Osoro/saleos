@@ -301,7 +301,7 @@ subscriber_traffic <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Monthly Traffic (GB/Subscriber)",
+    y = "Mean Monthly Traffic \n(GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -369,7 +369,7 @@ constellation_tco_per_user <-
     title = " ",
     subtitle = 'e',
     x = NULL,
-    y = "TCO (US$/Subscriber)",
+    y = "TCO \n(US$/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
