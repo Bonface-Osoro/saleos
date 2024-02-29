@@ -479,18 +479,18 @@ def calc_emissions():
         if df['constellation'].loc[i] == 'geo_generic':
 
             df['annual_baseline_emission_kg'].loc[i] = (
-                df['climate_change_baseline_kg'].loc[i] / 15)
+                df['climate_change_baseline_kg'].loc[i] / 15) #this is a parameter
             
             df['annual_worst_case_emission_kg'].loc[i] = (
-                df['climate_change_worst_case_kg'].loc[i] / 15)
+                df['climate_change_worst_case_kg'].loc[i] / 15) #this is a parameter
             
         else:
 
             df['annual_baseline_emission_kg'].loc[i] = (
-                df['climate_change_baseline_kg'].loc[i] / 5)
+                df['climate_change_baseline_kg'].loc[i] / 5) #this is a parameter
             
             df['annual_worst_case_emission_kg'].loc[i] = (
-                df['climate_change_worst_case_kg'].loc[i] / 5)
+                df['climate_change_worst_case_kg'].loc[i] / 5) #this is a parameter
     
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
@@ -618,6 +618,7 @@ def process_mission_cost():
     """
     This function process the 
     constellation mission costs.
+
     """
     data_in = os.path.join(DATA, 'interim_results_cost.csv')
     df = pd.read_csv(data_in, index_col = False)
@@ -639,23 +640,33 @@ def process_mission_cost():
     
     # Create columns to store new data
     df[[ 'capex_per_user', 'opex_per_user',
-         'tco_per_user', 'user_monthly_cost']] = ''
+         'tco_per_user', 'user_monthly_cost',
+         'tco_per_user_annualized']] = ''
     
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation results'):
 
-         df['capex_per_user'].loc[i] = (df['capex_costs'].loc[i] / 
+        df['capex_per_user'].loc[i] = (df['capex_costs'].loc[i] / 
                                         df['subscribers'].loc[i]) 
         
-         df['opex_per_user'].loc[i] = (df['opex_costs'].loc[i] /
+        df['opex_per_user'].loc[i] = (df['opex_costs'].loc[i] /
                                         df['subscribers'].loc[i]) 
         
-         df['tco_per_user'].loc[i] = (df['total_cost_ownership'].loc[i] / 
+        df['tco_per_user'].loc[i] = (df['total_cost_ownership'].loc[i] / 
                                       df['subscribers'].loc[i])
 
-         df['user_monthly_cost'].loc[i] = (ct.user_monthly_cost(
+        df['user_monthly_cost'].loc[i] = (ct.user_monthly_cost(
              df['tco_per_user'].loc[i], df['assessment_period_year'].loc[i]))
 
+        if df['constellation'].loc[i] in ['Kuiper','OneWeb','Starlink']:
+            df['tco_per_user_annualized'].loc[i] = (
+                df['tco_per_user'].loc[i] / df['assessment_period_year'].loc[i])
+        elif df['constellation'].loc[i] in ['GEO']:
+            df['tco_per_user_annualized'].loc[i] = (
+                df['tco_per_user'].loc[i] / df['assessment_period_year'].loc[i])
+        else:
+            print('Constellation name not recognized.')
+            
     filename = 'final_cost_results.csv'
 
     if not os.path.exists(RESULTS):
@@ -665,7 +676,8 @@ def process_mission_cost():
     df = df[['constellation', 'capex_costs', 'opex_costs', 
              'total_cost_ownership', 'assessment_period_year', 'subscribers', 
              'capex_per_user', 'opex_per_user', 'tco_per_user', 
-             'user_monthly_cost', 'subscriber_scenario']]
+             'tco_per_user_annualized', 'user_monthly_cost', 
+             'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)

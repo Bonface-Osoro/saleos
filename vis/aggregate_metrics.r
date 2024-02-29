@@ -5,7 +5,7 @@ library(ggtext)
 library(scales)
 library("readxl")
 
-# Set default folder
+# Set folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 
@@ -18,71 +18,76 @@ data <-
   read.csv(file.path(folder, '..', 'data', 'raw', 'scenarios.csv'))
 
 df = data %>%
-  group_by(constellation, rocket, rocket_type) %>%
-  summarize(no_launches = mean(no_of_launches))
+  group_by(constellation, rocket_detailed, rocket_type) %>%
+  summarize(no_launches = sum(no_of_launches))
 
-df$constellation = factor(
-  df$constellation,
-  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
-)
+df$combined = paste(df$constellation, df$rocket_detailed)
 
-df$rocket = factor(
-  df$rocket,
-  levels = c('falcon9', 'soyuz', 'unknown_hyc', 'unknown_hyg'),
-  labels = c(
-    'Falcon-9',
-    'Soyuz-FG',
-    'Generic\nRocket 1',
-    'Generic\nRocket 2'
-  )
+df$combined = factor(
+  df$combined,
+  levels = c("kuiper ariane_6_hydrogen", "kuiper falcon9",
+             "kuiper glenn_hydrocarbon", "kuiper vulcan_hydrocarbon",
+             "kuiper unknown_hydrocarbon", "kuiper unknown_hydrogen",
+             "oneweb falcon9", "oneweb lvm3_hydrogen", "oneweb soyuz",
+             "starlink falcon9", 
+             "geo_generic unknown_hydrocarbon", "geo_generic unknown_hydrogen"  
+  ),
+  labels = c("Kuiper\nGeneric-HYD", "Kuiper\nFalcon-9", 
+             "Kuiper\nGeneric-HYC", "Kuiper\nGeneric-HYC", 
+             "Kuiper\nGeneric-HYC", "Kuiper\nGeneric-HYD",
+             
+             "OneWeb\nFalcon-9", "OneWeb\nGeneric-HYD", "OneWeb\nSoyuz-FG",
+             "Starlink\nFalcon-9", 
+             "GEO\nGeneric-HYC", "GEO\nGeneric-HYD")
 )
 
 df$rocket_type = factor(
   df$rocket_type,
   levels = c('hydrocarbon', 'hydrogen'),
-  labels = c('Hydrocarbon', 'Hydrogen')
+  labels = c('Hydrocarbon\n(HYC)', 'Hydrogen\n(HYD)')
 )
 
 totals <- df %>%
-  group_by(rocket) %>%
+  group_by(combined) %>%
   summarize(value = signif(sum(no_launches), 2))
 
-sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
-  geom_bar(stat = "identity", aes(fill = rocket_type)) +
+sat_launches = 
+  ggplot(df, aes(x = combined, y = no_launches)) +
+  geom_bar(stat = "identity", aes(fill = rocket_type)) + 
   geom_text(
     aes(
-      x = rocket,
+      x = combined,
       y = value,
       label = round(after_stat(y), 2)
     ),
     size = 2,
     data = totals,
-    vjust = - 1.2,
+    vjust = -.5,
     hjust = 0.5,
     position = position_stack()
   ) +
-  scale_fill_brewer(palette = color_palette) + labs(
+  scale_fill_brewer(palette = color_palette) +
+  labs(
     colour = NULL,
     title = "",
     subtitle = "a",
     x = NULL,
-    y = "Total Launches",
-    fill = "Rocket Fuel Type"
+    y = "Rocket\nLaunches",
+    fill = "Rocket\nFuel Type"
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y,
              scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 180)
+    limits = c(0, 190)
   ) +
   theme_minimal() + theme(
     strip.text.x = element_blank(),
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7, angle = 90, hjust=1, vjust = .4), #size = 7, angle = 45, hjust=1, vjust = 1.),  #(
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
     axis.line.x  = element_line(size = 0.15),
@@ -97,7 +102,6 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
   ) +
   guides(fill = guide_legend(ncol = 2))
 
-
 ###########################
 ## Emissions / subscriber##
 ###########################
@@ -105,12 +109,16 @@ sat_launches = ggplot(df, aes(x = rocket, y = no_launches)) +
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
-data <- data[data$scenario == "scenario3", ]
+data <- data[data$scenario == "scenario3",]
+# write_csv(data, file.path(folder, '..', 'results', 'test.csv'))
+
+data = select(data, constellation, subscriber_scenario, subscribers, 
+              annual_baseline_emission_kg, annual_worst_case_emission_kg)
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(value = sum((annual_baseline_emission_kg / subscribers) / 1e3),
-            value_wc = sum((annual_worst_case_emission_kg / subscribers) / 1e3))
+  summarize(value = sum((annual_baseline_emission_kg / subscribers)),
+            value_wc = sum((annual_worst_case_emission_kg / subscribers)))
 
 df = df %>%
   pivot_longer(!c(constellation, subscriber_scenario),
@@ -118,7 +126,14 @@ df = df %>%
                values_to = "emissions_subscriber")
 
 df = df %>%
-  spread(subscriber_scenario, emissions_subscriber)
+  group_by(constellation, value_type) %>%
+  summarize(mean = mean(emissions_subscriber),
+            sd = sd(emissions_subscriber))
+
+# totals <- df[(df$subscriber_scenario == 'subscribers_baseline'),]
+totals <- df
+totals$mean = round(totals$mean, 0)
+totals$sd = round(totals$sd, 0)
 
 df$constellation = factor(
   df$constellation,
@@ -134,13 +149,13 @@ df$value_type = factor(
 
 emission_subscriber <-
   ggplot(df,
-         aes(x = constellation, y = subscribers_baseline,
+         aes(x = constellation, y = mean,
              fill = value_type)) +
   geom_bar(position = "dodge", stat = "identity") +
   geom_errorbar(
     data = df,
-    aes(y = subscribers_baseline,
-        ymin = subscribers_low, ymax = subscribers_high),
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
     position = position_dodge(.9),
     lwd = 0.2,
     show.legend = FALSE,
@@ -156,13 +171,14 @@ emission_subscriber <-
     x = NULL,
     fill = 'Emissions\nScenario'
   ) +
-  ylab("Annual Emissions<br>(t CO<sub>2</sub> eq/Subscriber)") +
+  ylab("Annual Emissions<br>(kg CO<sub>2</sub> eq/Subscriber)") +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 1.4)
-  ) + theme_minimal() +
+    limits = c(0, 1150)
+  ) +
+  theme_minimal() +
   theme(
     axis.title.y = element_markdown(),
     strip.text.x = element_blank(),
@@ -190,6 +206,9 @@ filename = "final_capacity_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 data$constellation = factor(data$constellation, 
     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+
+data = select(data, constellation, subscriber_scenario,  
+              capacity_per_user)
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -264,6 +283,8 @@ data <- read.csv(file.path(folder, '..', 'results', filename))
 data$constellation = factor(data$constellation, 
     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
+data = select(data, constellation, subscriber_scenario,  
+              monthly_gb)
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(monthly_gb),
@@ -337,10 +358,13 @@ data <- read.csv(file.path(folder, '..', 'results', filename))
 data$constellation = factor(data$constellation, 
     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
+data = select(data, constellation, subscriber_scenario,  
+              tco_per_user_annualized)
+
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(mean = mean(tco_per_user),
-            sd = sd(tco_per_user))
+  summarize(mean = mean(tco_per_user_annualized),
+            sd = sd(tco_per_user_annualized))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$Constellation = factor(df$constellation)
@@ -369,12 +393,12 @@ constellation_tco_per_user <-
     title = " ",
     subtitle = 'e',
     x = NULL,
-    y = "TCO \n(US$/Subscriber)",
+    y = "Annualized TCO \n(US$/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
     labels = comma,
-    expand = c(0, 0), limits = c(0, 5900)
+    expand = c(0, 0), limits = c(0, 800)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -404,11 +428,13 @@ data <- read.csv(file.path(folder, '..', 'results', filename))
 data$constellation = factor(data$constellation, 
     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
+data = select(data, constellation, subscriber_scenario,  
+              user_monthly_cost)
+
 df <- data %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(user_monthly_cost),
             sd = sd(user_monthly_cost))
-
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$subscriber_scenario = factor(
@@ -437,7 +463,7 @@ constellation_monthly_cost_per_user <-
     title = " ",
     subtitle = 'f',
     x = NULL,
-    y = "Average Monthly TCO \n(US$/Subscriber)",
+    y = "Mean Monthly TCO \n(US$/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(

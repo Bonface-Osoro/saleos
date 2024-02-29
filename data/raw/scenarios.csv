@@ -1,22 +1,13 @@
-scenario,status,constellation,fcc_filling_number,rocket,representative_of,rocket_type,no_of_satellites,no_of_launches
-scenario1,Historical,starlink,FCC 18-38,falcon9,Modeled,hydrocarbon,4425,127
-scenario1,Historical,oneweb,FCC 17-77,soyuz,Modeled,hydrocarbon,394,14
-scenario1,Historical,oneweb,FCC 17-77,falcon9,Modeled,hydrocarbon,96,3
-scenario1,Historical,oneweb,FCC 17-77,unknown_hyg,Representative,hydrogen,72,2
-scenario1,scenario1,kuiper,FCC 20-102,unknown_hyg,Representative,hydrogen,"3,236",90
-scenario1,scenario1,geo_generic,NA,unknown_hyg,Representative,hydrogen,19,19
-scenario2,Historical,starlink,FCC 18-38,falcon9,Modeled,hydrocarbon,4425,127
-scenario2,Historical,oneweb,FCC 17-77,soyuz,Modeled,hydrocarbon,394,14
-scenario2,Historical,oneweb,FCC 17-77,falcon9,Modeled,hydrocarbon,96,3
-scenario2,Historical,oneweb,FCC 17-77,unknown_hyg,Representative,hydrogen,72,2
-scenario2,scenario2,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"3,236",90
-scenario2,scenario2,geo_generic,NA,unknown_hyc,Representative,hydrocarbon,19,19
-scenario3,Historical,starlink,FCC 18-38,falcon9,Modeled,hydrocarbon,4425,127
-scenario3,Historical,oneweb,FCC 17-77,soyuz,Modeled,hydrocarbon,394,14
-scenario3,Historical,oneweb,FCC 17-77,falcon9,Modeled,hydrocarbon,96,3
-scenario3,Historical,oneweb,FCC 17-77,unknown_hyg,Representative,hydrogen,72,2
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyg,Representative,hydrogen,"1,079",30
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",30
-scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,Representative,hydrocarbon,"1,079",30
-scenario3,scenario3,geo_generic,NA,unknown_hyc,Representative,hydrocarbon,10,10
-scenario3,scenario3,geo_generic,NA,unknown_hyg,Representative,hydrogen,9,9
+scenario,status,constellation,fcc_filling_number,rocket,rocket_detailed,representative_of,rocket_type,no_of_satellites,no_of_launches,,Orbit,Modeled,Known-Generic,Unknown-generic,
+scenario3,Historical,starlink,FCC 18-38,falcon9,falcon9,Modeled,hydrocarbon,4425,127,,LEO,147,85,4,236
+scenario3,Historical,oneweb,FCC 17-77,soyuz,soyuz,Modeled,hydrocarbon,394,14,,GEO,-,-,19,19
+scenario3,Historical,oneweb,FCC 17-77,falcon9,falcon9,Modeled,hydrocarbon,96,3,,,,,,
+scenario3,Historical,oneweb,FCC 17-77,unknown_hyg,lvm3_hydrogen,Representative,hydrogen,72,2,,Orbit,Modeled,Known-Generic,Unknown-generic,
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyg,ariane_6_hydrogen,Representative,hydrogen,648,18,,LEO,62%,36%,2%,1
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,glenn_hydrocarbon,Representative,hydrocarbon,972,27,,GEO,-,-,100%,1
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,vulcan_hydrocarbon,Representative,hydrocarbon,1368,38,,,,,,
+scenario3,scenario3,kuiper,FCC 20-102,falcon9,falcon9,Representative,hydrocarbon,108,3,,,,,,
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyc,unknown_hydrocarbon,Representative,hydrocarbon,72,2,,,,,,
+scenario3,scenario3,kuiper,FCC 20-102,unknown_hyg,unknown_hydrogen,Representative,hydrogen,72,2,,,,,,
+scenario3,scenario3,geo_generic,NA,unknown_hyc,unknown_hydrocarbon,Representative,hydrocarbon,10,10,,,,,,
+scenario3,scenario3,geo_generic,NA,unknown_hyg,unknown_hydrogen,Representative,hydrogen,9,9,,,,,,
