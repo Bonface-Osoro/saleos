@@ -110,7 +110,6 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 data <- data[data$scenario == "scenario3",]
-# write_csv(data, file.path(folder, '..', 'results', 'test.csv'))
 
 data = select(data, constellation, subscriber_scenario, subscribers, 
               annual_baseline_emission_kg, annual_worst_case_emission_kg)
