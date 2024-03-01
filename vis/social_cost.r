@@ -20,15 +20,18 @@ data = select(
   constellation, 
   impact_category,
   rocket_type,
+  annual_baseline_emission_kg,
   baseline_social_carbon_cost,
   worst_case_social_carbon_cost,
   annual_baseline_scc_per_subscriber,
   annual_worst_case_scc_per_subscriber,
   subscriber_scenario
 )
+
 ###############################
 ##Social carbon cost baseline##
 ###############################
+
 data$impact_category = factor(
   data$impact_category,
   levels =c(
@@ -47,6 +50,13 @@ data$constellation = factor(
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 data <- data[data$subscriber_scenario == "subscribers_baseline", ]
+
+#obtain the total sum of emissions to match to the value in Fig 4.
+#e.g., Starlink has 3.285 Mt of emissions, equaling ~0.657 Mt annually
+check_sums = data %>%
+  group_by(constellation) %>%
+  summarize(annual_baseline_emission_Mt = round(
+    sum(annual_baseline_emission_kg)/1e9,3)) 
 
 df = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
@@ -80,10 +90,10 @@ social_carbon_baseline <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost<br>(Baseline) (US$ Millions)") + 
+  ylab("Total Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 700),
+    limits = c(0, 1239),
     expand = c(0, 0)
   ) +
   theme(
@@ -108,6 +118,7 @@ social_carbon_baseline <-
 #################################
 ##Social carbon cost worst case##
 #################################
+
 df1 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
   summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost / 1e6) %>%
@@ -140,7 +151,7 @@ social_cost_worst_case <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost<br>(Worst Case) (US$ Millions)") + 
+  ylab("Total Social Cost<br>(Worst Case) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 1239),
@@ -184,7 +195,7 @@ social_carbon_per_subscriber_baseline <-
     aes(
       x = constellation,
       y = total_baseline_annual_per_sub_scc,
-      label = paste0("$", comma(round(total_baseline_annual_per_sub_scc,0)), " mn")
+      label = paste0("$", comma(round(total_baseline_annual_per_sub_scc,0)), "")
     ),
     size = 2,
     data = totals,
@@ -200,10 +211,10 @@ social_carbon_per_subscriber_baseline <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost/Subscriber<br> per year (Baseline) (US$)") + 
+  ylab("Annual Social Cost/Subscriber<br>(Baseline) (US$)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 49),
+    limits = c(0, 70),
     expand = c(0, 0)
   ) +
   theme(
@@ -244,7 +255,7 @@ social_carbon_per_subscriber_worst_case <-
     aes(
       x = constellation,
       y = total_wc_annual_per_sub_scc,
-      label = paste0("$", comma(round(total_wc_annual_per_sub_scc,0)), " mn")
+      label = paste0("$", comma(round(total_wc_annual_per_sub_scc,0)), "")
     ),
     size = 2,
     data = totals,
@@ -260,7 +271,7 @@ social_carbon_per_subscriber_worst_case <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost/Subscriber<br> per year (Worst-case) (US$)") + 
+  ylab("Annual Social Cost/Subscriber<br>(Worst-case) (US$)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 70),
