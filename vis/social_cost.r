@@ -19,14 +19,16 @@ data = select(
   data, 
   constellation, 
   impact_category,
-  climate_change_baseline_kg,
-  climate_change_worst_case_kg,
-  ozone_depletion_baseline_kg,
-  ozone_depletion_worst_case_kg,
-  subscriber_scenario,
-  subscribers
+  rocket_type,
+  baseline_social_carbon_cost,
+  worst_case_social_carbon_cost,
+  annual_baseline_scc_per_subscriber,
+  annual_worst_case_scc_per_subscriber,
+  subscriber_scenario
 )
-
+###############################
+##Social carbon cost baseline##
+###############################
 data$impact_category = factor(
   data$impact_category,
   levels =c(
@@ -44,42 +46,25 @@ data$constellation = factor(
   levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
-data_aggregated <- data %>%
-  group_by(constellation, 
-           impact_category,
-           climate_change_baseline_kg,
-           climate_change_worst_case_kg,
-           ozone_depletion_baseline_kg,
-           ozone_depletion_worst_case_kg,
-           subscriber_scenario) %>%
-  summarize(subscribers = mean(subscribers))
+data <- data[data$subscriber_scenario == "subscribers_baseline", ]
 
-individual_emissions <- spread(data_aggregated, key = subscriber_scenario, value = subscribers)
-
-###############################
-##Social carbon cost baseline##
-###############################
-
-df = individual_emissions %>%
-  group_by(constellation, impact_category) %>%
-  summarize(value = climate_change_baseline_kg)
-
-#from kg to tonnes
-df$emissions_t = df$value / 1e3 
-df$social_cost_milions_usd = (df$emissions_t * 185) / 1e6
+df = data %>%
+  group_by(constellation, impact_category, rocket_type) %>%
+  summarize(baseline_social_carbon_cost_millions = baseline_social_carbon_cost / 1e6) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
 totals <- df %>%
   group_by(constellation) %>%
-  summarize(social_cost_milions_usd = (sum(value/1e3) * 185)/1e6)
+  summarize(total_baseline_scc = (sum(baseline_social_carbon_cost_millions)))
 
 social_carbon_baseline <-
-  ggplot(df, aes(x = constellation, y = social_cost_milions_usd)) +
+  ggplot(df, aes(x = constellation, y = baseline_social_carbon_cost_millions)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
   geom_text(
     aes(
       x = constellation,
-      y = social_cost_milions_usd,
-      label = paste0("$", comma(round(social_cost_milions_usd,0)), " mn")
+      y = total_baseline_scc,
+      label = paste0("$", comma(round(total_baseline_scc,0)), " mn")
     ),
     size = 2,
     data = totals,
@@ -91,7 +76,6 @@ social_carbon_baseline <-
   theme_minimal() +
   labs(
     colour = NULL,
-    # title = "a",
     subtitle = "a",
     x = NULL,
     fill = "Satellite\nMission\nStage"
@@ -122,47 +106,44 @@ social_carbon_baseline <-
   )
 
 #################################
-##Social Carbon cost worst case##
+##Social carbon cost worst case##
 #################################
+df1 = data %>%
+  group_by(constellation, impact_category, rocket_type) %>%
+  summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost / 1e6) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-df = individual_emissions %>%
-  group_by(constellation, impact_category) %>%
-  summarize(value = climate_change_worst_case_kg)
-
-#from kg to tonnes
-df$emissions_t = df$value / 1e3 
-df$social_cost_milions_usd = (df$emissions_t * 185) / 1e6
-
-totals <- df %>%
+totals <- df1 %>%
   group_by(constellation) %>%
-  summarize(social_cost_milions_usd = (sum(value/1e3) * 185)/1e6)
+  summarize(total_wc_scc = (sum(wc_social_carbon_cost_millions)))
 
 social_cost_worst_case <-
-  ggplot(df, aes(x = constellation, y = social_cost_milions_usd)) +
+  ggplot(df1, aes(x = constellation, y = wc_social_carbon_cost_millions)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
   geom_text(
     aes(
       x = constellation,
-      y = social_cost_milions_usd,
-      label = paste0("$", comma(round(social_cost_milions_usd,0)), " mn")
+      y = total_wc_scc,
+      label = paste0("$", comma(round(total_wc_scc,0)), " mn")
     ),
     size = 2,
     data = totals,
     vjust = -.5,
     hjust = 0.5,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  )  +
+  scale_fill_brewer(palette = "Dark2") + 
+  theme_minimal() +
   labs(
     colour = NULL,
-    # title = "b",
     subtitle = "b",
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost<br>(Worst-case) (US$ Millions)") + # given t CO<sub>2</sub>eq
+  ylab("Social Cost<br>(Worst Case) (US$ Millions)") + 
   scale_y_continuous(
-    limits = c(0, 1379),
     labels = comma,
+    limits = c(0, 1239),
     expand = c(0, 0)
   ) +
   theme(
@@ -171,11 +152,11 @@ social_cost_worst_case <-
     axis.line = element_line(colour = "black"),
     strip.text.x = element_blank(),
     panel.border = element_blank(),
+    axis.title.y = element_markdown(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    axis.title.y = element_markdown(),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
@@ -184,86 +165,45 @@ social_cost_worst_case <-
     plot.title = element_text(size = 8, face = "bold")
   )
 
+###################################################
+##Annualized Social carbon cost per user baseline##
+###################################################
+df2 = data %>%
+  group_by(constellation, impact_category, rocket_type) %>%
+  summarize(baseline_annual_scc_sub_millions = annual_baseline_scc_per_subscriber) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-########################################
-##Social carbon cost per user baseline##
-########################################
-
-df = select(
-  individual_emissions, 
-  constellation, 
-  impact_category,
-  climate_change_baseline_kg,
-  subscribers_baseline,
-  subscribers_low,
-  subscribers_high
-  )
-
-df$constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
-
-df$social_cost_usd_per_user_low = (
-  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_low 
-)
-df$social_cost_usd_per_user_baseline = (
-  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_baseline 
-)
-df$social_cost_usd_per_user_high = (
-  ((df$climate_change_baseline_kg / 1e3) * 185) / df$subscribers_high 
-)
-
-totals <- df %>%
+totals <- df2 %>%
   group_by(constellation) %>%
-  summarize(
-    social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
-    social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),   
-    social_cost_usd_per_user_high = round(sum(social_cost_usd_per_user_high),1),                                   
-    )
-
-data_aggregated  = df %>%
-  group_by(constellation) %>%
-  summarise(
-    social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
-    social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),
-    social_cost_usd_per_user_high = round(sum(social_cost_usd_per_user_high),1),
-)
-# data_aggregated = spread(data_aggregated, percentile, cell_count)
+  summarize(total_baseline_annual_per_sub_scc = (sum(baseline_annual_scc_sub_millions)))
 
 social_carbon_per_subscriber_baseline <-
-  ggplot(df, aes(x = constellation, y = social_cost_usd_per_user_baseline)) +
+  ggplot(df2, aes(x = constellation, y = baseline_annual_scc_sub_millions)) +
   geom_bar(stat = "identity", aes(fill = impact_category)) +
-  geom_errorbar(data=data_aggregated, 
-                aes(y=social_cost_usd_per_user_baseline, 
-                    ymin=social_cost_usd_per_user_low, 
-                    ymax=social_cost_usd_per_user_high),
-                position = position_dodge(1),
-                lwd = 0.2,
-                show.legend = FALSE, width=0.05,  color="#FF0000FF") +
   geom_text(
     aes(
       x = constellation,
-      y = social_cost_usd_per_user_baseline,
-      label = paste0("$", comma(round(social_cost_usd_per_user_baseline,0))
-    )),
+      y = total_baseline_annual_per_sub_scc,
+      label = paste0("$", comma(round(total_baseline_annual_per_sub_scc,0)), " mn")
+    ),
     size = 2,
     data = totals,
     vjust = -.5,
-    hjust = 1.1,
+    hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + theme_minimal() +
+  scale_fill_brewer(palette = "Dark2") + 
+  theme_minimal() +
   labs(
     colour = NULL,
-    # title = "a",
     subtitle = "c",
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Social Cost/Subscriber<br>(Baseline) (US$)") + # given t CO<sub>2</sub>eq
+  ylab("Social Cost/Subscriber<br> per year (Baseline) (US$)") + 
   scale_y_continuous(
-    limits = c(0, 449),
     labels = comma,
+    limits = c(0, 49),
     expand = c(0, 0)
   ) +
   theme(
@@ -285,105 +225,66 @@ social_carbon_per_subscriber_baseline <-
     plot.title = element_text(size = 8, face = "bold")
   )
 
-##########################################
-##Social carbon cost per user worst case##
-##########################################
+#####################################################
+##Annualized Social carbon cost per user worst case##
+#####################################################
+df3 = data %>%
+  group_by(constellation, impact_category, rocket_type) %>%
+  summarize(wc_annual_scc_sub_millions = annual_worst_case_scc_per_subscriber) %>%
+  distinct(impact_category, .keep_all = TRUE)
 
-df = select(
-  individual_emissions, 
-  constellation, 
-  impact_category,
-  climate_change_worst_case_kg,
-  subscribers_baseline,
-  subscribers_low,
-  subscribers_high
-)
-
-df$constellation = factor(
-  df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
-
-df$social_cost_usd_per_user_low = (
-  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_low 
-)
-df$social_cost_usd_per_user_baseline = (
-  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_baseline 
-)
-df$social_cost_usd_per_user_high = (
-  ((df$climate_change_worst_case_kg / 1e3) * 185) / df$subscribers_high 
-)
-
-totals <- df %>%
+totals <- df3 %>%
   group_by(constellation) %>%
-  summarize(
-    social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
-    social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),   
-    social_cost_usd_per_user_high = round(sum(social_cost_usd_per_user_high),1),                                   
-  )
-
-data_aggregated  = df %>%
-  group_by(constellation) %>%
-  summarise(
-    social_cost_usd_per_user_low = round(sum(social_cost_usd_per_user_low),1),
-    social_cost_usd_per_user_baseline = round(sum(social_cost_usd_per_user_baseline),1),
-    social_cost_usd_per_user_high = round(sum(social_cost_usd_per_user_high),1),
-  )
+  summarize(total_wc_annual_per_sub_scc = (sum(wc_annual_scc_sub_millions)))
 
 social_carbon_per_subscriber_worst_case <-
-  ggplot(df, aes(x = constellation, y = social_cost_usd_per_user_baseline)) +
-    geom_bar(stat = "identity", aes(fill = impact_category)) +
-    geom_errorbar(data=data_aggregated, 
-                  aes(y=social_cost_usd_per_user_baseline, 
-                      ymin=social_cost_usd_per_user_low, 
-                      ymax=social_cost_usd_per_user_high),
-                  position = position_dodge(1),
-                  lwd = 0.2,
-                  show.legend = FALSE, width=0.05,  color="#FF0000FF") +
-    geom_text(
-      aes(
-        x = constellation,
-        y = social_cost_usd_per_user_baseline,
-        label = paste0("$", comma(round(social_cost_usd_per_user_baseline,0))
-      )),
-      size = 2,
-      data = totals,
-      vjust = -.5,
-      hjust = 1.1,
-      position = position_stack()
-    )  +
-    scale_fill_brewer(palette = "Dark2") + theme_minimal() +
-    labs(
-      colour = NULL,
-      # title = "a",
-      subtitle = "d",
-      x = NULL,
-      fill = "Satellite\nMission\nStage"
-    ) +
-    ylab("Social Cost/Subscriber<br>(Worst-case) (US$)") + # given t CO<sub>2</sub>eq
-    scale_y_continuous(
-      limits = c(0, 859),
-      labels = comma,
-      expand = c(0, 0)
-    ) +
-    theme(
-      legend.position = "bottom",
-      axis.title = element_text(size = 6),
-      axis.line = element_line(colour = "black"),
-      strip.text.x = element_blank(),
-      panel.border = element_blank(),
-      axis.title.y = element_markdown(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      legend.title = element_text(size = 6),
-      legend.text = element_text(size = 6),
-      axis.text.x = element_text(size = 6),
-      axis.text.y = element_text(size = 6),
-      axis.line.x  = element_line(size = 0.15),
-      axis.line.y  = element_line(size = 0.15),
-      plot.subtitle = element_text(size = 8, face = "bold"),
-      plot.title = element_text(size = 8, face = "bold")
-    )
-  
+  ggplot(df3, aes(x = constellation, y = wc_annual_scc_sub_millions)) +
+  geom_bar(stat = "identity", aes(fill = impact_category)) +
+  geom_text(
+    aes(
+      x = constellation,
+      y = total_wc_annual_per_sub_scc,
+      label = paste0("$", comma(round(total_wc_annual_per_sub_scc,0)), " mn")
+    ),
+    size = 2,
+    data = totals,
+    vjust = -.5,
+    hjust = 0.5,
+    position = position_stack()
+  )  +
+  scale_fill_brewer(palette = "Dark2") + 
+  theme_minimal() +
+  labs(
+    colour = NULL,
+    subtitle = "d",
+    x = NULL,
+    fill = "Satellite\nMission\nStage"
+  ) +
+  ylab("Social Cost/Subscriber<br> per year (Worst-case) (US$)") + 
+  scale_y_continuous(
+    labels = comma,
+    limits = c(0, 70),
+    expand = c(0, 0)
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_text(size = 6),
+    axis.line = element_line(colour = "black"),
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    axis.title.y = element_markdown(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    plot.subtitle = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold")
+  )
+
 
 social_cost_of_carbon_panel <-
   ggarrange(
@@ -408,3 +309,6 @@ png(
 )
 print(social_cost_of_carbon_panel)
 dev.off()
+
+
+
