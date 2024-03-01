@@ -401,7 +401,9 @@ falcon_9 = {
         'propellant_scheduling' : 2.431926984,
         'launcher_transportation' : 0.004766684,
         'launch_campaign' : 1.695861368,
-    }
+    },
+    'totals' : {'total_baseline_carbon_emissions': 25866853.09391,
+                'total_worst_case_carbon_emissions' : 48482278.12691}
 }
 
 
@@ -467,7 +469,10 @@ soyuz = {
         'propellant_production' : 0.28140976,
         'propellant_scheduling' : 1.399552839,
         'launcher_transportation' : 0.002580373,
-        'launch_campaign' : 1.695861368}
+        'launch_campaign' : 1.695861368
+    },
+    'totals' : {'total_baseline_carbon_emissions': 56448457.674808,
+                'total_worst_case_carbon_emissions' : 68191239.755208}
 }
 
 
@@ -533,7 +538,10 @@ unknown_hyc = {
         'propellant_production' : 0.830068862,
         'propellant_scheduling' : 1.915739911,
         'launcher_transportation' : 0.003673529,
-        'launch_campaign' : 1.695861368}
+        'launch_campaign' : 1.695861368
+        },
+    'totals' : {'total_baseline_carbon_emissions': 41157655.38036,
+                'total_worst_case_carbon_emissions' : 58336758.93236}
 }
 
 
@@ -599,5 +607,8 @@ unknown_hyg = {
         'propellant_production' : 0.830068862,
         'propellant_scheduling' : 1.915739911,
         'launcher_transportation' : 0.003673529,
-        'launch_campaign' : 1.695861368}
+        'launch_campaign' : 1.695861368
+        },
+    'totals' : {'total_baseline_carbon_emissions': 32557978.58182,
+                'total_worst_case_carbon_emissions' : 139733504.98182}
 }

@@ -107,17 +107,21 @@ sat_launches =
 ###########################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "individual_emissions.csv"
+filename = "total_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+<<<<<<< HEAD
+=======
 data <- data[data$scenario == "scenario3",]
+>>>>>>> main
 
 data = select(data, constellation, subscriber_scenario, subscribers, 
-              annual_baseline_emission_kg, annual_worst_case_emission_kg)
+              annual_baseline_emissions_per_subscriber_kg, 
+              annual_worst_case_emissions_per_subscriber_kg)
 
 df = data %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(value = sum((annual_baseline_emission_kg / subscribers)),
-            value_wc = sum((annual_worst_case_emission_kg / subscribers)))
+  summarize(value = sum((annual_baseline_emissions_per_subscriber_kg)),
+            value_wc = sum((annual_worst_case_emissions_per_subscriber_kg)))
 
 df = df %>%
   pivot_longer(!c(constellation, subscriber_scenario),
@@ -129,7 +133,6 @@ df = df %>%
   summarize(mean = mean(emissions_subscriber),
             sd = sd(emissions_subscriber))
 
-# totals <- df[(df$subscriber_scenario == 'subscribers_baseline'),]
 totals <- df
 totals$mean = round(totals$mean, 0)
 totals$sd = round(totals$sd, 0)
@@ -160,8 +163,7 @@ emission_subscriber <-
     show.legend = FALSE,
     width = 0.1,
     color = "black"
-  ) +
-  scale_fill_brewer(palette = color_palette) +
+  ) +scale_fill_brewer(palette = color_palette) +
   theme_minimal() +
   labs(
     colour = NULL,

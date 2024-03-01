@@ -245,6 +245,62 @@ def calc_emission_type(df, rocket, datapoint, emission_category, no_launches):
     return emission_dict
 
 
+def calc_total_carbon_emission(df, rocket, datapoint, no_launches):
+
+    """
+    This function is for calculating total carbon emission by scenario.
+
+    Parameters
+    ----------
+    df : panda core series
+        dataframe.
+    rocket : string
+        Launching rocket
+    datapoint : int
+        individual data values
+    no_launches : 1
+        Number of satellite launches
+
+    Returns
+    -------
+    total_dict : dict
+        Dictionary containing all carbon emission scenarios.
+    """
+
+    total_dict = {}
+
+    df['total_baseline_carbon_emissions'].loc[datapoint] = (
+        rocket['totals']['total_baseline_carbon_emissions'] * no_launches) 
+    
+    df['total_worst_case_carbon_emissions'].loc[datapoint] = (
+        rocket['totals']['total_worst_case_carbon_emissions'] * no_launches) 
+    
+
+    return total_dict
+    
+
+def calc_social_carbon_cost(carbon_amount):
+    """
+    This function calculate the total social cost of carbon by multiplying the 
+    total amount of carbon in tonnes by US$ 185 as specified in the paper.
+
+    Parameters
+    ----------
+    carbon_amount : float
+        total amount of carbon in kilograms.
+
+    Returns
+    -------
+    social_carbon_cost : float
+        social cost of carbon.
+    """
+
+    social_carbon_cost = (carbon_amount / 1000) * 185
+
+
+    return social_carbon_cost
+
+
 def calc_emissions():
 
     """
@@ -261,7 +317,8 @@ def calc_emissions():
 
     df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
          'rocket', 'representative_of', 'rocket_type', 'no_of_satellites', 
-         'no_of_launches',], value_vars = ['launch_event', 'launcher_production', 
+         'no_of_launches', 'satellite_lifespan'], 
+         value_vars = ['launch_event', 'launcher_production', 
          'launcher_ait', 'propellant_production', 'propellant_scheduling', 
          'launcher_transportation', 'launch_campaign'], var_name = 
          'impact_category', value_name = 'value')
@@ -270,7 +327,7 @@ def calc_emissions():
 
     df[['climate_change_baseline', 'climate_change_worst_case', 
         'ozone_depletion_baseline', 'ozone_depletion_worst_case',
-        'resource_depletion', 'freshwater_toxicity',
+        'resource_depletion', 'freshwater_toxicity', 
         'human_toxicity', 'subscribers_low', 'subscribers_baseline', 
         'subscribers_high']] = ''
 
@@ -434,9 +491,9 @@ def calc_emissions():
                     df['subscribers_low'].loc[i] = item['subscribers'][0]
                     df['subscribers_baseline'].loc[i] = item['subscribers'][1]
                     df['subscribers_high'].loc[i] = item['subscribers'][2]
-
+    
     df = pd.melt(df, id_vars = ['constellation', 'rocket', 'no_of_satellites', 
-         'no_of_launches', 'climate_change_baseline',
+         'no_of_launches', 'climate_change_baseline', 'satellite_lifespan',
          'climate_change_worst_case', 'ozone_depletion_baseline', 
          'ozone_depletion_worst_case', 'resource_depletion', 
          'freshwater_toxicity', 'human_toxicity', 'scenario', 'status', 
@@ -459,12 +516,17 @@ def calc_emissions():
         os.makedirs(BASE_PATH)
     
     df = df[['constellation', 'no_of_satellites', 'no_of_launches', 
-             'climate_change_baseline', 'climate_change_worst_case', 
-             'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
-             'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 
-             'subscribers', 'subscriber_scenario', 'impact_category', 
-             'scenario', 'status', 'representative_of', 'rocket_type']]
-    df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg']] = ''
+             'satellite_lifespan', 'climate_change_baseline', 
+             'climate_change_worst_case', 'ozone_depletion_baseline', 
+             'ozone_depletion_worst_case', 'resource_depletion', 
+             'freshwater_toxicity', 'human_toxicity', 'subscribers', 
+             'subscriber_scenario', 'impact_category', 'scenario', 'status', 
+             'representative_of', 'rocket_type']]
+    df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg',
+        'baseline_social_carbon_cost', 'worst_case_social_carbon_cost',
+        'annual_baseline_scc_per_subscriber', 
+        'annual_worst_case_scc_per_subscriber']] = ''
+    
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
                 'climate_change_worst_case': 'climate_change_worst_case_kg',
                 'ozone_depletion_baseline': 'ozone_depletion_baseline_kg',
@@ -476,24 +538,143 @@ def calc_emissions():
     
     for i in range(len(df)):
 
-        if df['constellation'].loc[i] == 'geo_generic':
+        df['baseline_social_carbon_cost'].loc[i] = (
+            calc_social_carbon_cost(df['climate_change_baseline_kg'].loc[i]))
+        
+        df['worst_case_social_carbon_cost'].loc[i] = (
+            calc_social_carbon_cost(df['climate_change_worst_case_kg'].loc[i]))
 
-            df['annual_baseline_emission_kg'].loc[i] = (
-                df['climate_change_baseline_kg'].loc[i] / 15) #this is a parameter
+        df['annual_baseline_emission_kg'].loc[i] = (
+            df['climate_change_baseline_kg'].loc[i] 
+            / df['satellite_lifespan'].loc[i]) 
             
-            df['annual_worst_case_emission_kg'].loc[i] = (
-                df['climate_change_worst_case_kg'].loc[i] / 15) #this is a parameter
-            
-        else:
+        df['annual_worst_case_emission_kg'].loc[i] = (
+            df['climate_change_worst_case_kg'].loc[i] 
+            / df['satellite_lifespan'].loc[i]) 
+        
+        df['annual_baseline_scc_per_subscriber'].loc[i] = (
+            (df['baseline_social_carbon_cost'].loc[i] 
+             / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
+        
+        df['annual_worst_case_scc_per_subscriber'].loc[i] = (
+            (df['worst_case_social_carbon_cost'].loc[i] 
+             / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
 
-            df['annual_baseline_emission_kg'].loc[i] = (
-                df['climate_change_baseline_kg'].loc[i] / 5) #this is a parameter
-            
-            df['annual_worst_case_emission_kg'].loc[i] = (
-                df['climate_change_worst_case_kg'].loc[i] / 5) #this is a parameter
-    
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
+
+
+    return None
+
+
+def calc_total_emissions():
+
+    """
+    This function calculates the total amount of emission by rocket types for 
+    all the launches.
+
+    """
+    path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
+    df = pd.read_csv(path)
+
+    df[['total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions',
+        'subscribers_low', 'subscribers_baseline', 'subscribers_high']] = ''
+
+    for i in range(len(df)):
+
+        ################################### Falcon-9 Rocket ####################
+        if df['rocket'].loc[i] == 'falcon9':
+
+            calc_total_carbon_emission(df, falcon_9, i,  
+                                       df['no_of_launches'].loc[i])
+
+        ################################### Soyuz-FG Rocket ####################
+        if df['rocket'].loc[i] == 'soyuz':
+
+            calc_total_carbon_emission(df, soyuz, i,  
+                                       df['no_of_launches'].loc[i])
+
+        ############################ Unknown Hydrocarbon Rocket ################
+        if df['rocket'].loc[i] == 'unknown_hyc':
+
+            calc_total_carbon_emission(df, unknown_hyc, i,  
+                                       df['no_of_launches'].loc[i])
+
+        ################################# Unknown Hydrogen Rocket ##############
+        if df['rocket'].loc[i] == 'unknown_hyg':
+
+            calc_total_carbon_emission(df, unknown_hyg, i,  
+                                       df['no_of_launches'].loc[i])
+
+        ########################## Emission per Subscriber######################
+        for key, item in parameters.items():
+
+            if key == 'starlink':
+
+                if df['constellation'].loc[i] == 'starlink':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'oneweb':
+
+                if df['constellation'].loc[i] == 'oneweb':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'kuiper':
+
+                if df['constellation'].loc[i] == 'kuiper':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+
+            if key == 'geo':
+
+                if df['constellation'].loc[i] == 'geo_generic':
+                    
+                    df['subscribers_low'].loc[i] = item['subscribers'][0]
+                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
+                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+  
+    df = pd.melt(df, id_vars = ['constellation', 'satellite_lifespan',
+         'total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions'], 
+         value_vars = ['subscribers_low', 'subscribers_baseline', 
+         'subscribers_high'], var_name = 'subscriber_scenario', 
+         value_name = 'subscribers')
+    
+    ####Save Total Carbon Emmissions####
+    df = df[['constellation', 'satellite_lifespan', 'subscribers', 
+              'total_baseline_carbon_emissions', 
+              'total_worst_case_carbon_emissions', 
+              'subscriber_scenario']]
+    
+    df1 = df.groupby(['constellation', 'satellite_lifespan', 
+                 'subscribers', 'subscriber_scenario']).agg(
+                 {'total_baseline_carbon_emissions': 'sum', 
+                  'total_worst_case_carbon_emissions': 'sum'}).reset_index()
+    
+    df1[['annual_baseline_emissions_per_subscriber_kg', 
+         'annual_worst_case_emissions_per_subscriber_kg']] = ''
+    
+    for i in range(len(df1)):
+
+        df1['annual_baseline_emissions_per_subscriber_kg'].loc[i] = ((
+            df1['total_baseline_carbon_emissions'].loc[i] 
+            / df1['subscribers'].loc[i]) /df1['satellite_lifespan'].loc[i])  
+
+        df1['annual_worst_case_emissions_per_subscriber_kg'].loc[i] = (
+            (df1['total_worst_case_carbon_emissions'].loc[i] 
+             / df1['subscribers'].loc[i]) / df1['satellite_lifespan'].loc[i])
+
+        
+    filename2 = 'total_emissions.csv'
+    path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
+    df1.to_csv(path_out2, index = False)
 
 
     return None
@@ -674,10 +855,10 @@ def process_mission_cost():
          os.makedirs(RESULTS)
 
     df = df[['constellation', 'capex_costs', 'opex_costs', 
-             'total_cost_ownership', 'assessment_period_year', 'subscribers', 
-             'capex_per_user', 'opex_per_user', 'tco_per_user', 
-             'tco_per_user_annualized', 'user_monthly_cost', 
-             'subscriber_scenario']]
+             'total_cost_ownership', 'assessment_period_year', 
+             'subscribers', 'capex_per_user', 'opex_per_user', 
+             'tco_per_user', 'tco_per_user_annualized', 
+             'user_monthly_cost', 'subscriber_scenario']]
     
     path_out = os.path.join(RESULTS, filename)
     df.to_csv(path_out, index = False)
@@ -690,19 +871,22 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    run_uq_processing_cost()
+    #run_uq_processing_cost()
 
     print('Processing Emission results')
     calc_emissions()
 
+    print('Processing Total Emission results')
+    calc_total_emissions()
+    
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()
+    #process_mission_cost()
 
     executionTime = (time.time() - start)
 
