@@ -85,7 +85,7 @@ climate_change <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 4.5),
+    limits = c(0, 7.5),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -196,7 +196,7 @@ ozone_depletion <-
     fill = "Satellite Mission Stage"
   ) +
   scale_y_continuous(
-    limits = c(0, 1.1),
+    limits = c(0, 4.8),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
