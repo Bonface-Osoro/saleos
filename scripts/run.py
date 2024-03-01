@@ -881,12 +881,12 @@ if __name__ == '__main__':
 
     print('Processing Total Emission results')
     calc_total_emissions()
-    
+
     print('Working on process_mission_capacity()')
-    #process_mission_capacity()
+    process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    #process_mission_cost()
+    process_mission_cost()
 
     executionTime = (time.time() - start)
 
