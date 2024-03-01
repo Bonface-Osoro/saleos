@@ -16,24 +16,24 @@ color_palette = 'Paired'
 ###########################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "sensitivity_individual_emissions.csv"
+filename = "sensitivity_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
-data = select(data, constellation, scenario_rocket, subscriber_scenario, 
+data = select(data, constellation, scenario, subscriber_scenario, 
               subscribers,  annual_baseline_emission_kg, 
               annual_worst_case_emission_kg)
 
 df = data %>%
-  group_by(constellation, scenario_rocket, subscriber_scenario) %>%
+  group_by(constellation, scenario, subscriber_scenario) %>%
   summarize(value = sum((annual_baseline_emission_kg / subscribers)))
 
 df = df %>%
-  pivot_longer(!c(constellation, scenario_rocket, subscriber_scenario),
+  pivot_longer(!c(constellation, scenario, subscriber_scenario),
                names_to = "value_type",
                values_to = "emissions_subscriber")
 
 df = df %>%
-  group_by(constellation, scenario_rocket, value_type) %>%
+  group_by(constellation, scenario, value_type) %>%
   summarize(mean = mean(emissions_subscriber),
             sd = sd(emissions_subscriber))
 
@@ -47,8 +47,8 @@ df$constellation = factor(
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
-df$scenario_rocket = factor(
-  df$scenario_rocket,
+df$scenario = factor(
+  df$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
              'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
@@ -95,7 +95,7 @@ emission_subscriber <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ############################
 ##PER SUBSCRIBER EMISSIONS##
@@ -116,7 +116,7 @@ dev.off()
 ##TOTAL EMISSIONS##
 ###################
 
-data <- read.csv(file.path(folder, '..', 'results', 'sensitivity_individual_emissions.csv'))
+data <- read.csv(file.path(folder, '..', 'results', 'sensitivity_emissions.csv'))
 
 #Rename the constellation and emission type column values
 data$constellation = factor(
@@ -125,8 +125,8 @@ data$constellation = factor(
   labels = c('GEO', 'Starlink', 'OneWeb', 'Kuiper')
 )
 
-df$scenario_rocket = factor(
-  df$scenario_rocket,
+df$scenario = factor(
+  df$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
              'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
@@ -159,12 +159,12 @@ data$impact_category = factor(
 ###########################
 
 df = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(cc_baseline = climate_change_baseline_kg) %>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(cc_baseline)))
 
 climate_change <-
@@ -206,7 +206,7 @@ climate_change <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 
 #############################
@@ -214,12 +214,12 @@ climate_change <-
 #############################
 
 df1 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(cc_worst_case = climate_change_worst_case_kg) %>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df1 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(cc_worst_case)))
 
 climate_change_wc <-
@@ -261,19 +261,19 @@ climate_change_wc <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ############################
 ##ozone depletion baseline##
 ############################
 
 df2 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(ozone_baseline = ozone_depletion_baseline_kg) %>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df2 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(ozone_baseline)))
 
 ozone_depletion <-
@@ -317,19 +317,19 @@ ozone_depletion <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ##############################
 ##ozone depletion worst case##
 ##############################
 
 df3 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(ozone_worst_case = ozone_depletion_worst_case_kg)%>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df3 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(ozone_worst_case)))
 
 max_y = max(totals$value)
@@ -373,19 +373,19 @@ ozone_depletion_wc <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ######################
 ##Resource depletion##
 ######################
 
 df4 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(resources = resource_depletion_kg)%>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df4 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(resources)))
 
 resource_depletion <-
@@ -427,19 +427,19 @@ resource_depletion <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 #######################
 ##Freshwater toxicity##
 #######################
 
 df5 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(freshwater = freshwater_toxicity_m3)%>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df5 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(freshwater)))
 
 freshwater_ecotixicity <-
@@ -482,19 +482,19 @@ freshwater_ecotixicity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ##################
 ##Human Toxicity##
 ##################
 
 df6 = data %>%
-  group_by(constellation, scenario_rocket, impact_category) %>%
+  group_by(constellation, scenario, impact_category) %>%
   summarize(human = human_toxicity)%>%
   distinct(impact_category, .keep_all = TRUE)
 
 totals <- df6 %>%
-  group_by(constellation, scenario_rocket) %>%
+  group_by(constellation, scenario) %>%
   summarize(value = signif(sum(human)))
 
 human_toxicity <-
@@ -537,7 +537,7 @@ human_toxicity <-
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.title.x = element_text(size = 8)
-  ) + facet_wrap( ~ scenario_rocket, ncol = 3)
+  ) + facet_wrap( ~ scenario, ncol = 3)
 
 ####################
 ##Emissions Legend##

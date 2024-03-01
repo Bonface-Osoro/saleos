@@ -115,7 +115,7 @@ def calc_sensitivity_emissions():
         'propellant_production', 'propellant_scheduling', 
         'launcher_transportation', 'launch_campaign']] = ''
 
-    df = pd.melt(df, id_vars = ['scenario_rocket', 'status', 'constellation', 
+    df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
          'rocket', 'rocket_detailed', 'representative_of', 'rocket_type', 
          'no_of_satellites', 'no_of_launches',], value_vars = ['launch_event', 
          'launcher_production', 'launcher_ait', 'propellant_production', 
@@ -295,7 +295,7 @@ def calc_sensitivity_emissions():
          'no_of_launches', 'climate_change_baseline',
          'climate_change_worst_case', 'ozone_depletion_baseline', 
          'ozone_depletion_worst_case', 'resource_depletion', 
-         'freshwater_toxicity', 'human_toxicity', 'scenario_rocket', 'status', 
+         'freshwater_toxicity', 'human_toxicity', 'scenario', 'status', 
          'representative_of', 'rocket_type', 'impact_category', ], 
          value_vars = ['subscribers_low', 'subscribers_baseline', 
          'subscribers_high'], 
@@ -308,7 +308,7 @@ def calc_sensitivity_emissions():
         df['per_subscriber_emission'].loc[i] = (
             df['climate_change_baseline'].loc[i] / df['subscribers'].loc[i])
 
-    filename = 'sensitivity_individual_emissions.csv'
+    filename = 'sensitivity_emissions.csv'
 
     if not os.path.exists(BASE_PATH):
 
@@ -319,7 +319,7 @@ def calc_sensitivity_emissions():
              'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
              'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 
              'subscribers', 'subscriber_scenario', 'impact_category', 
-             'scenario_rocket', 'status', 'representative_of', 'rocket_type']]
+             'scenario', 'status', 'representative_of', 'rocket_type']]
     df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg']] = ''
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
                 'climate_change_worst_case': 'climate_change_worst_case_kg',
