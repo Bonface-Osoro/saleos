@@ -60,8 +60,7 @@ check_sums = data %>%
 
 df = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(baseline_social_carbon_cost_millions = baseline_social_carbon_cost / 1e6) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  summarize(baseline_social_carbon_cost_millions = baseline_social_carbon_cost / 1e6) 
 
 totals <- df %>%
   group_by(constellation) %>%
@@ -93,7 +92,7 @@ social_carbon_baseline <-
   ylab("Total Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 1239),
+    limits = c(0, 1439),
     expand = c(0, 0)
   ) +
   theme(
@@ -121,8 +120,7 @@ social_carbon_baseline <-
 
 df1 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost / 1e6) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost / 1e6)
 
 totals <- df1 %>%
   group_by(constellation) %>%
@@ -154,7 +152,7 @@ social_cost_worst_case <-
   ylab("Total Social Cost<br>(Worst Case) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 1239),
+    limits = c(0, 1439),
     expand = c(0, 0)
   ) +
   theme(
@@ -181,8 +179,7 @@ social_cost_worst_case <-
 ###################################################
 df2 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(baseline_annual_scc_sub_millions = annual_baseline_scc_per_subscriber) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  summarize(baseline_annual_scc_sub_millions = annual_baseline_scc_per_subscriber) 
 
 totals <- df2 %>%
   group_by(constellation) %>%
@@ -214,7 +211,7 @@ social_carbon_per_subscriber_baseline <-
   ylab("Annual Social Cost/Subscriber<br>(Baseline) (US$)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 70),
+    limits = c(0, 114),
     expand = c(0, 0)
   ) +
   theme(
@@ -241,8 +238,7 @@ social_carbon_per_subscriber_baseline <-
 #####################################################
 df3 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(wc_annual_scc_sub_millions = annual_worst_case_scc_per_subscriber) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  summarize(wc_annual_scc_sub_millions = annual_worst_case_scc_per_subscriber)
 
 totals <- df3 %>%
   group_by(constellation) %>%
@@ -274,7 +270,7 @@ social_carbon_per_subscriber_worst_case <-
   ylab("Annual Social Cost/Subscriber<br>(Worst-case) (US$)") + 
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 70),
+    limits = c(0, 114),
     expand = c(0, 0)
   ) +
   theme(
