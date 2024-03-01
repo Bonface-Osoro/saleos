@@ -16,6 +16,7 @@ color_palette = 'Paired'
 ####################
 data <-
   read.csv(file.path(folder, '..', 'data', 'raw', 'scenarios.csv'))
+data <- data[data$scenario == "scenario1", ]
 
 df = data %>%
   group_by(constellation, rocket_detailed, rocket_type) %>%
@@ -107,7 +108,7 @@ sat_launches =
 ###########################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "total_emissions.csv"
+filename = "total_carbon_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
 data = select(data, constellation, subscriber_scenario, subscribers, 

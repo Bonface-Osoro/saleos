@@ -11,7 +11,7 @@ visualizations = file.path(folder, '..', 'vis')
 
 #Load the data
 data <- read.csv(file.path(folder, '..', 'results', 'individual_emissions.csv'))
-data <- data[data$scenario == "scenario3", ]
+data <- data[data$scenario == "scenario1", ]
 
 #Rename the constellation and emission type column values
 data$constellation = factor(

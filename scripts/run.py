@@ -578,6 +578,7 @@ def calc_total_emissions():
     """
     path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
     df = pd.read_csv(path)
+    df = df[df['scenario'] == 'scenario1']
 
     df[['total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions',
         'subscribers_low', 'subscribers_baseline', 'subscribers_high']] = ''
@@ -674,7 +675,7 @@ def calc_total_emissions():
              / df1['subscribers'].loc[i]) / df1['satellite_lifespan'].loc[i])
 
         
-    filename2 = 'total_emissions.csv'
+    filename2 = 'total_carbon_emissions.csv'
     path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
     df1.to_csv(path_out2, index = False)
 
