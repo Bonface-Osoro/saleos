@@ -108,7 +108,7 @@ def calc_sensitivity_emissions():
     launches.
 
     """
-    path = os.path.join(BASE_PATH, 'raw', 'rocket_scenarios.csv')
+    path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
     df = pd.read_csv(path)
 
     df[['launch_event', 'launcher_production', 'launcher_ait', 

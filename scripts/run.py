@@ -311,6 +311,8 @@ def calc_emissions():
     path = os.path.join(BASE_PATH, 'raw', 'scenarios.csv')
     df = pd.read_csv(path)
 
+    df = df[df['scenario'] == 'scenario1']
+
     df[['launch_event', 'launcher_production', 'launcher_ait', 
         'propellant_production', 'propellant_scheduling', 
         'launcher_transportation', 'launch_campaign']] = ''

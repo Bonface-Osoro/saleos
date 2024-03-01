@@ -13,7 +13,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 filename = "individual_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
-data <- data[data$scenario == "scenario3", ]
+data <- data[data$scenario == "scenario1", ]
 
 data = select(
   data, 

@@ -49,7 +49,7 @@ df$constellation = factor(
 
 df$scenario_rocket = factor(
   df$scenario_rocket,
-  levels = c('scenario_rocket1', 'scenario_rocket2', 'scenario_rocket3'),
+  levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
              'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
 )
@@ -125,9 +125,9 @@ data$constellation = factor(
   labels = c('GEO', 'Starlink', 'OneWeb', 'Kuiper')
 )
 
-data$scenario_rocket = factor(
-  data$scenario_rocket,
-  levels = c('scenario_rocket1', 'scenario_rocket2', 'scenario_rocket3'),
+df$scenario_rocket = factor(
+  df$scenario_rocket,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
              'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
 )
