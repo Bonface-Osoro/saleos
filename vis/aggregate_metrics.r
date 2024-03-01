@@ -109,6 +109,10 @@ sat_launches =
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "total_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
+<<<<<<< HEAD
+=======
+data <- data[data$scenario == "scenario3",]
+>>>>>>> main
 
 data = select(data, constellation, subscriber_scenario, subscribers, 
               annual_baseline_emissions_per_subscriber_kg, 
