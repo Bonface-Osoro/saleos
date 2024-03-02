@@ -88,7 +88,7 @@ sat_launches =
     panel.border = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7, angle = 90, hjust=1, vjust = .4), #size = 7, angle = 45, hjust=1, vjust = 1.),  #(
+    axis.text.x = element_text(size = 7, angle = 90, hjust=1, vjust = .4), 
     axis.text.y = element_text(size = 7),
     axis.title.y = element_text(size = 7),
     axis.line.x  = element_line(size = 0.15),
@@ -245,7 +245,7 @@ capacity_per_user <-
     title = " ",
     subtitle = "c",
     x = NULL,
-    y = "Mean Capacity\n(Mbps/Subscriber)",
+    y = "Mean Peak Capacity\n(Mbps/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -320,7 +320,7 @@ subscriber_traffic <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Monthly Traffic \n(GB/Subscriber)",
+    y = "Mean Peak Monthly \nTraffic (GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(

@@ -635,21 +635,21 @@ def monthly_traffic(capacity_mbps):
     return amount
 
 
-def capacity_area(sat_capacity, total_area_earth_km_sq, number_of_satellites, 
-                  traffic_percentage):
+def subscribers_per_area(number_of_satellites, percent_coverage, subscribers,
+                         satellite_coverage_area_km):
     """
-    This function calculates the capacity per square kilometer
+    This function calculates the number of subscribers per area.
 
     Parameters
     ----------
-    sat_capacity : float
-        Single satellite capacity in Mbps.
     number_of_satellites : int
         Number of satellites in the constellation.
-    traffic_percentage : int
-        Number subscribers accessing the network at a busy hour
-    total_area_earth_km_sq : int
-        Total area of the earth in square kilometers.
+    percent_coverage : int
+        Percentage area of the earth covered by the satellites
+    subscribers : int
+        Number of network subscribers
+    satellite_coverage_area_km : int
+        Satellite coverage area in square kilometers.
 
     Returns
     -------
@@ -657,8 +657,9 @@ def capacity_area(sat_capacity, total_area_earth_km_sq, number_of_satellites,
         Capacity per square kilometer
 
     """
-    per_area = (sat_capacity) / (total_area_earth_km_sq / number_of_satellites)
-    cap_area_mbps_sqkm = (traffic_percentage / 100) / per_area
+    sats_over_land = ((number_of_satellites) * (percent_coverage / 100))
+    subscribers_per_sat = subscribers / sats_over_land
+    subscribers_sqkm = subscribers_per_sat / satellite_coverage_area_km
 
 
-    return cap_area_mbps_sqkm
+    return subscribers_sqkm

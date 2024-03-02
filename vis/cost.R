@@ -63,6 +63,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
+    limits = c(0, 5999),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -117,12 +118,13 @@ constellation_opex <-
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "Opex\n(US$ Million)",
+    y = "Opex\n(US$ Millions)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
+    limits = c(0, 5999),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -179,7 +181,7 @@ constellation_tco <-
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "TCO\n(US$ Million)",
+    y = "TCO\n(US$ Millions)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
