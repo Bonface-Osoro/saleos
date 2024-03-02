@@ -21,10 +21,10 @@ data = select(
   impact_category,
   rocket_type,
   annual_baseline_emission_kg,
-  baseline_social_carbon_cost,
-  worst_case_social_carbon_cost,
-  annual_baseline_scc_per_subscriber,
-  annual_worst_case_scc_per_subscriber,
+  baseline_social_carbon_cost_usd,
+  worst_case_social_carbon_cost_usd,
+  annual_baseline_scc_per_subscriber_usd,
+  annual_worst_case_scc_per_subscriber_usd,
   subscriber_scenario
 )
 
@@ -60,7 +60,7 @@ check_sums = data %>%
 
 df = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(baseline_social_carbon_cost_millions = baseline_social_carbon_cost / 1e6) 
+  summarize(baseline_social_carbon_cost_millions = baseline_social_carbon_cost_usd / 1e6) 
 
 totals <- df %>%
   group_by(constellation) %>%
@@ -120,7 +120,7 @@ social_carbon_baseline <-
 
 df1 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost / 1e6)
+  summarize(wc_social_carbon_cost_millions = worst_case_social_carbon_cost_usd / 1e6)
 
 totals <- df1 %>%
   group_by(constellation) %>%
@@ -179,7 +179,7 @@ social_cost_worst_case <-
 ###################################################
 df2 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(baseline_annual_scc_sub_millions = annual_baseline_scc_per_subscriber) 
+  summarize(baseline_annual_scc_sub_millions = annual_baseline_scc_per_subscriber_usd) 
 
 totals <- df2 %>%
   group_by(constellation) %>%
@@ -238,7 +238,7 @@ social_carbon_per_subscriber_baseline <-
 #####################################################
 df3 = data %>%
   group_by(constellation, impact_category, rocket_type) %>%
-  summarize(wc_annual_scc_sub_millions = annual_worst_case_scc_per_subscriber)
+  summarize(wc_annual_scc_sub_millions = annual_worst_case_scc_per_subscriber_usd)
 
 totals <- df3 %>%
   group_by(constellation) %>%

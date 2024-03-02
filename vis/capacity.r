@@ -280,7 +280,7 @@ capacity_per_user <-
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Capacity\n(Mbps/Subscriber)",
+    y = "Mean Peak Capacity\n(Mbps/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -353,7 +353,7 @@ monthly_traffic <-
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Monthly Traffic \n(GB/Subscriber)",
+    y = "Mean Peak Monthly \nTraffic (GB/Subscriber)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -407,7 +407,7 @@ per_user_area <-
            width = 0.98,
            position = position_dodge()) +
   geom_text(
-    aes(label = as.character(signif(mean, 3))),
+    aes(label = as.character(signif(mean, 2))),
     size = 1.5,
     position = position_dodge(0.9),
     vjust = 0.5,
@@ -426,7 +426,7 @@ per_user_area <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 179)
+    limits = c(0, 0.0149)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_markdown(size = 6),

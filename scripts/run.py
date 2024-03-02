@@ -114,9 +114,6 @@ def run_uq_processing_capacity():
             'constellation': item['constellation'], 
             'number_of_satellites': item['number_of_satellites'],
             'total_area_earth_km_sq': item['total_area_earth_km_sq'],
-            'ideal_coverage_area_per_sat_sqkm': (round(
-                item['total_area_earth_km_sq'] / item['number_of_satellites'], 
-                4)),
             'elevation_angle': item['elevation_angle'],
             'altitude_km': item['altitude_km'],
             'satellite_centric_angle': satellite_centric_angle,
@@ -134,6 +131,7 @@ def run_uq_processing_capacity():
             'subscribers_high': item['subscribers_high'],
             'subscriber_traffic_percent' : item['subscriber_traffic_percent'],
             'satellite_coverage_area_km': round(satellite_coverage_area_km, 4),
+            'percent_coverage' : item['percent_coverage'],
             'path_loss_db': path_loss, 
             'losses_db': losses, 
             'antenna_gain_db': antenna_gain, 
@@ -141,15 +139,11 @@ def run_uq_processing_capacity():
             'noise_db': noise, 
             'received_power_db': received_power, 
             'cnr_db': cnr, 
-            'cnr_scenario' : cnr_scenario,
             'spectral_efficiency_bphz': spectral_efficiency, 
             'channel_capacity_mbps': channel_capacity,
             'capacity_per_single_satellite_mbps': sat_capacity,
             'constellation_capacity_mbps': constellation_capacity,
-            'capacity_per_area_mbps/sqkm': (cy.capacity_area(sat_capacity, 
-                                           item['total_area_earth_km_sq'], 
-                                           item['number_of_satellites'], 
-                                           item['subscriber_traffic_percent'])),
+            'cnr_scenario' : cnr_scenario
         })
 
         df = pd.DataFrame.from_dict(results)
@@ -539,9 +533,9 @@ def calc_emissions():
              'subscriber_scenario', 'impact_category', 'scenario', 'status', 
              'representative_of', 'rocket_type', 'rocket_detailed']]
     df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg',
-        'baseline_social_carbon_cost', 'worst_case_social_carbon_cost',
-        'annual_baseline_scc_per_subscriber', 
-        'annual_worst_case_scc_per_subscriber']] = ''
+        'baseline_social_carbon_cost_usd', 'worst_case_social_carbon_cost_usd',
+        'annual_baseline_scc_per_subscriber_usd', 
+        'annual_worst_case_scc_per_subscriber_usd']] = ''
     
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
                 'climate_change_worst_case': 'climate_change_worst_case_kg',
@@ -554,10 +548,10 @@ def calc_emissions():
     
     for i in range(len(df)):
 
-        df['baseline_social_carbon_cost'].loc[i] = (
+        df['baseline_social_carbon_cost_usd'].loc[i] = (
             calc_social_carbon_cost(df['climate_change_baseline_kg'].loc[i]))
         
-        df['worst_case_social_carbon_cost'].loc[i] = (
+        df['worst_case_social_carbon_cost_usd'].loc[i] = (
             calc_social_carbon_cost(df['climate_change_worst_case_kg'].loc[i]))
 
         df['annual_baseline_emission_kg'].loc[i] = (
@@ -568,14 +562,25 @@ def calc_emissions():
             df['climate_change_worst_case_kg'].loc[i] 
             / df['satellite_lifespan'].loc[i]) 
         
-        df['annual_baseline_scc_per_subscriber'].loc[i] = (
-            (df['baseline_social_carbon_cost'].loc[i] 
+        df['annual_baseline_scc_per_subscriber_usd'].loc[i] = (
+            (df['baseline_social_carbon_cost_usd'].loc[i] 
              / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
         
-        df['annual_worst_case_scc_per_subscriber'].loc[i] = (
-            (df['worst_case_social_carbon_cost'].loc[i] 
+        df['annual_worst_case_scc_per_subscriber_usd'].loc[i] = (
+            (df['worst_case_social_carbon_cost_usd'].loc[i] 
              / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
 
+    df = df[['constellation', 'no_of_launches', 'climate_change_baseline_kg', 
+             'climate_change_worst_case_kg', 'ozone_depletion_baseline_kg', 
+             'ozone_depletion_worst_case_kg', 'resource_depletion_kg',
+             'freshwater_toxicity_m3', 'human_toxicity', 'subscribers', 
+             'annual_baseline_emission_kg', 'annual_worst_case_emission_kg', 
+             'baseline_social_carbon_cost_usd', 
+             'worst_case_social_carbon_cost_usd', 
+             'annual_baseline_scc_per_subscriber_usd',
+             'annual_worst_case_scc_per_subscriber_usd', 'subscriber_scenario',
+             'impact_category', 'scenario', 'rocket_type', 'rocket_detailed']]
+    
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
 
@@ -687,6 +692,7 @@ def calc_total_emissions():
                   'total_resource_depletion' : 'sum',
                   'total_freshwater_toxicity' : 'sum',
                   'total_human_toxicity' : 'sum'}).reset_index()
+   
     
     df1[['annual_baseline_emissions_per_subscriber_kg', 
          'annual_worst_case_emissions_per_subscriber_kg']] = ''
@@ -700,7 +706,26 @@ def calc_total_emissions():
         df1['annual_worst_case_emissions_per_subscriber_kg'].loc[i] = (
             (df1['total_worst_case_carbon_emissions'].loc[i] 
              / df1['subscribers'].loc[i]) / df1['satellite_lifespan'].loc[i])
-
+    
+    df1 = df1[['constellation', 'satellite_lifespan', 
+             'subscribers', 'total_baseline_carbon_emissions',
+             'total_worst_case_carbon_emissions', 
+             'total_ozone_depletion_baseline', 
+             'total_ozone_depletion_worst_case', 'total_resource_depletion',
+             'total_freshwater_toxicity', 'total_human_toxicity', 
+             'annual_baseline_emissions_per_subscriber_kg',
+             'annual_worst_case_emissions_per_subscriber_kg',
+             'subscriber_scenario']]
+    
+    renamed_columns = {'total_baseline_carbon_emissions': 'total_baseline_carbon_emissions_kg', 
+            'total_worst_case_carbon_emissions': 'total_worst_case_carbon_emissions_kg',
+            'total_ozone_depletion_baseline': 'total_ozone_depletion_baseline_kg',
+            'total_ozone_depletion_worst_case': 'total_ozone_depletion_worst_case_kg',
+            'total_resource_depletion': 'total_resource_depletion_kg',
+            'total_freshwater_toxicity': 'total_freshwater_toxicity_m3',
+            'total_human_toxicity' : 'total_human_toxicity_cases'}
+    
+    df1.rename(columns = renamed_columns, inplace = True)
         
     filename2 = 'total_emissions.csv'
     path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
@@ -774,22 +799,22 @@ def process_mission_capacity():
     data_in = os.path.join(DATA, 'interim_results_capacity.csv')
     df = pd.read_csv(data_in, index_col = False)
 
-    df = df[['constellation', 'channel_capacity_mbps', 
+    df = df[['constellation', 'number_of_satellites', 'channel_capacity_mbps', 
              'capacity_per_single_satellite_mbps',
-             'constellation_capacity_mbps', 'cnr_scenario',
-             'subscribers_low', 'subscribers_baseline',
-             'subscribers_high', 'subscriber_traffic_percent', 
-             'satellite_coverage_area_km']]
+             'constellation_capacity_mbps', 'subscribers_low', 
+             'subscribers_baseline', 'subscribers_high', 'percent_coverage',
+             'subscriber_traffic_percent', 'satellite_coverage_area_km', 
+             'cnr_scenario']]
 
     # Classify subscribers by melting the dataframe into long format
     # Switching the subscriber columns from wide format to long format
-    df = pd.melt(df, id_vars = ['constellation', 'constellation_capacity_mbps', 
-                                'cnr_scenario', 'subscriber_traffic_percent', 
-                                'satellite_coverage_area_km'], 
-                                value_vars = ['subscribers_low', 
-                                'subscribers_baseline', 'subscribers_high'], 
-                                value_name = 'subscribers',
-                                var_name = 'subscriber_scenario')
+    df = pd.melt(df, id_vars = ['constellation', 'number_of_satellites', 
+                            'constellation_capacity_mbps', 'cnr_scenario', 
+                            'subscriber_traffic_percent', 'percent_coverage', 
+                            'satellite_coverage_area_km'], value_vars = 
+                            ['subscribers_low', 'subscribers_baseline', 
+                            'subscribers_high'], value_name = 'subscribers',
+                            var_name = 'subscriber_scenario')
     
     # Create columns to store new data
     df[['capacity_per_user', 'monthly_gb', 'user_per_area']] = ''
@@ -804,9 +829,9 @@ def process_mission_capacity():
          df['monthly_gb'].loc[i] = (cy.monthly_traffic(
              df['capacity_per_user'].loc[i]))
 
-         df['user_per_area'].loc[i] = ((df['subscribers'].loc[i] 
-                           * df['subscriber_traffic_percent'].loc[i] 
-                           * 0.2) / df['satellite_coverage_area_km'].loc[i])
+         df['user_per_area'].loc[i] = (cy.subscribers_per_area(
+             df['number_of_satellites'].loc[i], df['percent_coverage'].loc[i], 
+             df['subscribers'].loc[i], df['satellite_coverage_area_km'].loc[i]))
 
     filename = 'final_capacity_results.csv'
 
@@ -901,7 +926,7 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
     #run_uq_processing_cost()
@@ -910,10 +935,10 @@ if __name__ == '__main__':
     #calc_emissions()
 
     print('Processing Total Emission results')
-    calc_total_emissions()
+    #calc_total_emissions()
 
     print('Working on process_mission_capacity()')
-    #process_mission_capacity()
+    process_mission_capacity()
 
     print('Working on process_mission_costs()')
     #process_mission_cost()
