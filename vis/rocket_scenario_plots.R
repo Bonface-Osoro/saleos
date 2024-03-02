@@ -82,7 +82,7 @@ emission_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 1749)
+    limits = c(0, 649)
   ) +
   theme(
     legend.position = 'none',
