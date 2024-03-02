@@ -315,7 +315,6 @@ capacity_per_user <-
 ##Monthly Traffic ##
 ####################
 
-
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(monthly_gb),
@@ -357,7 +356,8 @@ monthly_traffic <-
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
-    labels = comma,
+    labels = function(y)
+      format(y, scientific = FALSE),
     expand = c(0, 0),
   ) + theme_minimal() +
   theme(
@@ -409,7 +409,7 @@ per_user_area <-
   geom_text(
     aes(label = as.character(signif(mean, 2))),
     size = 1.5,
-    position = position_dodge(0.9),
+    position = position_dodge(1),
     vjust = 0.5,
     hjust = -0.1,
     angle = 90
