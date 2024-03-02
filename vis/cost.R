@@ -31,11 +31,12 @@ data <- select(
 df = data %>%
   group_by(constellation) %>%
   summarize(mean = mean(capex_costs),
-  
-                      sd = sd(capex_costs))
+                        sd = sd(capex_costs))
+
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_capex <-
@@ -63,7 +64,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 5999),
+    limits = c(0, 7500),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -96,7 +97,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
+  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_opex <-
@@ -124,7 +126,7 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 5999),
+    limits = c(0, 7500),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -158,6 +160,7 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
@@ -187,7 +190,7 @@ constellation_tco <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0)
+    expand = c(0, 0), limits = c(0, 7500)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -252,6 +255,7 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
@@ -286,7 +290,7 @@ constellation_capex_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0)
+    expand = c(0, 0), limits = c(0, 5000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -319,6 +323,7 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
@@ -353,7 +358,7 @@ constellation_opex_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0)
+    expand = c(0, 0), limits = c(0, 5000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -385,6 +390,7 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
+  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
@@ -419,7 +425,7 @@ constellation_tco_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0)
+    expand = c(0, 0), limits = c(0, 5000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -438,7 +444,6 @@ constellation_tco_per_user <-
     plot.subtitle = element_text(size = 8),
     plot.title = element_text(size = 10, face = "bold")
   )
-
 
 ##################
 ##Combined plots##
