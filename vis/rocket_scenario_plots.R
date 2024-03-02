@@ -19,8 +19,8 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "sensitivity_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
-data = select(data, constellation, scenario, subscriber_scenario, 
-              subscribers,  annual_baseline_emission_kg, 
+data = select(data, constellation, scenario,
+              subscriber_scenario, subscribers,  annual_baseline_emission_kg, 
               annual_worst_case_emission_kg)
 
 df = data %>%
@@ -82,7 +82,7 @@ emission_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 749)
+    limits = c(0, 1749)
   ) +
   theme(
     legend.position = 'none',
@@ -159,9 +159,21 @@ data$impact_category = factor(
 ###########################
 
 df = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(cc_baseline = climate_change_baseline_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df %>%
+  group_by(constellation, scenario) %>%
+  summarize(cc_baseline_sum = round(
+    sum(cc_baseline)/ 1e9,3)) 
+
+df$scenario = factor(
+  df$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df %>%
   group_by(constellation, scenario) %>%
@@ -214,9 +226,21 @@ climate_change <-
 #############################
 
 df1 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(cc_worst_case = climate_change_worst_case_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df1 %>%
+  group_by(constellation, scenario) %>%
+  summarize(cc_worst_case_sum = round(
+    sum(cc_worst_case)/ 1e9,3)) 
+
+df1$scenario = factor(
+  df1$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df1 %>%
   group_by(constellation, scenario) %>%
@@ -268,9 +292,21 @@ climate_change_wc <-
 ############################
 
 df2 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(ozone_baseline = ozone_depletion_baseline_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df2 %>%
+  group_by(constellation, scenario) %>%
+  summarize(ozone_baseline_sum = round(
+    sum(ozone_baseline),3)) 
+
+df2$scenario = factor(
+  df2$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df2 %>%
   group_by(constellation, scenario) %>%
@@ -324,9 +360,21 @@ ozone_depletion <-
 ##############################
 
 df3 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(ozone_worst_case = ozone_depletion_worst_case_kg)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df3 %>%
+  group_by(constellation, scenario) %>%
+  summarize(ozone_worst_case_sum = round(
+    sum(ozone_worst_case)/ 1e9,3)) 
+
+df3$scenario = factor(
+  df3$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df3 %>%
   group_by(constellation, scenario) %>%
@@ -380,9 +428,21 @@ ozone_depletion_wc <-
 ######################
 
 df4 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(resources = resource_depletion_kg)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df4 %>%
+  group_by(constellation, scenario) %>%
+  summarize(resources_sum = round(
+    sum(resources)/ 1e3,3)) 
+
+df4$scenario = factor(
+  df4$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df4 %>%
   group_by(constellation, scenario) %>%
@@ -434,9 +494,21 @@ resource_depletion <-
 #######################
 
 df5 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(freshwater = freshwater_toxicity_m3)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df5 %>%
+  group_by(constellation, scenario) %>%
+  summarize(freshwater_sum = round(
+    sum(freshwater)/ 1e8,3)) 
+
+df5$scenario = factor(
+  df5$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df5 %>%
   group_by(constellation, scenario) %>%
@@ -489,9 +561,21 @@ freshwater_ecotixicity <-
 ##################
 
 df6 = data %>%
-  group_by(constellation, scenario, impact_category) %>%
+  group_by(constellation, scenario, rocket_detailed, impact_category) %>%
   summarize(human = human_toxicity)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(scenario, .keep_all = TRUE)
+
+check_sums = df6 %>%
+  group_by(constellation, scenario) %>%
+  summarize(human_sum = round(
+    sum(human),3)) 
+
+df6$scenario = factor(
+  df6$scenario,
+  levels = c('scenario1', 'scenario2', 'scenario3'),
+  labels = c('Scenario 1 (Current/Planned)', 
+             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+)
 
 totals <- df6 %>%
   group_by(constellation, scenario) %>%
