@@ -17,6 +17,7 @@ data <- select(
   constellation,
   total_cost_ownership,
   tco_per_user,
+  assessment_period_year,
   capex_costs,
   capex_per_user,
   opex_costs,
@@ -64,7 +65,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 7500),
+    limits = c(0, 4599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -126,7 +127,7 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 7500),
+    limits = c(0, 4599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -155,8 +156,8 @@ constellation_opex <-
 
 df = data %>%
   group_by(constellation) %>%
-  summarize(mean = mean(total_cost_ownership),
-            sd = sd(total_cost_ownership))
+  summarize(mean = mean(total_cost_ownership / assessment_period_year),
+            sd = sd(total_cost_ownership / assessment_period_year))
 
 df$constellation = factor(
   df$constellation,
@@ -184,13 +185,13 @@ constellation_tco <-
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "TCO\n(US$ Millions)",
+    y = "Annualized TCO\n(US$ Millions)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 7500)
+    expand = c(0, 0), limits = c(0, 4599)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -290,7 +291,7 @@ constellation_capex_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 5000)
+    expand = c(0, 0), limits = c(0, 4999)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -358,7 +359,7 @@ constellation_opex_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 5000)
+    expand = c(0, 0), limits = c(0, 4999)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -425,7 +426,7 @@ constellation_tco_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 5000)
+    expand = c(0, 0), limits = c(0, 4999)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),

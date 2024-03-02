@@ -19,7 +19,7 @@ Most operators planning or launching LEO broadband satellites have used (or inte
 
 #### Figure 2 Technical details of launch rocket systems.
 <p align="center">
-  <img src="/docs/b_fig_2.png" />
+  <img src="/docs/b_fig_2.jpg" />
 </p>
 
 The `saleos` codebase provides an open-source integrated assessment model capable of concurrently estimating environmental emissions, broadband capacity, and costs for different LEO satellite networks.
