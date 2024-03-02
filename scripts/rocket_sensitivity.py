@@ -292,7 +292,7 @@ def calc_sensitivity_emissions():
                     df['subscribers_high'].loc[i] = item['subscribers'][2]
 
     df = pd.melt(df, id_vars = ['constellation', 'rocket', 'no_of_satellites', 
-         'no_of_launches', 'climate_change_baseline',
+         'no_of_launches', 'climate_change_baseline','rocket_detailed',
          'climate_change_worst_case', 'ozone_depletion_baseline', 
          'ozone_depletion_worst_case', 'resource_depletion', 
          'freshwater_toxicity', 'human_toxicity', 'scenario', 'status', 
@@ -319,7 +319,9 @@ def calc_sensitivity_emissions():
              'ozone_depletion_baseline', 'ozone_depletion_worst_case', 
              'resource_depletion', 'freshwater_toxicity', 'human_toxicity', 
              'subscribers', 'subscriber_scenario', 'impact_category', 
-             'scenario', 'status', 'representative_of', 'rocket_type']]
+             'rocket_detailed', 'scenario', 'status', 'representative_of', 
+             'rocket_type']]
+    
     df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg']] = ''
     renamed_columns = {'climate_change_baseline': 'climate_change_baseline_kg', 
                 'climate_change_worst_case': 'climate_change_worst_case_kg',

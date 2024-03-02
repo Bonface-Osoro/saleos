@@ -12,6 +12,20 @@ visualizations = file.path(folder, '..', 'vis')
 #Load the data
 data <- read.csv(file.path(folder, '..', 'results', 'individual_emissions.csv'))
 data <- data[data$scenario == "scenario1", ]
+data = select(
+  data, 
+  constellation, 
+  impact_category,
+  rocket_type,
+  rocket_detailed,
+  climate_change_baseline_kg,
+  climate_change_worst_case_kg,
+  ozone_depletion_baseline_kg,
+  ozone_depletion_worst_case_kg,
+  resource_depletion_kg,
+  freshwater_toxicity_m3,
+  human_toxicity
+)
 
 #Rename the constellation and emission type column values
 data$constellation = factor(
@@ -54,9 +68,14 @@ data$impact_category = factor(
 ###########################
 
 df = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
-  summarize(cc_baseline = climate_change_baseline_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
+  summarize(cc_baseline = climate_change_baseline_kg)  %>%
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df %>%
+  group_by(constellation) %>%
+  summarize(annual_baseline_emission_Mt = round(
+    sum(cc_baseline)/1e9,3)) 
 
 totals <- df %>%
   group_by(constellation, rocket_type) %>%
@@ -107,11 +126,15 @@ climate_change <-
 #############################
 ##climate change worst case##
 #############################
-
 df1 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(cc_worst_case = climate_change_worst_case_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df1 %>%
+  group_by(constellation) %>%
+  summarize(cc_worst_case_Mt = round(
+    sum(cc_worst_case)/1e9,3)) 
 
 totals <- df1 %>%
   group_by(constellation, rocket_type) %>%
@@ -163,9 +186,14 @@ climate_change_wc <-
 ############################
 
 df2 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(ozone_baseline = ozone_depletion_baseline_kg) %>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df2 %>%
+  group_by(constellation) %>%
+  summarize(ozone_baseline_Mt = round(
+    sum(ozone_baseline)/1e9,3)) 
 
 totals <- df2 %>%
   group_by(constellation, rocket_type) %>%
@@ -219,9 +247,14 @@ ozone_depletion <-
 ##############################
 
 df3 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(ozone_worst_case = ozone_depletion_worst_case_kg)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df3 %>%
+  group_by(constellation) %>%
+  summarize(ozone_worst_case_Mt = round(
+    sum(ozone_worst_case)/1e9,3)) 
 
 totals <- df3 %>%
   group_by(constellation, rocket_type) %>%
@@ -275,9 +308,14 @@ ozone_depletion_wc <-
 ######################
 
 df4 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(resources = resource_depletion_kg)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df4 %>%
+  group_by(constellation) %>%
+  summarize(resources_t = round(
+    sum(resources)/1e3,3)) 
 
 totals <- df4 %>%
   group_by(constellation, rocket_type) %>%
@@ -306,7 +344,7 @@ resource_depletion <-
     y = bquote("Resource Depletion (t Sb eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 350),
+    limits = c(0, 599),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -329,9 +367,14 @@ resource_depletion <-
 #######################
 
 df5 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(freshwater = freshwater_toxicity_m3)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df5 %>%
+  group_by(constellation) %>%
+  summarize(freshwater_m3 = round(
+    sum(freshwater)/1e8,3)) 
 
 totals <- df5 %>%
   group_by(constellation, rocket_type) %>%
@@ -361,7 +404,7 @@ freshwater_ecotixicity <-
     #"["2"]~"
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 155),
+    limits = c(0, 175),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -384,9 +427,14 @@ freshwater_ecotixicity <-
 ##################
 
 df6 = data %>%
-  group_by(constellation, rocket_type, impact_category) %>%
+  group_by(constellation, rocket_type, rocket_detailed, impact_category) %>%
   summarize(human = human_toxicity)%>%
-  distinct(impact_category, .keep_all = TRUE)
+  distinct(rocket_type, .keep_all = TRUE)
+
+check_sums = df6 %>%
+  group_by(constellation) %>%
+  summarize(human_cases = round(
+    sum(human),3)) 
 
 totals <- df6 %>%
   group_by(constellation, rocket_type) %>%
@@ -416,7 +464,7 @@ human_toxicity <-
     y = "Cases of Human Ecotoxicity",
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 1100),
+    limits = c(0, 1249),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)

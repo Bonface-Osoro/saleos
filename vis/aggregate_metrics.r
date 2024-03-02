@@ -108,7 +108,7 @@ sat_launches =
 ###########################
 
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
-filename = "total_carbon_emissions.csv"
+filename = "total_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
 data = select(data, constellation, subscriber_scenario, subscribers, 

@@ -275,6 +275,20 @@ def calc_total_carbon_emission(df, rocket, datapoint, no_launches):
     df['total_worst_case_carbon_emissions'].loc[datapoint] = (
         rocket['totals']['total_worst_case_carbon_emissions'] * no_launches) 
     
+    df['total_ozone_depletion_baseline'].loc[datapoint] = (
+        rocket['totals']['total_ozone_depletion_baseline'] * no_launches)
+    
+    df['total_ozone_depletion_worst_case'].loc[datapoint] = (
+        rocket['totals']['total_ozone_depletion_worst_case'] * no_launches)
+
+    df['total_resource_depletion'].loc[datapoint] = (
+        rocket['totals']['total_resource_depletion'] * no_launches)
+
+    df['total_freshwater_toxicity'].loc[datapoint] = (
+        rocket['totals']['total_freshwater_toxicity'] * no_launches)
+    
+    df['total_human_toxicity'].loc[datapoint] = (
+        rocket['totals']['total_human_toxicity'] * no_launches)
 
     return total_dict
     
@@ -319,7 +333,7 @@ def calc_emissions():
 
     df = pd.melt(df, id_vars = ['scenario', 'status', 'constellation', 
          'rocket', 'representative_of', 'rocket_type', 'no_of_satellites', 
-         'no_of_launches', 'satellite_lifespan'], 
+         'no_of_launches', 'satellite_lifespan', 'rocket_detailed'], 
          value_vars = ['launch_event', 'launcher_production', 
          'launcher_ait', 'propellant_production', 'propellant_scheduling', 
          'launcher_transportation', 'launch_campaign'], var_name = 
@@ -497,7 +511,7 @@ def calc_emissions():
     df = pd.melt(df, id_vars = ['constellation', 'rocket', 'no_of_satellites', 
          'no_of_launches', 'climate_change_baseline', 'satellite_lifespan',
          'climate_change_worst_case', 'ozone_depletion_baseline', 
-         'ozone_depletion_worst_case', 'resource_depletion', 
+         'ozone_depletion_worst_case', 'resource_depletion', 'rocket_detailed',
          'freshwater_toxicity', 'human_toxicity', 'scenario', 'status', 
          'representative_of', 'rocket_type', 'impact_category', ], 
          value_vars = ['subscribers_low', 'subscribers_baseline', 
@@ -523,7 +537,7 @@ def calc_emissions():
              'ozone_depletion_worst_case', 'resource_depletion', 
              'freshwater_toxicity', 'human_toxicity', 'subscribers', 
              'subscriber_scenario', 'impact_category', 'scenario', 'status', 
-             'representative_of', 'rocket_type']]
+             'representative_of', 'rocket_type', 'rocket_detailed']]
     df[['annual_baseline_emission_kg', 'annual_worst_case_emission_kg',
         'baseline_social_carbon_cost', 'worst_case_social_carbon_cost',
         'annual_baseline_scc_per_subscriber', 
@@ -581,7 +595,10 @@ def calc_total_emissions():
     df = df[df['scenario'] == 'scenario1']
 
     df[['total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions',
-        'subscribers_low', 'subscribers_baseline', 'subscribers_high']] = ''
+        'total_ozone_depletion_baseline', 'total_ozone_depletion_worst_case',
+        'total_resource_depletion', 'total_freshwater_toxicity',
+        'total_human_toxicity', 'subscribers_low', 'subscribers_baseline', 
+        'subscribers_high']] = ''
 
     for i in range(len(df)):
 
@@ -645,21 +662,31 @@ def calc_total_emissions():
                     df['subscribers_high'].loc[i] = item['subscribers'][2]
   
     df = pd.melt(df, id_vars = ['constellation', 'satellite_lifespan',
-         'total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions'], 
-         value_vars = ['subscribers_low', 'subscribers_baseline', 
-         'subscribers_high'], var_name = 'subscriber_scenario', 
-         value_name = 'subscribers')
+         'total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions', 
+         'total_ozone_depletion_baseline', 'total_ozone_depletion_worst_case',
+         'total_resource_depletion', 'total_freshwater_toxicity', 
+         'total_human_toxicity'], value_vars = ['subscribers_low', 
+         'subscribers_baseline', 'subscribers_high'], var_name = 
+         'subscriber_scenario', value_name = 'subscribers')
     
     ####Save Total Carbon Emmissions####
     df = df[['constellation', 'satellite_lifespan', 'subscribers', 
               'total_baseline_carbon_emissions', 
               'total_worst_case_carbon_emissions', 
+              'total_ozone_depletion_baseline', 
+              'total_ozone_depletion_worst_case', 'total_resource_depletion',
+              'total_freshwater_toxicity', 'total_human_toxicity',
               'subscriber_scenario']]
     
     df1 = df.groupby(['constellation', 'satellite_lifespan', 
                  'subscribers', 'subscriber_scenario']).agg(
                  {'total_baseline_carbon_emissions': 'sum', 
-                  'total_worst_case_carbon_emissions': 'sum'}).reset_index()
+                  'total_worst_case_carbon_emissions': 'sum', 
+                  'total_ozone_depletion_baseline' : 'sum',
+                  'total_ozone_depletion_worst_case' : 'sum',
+                  'total_resource_depletion' : 'sum',
+                  'total_freshwater_toxicity' : 'sum',
+                  'total_human_toxicity' : 'sum'}).reset_index()
     
     df1[['annual_baseline_emissions_per_subscriber_kg', 
          'annual_worst_case_emissions_per_subscriber_kg']] = ''
@@ -675,7 +702,7 @@ def calc_total_emissions():
              / df1['subscribers'].loc[i]) / df1['satellite_lifespan'].loc[i])
 
         
-    filename2 = 'total_carbon_emissions.csv'
+    filename2 = 'total_emissions.csv'
     path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
     df1.to_csv(path_out2, index = False)
 
@@ -880,16 +907,16 @@ if __name__ == '__main__':
     #run_uq_processing_cost()
 
     print('Processing Emission results')
-    calc_emissions()
+    #calc_emissions()
 
     print('Processing Total Emission results')
     calc_total_emissions()
 
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()
+    #process_mission_cost()
 
     executionTime = (time.time() - start)
 

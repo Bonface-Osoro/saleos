@@ -403,7 +403,13 @@ falcon_9 = {
         'launch_campaign' : 1.695861368,
     },
     'totals' : {'total_baseline_carbon_emissions': 25866853.09391,
-                'total_worst_case_carbon_emissions' : 48482278.12691}
+                'total_worst_case_carbon_emissions' : 48482278.12691,
+                'total_ozone_depletion_baseline' : 6839.441790167000,
+                'total_ozone_depletion_worst_case' : 30769.571790167,
+                'total_resource_depletion' : 2143.73826103,
+                'total_freshwater_toxicity' : 98927629.54642,
+                'total_human_toxicity' : 7.512825211
+                }
 }
 
 
@@ -472,7 +478,13 @@ soyuz = {
         'launch_campaign' : 1.695861368
     },
     'totals' : {'total_baseline_carbon_emissions': 56448457.674808,
-                'total_worst_case_carbon_emissions' : 68191239.755208}
+                'total_worst_case_carbon_emissions' : 68191239.755208,
+                'total_ozone_depletion_baseline' : 3161.585450406,
+                'total_ozone_depletion_worst_case' : 13876.6954504,
+                'total_resource_depletion' : 12688.939716394,
+                'total_freshwater_toxicity' : 331495137.38967,
+                'total_human_toxicity' : 23.001765391
+                }
 }
 
 
@@ -541,7 +553,13 @@ unknown_hyc = {
         'launch_campaign' : 1.695861368
         },
     'totals' : {'total_baseline_carbon_emissions': 41157655.38036,
-                'total_worst_case_carbon_emissions' : 58336758.93236}
+                'total_worst_case_carbon_emissions' : 58336758.93236,
+                'total_ozone_depletion_baseline' : 5000.57026725,
+                'total_ozone_depletion_worst_case' : 22323.133620287,
+                'total_resource_depletion' : 7416.338989667,
+                'total_freshwater_toxicity' : 215211383.50204,
+                'total_human_toxicity' : 15.257295301
+                }
 }
 
 
@@ -610,5 +628,11 @@ unknown_hyg = {
         'launch_campaign' : 1.695861368
         },
     'totals' : {'total_baseline_carbon_emissions': 32557978.58182,
-                'total_worst_case_carbon_emissions' : 139733504.98182}
+                'total_worst_case_carbon_emissions' : 139733504.98182,
+                'total_ozone_depletion_baseline' : 22323.133620287,
+                'total_ozone_depletion_worst_case' : 22323.133620287,
+                'total_resource_depletion' : 7416.338989667,
+                'total_freshwater_toxicity' : 215211383.50204,
+                'total_human_toxicity' : 15.257295301
+                }
 }
