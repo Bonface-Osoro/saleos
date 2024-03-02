@@ -1,0 +1,37 @@
+Properties,Details,Constellation
+Constellation Name,Kuiper,Kuiper
+Operator,Amazon,Kuiper
+Satellites,"3,236",Kuiper
+Earth Radius,"6,378 km",Kuiper
+Orbital Altitude,610 km,Kuiper
+Orbital Radius,"6,988 km",Kuiper
+Path Distance,982 km,Kuiper
+Satellite Centric Angle,48.4 Deg,Kuiper
+Earth Centric Angle,6.61 Deg,Kuiper
+Mean Satellites per Launch,36,Kuiper
+Satellites in Orbit (phase 1),2*,Kuiper
+Launch Vehicle,Vulcan/Ariane-6/Glenn/Falcon-9,Kuiper
+Constellation Name,Starlink,Starlink
+Operator,SpaceX,Starlink
+Satellites,"4,425",Starlink
+Earth Radius,"6,378 km",Starlink
+Orbital Altitude,550 km,Starlink
+Orbital Radius,"6,928 km",Starlink
+Path Distance,"1,123 km",Starlink
+Satellite Centric Angle,56.5 Deg,Starlink
+Earth Centric Angle,8.45 Deg,Starlink
+Mean Satellites per Launch,23,Starlink
+Satellites in Orbit (Phase 1),"4,425",Starlink
+Launch Vehicle,Falcon-9,Starlink
+Constellation Name,OneWeb,OneWeb
+Operator,Eutelsat,OneWeb
+Satellites,720,OneWeb
+Earth Radius,"6,378 km",OneWeb
+Orbital Altitude,"1,200 km",OneWeb
+Orbital Radius,"7,578 km",OneWeb
+Path Distance,"1,580 km",OneWeb
+Satellite Centric Angle,36.5 Deg,OneWeb
+Earth Centric Angle,8.48 Deg,OneWeb
+Mean Satellites per Launch,36,OneWeb
+Satellites in Orbit (phase 1),>630,OneWeb
+Launch Vehicle,Soyuz-FG/Falcon-9/LVM3,OneWeb
