@@ -26,7 +26,7 @@ The `saleos` codebase provides an open-source integrated assessment model capabl
 
 ## Sustainability metrics
 
-The `saleos` codebase is capable of estimating a range of sustainability metrics. `Figure 3` illustrates a selection of these including the estimated emissions per subscriber (subplot b), potential mean monthly traffic per subscriber (subplot d), and the financial cost per subscriber (subplot f).
+The `saleos` codebase is capable of estimating a range of sustainability metrics. `Figure 3` illustrates a selection of these including the estimated annual emissions per subscriber (subplot b), potential mean peak monthly traffic per subscriber (subplot d), and the financial cost per subscriber (subplot f).
 
 #### Figure 3 Aggregate sustainability metrics for Kuiper, OneWeb, Starlink and a hypothetical GEO operator.
 <p align = 'center'>
