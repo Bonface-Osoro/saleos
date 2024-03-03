@@ -22,7 +22,9 @@ data$constellation = factor(data$constellation,
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
   summarize(mean = mean(channel_capacity_mbps),
-            sd = sd(channel_capacity_mbps))
+            sd = sd(channel_capacity_mbps),
+            mean_gbps = round(mean(channel_capacity_mbps)/1e3,2),
+            sd_gbps = round(sd(channel_capacity_mbps)/1e3,2))
 
 df$cnr_scenario = as.factor(df$cnr_scenario)
 df$CNR = factor(
@@ -85,12 +87,13 @@ chn_capacity <-
 ##Single Satellite Capacity##
 #############################
 
-
 df = data %>%
   group_by(constellation, cnr_scenario) %>%
   summarise(
     mean = mean(capacity_per_single_satellite_mbps),
-    sd = sd(capacity_per_single_satellite_mbps)
+    sd = sd(capacity_per_single_satellite_mbps),
+    mean_gbps = round(mean(capacity_per_single_satellite_mbps)/1e3,2),
+    sd_gbps = round(sd(capacity_per_single_satellite_mbps)/1e3,1)
   ) %>%
   ungroup()
 
@@ -163,7 +166,9 @@ df = data %>%
   group_by(constellation, cnr_scenario) %>%
   summarise(
     mean = mean(constellation_capacity_mbps * 0.65),
-    sd = sd(constellation_capacity_mbps * 0.65)
+    sd = sd(constellation_capacity_mbps * 0.65),
+    mean_gbps = round(mean(constellation_capacity_mbps * 0.65)/1e6,2),
+    sd_gbps = round(sd(constellation_capacity_mbps * 0.65)/1e6,1)
   ) %>%
   ungroup()
 
@@ -246,7 +251,8 @@ data2$constellation = factor(data2$constellation,
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(capacity_per_user),
-            sd = sd(capacity_per_user))
+            sd = sd(capacity_per_user),
+            )
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 
@@ -382,11 +388,10 @@ monthly_traffic <-
 ##Average users per area##
 ##########################
 
-
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
-  summarize(mean = mean(user_per_area),
-            sd = sd(user_per_area))
+  summarize(mean = round(mean(user_per_area),5),
+            sd = round(sd(user_per_area),6))
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 
