@@ -340,7 +340,7 @@ lut = [
 
 falcon_9 = {
     'climate_change_baseline' : {
-        'launch_event' : 4113533.907,
+        'launch_event' : 630466.1352,
         'launcher_production' : 4113533.907,
         'launcher_ait' : 1616263.557,
         'propellant_production' : 4744753.339,
@@ -402,7 +402,7 @@ falcon_9 = {
         'launcher_transportation' : 0.004766684,
         'launch_campaign' : 1.695861368,
     },
-    'totals' : {'total_baseline_carbon_emissions': 25866853.09391,
+    'totals' : {'total_baseline_carbon_emissions': 22383785.32211,
                 'total_worst_case_carbon_emissions' : 48482278.12691,
                 'total_ozone_depletion_baseline' : 6839.441790167000,
                 'total_ozone_depletion_worst_case' : 30769.571790167,
@@ -490,7 +490,7 @@ soyuz = {
 
 unknown_hyc = {
     'climate_change_baseline' : {
-        'launch_event' : 2201094.508,
+        'launch_event' : 459560.6224,
         'launcher_production' : 24396973.44,
         'launcher_ait' : 1616263.557,
         'propellant_production' : 2856831.769,
@@ -554,7 +554,7 @@ unknown_hyc = {
         },
     'totals' : {'total_baseline_carbon_emissions': 41157655.38036,
                 'total_worst_case_carbon_emissions' : 58336758.93236,
-                'total_ozone_depletion_baseline' : 5000.57026725,
+                'total_ozone_depletion_baseline' : 5000.51362028698,
                 'total_ozone_depletion_worst_case' : 22323.133620287,
                 'total_resource_depletion' : 7416.338989667,
                 'total_freshwater_toxicity' : 175199393.525983,
