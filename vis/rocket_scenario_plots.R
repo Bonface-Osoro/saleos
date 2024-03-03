@@ -3,7 +3,6 @@ library(ggplot2)
 library(tidyverse)
 library(ggtext)
 library(scales)
-library("readxl")
 
 # Set folder
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -337,7 +336,7 @@ ozone_depletion <-
     fill = "Satellite Mission Stage"
   ) +
   scale_y_continuous(
-    limits = c(0, 4.9),
+    limits = c(0, 49.9),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -405,7 +404,7 @@ ozone_depletion_wc <-
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 4.9),
+    limits = c(0, 49.9),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)

@@ -511,7 +511,7 @@ unknown_hyc = {
         'launch_event' : 4997.16,
         'launcher_production' : 1.694648122,
         'launcher_ait' : 0.156575296,
-        'propellant_production' : 0.385083701,
+        'propellant_production' : 0.328436738,
         'propellant_scheduling' : 0.393635808,
         'launcher_transportation' : 0.002453918,
         'launch_campaign' : 0.777870405
@@ -536,11 +536,11 @@ unknown_hyc = {
         },
     'freshwater_toxicity' : {
         'launch_event' : 0,
-        'launcher_production' : 150478766.1,
+        'launcher_production' : 69735037.48,
         'launcher_ait' : 7701094.993,
-        'propellant_production' : 9203497.148,
-        'propellant_scheduling' : 29109377.02,
-        'launcher_transportation' : 35251.42104,
+        'propellant_production' : 17124098.34,
+        'propellant_scheduling' : 61938424.03,
+        'launcher_transportation' : 17341.87779,
         'launch_campaign' : 18683396.82
         },
     'human_toxicity' : {
@@ -557,7 +557,7 @@ unknown_hyc = {
                 'total_ozone_depletion_baseline' : 5000.57026725,
                 'total_ozone_depletion_worst_case' : 22323.133620287,
                 'total_resource_depletion' : 7416.338989667,
-                'total_freshwater_toxicity' : 215211383.50204,
+                'total_freshwater_toxicity' : 175199393.525983,
                 'total_human_toxicity' : 15.257295301
                 }
 }
@@ -583,56 +583,56 @@ unknown_hyg = {
         'launch_campaign' : 5666556.742
         },
     'ozone_depletion_baseline' : {
-        'launch_event' : 4997.16,
-        'launcher_production' : 1.694648122,
+        'launch_event' : 86728.6,
+        'launcher_production' : 0.745735051,
         'launcher_ait' : 0.156575296,
-        'propellant_production' : 0.385083701,
-        'propellant_scheduling' : 0.393635808,
-        'launcher_transportation' : 0.002453918,
+        'propellant_production' : 0.223292749,
+        'propellant_scheduling' : 0.753927596,
+        'launcher_transportation' : 0.001892801,
         'launch_campaign' : 0.777870405
         },
     'ozone_depletion_worst_case' : {
-        'launch_event' : 22319.78,
-        'launcher_production' : 1.694648122,
+        'launch_event' : 211083.6,
+        'launcher_production' : 0.745735051,
         'launcher_ait' : 0.156575296,
-        'propellant_production' : 0.328436738,
-        'propellant_scheduling' : 0.393635808,
-        'launcher_transportation' : 0.002453918,
+        'propellant_production' : 0.223292749,
+        'propellant_scheduling' : 0.753927596,
+        'launcher_transportation' : 0.001892801,
         'launch_campaign' : 0.777870405
         },
     'resource_depletion' : {
         'launch_event' : 0,
-        'launcher_production' : 7128.37286,
+        'launcher_production' : 2719.725687,
         'launcher_ait' : 15.65466435,
-        'propellant_production' : 19.82144123,
-        'propellant_scheduling' : 218.7663315,
-        'launcher_transportation' : 0.497682607,
-        'launch_campaign' : 33.22600998
+        'propellant_production' : 34.59642811,
+        'propellant_scheduling' : 510.2021181,
+        'launcher_transportation' : 0.194786912,
+        'launch_campaign' : 33.22600998,
         },
     'freshwater_toxicity' : {
         'launch_event' : 0,
-        'launcher_production' : 150478766.1,
+        'launcher_production' : 69735037.48,
         'launcher_ait' : 7701094.993,
-        'propellant_production' : 9203497.148,
-        'propellant_scheduling' : 29109377.02,
-        'launcher_transportation' : 35251.42104,
-        'launch_campaign' : 18683396.82
+        'propellant_production' : 17124098.34,
+        'propellant_scheduling' : 61938424.03,
+        'launcher_transportation' : 17341.87779,
+        'launch_campaign' : 18683396.82,
         },
     'human_toxicity' : {
         'launch_event' : 0,
-        'launcher_production' : 10.32571748,
+        'launcher_production' : 4.585385379,
         'launcher_ait' : 0.486234151,
-        'propellant_production' : 0.830068862,
-        'propellant_scheduling' : 1.915739911,
-        'launcher_transportation' : 0.003673529,
-        'launch_campaign' : 1.695861368
+        'propellant_production' : 1.520253794,
+        'propellant_scheduling' : 4.18110838,
+        'launcher_transportation' : 0.001653926,
+        'launch_campaign' : 1.695861368,
         },
     'totals' : {'total_baseline_carbon_emissions': 32557978.58182,
                 'total_worst_case_carbon_emissions' : 139733504.98182,
-                'total_ozone_depletion_baseline' : 22323.133620287,
-                'total_ozone_depletion_worst_case' : 22323.133620287,
-                'total_resource_depletion' : 7416.338989667,
-                'total_freshwater_toxicity' : 215211383.50204,
-                'total_human_toxicity' : 15.257295301
+                'total_ozone_depletion_baseline' : 86731.2592938982,
+                'total_ozone_depletion_worst_case' : 211086.2592938980,
+                'total_resource_depletion' : 3313.60,
+                'total_freshwater_toxicity' : 175199393.530898,
+                'total_human_toxicity' : 12.470
                 }
 }
