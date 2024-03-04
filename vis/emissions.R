@@ -75,7 +75,7 @@ df = data %>%
 check_sums = df %>%
   group_by(constellation) %>%
   summarize(annual_baseline_emission_Mt = round(
-    sum(cc_baseline)/1e9,3)) 
+    sum(cc_baseline)/1e9,1)) 
 
 totals <- df %>%
   group_by(constellation, rocket_type) %>%
@@ -88,7 +88,7 @@ climate_change <-
     aes(
       x = constellation,
       y = value / 1e9,
-      label = round(value / 1e9, 3)
+      label = round(value / 1e9, 2)
     ),
     size = 2.5,
     data = totals,
@@ -132,9 +132,9 @@ df1 = data %>%
   distinct(rocket_type, .keep_all = TRUE)
 
 check_sums = df1 %>%
-  group_by(constellation) %>%
+  group_by(constellation, rocket_type) %>%
   summarize(cc_worst_case_Mt = round(
-    sum(cc_worst_case)/1e9,3)) 
+    sum(cc_worst_case)/1e9,1)) 
 
 totals <- df1 %>%
   group_by(constellation, rocket_type) %>%
@@ -147,7 +147,7 @@ climate_change_wc <-
     aes(
       x = constellation,
       y = value / 1e9,
-      label = round(value / 1e9, 1)
+      label = round(value / 1e9, 2)
     ),
     size = 2.5,
     data = totals,

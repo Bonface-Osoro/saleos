@@ -33,13 +33,13 @@ df$combined = factor(
              "starlink falcon9", 
              "geo_generic unknown_hydrocarbon", "geo_generic unknown_hydrogen"  
   ),
-  labels = c("Kuiper\nGeneric-HYD", "Kuiper\nFalcon-9", 
-             "Kuiper\nGeneric-HYC", "Kuiper\nGeneric-HYC", 
-             "Kuiper\nGeneric-HYC", "Kuiper\nGeneric-HYD",
+  labels = c("Kuiper\nHYD", "Kuiper\nFalcon-9", 
+             "Kuiper\nHYC", "Kuiper\nHYC", 
+             "Kuiper\nHYC", "Kuiper\nHYD",
              
-             "OneWeb\nFalcon-9", "OneWeb\nGeneric-HYD", "OneWeb\nSoyuz-FG",
+             "OneWeb\nFalcon-9", "OneWeb\nHYD", "OneWeb\nSoyuz-FG",
              "Starlink\nFalcon-9", 
-             "GEO\nGeneric-HYC", "GEO\nGeneric-HYD")
+             "GEO\nHYC", "GEO\nHYD")
 )
 
 df$rocket_type = factor(
@@ -225,6 +225,10 @@ df$subscriber_scenario = factor(
   labels = c('Low', 'Baseline', 'High')
 )
 
+totals <- df
+totals$mean = round(totals$mean, 0)
+totals$sd = round(totals$sd, 0)
+
 capacity_per_user <-
   ggplot(df, aes(x = constellation, y = mean,
                  fill = subscriber_scenario)) +
@@ -299,6 +303,10 @@ df$subscriber_scenario = factor(
   ),
   labels = c('Low', 'Baseline', 'High')
 )
+
+totals <- df
+totals$mean = round(totals$mean, 0)
+totals$sd = round(totals$sd, 0)
 
 subscriber_traffic <-
   ggplot(df, aes(x = constellation, y = mean,
