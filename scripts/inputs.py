@@ -552,7 +552,7 @@ unknown_hyc = {
         'launcher_transportation' : 0.003673529,
         'launch_campaign' : 1.695861368
         },
-    'totals' : {'total_baseline_carbon_emissions': 41157655.38036,
+    'totals' : {'total_baseline_carbon_emissions': 39416121.49476,
                 'total_worst_case_carbon_emissions' : 58336758.93236,
                 'total_ozone_depletion_baseline' : 5000.51362028698,
                 'total_ozone_depletion_worst_case' : 22323.133620287,
