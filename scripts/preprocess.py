@@ -290,6 +290,9 @@ def multiorbit_sat_costs(i, constellation_params):
 
 if __name__ == '__main__':
 
+    print('Setting seed for consistent results')
+    random.seed(10)
+
     print('Running uq_capacity_inputs_generator()')
     uq_inputs_capacity(parameters)
 
