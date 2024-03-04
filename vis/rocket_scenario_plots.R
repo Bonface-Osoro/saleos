@@ -45,11 +45,12 @@ df$constellation = factor(
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
+############
 df$scenario = factor(
   df$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 'Scenario 3 (All Hydrocarbon)')
 )
 
 emission_subscriber <-
@@ -80,7 +81,7 @@ emission_subscriber <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 649)
+    limits = c(0, 500)
   ) +
   theme(
     legend.position = 'none',
@@ -110,6 +111,7 @@ png(
 
 print(emission_subscriber)
 dev.off()
+
 ###################
 ##TOTAL EMISSIONS##
 ###################
@@ -127,7 +129,8 @@ df$scenario = factor(
   df$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 
+             'Scenario 3 (All Hydrocarbon)')
 )
 
 data$impact_category = factor(
@@ -170,7 +173,8 @@ df$scenario = factor(
   df$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 
+             'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df %>%
@@ -200,7 +204,7 @@ climate_change <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 31.9),
+    limits = c(0, 22),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -237,7 +241,8 @@ df1$scenario = factor(
   df1$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 
+             'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df1 %>%
@@ -267,7 +272,7 @@ climate_change_wc <-
     y = bquote("Climate Change (Mt CO"["2"] ~ " eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 31.9),
+    limits = c(0, 22),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -303,7 +308,8 @@ df2$scenario = factor(
   df2$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 
+             'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df2 %>%
@@ -335,7 +341,7 @@ ozone_depletion <-
     fill = "Satellite Mission Stage"
   ) +
   scale_y_continuous(
-    limits = c(0, 49.9),
+    limits = c(0, 33),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -371,7 +377,7 @@ df3$scenario = factor(
   df3$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df3 %>%
@@ -403,7 +409,7 @@ ozone_depletion_wc <-
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 49.9),
+    limits = c(0, 33),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -439,7 +445,7 @@ df4$scenario = factor(
   df4$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df4 %>%
@@ -469,7 +475,7 @@ resource_depletion <-
     y = bquote("Resource Depletion (t Sb eq)"),
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 1750),
+    limits = c(0, 1250),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -505,7 +511,7 @@ df5$scenario = factor(
   df5$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df5 %>%
@@ -536,7 +542,7 @@ freshwater_ecotixicity <-
     #"["2"]~"
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 499),
+    limits = c(0, 299),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)
@@ -572,7 +578,7 @@ df6$scenario = factor(
   df6$scenario,
   levels = c('scenario1', 'scenario2', 'scenario3'),
   labels = c('Scenario 1 (Current/Planned)', 
-             'Scenario 2 (All Hydrocarbon)', 'Scenario 3 (All Hydrogen)')
+             'Scenario 2 (All Hydrogen)', 'Scenario 3 (All Hydrocarbon)')
 )
 
 totals <- df6 %>%
@@ -603,7 +609,7 @@ human_toxicity <-
     y = "Cases of Human Ecotoxicity",
     fill = "Satellite Mission Stage"
   ) + scale_y_continuous(
-    limits = c(0, 3800),
+    limits = c(0, 2600),
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0)

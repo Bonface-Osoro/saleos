@@ -53,7 +53,8 @@ constellation_capex <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  # scale_fill_brewer(palette = "Paired") + 
+  theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
