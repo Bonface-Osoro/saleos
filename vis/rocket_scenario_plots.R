@@ -18,9 +18,8 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "sensitivity_emissions.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 
-data = select(data, constellation, scenario,
-              subscriber_scenario, subscribers,  annual_baseline_emission_kg, 
-              annual_worst_case_emission_kg)
+data = select(data, constellation, scenario, subscriber_scenario, subscribers, 
+              annual_baseline_emission_kg)
 
 df = data %>%
   group_by(constellation, scenario, subscriber_scenario) %>%
