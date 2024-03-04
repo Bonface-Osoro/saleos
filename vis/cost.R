@@ -149,9 +149,9 @@ constellation_opex <-
   )
 
 
-#########################################
-##Constellation Total Cost of Ownership##
-#########################################
+####################################################
+##Annualized Constellation Total Cost of Ownership##
+####################################################
 
 
 df = data %>%
