@@ -17,7 +17,7 @@ Emissions produced during the launching of satellites depend on the utilized roc
 
 Most operators planning or launching LEO broadband satellites have used (or intend to use) SpaceX’s Falcon-9 or Falcon-Heavy, the European Space Agency’s Ariane rocket system, or prior to Spring 2022, Russia’s Soyuz-FG rocket, as detailed in `Figure 2`. 
 
-#### Figure 2 Technical details of launch rocket systems.
+#### Figure 2 Details of launch rocket systems.
 <p align="center">
   <img src="/docs/b_fig_2.jpg" />
 </p>
