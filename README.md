@@ -3,11 +3,12 @@
 Welcome to the Sustainability Analytics for Low Earth Orbit Satellites 
 (`saleos`) repository.
 
-Citation
----------
+Paper Citation
+--------------
 - Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability 
 assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. 
 https://arxiv.org/abs/2309.02338
+
 
 There is increasing concern about adverse environmental impacts produced by 
 Low Earth Orbit (LEO) megaconstellations. The `saleos` codebase provides an 
@@ -58,7 +59,7 @@ potential traffic demand based on different adoption scenarios, and (iv) a
 techno-economic model of the associated social and financial costs. `Figure 4` 
 illustrates the integrated assessment approach.
 
-#### Figure 4 Integrated assessment method.
+#### Figure 4 Integrated assessment modeling approach.
 <p align = 'center'>
   <img src= '/docs/method_box_diagram.png' />
 </p>
@@ -152,15 +153,8 @@ author).
 
 Acknowledgement
 ---------------
-We would like to thank George Mason University's department of Geography and 
-Geoinformation Science for funding the project. Secondly, we would like to 
-thank Nils Pacher and Dr. Inigo del Portillo of Massachusetts Institute of 
-Technology (MIT), Aeronautics and Astronautics Department for providing the 
-orbital parameter data of Starlink, OneWeb and Kuiper as well as a reproducible 
-python code for modeling the orbit of the three LEO constellations. We would 
-also like to thank Dr. Whitney Lohmeyer of Olin College of Engineering for 
-informally reviewing the capacity model. Lastly, we would like to thank two 
-anonymous reviewers and one satellite industry expert who provided substantial 
-scientific feedback on the peer-reviewed manuscript and capacity model 
-respectively that helped in enhancing quality and key contribution to the 
-literature. 
+EO would like to thank Geography and Geoinformation Sciences at George Mason 
+University for providing start-up funding for the project. Additionall, the 
+authors thank Nils Pacher and Dr. Inigo del Portillo for providing code for 
+modeling the orbit of the three LEO constellations, as well as Dr. Whitney 
+Lohmeyer for providing advice on the capacity model. 
