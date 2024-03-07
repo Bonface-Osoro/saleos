@@ -50,7 +50,7 @@ df$rocket_type = factor(
 
 totals <- df %>%
   group_by(combined) %>%
-  summarize(value = signif(sum(no_launches), 2))
+  summarize(value = sum(no_launches))
 
 sat_launches = 
   ggplot(df, aes(x = combined, y = no_launches)) +

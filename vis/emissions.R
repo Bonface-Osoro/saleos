@@ -74,8 +74,12 @@ df = data %>%
 
 check_sums = df %>%
   group_by(constellation) %>%
-  summarize(annual_baseline_emission_Mt = round(
-    sum(cc_baseline)/1e9,1)) 
+  summarize(
+    annual_baseline_emission_kg = round(sum(cc_baseline)/5,2),
+    baseline_emission_kg = round(sum(cc_baseline),1),
+    annual_baseline_emission_Mt = round(sum(cc_baseline)/5/1e9,2),
+    baseline_emission_Mt = round(sum(cc_baseline)/1e9,1)
+    ) 
 
 totals <- df %>%
   group_by(constellation, rocket_type) %>%
@@ -136,9 +140,14 @@ check_sums = df1 %>%
   summarize(cc_worst_case_Mt = round(
     sum(cc_worst_case)/1e9,1)) 
 
-totals <- df1 %>%
-  group_by(constellation, rocket_type) %>%
-  summarize(value = signif(sum(cc_worst_case)))
+check_sums = df1 %>%
+  group_by(constellation) %>%
+  summarize(
+    annual_baseline_emission_kg = round(sum(cc_worst_case)/5,2),
+    baseline_emission_kg = round(sum(cc_worst_case),1),
+    annual_baseline_emission_Mt = round(sum(cc_worst_case)/5/1e9,2),
+    baseline_emission_Mt = round(sum(cc_worst_case)/1e9,1)
+  ) 
 
 climate_change_wc <-
   ggplot(df1, aes(x = constellation, y = cc_worst_case / 1e9)) +

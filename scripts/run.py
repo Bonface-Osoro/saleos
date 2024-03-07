@@ -726,7 +726,7 @@ def calc_total_emissions():
             'total_human_toxicity' : 'total_human_toxicity_cases'}
     
     df1.rename(columns = renamed_columns, inplace = True)
-        
+    
     filename2 = 'total_emissions.csv'
     path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
     df1.to_csv(path_out2, index = False)

@@ -87,7 +87,7 @@ emission_subscriber <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 10),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -167,7 +167,7 @@ df = data %>%
 check_sums = df %>%
   group_by(constellation, scenario) %>%
   summarize(cc_baseline_sum = round(
-    sum(cc_baseline)/ 1e9,3)) 
+    sum(cc_baseline)/ 1e9,2)) 
 
 df$scenario = factor(
   df$scenario,
@@ -188,7 +188,7 @@ climate_change <-
     aes(
       x = constellation,
       y = value / 1e9,
-      label = round(value / 1e9, 3)
+      label = round(value / 1e9, 2)
     ),
     size = 2.5,
     data = totals,
@@ -213,7 +213,7 @@ climate_change <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -256,7 +256,7 @@ climate_change_wc <-
     aes(
       x = constellation,
       y = value / 1e9,
-      label = round(value / 1e9, 1)
+      label = round(value / 1e9, 2)
     ),
     size = 2.5,
     data = totals,
@@ -281,7 +281,7 @@ climate_change_wc <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -350,7 +350,7 @@ ozone_depletion <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -418,7 +418,7 @@ ozone_depletion_wc <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -484,7 +484,7 @@ resource_depletion <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),
@@ -551,7 +551,7 @@ freshwater_ecotixicity <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),
@@ -618,7 +618,7 @@ human_toxicity <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 8, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),

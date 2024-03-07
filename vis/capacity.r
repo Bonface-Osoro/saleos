@@ -183,7 +183,7 @@ df$CNR = factor(
 const_capacity <-
   ggplot(df, aes(
     x = constellation,
-    y = (mean) * 0.65 / 1e6,
+    y = (mean_gbps),
     fill = CNR
   )) +
   geom_bar(stat = "identity",
@@ -191,8 +191,8 @@ const_capacity <-
            width = 0.98) +
   geom_errorbar(
     aes(
-      ymin = mean * 0.65 / 1e6 - sd * 0.65 / 1e6,
-      ymax = mean * 0.65 / 1e6 + sd * 0.65 / 1e6
+      ymin = mean_gbps - sd_gbps,
+      ymax = mean_gbps + sd_gbps
     ),
     width = .2,
     position = position_dodge(.98),
@@ -212,7 +212,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 45)
+    limits = c(0, 53)
   ) +
   theme_minimal() +
   theme(
