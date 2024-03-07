@@ -14,7 +14,7 @@ data <-
     'interim_results_capacity.csv'
   ))
 data$constellation = factor(data$constellation, 
-     levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                            levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 #########################
 ##Channel capacity with##
@@ -183,7 +183,7 @@ df$CNR = factor(
 const_capacity <-
   ggplot(df, aes(
     x = constellation,
-    y = (mean_gbps),
+    y = (mean) * 0.65 / 1e6,
     fill = CNR
   )) +
   geom_bar(stat = "identity",
@@ -191,8 +191,8 @@ const_capacity <-
            width = 0.98) +
   geom_errorbar(
     aes(
-      ymin = mean_gbps - sd_gbps,
-      ymax = mean_gbps + sd_gbps
+      ymin = mean * 0.65 / 1e6 - sd * 0.65 / 1e6,
+      ymax = mean * 0.65 / 1e6 + sd * 0.65 / 1e6
     ),
     width = .2,
     position = position_dodge(.98),
@@ -212,7 +212,7 @@ const_capacity <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 53)
+    limits = c(0, 45)
   ) +
   theme_minimal() +
   theme(
@@ -246,13 +246,13 @@ const_capacity <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
 data2$constellation = factor(data2$constellation, 
-    levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                             levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
   summarize(mean = mean(capacity_per_user),
             sd = sd(capacity_per_user),
-            )
+  )
 
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 
