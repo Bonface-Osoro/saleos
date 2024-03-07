@@ -3,6 +3,12 @@
 Welcome to the Sustainability Analytics for Low Earth Orbit Satellites 
 (`saleos`) repository.
 
+Citation
+---------
+- Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability 
+assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. 
+https://arxiv.org/abs/2309.02338
+
 There is increasing concern about adverse environmental impacts produced by 
 Low Earth Orbit (LEO) megaconstellations. The `saleos` codebase provides an 
 open-source integrated assessment model capable of concurrently estimating 
@@ -129,12 +135,6 @@ Or if you want to develop the package:
    `python setup.py develop`
 
 Then run the scripts in the order defined in the previous section (`Using conda`).
-
-Citation
----------
-Ogutu, O. B., Oughton, E. J., Wilson, A. R, & Rao, A. (2023). Sustainability 
-assessment of Low Earth Orbit (LEO) satellite broadband mega-constellations. 
-arXiv preprint arXiv:2309.02338.
 
 Background and funding
 ----------------------
