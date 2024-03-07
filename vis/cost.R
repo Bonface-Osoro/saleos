@@ -29,22 +29,19 @@ data <- select(
 ##Constellation Capex##
 #######################
 
-df_capex = data %>%
+df = data %>%
   group_by(constellation) %>%
   summarize(mean = mean(capex_costs),
-                sd = sd(capex_costs),
-            mean_bn = round(mean(capex_costs)/1e9,2),
-            sd_bn = round(sd(capex_costs)/1e9,2)
-            )
+            sd = sd(capex_costs))
 
-df_capex$constellation = factor(
-  df_capex$constellation,
+df$constellation = factor(
+  df$constellation,
   levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_capex <-
-  ggplot(df_capex, aes(x = constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -69,7 +66,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 7800),
+    limits = c(0, 4599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -95,22 +92,19 @@ constellation_capex <-
 ##Constellation Total operating Costs##
 #######################################
 
-df_opex = data %>%
+df = data %>%
   group_by(constellation) %>%
   summarize(mean = mean(opex_costs),
-            sd = sd(opex_costs),
-            mean_bn = round(mean(opex_costs)/1e9,2),
-            sd_bn = round(sd(opex_costs)/1e9,2)
-  )
+            sd = sd(opex_costs))
 
-df_opex$constellation = factor(
-  df_opex$constellation,
+df$constellation = factor(
+  df$constellation,
   levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_opex <-
-  ggplot(df_opex, aes(x = constellation, y = mean / 1e6)) + 
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) + 
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -134,7 +128,7 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 7800),
+    limits = c(0, 4599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -160,22 +154,20 @@ constellation_opex <-
 ##Annualized Constellation Total Cost of Ownership##
 ####################################################
 
-df_tco = data %>%
-  group_by(constellation) %>%
-  summarize(mean = mean(total_cost_ownership),
-            sd = sd(total_cost_ownership),
-            mean_bn = round(mean(total_cost_ownership)/1e9,2),
-            sd_bn = round(sd(total_cost_ownership)/1e9,2)
-  )
 
-df_tco$constellation = factor(
-  df_tco$constellation,
+df = data %>%
+  group_by(constellation) %>%
+  summarize(mean = mean(total_cost_ownership / assessment_period_year),
+            sd = sd(total_cost_ownership / assessment_period_year))
+
+df$constellation = factor(
+  df$constellation,
   levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
   labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
 )
 
 constellation_tco <-
-  ggplot(df_tco, aes(x = constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -194,13 +186,13 @@ constellation_tco <-
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "TCO\n(US$ Millions)",
+    y = "Annualized TCO\n(US$ Millions)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 7800)
+    expand = c(0, 0), limits = c(0, 4599)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -271,9 +263,9 @@ df$constellation = factor(
 
 df$subscriber_scenario = factor(
   df$subscriber_scenario,
-                  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
-                  labels = c('Low', 'Baseline', 'High')
-  )
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
 
 constellation_capex_per_user <-
   ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
@@ -493,4 +485,3 @@ png(
 )
 print(output)
 dev.off()
-
