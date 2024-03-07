@@ -39,7 +39,7 @@ The method is based on (i) a Life Cycle Assessment (LCA) model of environmental 
 
 #### Figure 4 Integrated assessment method.
 <p align = 'center'>
-  <img src= '/docs/model.png' />
+  <img src= '/docs/method_box_diagram.png' />
 </p>
 
 ## Required data
