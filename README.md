@@ -10,7 +10,7 @@ While LEO megaconstellations are fronted as an alternative to terrestrial broadb
 
 #### Figure 1 Three key LEO constellations: Kuiper, OneWeb and Starlink (Details as of December 2023).
 <p align="center">
-  <img src="/docs/a_fig_1.jpg" />
+  <img src="/docs/a_fig_1.png" />
 </p>
 
 Emissions produced during the launching of satellites depend on the utilized rocket vehicle. 
@@ -19,7 +19,7 @@ Most operators planning or launching LEO broadband satellites have used (or inte
 
 #### Figure 2 Details of launch rocket systems.
 <p align="center">
-  <img src="/docs/b_fig_2.jpg" />
+  <img src="/docs/b_fig_2.png" />
 </p>
 
 The `saleos` codebase provides an open-source integrated assessment model capable of concurrently estimating environmental emissions, broadband capacity, and costs for different LEO satellite networks.
