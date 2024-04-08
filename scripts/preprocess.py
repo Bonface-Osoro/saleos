@@ -87,8 +87,8 @@ def multiorbit_sat_capacity(i, constellation_params):
     ) 
 
     dl_frequency_hz = random.randint(
-        constellation_params['dl_frequency_hz_low'], 
-        constellation_params['dl_frequency_hz_high']
+        int(constellation_params['dl_frequency_hz_low']), 
+        int(constellation_params['dl_frequency_hz_high'])
     )
 
     power_dbw = random.randint(constellation_params['power_dbw_low'], 
