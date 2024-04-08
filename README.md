@@ -127,13 +127,9 @@ and run the following `r` scripts in any order.
 
 Quick start
 -----------
-To quick start, install the `saleos` package.
+To quick start, execute the `setup.py` file.
 
-  `python setup.py install`
-
-Or if you want to develop the package:
-
-   `python setup.py develop`
+  `pip install .`
 
 Then run the scripts in the order defined in the previous section (`Using conda`).
 
