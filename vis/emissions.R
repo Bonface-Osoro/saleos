@@ -99,7 +99,7 @@ climate_change <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_brewer(palette = "Spectral") + coord_flip() +
   labs(
     colour = NULL,
     title = "a",

@@ -80,7 +80,7 @@ social_carbon_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -140,7 +140,7 @@ social_cost_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -199,7 +199,7 @@ social_carbon_per_subscriber_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -207,7 +207,7 @@ social_carbon_per_subscriber_baseline <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Annual Social Cost/Subscriber<br>(Baseline) (US$)") + 
+  ylab("Annual Social Cost/User<br>(Baseline) (US$)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 114),
@@ -258,7 +258,7 @@ social_carbon_per_subscriber_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -266,7 +266,7 @@ social_carbon_per_subscriber_worst_case <-
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Annual Social Cost/Subscriber<br>(Worst-case) (US$)") + 
+  ylab("Annual Social Cost/User<br>(Worst-case) (US$)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 114),
