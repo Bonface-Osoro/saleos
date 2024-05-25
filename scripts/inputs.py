@@ -11,7 +11,7 @@ link below. https://arxiv.org/abs/2309.02338
 """
 parameters = {                                            
     'starlink': {
-        'number_of_satellites': 4425,
+        'number_of_satellites': 44250,
         'number_of_ground_stations': 150,
         'number_of_planes' : 190,
         'name':'Starlink',
@@ -81,7 +81,7 @@ parameters = {
         'assessment_period': 5
     },
     'oneweb': {
-        'number_of_satellites': 720,
+        'number_of_satellites': 7200,
         'number_of_ground_stations': 44,
         'number_of_planes' : 100,
         'name': 'OneWeb',
@@ -151,7 +151,7 @@ parameters = {
         'assessment_period': 5
     },
     'kuiper': {
-        'number_of_satellites': 3236,
+        'number_of_satellites': 32360,
         'number_of_ground_stations': 12,
         'number_of_planes' : 98,
         'name': 'Kuiper',
@@ -221,7 +221,7 @@ parameters = {
         'assessment_period': 5
     },
     'geo': {
-        'number_of_satellites': 19,
+        'number_of_satellites': 190,
         'number_of_ground_stations': 12,
         'number_of_planes' : 98,
         'name': 'GEO',

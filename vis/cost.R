@@ -66,7 +66,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 4599),
+    limits = c(0, 45990),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -192,7 +192,7 @@ constellation_tco <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 4599)
+    expand = c(0, 0), limits = c(0, 45990)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -292,7 +292,7 @@ constellation_capex_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 4999)
+    expand = c(0, 0), limits = c(0, 49990)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -427,7 +427,7 @@ constellation_tco_per_user <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 4999)
+    expand = c(0, 0), limits = c(0, 25000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
