@@ -256,7 +256,7 @@ capacity_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 225)
+    limits = c(0, 2250)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -333,7 +333,7 @@ subscriber_traffic <-
   ) +
   scale_y_continuous(
     labels = comma,
-    expand = c(0, 0), limits = c(0, 2799)
+    expand = c(0, 0), limits = c(0, 27990)
   ) + theme_minimal() +
   theme(
     axis.title.y = element_text(size = 6),
@@ -404,7 +404,7 @@ constellation_tco_per_user <-
   ) +
   scale_y_continuous(
     labels = comma,
-    expand = c(0, 0), limits = c(0, 800)
+    expand = c(0, 0), limits = c(0, 6000)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -475,7 +475,7 @@ constellation_monthly_cost_per_user <-
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
-    limits = c(0, 79)
+    limits = c(0, 500)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -529,4 +529,3 @@ png(
 )
 print(aggregate_metrics)
 dev.off()
-
