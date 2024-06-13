@@ -1,9 +1,7 @@
-﻿Properties,Falcon_9,Falcon Heavy,Soyuz_FG,Ariane_5
-Dry Mass,22 tonnes,66 tonnes,14 tonnes,53 tonnes
-Operator,SpaceX,SpaceX,Progress Rocket Space Center,European Space Agency
-Payload  to LEO,23 tonnes,64 tonnes,8 tonnes,20 tonnes
-Fuel Type,Kerosene (Rocket Propellant-1),Kerosene (Rocket Propellant-1),Kerosene and Hypergolic,"Solid, Hypergolic and Cryogenic"
-Height,70 m,70 m,46 m,46 - 52 m
-Price Per Launch,US$ 62 Million,US$ 90 Million,US$ 80 Million,US$ 149-198 Million
-Propellant Mass,488 tonnes,"1,397 tonnes",256 tonnes,"7,645 tonnes"
-Fuel ,Hydrocarbon,Hydrocarbon,Hydrocarbon,Hydrogen
+﻿Properties,Falcon-9,Falcon-Heavy,Starship,Soyuz-FG ,Ariane 5,Ariane 62,Ariane 64,LVM3,Vulcan Centaur,New Glenn,Long March 5
+Operator,SpaceX,SpaceX,SpaceX,PRSC,ESA,ESA,ESA,ISRO,ULA,Blue Origin,CASTC
+Payload to LEO (tonnes),22.8,63.8,100.0 - 150.0,7.1,20.0,10.3,18.6,7.9,19.0,44.9,25.0
+Fuel Type,Kerosene (RP-1),Kerosene (RP-1),Liquid methane,Kerosene (RP-1),Liquid hydrogen,Liquid hydrogen,Liquid hydrogen,"UDMH, Hydrazine",Liquid hydrogen,Liquefied natural gas (LNG),"Liquid hydrogen, Kerosene (RP-1)"
+Height (m),70.0,70.0,121.0,51.0,50.5,62.0,62.0,43.5,61.6,98.0,53.7
+Price Per Launch,$67 million,$97 million,$10 million,$80 million,$178 million,$77 to $126 million,$77 to $126 million,$54 million,$110 million,$20 million,$70 million
+Fuel ,Hydrocarbon,Hydrocarbon,Hydrocarbon,Hydrocarbon,Hydrogen,Hydrogen,Hydrogen,Mixed,Hydrogen,Hydrocarbon,Mixed
