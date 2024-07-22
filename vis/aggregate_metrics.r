@@ -145,11 +145,11 @@ df$value_type = factor(
   levels = c('value', 'value_wc'),
   labels = c('Baseline', 'Worst-case')
 )
+df <- df[df$value_type == "Worst-case", ]
 
 emission_subscriber <-
   ggplot(df,
-         aes(x = constellation, y = mean,
-             fill = value_type)) +
+         aes(x = constellation, y = mean)) +
   geom_bar(position = "dodge", stat = "identity") +
   geom_errorbar(
     data = df,
@@ -166,9 +166,7 @@ emission_subscriber <-
     colour = NULL,
     title = "",
     subtitle = "b",
-    x = NULL,
-    fill = 'Emissions\nScenario'
-  ) +
+    x = NULL) +
   ylab("Annual Emissions<br>(kg CO<sub>2</sub> eq/Subscriber)") +
   scale_y_continuous(
     labels = function(y)
@@ -187,11 +185,7 @@ emission_subscriber <-
     axis.text.y = element_text(size = 7),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
-    legend.direction = "horizontal",
-    legend.position = c(0.5, 0.9),
     axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
     plot.subtitle = element_text(size = 8, face = "bold")
   )
 

@@ -45,8 +45,8 @@ data$impact_category = factor(
 
 data$constellation = factor(
   data$constellation,
-  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
+  labels = c('Starlink', 'OneWeb', 'Kuiper', 'GEO'))
 
 data <- data[data$subscriber_scenario == "subscribers_baseline", ]
 
@@ -80,7 +80,7 @@ social_carbon_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Spectral") + 
+  scale_fill_brewer(palette = "Dark2") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -140,7 +140,7 @@ social_cost_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Spectral") + 
+  scale_fill_brewer(palette = "Dark2") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -199,11 +199,11 @@ social_carbon_per_subscriber_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Spectral") + 
+  scale_fill_brewer(palette = "Dark2") + 
   theme_minimal() +
   labs(
     colour = NULL,
-    subtitle = "c",
+    subtitle = "b",
     x = NULL,
     fill = "Satellite\nMission\nStage"
   ) +
@@ -258,7 +258,7 @@ social_carbon_per_subscriber_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Spectral") + 
+  scale_fill_brewer(palette = "Dark2") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -295,12 +295,10 @@ social_carbon_per_subscriber_worst_case <-
 social_cost_of_carbon_panel <-
   ggarrange(
     social_carbon_baseline,
-    social_cost_worst_case,
     social_carbon_per_subscriber_baseline,
-    social_carbon_per_subscriber_worst_case,
     common.legend = TRUE,
     legend = 'bottom',
-    nrow = 2,
+    nrow = 1,
     ncol = 2
   )
 
@@ -310,7 +308,7 @@ png(
   path,
   units = "in",
   width = 5.5,
-  height = 4,
+  height = 3,
   res = 480
 )
 print(social_cost_of_carbon_panel)

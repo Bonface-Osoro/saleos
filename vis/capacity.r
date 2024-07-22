@@ -14,7 +14,7 @@ data <-
     'interim_results_capacity.csv'
   ))
 data$constellation = factor(data$constellation, 
-                            levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                            levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
 
 #########################
 ##Channel capacity with##
@@ -246,7 +246,7 @@ const_capacity <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
 data2$constellation = factor(data2$constellation, 
-                             levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                             levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%

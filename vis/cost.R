@@ -36,8 +36,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_capex <-
@@ -66,7 +66,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 4599),
+    limits = c(0, 9599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -99,8 +99,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_opex <-
@@ -128,7 +128,7 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 4599),
+    limits = c(0, 9599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -160,8 +160,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_tco_total <-
@@ -223,8 +223,8 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_tco <-
@@ -253,7 +253,7 @@ constellation_tco <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 4599)
+    expand = c(0, 0), limits = c(0, 9599)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -280,7 +280,7 @@ folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 filename = "final_cost_results.csv"
 data <- read.csv(file.path(folder, '..', 'results', filename))
 data$constellation = factor(data$constellation, 
-                            levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                            levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
 
 data = select(data, constellation, subscriber_scenario,  
               user_monthly_cost)
@@ -390,8 +390,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
@@ -458,8 +458,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
@@ -525,8 +525,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
