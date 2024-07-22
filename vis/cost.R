@@ -36,12 +36,12 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_capex <-
-  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e6, fill = constellation)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -53,7 +53,7 @@ constellation_capex <-
     color = 'black',
     size = 0.2
   ) +
-  # scale_fill_brewer(palette = "Paired") + 
+  scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(
     colour = NULL,
@@ -66,7 +66,7 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 4599),
+    limits = c(0, 9599),
     expand = c(0, 0)
   ) + theme_minimal() +
   theme(
@@ -99,12 +99,12 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_opex <-
-  ggplot(df, aes(x = constellation, y = mean / 1e6)) + 
+  ggplot(df, aes(x = constellation, y = mean / 1e6, fill = constellation)) + 
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -116,7 +116,7 @@ constellation_opex <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -128,8 +128,69 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 4599),
+    limits = c(0, 9599),
     expand = c(0, 0)
+  ) + theme_minimal() +
+  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.position = 'bottom',
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 8),
+    plot.title = element_text(size = 10, face = "bold")
+  )
+
+
+###########################
+##Total Cost of Ownership##
+###########################
+df = data %>%
+  group_by(constellation) %>%
+  summarize(mean = mean(total_cost_ownership),
+            sd = sd(total_cost_ownership))
+
+df$constellation = factor(
+  df$constellation,
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
+)
+
+constellation_tco_total <-
+  ggplot(df, aes(x = constellation, y = mean / 1e6, fill = constellation)) +
+  geom_bar(stat = "identity",
+           position = position_dodge(),
+           width = 0.9) +
+  geom_errorbar(
+    aes(ymin = mean / 1e6 - sd / 1e6,
+        ymax = mean / 1e6 + sd / 1e6),
+    width = .2,
+    position = position_dodge(.9),
+    color = 'black',
+    size = 0.2
+  ) +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  theme(legend.position = 'right') +
+  labs(
+    colour = NULL,
+    title = " ",
+    subtitle = NULL,
+    x = NULL,
+    y = "TCO\n(US$ Millions)",
+    fill = 'Cost\nScenario'
+  ) +
+  scale_y_continuous(
+    labels = function(y)
+      format(y, scientific = FALSE),
+    expand = c(0, 0), limits = c(0, 9599)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -162,12 +223,12 @@ df = data %>%
 
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 constellation_tco <-
-  ggplot(df, aes(x = constellation, y = mean / 1e6)) +
+  ggplot(df, aes(x = constellation, y = mean / 1e6, fill = constellation)) +
   geom_bar(stat = "identity",
            position = position_dodge(),
            width = 0.9) +
@@ -179,7 +240,7 @@ constellation_tco <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -192,7 +253,7 @@ constellation_tco <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 4599)
+    expand = c(0, 0), limits = c(0, 9599)
   ) + theme_minimal() +
   theme(
     strip.text.x = element_blank(),
@@ -212,15 +273,87 @@ constellation_tco <-
     plot.title = element_text(size = 10, face = "bold")
   )
 
+###################################
+## Average Monthly Cost per User ##
+###################################
+folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+filename = "final_cost_results.csv"
+data <- read.csv(file.path(folder, '..', 'results', filename))
+data$constellation = factor(data$constellation, 
+                            levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
+
+data = select(data, constellation, subscriber_scenario,  
+              user_monthly_cost)
+
+df <- data %>%
+  group_by(constellation, subscriber_scenario) %>%
+  summarize(mean = mean(user_monthly_cost),
+            sd = sd(user_monthly_cost))
+
+df$subscriber_scenario = as.factor(df$subscriber_scenario)
+df$subscriber_scenario = factor(
+  df$subscriber_scenario,
+  levels = c('subscribers_low', 'subscribers_baseline', 'subscribers_high'),
+  labels = c('Low', 'Baseline', 'High')
+)
+
+constellation_monthly_cost_per_user <-
+  ggplot(df, aes(x = constellation, y = mean, fill = subscriber_scenario)) +
+  geom_bar(stat = "identity",
+           position = position_dodge(),
+           width = 0.9) +
+  geom_errorbar(
+    aes(ymin = mean - sd,
+        ymax = mean + sd),
+    width = .2,
+    position = position_dodge(.9),
+    color = 'black',
+    size = 0.2
+  ) +
+  scale_fill_brewer(palette = 'Spectral') +
+  theme_minimal() +
+  labs(
+    colour = NULL,
+    title = " ",
+    subtitle = NULL,
+    x = NULL,
+    y = "Mean Monthly TCO \n(US$/User)",
+    fill = 'Adoption\nScenario'
+  ) +
+  scale_y_continuous(
+    labels = comma,
+    expand = c(0, 0),
+    limits = c(0, 79)
+  ) + theme_minimal() +
+  theme(
+    strip.text.x = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    axis.title.y = element_text(size = 6),
+    axis.line.x  = element_line(size = 0.15),
+    axis.line.y  = element_line(size = 0.15),
+    legend.direction = "horizontal",
+    legend.position = c(0.5, 0.9),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    plot.subtitle = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 10, face = "bold")
+  )
+
 total_cost <- ggarrange(
   constellation_capex,
   constellation_opex,
+  constellation_tco_total,
   constellation_tco,
   nrow = 1,
-  ncol = 3,
+  ncol = 4,
   common.legend = T,
-  legend = "bottom",
-  labels = c("a", "b", "c"),
+  legend = "none",
+  labels = c("a", "b", "c", "d"),
   font.label = list(size = 9)
 )
 
@@ -257,8 +390,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
@@ -280,13 +413,13 @@ constellation_capex_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "Capex\n(US$/Subscriber)",
+    y = "Capex\n(US$/User)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -325,8 +458,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
@@ -348,13 +481,13 @@ constellation_opex_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "Opex\n(US$/Subscriber)",
+    y = "Opex\n(US$/User)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -392,8 +525,8 @@ df = data %>%
 df$subscriber_scenario = as.factor(df$subscriber_scenario)
 df$constellation = factor(
   df$constellation,
-  levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$subscriber_scenario = factor(
@@ -415,13 +548,13 @@ constellation_tco_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
-    y = "TCO\n(US$/Subscriber)",
+    y = "TCO\n(US$/User)",
     fill = 'Cost\nScenario'
   ) +
   scale_y_continuous(
@@ -455,11 +588,12 @@ cost_per_user <- ggarrange(
   constellation_capex_per_user,
   constellation_opex_per_user,
   constellation_tco_per_user,
+  constellation_monthly_cost_per_user,
   nrow = 1,
-  ncol = 3,
+  ncol = 4,
   common.legend = T,
   legend = "bottom",
-  labels = c("d", "e", "f"),
+  labels = c("e", "f", "g", "h"),
   font.label = list(size = 9)
 )
 
@@ -480,7 +614,7 @@ png(
   path,
   units = "in",
   width = 9,
-  height = 6,
+  height = 5,
   res = 480
 )
 print(output)

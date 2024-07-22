@@ -14,7 +14,7 @@ data <-
     'interim_results_capacity.csv'
   ))
 data$constellation = factor(data$constellation, 
-                            levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                            levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
 
 #########################
 ##Channel capacity with##
@@ -46,7 +46,7 @@ chn_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -118,7 +118,7 @@ sat_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") + theme_minimal() +
+  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
   labs(
     colour = NULL,
     title = " ",
@@ -199,7 +199,7 @@ const_capacity <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Spectral") +
   labs(
     colour = NULL,
     title = " ",
@@ -246,7 +246,7 @@ const_capacity <-
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 data2 <- read.csv(file.path(folder, '..', 'results', 'final_capacity_results.csv'))
 data2$constellation = factor(data2$constellation, 
-                             levels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO'))
+                             levels = c('Starlink','OneWeb', 'Kuiper', 'GEO'))
 
 df = data2 %>%
   group_by(constellation, subscriber_scenario) %>%
@@ -280,13 +280,13 @@ capacity_per_user <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Spectral") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "d",
     x = NULL,
-    y = "Mean Peak Capacity\n(Mbps/Subscriber)",
+    y = "Mean Peak Capacity\n(Mbps/User)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -352,13 +352,13 @@ monthly_traffic <-
     color = 'black',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Spectral") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "e",
     x = NULL,
-    y = "Mean Peak Monthly \nTraffic (GB/Subscriber)",
+    y = "Mean Peak Monthly \nTraffic (GB/User)",
     fill = 'Adoption\nScenario'
   ) +
   scale_y_continuous(
@@ -419,14 +419,14 @@ per_user_area <-
     hjust = -0.1,
     angle = 90
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Spectral") +
   labs(
     colour = NULL,
     title = " ",
     subtitle = "f",
     x = NULL,
     fill = 'Adoption\nScenario'
-  ) + ylab('Mean Subscribers<br>(Subscribers/km<sup>2</sup>)') +
+  ) + ylab('Mean Users<br>(Users/km<sup>2</sup>)') +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),

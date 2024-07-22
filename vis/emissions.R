@@ -140,6 +140,10 @@ check_sums = df1 %>%
   summarize(cc_worst_case_Mt = round(
     sum(cc_worst_case)/1e9,1)) 
 
+totals <- df1 %>%
+  group_by(constellation, rocket_type) %>%
+  summarize(value = signif(sum(cc_worst_case)))
+
 check_sums = df1 %>%
   group_by(constellation) %>%
   summarize(
@@ -226,7 +230,7 @@ ozone_depletion <-
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "c",
+    title = "b",
     subtitle = " ",
     x = NULL,
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
@@ -347,7 +351,7 @@ resource_depletion <-
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "e",
+    title = "c",
     subtitle = " ",
     x = NULL,
     y = bquote("Resource Depletion (t Sb eq)"),
@@ -406,7 +410,7 @@ freshwater_ecotixicity <-
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "f",
+    title = "d",
     subtitle = " ",
     x = NULL,
     y = bquote('Water Amount (PAF.M3.Day' *  ~ 10 ^ 8 * ')'),
@@ -467,7 +471,7 @@ human_toxicity <-
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "g",
+    title = "e",
     subtitle = " ",
     x = NULL,
     y = "Cases of Human Ecotoxicity",
@@ -554,9 +558,7 @@ legends <-
 
 pub_emission <- ggarrange(
   climate_change,
-  climate_change_wc,
   ozone_depletion,
-  ozone_depletion_wc,
   resource_depletion,
   freshwater_ecotixicity,
   human_toxicity,
@@ -571,7 +573,7 @@ png(
   path,
   units = "in",
   width = 9,
-  height = 10,
+  height = 9,
   res = 480
 )
 

@@ -8,7 +8,7 @@ library(scales)
 folder <- dirname(rstudioapi::getSourceEditorContext()$path)
 visualizations = file.path(folder, '..', 'vis')
 
-color_palette = 'Paired'
+color_palette = 'Dark2'
 
 ###########################
 ## Emissions / subscriber##
@@ -41,8 +41,8 @@ totals$sd = round(totals$sd, 0)
 
 df$constellation = factor(
   df$constellation,
-  levels = c('kuiper', 'oneweb', 'starlink', 'geo_generic'),
-  labels = c('Kuiper', 'OneWeb', 'Starlink', 'GEO')
+  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 ############
@@ -71,12 +71,12 @@ emission_subscriber <-
   labs(
     colour = NULL,
     title = "Evaluating the Emissions Impacts of Rocket Fuel Type.",
-    subtitle = "Reported for annual emissions per subscriber by rocket scenario and constellation.",
+    subtitle = "Reported for annual emissions per user by rocket scenario and constellation.",
     x = NULL,
     fill = 'Emissions\nScenario'
   ) +
-  ylab("Annual Emissions<br>(kg CO<sub>2</sub> eq/Subscriber)") +
-  scale_fill_brewer(palette = "Paired") +
+  ylab("Annual Emissions<br>(kg CO<sub>2</sub> eq/User)") +
+  scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
@@ -87,7 +87,7 @@ emission_subscriber <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 10, face = "bold"),
     plot.subtitle = element_text(size = 10),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -121,8 +121,8 @@ data <- read.csv(file.path(folder, '..', 'results', 'sensitivity_emissions.csv')
 #Rename the constellation and emission type column values
 data$constellation = factor(
   data$constellation,
-  levels = c('geo_generic', 'starlink', 'oneweb', 'kuiper'),
-  labels = c('GEO', 'Starlink', 'OneWeb', 'Kuiper')
+  levels = c('starlink', 'oneweb', 'kuiper', 'geo_generic'),
+  labels = c('Starlink','OneWeb', 'Kuiper', 'GEO')
 )
 
 df$scenario = factor(
@@ -213,7 +213,7 @@ climate_change <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -281,8 +281,8 @@ climate_change_wc <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
-    plot.subtitle = element_text(size = 6),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 10),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
     legend.title = element_text(size = 6),
@@ -334,7 +334,7 @@ ozone_depletion <-
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "c",
+    title = "b",
     subtitle = " ",
     x = NULL,
     y = bquote("Ozone Depletion (kt CFC-11 eq)"),
@@ -350,7 +350,7 @@ ozone_depletion <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -418,7 +418,7 @@ ozone_depletion_wc <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 9),
@@ -469,7 +469,7 @@ resource_depletion <-
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "e",
+    title = "c",
     subtitle = " ",
     x = NULL,
     y = bquote("Resource Depletion (t Sb eq)"),
@@ -484,7 +484,7 @@ resource_depletion <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),
@@ -535,7 +535,7 @@ freshwater_ecotixicity <-
   )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "f",
+    title = "d",
     subtitle = " ",
     x = NULL,
     y = bquote('Water Amount (PAF.M3.Day' *  ~ 10 ^ 8 * ')'),
@@ -551,7 +551,7 @@ freshwater_ecotixicity <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),
@@ -603,7 +603,7 @@ human_toxicity <-
   scale_fill_brewer(palette = "Dark2") + coord_flip() +
   labs(
     colour = NULL,
-    title = "g",
+    title = "e",
     subtitle = " ",
     x = NULL,
     y = "Cases of Human Ecotoxicity",
@@ -618,7 +618,7 @@ human_toxicity <-
     legend.position = 'none',
     axis.text.x = element_text(size = 9),
     panel.spacing = unit(0.6, "lines"),
-    plot.title = element_text(size = 8, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
     plot.subtitle = element_text(size = 6),
     axis.text.y = element_text(size = 9),
     axis.title.y = element_markdown(size = 12),
@@ -690,9 +690,7 @@ legends <-
 
 pub_emission <- ggarrange(
   climate_change,
-  climate_change_wc,
   ozone_depletion,
-  ozone_depletion_wc,
   resource_depletion,
   freshwater_ecotixicity,
   human_toxicity,
@@ -707,7 +705,7 @@ png(
   path,
   units = "in",
   width = 12,
-  height = 11,
+  height = 9,
   res = 480
 )
 
