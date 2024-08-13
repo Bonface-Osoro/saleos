@@ -12,6 +12,7 @@ from itertools import tee
 from collections import Counter
 from collections import OrderedDict
 
+
 def opex_cost(regulation_fees, ground_station_energy, staff_costs,
               subscriber_acquisition, maintenance, discount_rate, 
               assessment_period):
@@ -40,8 +41,8 @@ def opex_cost(regulation_fees, ground_station_energy, staff_costs,
     -------
     annual_opex : float
             The operating expenditure costs annually.
-    """
 
+    """
     opex_costs = (regulation_fees + ground_station_energy + staff_costs 
                   + subscriber_acquisition + maintenance) 
 
@@ -53,7 +54,6 @@ def opex_cost(regulation_fees, ground_station_energy, staff_costs,
         year_costs.append(yearly_opex)
    
     annual_opex = sum(year_costs)
-
 
     return annual_opex
 
@@ -96,7 +96,6 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
             The total cost of ownership.
 
     """
-
     capex = (satellite_manufacturing + satellite_launch_cost 
              + ground_station_cost + fiber_infrastructure_cost) 
 
@@ -111,7 +110,6 @@ def cost_model(satellite_manufacturing, satellite_launch_cost,
         year_costs.append(yearly_opex)
 
     total_cost_ownership = capex + sum(year_costs) + opex_costs
-
 
     return total_cost_ownership
 
@@ -135,6 +133,5 @@ def user_monthly_cost(tco_per_user, lifespan):
 
     """
     user_monthly_cost = tco_per_user / (lifespan * 12)
-
 
     return user_monthly_cost

@@ -97,7 +97,6 @@ def calc_emission_type(df, rocket, datapoint, emission_category, no_launches):
     emission_dict['human_toxicity'] = (
         df['human_toxicity'].loc[datapoint])
 
-
     return emission_dict
 
 
@@ -352,7 +351,6 @@ def calc_sensitivity_emissions():
     
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
-
 
     return None
 
