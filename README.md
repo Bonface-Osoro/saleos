@@ -153,4 +153,4 @@ EO would like to thank Geography and Geoinformation Sciences at George Mason
 University for providing start-up funding for the project. Additionall, the 
 authors thank Nils Pacher and Dr. Inigo del Portillo for providing code for 
 modeling the orbit of the three LEO constellations, as well as Dr. Whitney 
-Lohmeyer for providing advice on the capacity model. 
+Lohmeyer for providing advice on the satellite capacity model. 
