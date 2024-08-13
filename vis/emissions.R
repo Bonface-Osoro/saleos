@@ -37,7 +37,7 @@ data$constellation = factor(
 data$rocket_type = factor(
   data$rocket_type,
   levels = c('hydrocarbon', 'hydrogen'),
-  labels = c('Hydrocarbon', 'Hydrogen')
+  labels = c('Hydrocarbon (HYC)', 'Hydrogen (HYD)')
 )
 
 data$impact_category = factor(
@@ -563,7 +563,7 @@ pub_emission <- ggarrange(
   freshwater_ecotixicity,
   human_toxicity,
   legends,
-  nrow = 4,
+  nrow = 3,
   ncol = 2
 )
 
@@ -573,7 +573,7 @@ png(
   path,
   units = "in",
   width = 9,
-  height = 9,
+  height = 7,
   res = 480
 )
 

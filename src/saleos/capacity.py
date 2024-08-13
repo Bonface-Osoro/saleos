@@ -55,15 +55,13 @@ def calc_geographic_metrics(number_of_satellites, total_area_earth_km_sq):
 
     satellite_coverage_area_km = (area_of_earth_covered / number_of_satellites)
 
-
     return satellite_coverage_area_km
 
 
 def signal_distance(orbital_altitude_km, elevation_angle):
     """
-    This function calculates the slant 
-    range between the satellite and the 
-    ground user
+    This function calculates the slant range between the satellite 
+    and the ground user.
 
     Parameters
     ----------
@@ -78,6 +76,7 @@ def signal_distance(orbital_altitude_km, elevation_angle):
     distance_km : float
         Slant path based on the satellite 
         minimum elevation angle
+
     """
     radius_earth_km = 6378
     angle_radians = np.radians(elevation_angle)
@@ -90,13 +89,13 @@ def signal_distance(orbital_altitude_km, elevation_angle):
     slant_distance = round((radius_earth_km * ((np.sqrt(first_term 
                      - second_term)) - third_term)), 4)
 
-
     return slant_distance
 
 
 def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
     """
-    This function calculates the nadir angle between a satellite and user.
+    This function calculates the nadir angle between a satellite 
+    and user.
 
     Parameters
     -----------
@@ -119,14 +118,12 @@ def calc_sat_centric_angle(orbital_altitude_km, elevation_angle):
     nadir_angle_rad = math.asin(nadir)
     nadir_angle_deg = math.degrees(nadir_angle_rad)
 
-
     return nadir_angle_deg
 
 
 def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
     """
-    This function calculates 
-    the earth central angle
+    This function calculates the earth central angle.
 
     Parameters
     ----------
@@ -144,14 +141,13 @@ def calc_earth_central_angle(orbital_altitude_km, elevation_angle):
     nadir_angle = calc_sat_centric_angle(orbital_altitude_km, elevation_angle)   
     earth_central_angle = 90 - (elevation_angle + nadir_angle)
 
-
     return earth_central_angle
 
 
 def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
     """
-    This function calculate the satellite coverage for different elevation angle 
-    and orbital altitude.
+    This function calculate the satellite coverage for different 
+    elevation angle and orbital altitude.
 
     Parameters
     ----------
@@ -175,7 +171,6 @@ def calc_satellite_coverage(orbital_altitude_km, elevation_angle):
     outer_term = 2 * np.pi * radius_earth_km ** 2
     inner_term = 1 - cos_angle
     satellite_coverage = outer_term * inner_term
-
 
     return satellite_coverage
 
@@ -203,10 +198,11 @@ def calc_free_path_loss(frequency, distance_km):
 
     """
     frequency = (frequency / (10 ** 9))
-    free_path_loss = ((20 * np.log10(frequency)) + (20 * np.log10(distance_km)) 
-                    + (92.44))
+    free_path_loss = (
+        (20 * np.log10(frequency)) + 
+        (20 * np.log10(distance_km)
+        ) + (92.44))
     
-
     return free_path_loss
 
 
@@ -239,7 +235,6 @@ def calc_antenna_gain(c, d, f, n):
     #Calculate antenna_gain
     antenna_gain = (math.log10((n * np.pi * d) / (lambda_wavelength ** 2))) * 10
 
-
     return antenna_gain
 
 
@@ -266,7 +261,6 @@ def calc_eirpd(power, antenna_gain):
     """
     eirp = power + antenna_gain
 
-
     return eirp
 
 
@@ -292,7 +286,6 @@ def calc_losses(earth_atmospheric_losses, all_other_losses):
 
     """
     losses = earth_atmospheric_losses + all_other_losses
-
 
     return losses
 
@@ -322,7 +315,6 @@ def calc_received_power(eirp, path_loss, receiver_gain, losses):
 
     """
     received_power = eirp + receiver_gain - path_loss - losses
-
 
     return received_power
 
@@ -363,8 +355,9 @@ def calc_noise():
     k = 1.38e-23  #Boltzmann's constant k = 1.38×10−23 joules per kelvin
     t = 290  #Temperature of the receiver system T0 in kelvins
     b = 0.25 #Detection bandwidth (BW) in Hz
-    noise = (10 * (math.log10((k * t * 1000)))) + (10 * (math.log10(b * 10 ** 9)
-                                                         ))
+    noise = (
+        10 * (math.log10((k * t * 1000)))) + (10 * (math.log10(b * 10 ** 9))
+    )
 
     return noise
 
@@ -389,7 +382,6 @@ def calc_cnr(received_power, noise):
 
     """
     cnr = received_power - noise
-
 
     return cnr
 
@@ -480,9 +472,12 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
     """
     Calculate the capacity of each satellite in Mbps based on [1],[2].
 
-    Satellite Capacity (Mbps) = Channel bandwidth (Hz) x Spectral efficiency
-                                x Number of channels x Polarization x Number of 
-                                beams
+    Satellite Capacity (Mbps) = Channel bandwidth (Hz) x 
+                                Spectral efficiency x 
+                                Number of channels x 
+                                Polarization x 
+                                Number of beams
+
     Polarization is 1 if the same bandwidth is used for feeder links.
 
     Parameters
@@ -507,7 +502,6 @@ def single_satellite_capacity(dl_bandwidth, spectral_efficiency,
     """
     sat_capacity = ((dl_bandwidth / 1000000) * spectral_efficiency *
         number_of_channels * polarization * number_of_beams)
-
 
     return sat_capacity
 
@@ -547,7 +541,6 @@ def calc_constellation_capacity(channel_capacity, number_of_channels,
     constellation_capacity = (channel_capacity * number_of_channels * 
                               polarization * number_of_beams 
                               * number_of_satellites * (percent_coverage / 100)) 
-
 
     return constellation_capacity
 
@@ -601,7 +594,6 @@ def capacity_subscriber(const_cap, subscribers, traffic_percentage):
     """
     cap_sub = const_cap / (subscribers * (traffic_percentage / 100))
 
-
     return cap_sub
 
 
@@ -631,7 +623,6 @@ def monthly_traffic(capacity_mbps):
 
     amount = (capacity_mbps * 30 * 3600) / (8000)
 
-
     return amount
 
 
@@ -660,6 +651,5 @@ def subscribers_per_area(number_of_satellites, percent_coverage, subscribers,
     sats_over_land = ((number_of_satellites) * (percent_coverage / 100))
     subscribers_per_sat = subscribers / sats_over_land
     subscribers_sqkm = subscribers_per_sat / satellite_coverage_area_km
-
 
     return subscribers_sqkm

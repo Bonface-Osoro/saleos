@@ -33,7 +33,6 @@ def run_uq_processing_capacity():
     path = os.path.join(BASE_PATH, 'processed', 'uq_parameters_capacity.csv') 
 
     if not os.path.exists(path):
-
         print('Cannot locate uq_parameters_capacity.csv')
 
     df = pd.read_csv(path)
@@ -99,15 +98,10 @@ def run_uq_processing_capacity():
         #   -services-news-gathering-and-other-broadband-satellite-applications
         #   -part-2-dvb-s2-extensions)
         if spectral_efficiency <= 0.567805:
-
             cnr_scenario = 'low'
-
         elif spectral_efficiency >= 1.647211:
-
             cnr_scenario = 'high'
-
         else:
-     
             cnr_scenario = 'baseline'
  
         results.append({
@@ -156,7 +150,6 @@ def run_uq_processing_capacity():
 
         path_out = os.path.join(DATA, filename)
         df.to_csv(path_out, index = False)
-
 
     return 
 
@@ -235,7 +228,6 @@ def calc_emission_type(df, rocket, datapoint, emission_category, no_launches):
     emission_dict['human_toxicity'] = (
         df['human_toxicity'].loc[datapoint])
 
-
     return emission_dict
 
 
@@ -304,7 +296,6 @@ def calc_social_carbon_cost(carbon_amount):
     """
 
     social_carbon_cost = (carbon_amount / 1000) * 185
-
 
     return social_carbon_cost
 
@@ -584,7 +575,6 @@ def calc_emissions():
     path_out = os.path.join(BASE_PATH, '..', 'results', filename)
     df.to_csv(path_out, index = False)
 
-
     return None
 
 
@@ -693,7 +683,6 @@ def calc_total_emissions():
                   'total_freshwater_toxicity' : 'sum',
                   'total_human_toxicity' : 'sum'}).reset_index()
    
-    
     df1[['annual_baseline_emissions_per_subscriber_kg', 
          'annual_worst_case_emissions_per_subscriber_kg']] = ''
     
@@ -730,7 +719,6 @@ def calc_total_emissions():
     filename2 = 'total_emissions.csv'
     path_out2 = os.path.join(BASE_PATH, '..', 'results', filename2)
     df1.to_csv(path_out2, index = False)
-
 
     return None
 
@@ -787,14 +775,13 @@ def run_uq_processing_cost():
         path_out = os.path.join(DATA, filename)
         df.to_csv(path_out, index = False)
 
-
     return
 
 
 def process_mission_capacity():
     """
-    This function process the 
-    constellation mission capacity.
+    This function process the constellation mission capacity.
+
     """
     data_in = os.path.join(DATA, 'interim_results_capacity.csv')
     df = pd.read_csv(data_in, index_col = False)
@@ -852,8 +839,7 @@ def process_mission_capacity():
 
 def process_mission_cost():
     """
-    This function process the 
-    constellation mission costs.
+    This function process the constellation mission costs.
 
     """
     data_in = os.path.join(DATA, 'interim_results_cost.csv')

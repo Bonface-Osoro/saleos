@@ -33,7 +33,6 @@ def uq_inputs_capacity(parameters):
     """
     iterations = []
 
-
     for key, constellation_params in parameters.items():
 
         for i in range(0, constellation_params['iteration_quantity']):
@@ -145,7 +144,6 @@ def multiorbit_sat_capacity(i, constellation_params):
             constellation_params['subscriber_traffic_percent'])
     })
 
-
     return output
 
 
@@ -161,7 +159,6 @@ def uq_inputs_cost(parameters):
 
     """
     iterations = []
-
 
     for key, constellation_params in parameters.items():
         
@@ -201,8 +198,8 @@ def multiorbit_sat_costs(i, constellation_params):
 
     Return
     ------
-        output : list
-            List containing cost outputs
+    output : list
+        List containing cost outputs
 
     """
     output = []
