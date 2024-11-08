@@ -179,54 +179,54 @@ def calc_emission_type(df, rocket, datapoint, emission_category, no_launches):
     """
     emission_dict = {}
 
-    df['climate_change_baseline'].loc[datapoint] = (
+    df.loc[datapoint, 'climate_change_baseline'] = (
         rocket['climate_change_baseline'][emission_category] 
         * no_launches) 
     
     emission_dict['climate_change_baseline'] = (
         df['climate_change_baseline'].loc[datapoint])
 
-    df['climate_change_worst_case'].loc[datapoint] = (
+    df.loc[datapoint, 'climate_change_worst_case'] = (
         rocket['climate_change_worst_case'][emission_category] 
         * no_launches)
     
     emission_dict['climate_change_worst_case'] = (
         df['climate_change_worst_case'].loc[datapoint])
 
-    df['ozone_depletion_baseline'].loc[datapoint] = (
+    df.loc[datapoint, 'ozone_depletion_baseline'] = (
         rocket['ozone_depletion_baseline'][emission_category] 
         * no_launches)
     
     emission_dict['ozone_depletion_baseline'] = (
         df['ozone_depletion_baseline'].loc[datapoint])
 
-    df['ozone_depletion_worst_case'].loc[datapoint] = (
+    df.loc[datapoint, 'ozone_depletion_worst_case'] = (
         rocket['ozone_depletion_worst_case'][emission_category]
         * no_launches)
     
     emission_dict['ozone_depletion_worst_case'] = (
         df['ozone_depletion_worst_case'].loc[datapoint])
 
-    df['resource_depletion'].loc[datapoint] = (
+    df.loc[datapoint, 'resource_depletion'] = (
         rocket['resource_depletion'][emission_category]
         * no_launches)
     
     emission_dict['resource_depletion'] = (
         df['resource_depletion'].loc[datapoint])
 
-    df['freshwater_toxicity'].loc[datapoint] = (
+    df.loc[datapoint, 'freshwater_toxicity'] = (
         rocket['freshwater_toxicity'][emission_category]
         * no_launches)
     
     emission_dict['freshwater_toxicity'] = (
         df['freshwater_toxicity'].loc[datapoint])
 
-    df['human_toxicity'].loc[datapoint] = (
+    df.loc[datapoint,'human_toxicity'] = (
         rocket['human_toxicity'][emission_category]
         * no_launches)
     
     emission_dict['human_toxicity'] = (
-        df['human_toxicity'].loc[datapoint])
+        df.loc[datapoint, 'human_toxicity'])
 
     return emission_dict
 
@@ -255,25 +255,25 @@ def calc_total_carbon_emission(df, rocket, datapoint, no_launches):
 
     total_dict = {}
 
-    df['total_baseline_carbon_emissions'].loc[datapoint] = (
+    df.loc[datapoint, 'total_baseline_carbon_emissions'] = (
         rocket['totals']['total_baseline_carbon_emissions'] * no_launches) 
     
-    df['total_worst_case_carbon_emissions'].loc[datapoint] = (
+    df.loc[datapoint, 'total_worst_case_carbon_emissions'] = (
         rocket['totals']['total_worst_case_carbon_emissions'] * no_launches) 
     
-    df['total_ozone_depletion_baseline'].loc[datapoint] = (
+    df.loc[datapoint, 'total_ozone_depletion_baseline'] = (
         rocket['totals']['total_ozone_depletion_baseline'] * no_launches)
     
-    df['total_ozone_depletion_worst_case'].loc[datapoint] = (
+    df.loc[datapoint, 'total_ozone_depletion_worst_case'] = (
         rocket['totals']['total_ozone_depletion_worst_case'] * no_launches)
 
-    df['total_resource_depletion'].loc[datapoint] = (
+    df.loc[datapoint, 'total_resource_depletion'] = (
         rocket['totals']['total_resource_depletion'] * no_launches)
 
-    df['total_freshwater_toxicity'].loc[datapoint] = (
+    df.loc[datapoint, 'total_freshwater_toxicity'] = (
         rocket['totals']['total_freshwater_toxicity'] * no_launches)
     
-    df['total_human_toxicity'].loc[datapoint] = (
+    df.loc[datapoint, 'total_human_toxicity'] = (
         rocket['totals']['total_human_toxicity'] * no_launches)
 
     return total_dict
@@ -465,33 +465,33 @@ def calc_emissions():
 
                 if df['constellation'].loc[i] == 'starlink':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'oneweb':
 
                 if df['constellation'].loc[i] == 'oneweb':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'kuiper':
 
                 if df['constellation'].loc[i] == 'kuiper':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'geo':
 
                 if df['constellation'].loc[i] == 'geo_generic':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
     
     df = pd.melt(df, id_vars = ['constellation', 'rocket', 'no_of_satellites', 
          'no_of_launches', 'climate_change_baseline', 'satellite_lifespan',
@@ -507,8 +507,8 @@ def calc_emissions():
     
     for i in range(len(df)):
         
-        df['per_subscriber_emission'].loc[i] = (
-            df['climate_change_baseline'].loc[i] / df['subscribers'].loc[i])
+        df.loc[i, 'per_subscriber_emission'] = (df.loc[i, 
+                  'climate_change_baseline'] / df.loc[i, 'subscribers'])
 
     filename = 'individual_emissions.csv'
 
@@ -539,34 +539,32 @@ def calc_emissions():
     
     for i in range(len(df)):
 
-        df['baseline_social_carbon_cost_usd'].loc[i] = (
-            calc_social_carbon_cost(df['climate_change_baseline_kg'].loc[i]))
-        
-        df['worst_case_social_carbon_cost_usd'].loc[i] = (
-            calc_social_carbon_cost(df['climate_change_worst_case_kg'].loc[i]))
+        df.loc[i, 'baseline_social_carbon_cost_usd'] = (
+            calc_social_carbon_cost(df.loc[i, 'climate_change_baseline_kg']))
+ 
+        df.loc[i, 'worst_case_social_carbon_cost_usd'] = (
+            calc_social_carbon_cost(df.loc[i, 'climate_change_worst_case_kg']))
 
-        df['annual_baseline_emission_kg'].loc[i] = (
-            df['climate_change_baseline_kg'].loc[i] 
-            / df['satellite_lifespan'].loc[i]) 
-            
-        df['annual_worst_case_emission_kg'].loc[i] = (
-            df['climate_change_worst_case_kg'].loc[i] 
-            / df['satellite_lifespan'].loc[i]) 
+        df.loc[i, 'annual_baseline_emission_kg'] = (df.loc[i, 
+            'climate_change_baseline_kg'] / df.loc[i, 'satellite_lifespan'])
         
-        df['annual_baseline_scc_per_subscriber_usd'].loc[i] = (
-            (df['baseline_social_carbon_cost_usd'].loc[i] 
-             / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
-        
-        df['annual_worst_case_scc_per_subscriber_usd'].loc[i] = (
-            (df['worst_case_social_carbon_cost_usd'].loc[i] 
-             / df['satellite_lifespan'].loc[i]) / (df['subscribers'].loc[i]))
+        df.loc[i, 'annual_worst_case_emission_kg'] = (df.loc[i, 
+            'climate_change_worst_case_kg'] / df.loc[i, 'satellite_lifespan'])
 
-    df = df[['constellation', 'no_of_launches', 'climate_change_baseline_kg', 
-             'climate_change_worst_case_kg', 'ozone_depletion_baseline_kg', 
-             'ozone_depletion_worst_case_kg', 'resource_depletion_kg',
-             'freshwater_toxicity_m3', 'human_toxicity', 'subscribers', 
-             'annual_baseline_emission_kg', 'annual_worst_case_emission_kg', 
-             'baseline_social_carbon_cost_usd', 
+        df.loc[i, 'annual_baseline_scc_per_subscriber_usd'] = (df.loc[i, 
+            'baseline_social_carbon_cost_usd'] / df.loc[i, 
+            'satellite_lifespan'] / df.loc[i, 'subscribers'])
+
+        df.loc[i, 'annual_worst_case_scc_per_subscriber_usd'] = (df.loc[i, 
+            'worst_case_social_carbon_cost_usd'] / df.loc[i, 
+            'satellite_lifespan'] / df.loc[i, 'subscribers'])
+
+    df = df[['constellation', 'no_of_launches', 'no_of_satellites', 
+             'climate_change_baseline_kg', 'climate_change_worst_case_kg', 
+             'ozone_depletion_baseline_kg', 'ozone_depletion_worst_case_kg', 
+             'resource_depletion_kg', 'freshwater_toxicity_m3', 'human_toxicity', 
+             'subscribers', 'annual_baseline_emission_kg', 
+             'annual_worst_case_emission_kg', 'baseline_social_carbon_cost_usd', 
              'worst_case_social_carbon_cost_usd', 
              'annual_baseline_scc_per_subscriber_usd',
              'annual_worst_case_scc_per_subscriber_usd', 'subscriber_scenario',
@@ -628,45 +626,45 @@ def calc_total_emissions():
 
                 if df['constellation'].loc[i] == 'starlink':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'oneweb':
 
                 if df['constellation'].loc[i] == 'oneweb':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'kuiper':
 
                 if df['constellation'].loc[i] == 'kuiper':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
 
             if key == 'geo':
 
                 if df['constellation'].loc[i] == 'geo_generic':
                     
-                    df['subscribers_low'].loc[i] = item['subscribers'][0]
-                    df['subscribers_baseline'].loc[i] = item['subscribers'][1]
-                    df['subscribers_high'].loc[i] = item['subscribers'][2]
+                    df.loc[i, 'subscribers_low'] = item['subscribers'][0]
+                    df.loc[i, 'subscribers_baseline'] = item['subscribers'][1]
+                    df.loc[i, 'subscribers_high'] = item['subscribers'][2]
   
-    df = pd.melt(df, id_vars = ['constellation', 'satellite_lifespan',
-         'total_baseline_carbon_emissions', 'total_worst_case_carbon_emissions', 
-         'total_ozone_depletion_baseline', 'total_ozone_depletion_worst_case',
-         'total_resource_depletion', 'total_freshwater_toxicity', 
-         'total_human_toxicity'], value_vars = ['subscribers_low', 
-         'subscribers_baseline', 'subscribers_high'], var_name = 
-         'subscriber_scenario', value_name = 'subscribers')
+    df = pd.melt(df, id_vars = ['constellation', 'satellite_lifespan', 
+         'total_baseline_carbon_emissions', 
+         'total_worst_case_carbon_emissions', 'total_ozone_depletion_baseline', 
+         'total_ozone_depletion_worst_case', 'total_resource_depletion', 
+         'total_freshwater_toxicity', 'total_human_toxicity'], value_vars = 
+         ['subscribers_low', 'subscribers_baseline', 'subscribers_high'], 
+         var_name = 'subscriber_scenario', value_name = 'subscribers')
     
     ####Save Total Carbon Emmissions####
     df = df[['constellation', 'satellite_lifespan', 'subscribers', 
-              'total_baseline_carbon_emissions', 
+              'total_baseline_carbon_emissions',
               'total_worst_case_carbon_emissions', 
               'total_ozone_depletion_baseline', 
               'total_ozone_depletion_worst_case', 'total_resource_depletion',
@@ -685,18 +683,34 @@ def calc_total_emissions():
    
     df1[['annual_baseline_emissions_per_subscriber_kg', 
          'annual_worst_case_emissions_per_subscriber_kg']] = ''
-    
+    df1['number_of_satellites'] = ''
     for i in range(len(df1)):
 
-        df1['annual_baseline_emissions_per_subscriber_kg'].loc[i] = ((
-            df1['total_baseline_carbon_emissions'].loc[i] 
-            / df1['subscribers'].loc[i]) /df1['satellite_lifespan'].loc[i])  
+        df1.loc[i, 'annual_baseline_emissions_per_subscriber_kg'] = ((
+            df1.loc[i, 'total_baseline_carbon_emissions'] 
+            / df1.loc[i, 'subscribers']) / df1.loc[i, 'satellite_lifespan'])  
 
-        df1['annual_worst_case_emissions_per_subscriber_kg'].loc[i] = (
-            (df1['total_worst_case_carbon_emissions'].loc[i] 
-             / df1['subscribers'].loc[i]) / df1['satellite_lifespan'].loc[i])
+        df1.loc[i, 'annual_worst_case_emissions_per_subscriber_kg'] = (
+            (df1.loc[i, 'total_worst_case_carbon_emissions']
+             / df1.loc[i, 'subscribers']) / df1.loc[i, 'satellite_lifespan'])
+        
+        if df1.loc[i, 'constellation'] == 'geo_generic':
+
+            df1.loc[i, 'number_of_satellites'] = 72
+
+        elif df1.loc[i, 'constellation'] == 'kuiper':
+
+            df1.loc[i, 'number_of_satellites'] = 3236
+
+        elif df1.loc[i, 'constellation'] == 'starlink':
+
+            df1.loc[i, 'number_of_satellites'] = 4425
+
+        else:
+
+            df1.loc[i, 'number_of_satellites'] = 648
     
-    df1 = df1[['constellation', 'satellite_lifespan', 
+    df1 = df1[['constellation', 'satellite_lifespan', 'number_of_satellites',
              'subscribers', 'total_baseline_carbon_emissions',
              'total_worst_case_carbon_emissions', 
              'total_ozone_depletion_baseline', 
@@ -755,6 +769,7 @@ def run_uq_processing_cost():
         
         results.append({
             'constellation': item['constellation'], 
+            'number_of_satellites': item['number_of_satellites'],
             'subscribers_low': item['subscribers_low'],
             'subscribers_baseline': item['subscribers_baseline'],
             'subscribers_high': item['subscribers_high'],
@@ -809,16 +824,17 @@ def process_mission_capacity():
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation results'):
 
-         df['capacity_per_user'].loc[i] = ((cy.capacity_subscriber(
-             df['constellation_capacity_mbps'].loc[i], 
-            df['subscribers'].loc[i], df['subscriber_traffic_percent'].loc[i])))
+         df.loc[i, 'capacity_per_user'] = cy.capacity_subscriber(df.loc[i, 
+                    'constellation_capacity_mbps'], df.loc[i, 'subscribers'], 
+                    df.loc[i, 'subscriber_traffic_percent'])
 
-         df['monthly_gb'].loc[i] = (cy.monthly_traffic(
-             df['capacity_per_user'].loc[i]))
+         df.loc[i, 'monthly_gb'] = cy.monthly_traffic(df.loc[i, 
+                                    'capacity_per_user'])
 
-         df['user_per_area'].loc[i] = (cy.subscribers_per_area(
-             df['number_of_satellites'].loc[i], df['percent_coverage'].loc[i], 
-             df['subscribers'].loc[i], df['satellite_coverage_area_km'].loc[i]))
+         df.loc[i, 'user_per_area'] = cy.subscribers_per_area(df.loc[i, 
+                'number_of_satellites'], df.loc[i, 'percent_coverage'], 
+                df.loc[i, 'subscribers'], df.loc[i, 
+                'satellite_coverage_area_km'])
 
     filename = 'final_capacity_results.csv'
 
@@ -826,7 +842,7 @@ def process_mission_capacity():
 
          os.makedirs(RESULTS)
 
-    df = df[['constellation', 'constellation_capacity_mbps', 
+    df = df[['constellation', 'number_of_satellites', 'constellation_capacity_mbps', 
              'satellite_coverage_area_km', 'capacity_per_user', 
             'subscribers', 'monthly_gb', 'user_per_area', 
             'cnr_scenario', 'subscriber_scenario']]
@@ -845,16 +861,16 @@ def process_mission_cost():
     data_in = os.path.join(DATA, 'interim_results_cost.csv')
     df = pd.read_csv(data_in, index_col = False)
 
-    df = df[['constellation', 'capex_costs', 'opex_costs',
+    df = df[['constellation', 'number_of_satellites', 'capex_costs', 'opex_costs',
              'assessment_period_year', 'total_cost_ownership', 
              'subscribers_low', 'subscribers_baseline', 
              'subscribers_high']]
 
     # Classify subscribers by melting the dataframe into long format.
     # Switching the subscriber columns from wide format to long format.
-    df = pd.melt(df, id_vars = ['constellation', 'capex_costs',
-                                'opex_costs', 'assessment_period_year', 
-                                'total_cost_ownership'], 
+    df = pd.melt(df, id_vars = ['constellation', 'number_of_satellites', 
+                                'capex_costs', 'opex_costs', 
+                                'assessment_period_year','total_cost_ownership'], 
                                 value_vars = ['subscribers_low', 
                                 'subscribers_baseline', 'subscribers_high'], 
                                 var_name = 'subscriber_scenario', 
@@ -868,25 +884,30 @@ def process_mission_cost():
     # Calculate total metrics
     for i in tqdm(range(len(df)), desc = 'Processing constellation results'):
 
-        df['capex_per_user'].loc[i] = (df['capex_costs'].loc[i] / 
-                                        df['subscribers'].loc[i]) 
+        df.loc[i, 'capex_per_user'] = (df.loc[i, 'capex_costs'] / 
+                                       df.loc[i, 'subscribers'])
         
-        df['opex_per_user'].loc[i] = (df['opex_costs'].loc[i] /
-                                        df['subscribers'].loc[i]) 
+        df.loc[i, 'opex_per_user'] = (df.loc[i, 'opex_costs'] / 
+                                      df.loc[i, 'subscribers'])
         
-        df['tco_per_user'].loc[i] = (df['total_cost_ownership'].loc[i] / 
-                                      df['subscribers'].loc[i])
+        df.loc[i, 'tco_per_user'] = (df.loc[i, 'total_cost_ownership'] / 
+                                     df.loc[i, 'subscribers'])
 
-        df['user_monthly_cost'].loc[i] = (ct.user_monthly_cost(
-             df['tco_per_user'].loc[i], df['assessment_period_year'].loc[i]))
+        df.loc[i, 'user_monthly_cost'] = ct.user_monthly_cost(df.loc[i, 
+                            'tco_per_user'], df.loc[i, 'assessment_period_year'])
 
         if df['constellation'].loc[i] in ['Kuiper','OneWeb','Starlink']:
-            df['tco_per_user_annualized'].loc[i] = (
-                df['tco_per_user'].loc[i] / df['assessment_period_year'].loc[i])
+
+            df.loc[i, 'tco_per_user_annualized'] = (df.loc[i, 'tco_per_user'] / 
+                                         df.loc[i, 'assessment_period_year'])
+     
         elif df['constellation'].loc[i] in ['GEO']:
-            df['tco_per_user_annualized'].loc[i] = (
-                df['tco_per_user'].loc[i] / df['assessment_period_year'].loc[i])
+
+            df.loc[i, 'tco_per_user_annualized'] = (df.loc[i, 'tco_per_user'] / 
+                                        df.loc[i, 'assessment_period_year'])
+            
         else:
+
             print('Constellation name not recognized.')
             
     filename = 'final_cost_results.csv'
@@ -895,7 +916,7 @@ def process_mission_cost():
 
          os.makedirs(RESULTS)
 
-    df = df[['constellation', 'capex_costs', 'opex_costs', 
+    df = df[['constellation', 'number_of_satellites', 'capex_costs', 'opex_costs', 
              'total_cost_ownership', 'assessment_period_year', 
              'subscribers', 'capex_per_user', 'opex_per_user', 
              'tco_per_user', 'tco_per_user_annualized', 
@@ -912,22 +933,22 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    run_uq_processing_capacity()
+    #run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    run_uq_processing_cost()
+    #run_uq_processing_cost()
 
     print('Processing Emission results')
-    calc_emissions()
+    #calc_emissions()
 
     print('Processing Total Emission results')
     calc_total_emissions()
 
     print('Working on process_mission_capacity()')
-    process_mission_capacity()
+    #process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    process_mission_cost()
+    #process_mission_cost()
 
     executionTime = (time.time() - start)
 
