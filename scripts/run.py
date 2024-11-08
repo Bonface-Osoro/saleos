@@ -696,7 +696,7 @@ def calc_total_emissions():
         
         if df1.loc[i, 'constellation'] == 'geo_generic':
 
-            df1.loc[i, 'number_of_satellites'] = 72
+            df1.loc[i, 'number_of_satellites'] = 19
 
         elif df1.loc[i, 'constellation'] == 'kuiper':
 
@@ -933,22 +933,22 @@ if __name__ == '__main__':
     start = time.time() 
 
     print('Running on run_uq_processing_capacity()')
-    #run_uq_processing_capacity()
+    run_uq_processing_capacity()
 
     print('Running on run_uq_processing_costs()')
-    #run_uq_processing_cost()
+    run_uq_processing_cost()
 
     print('Processing Emission results')
-    #calc_emissions()
+    calc_emissions()
 
     print('Processing Total Emission results')
     calc_total_emissions()
 
     print('Working on process_mission_capacity()')
-    #process_mission_capacity()
+    process_mission_capacity()
 
     print('Working on process_mission_costs()')
-    #process_mission_cost()
+    process_mission_cost()
 
     executionTime = (time.time() - start)
 

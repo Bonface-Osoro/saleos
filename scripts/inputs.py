@@ -81,7 +81,7 @@ parameters = {
         'assessment_period': 5
     },
     'oneweb': {
-        'number_of_satellites': 720,
+        'number_of_satellites': 648,
         'number_of_ground_stations': 44,
         'number_of_planes' : 100,
         'name': 'OneWeb',
@@ -635,4 +635,22 @@ unknown_hyg = {
                 'total_freshwater_toxicity' : 175199393.530898,
                 'total_human_toxicity' : 12.470
                 }
+}
+
+
+ # The number of satellites per decile is obtained by dividing the average area
+ # of the decile by 379km^2 corresponding to a hexagon inscribed in a 15-mile 
+ # circle that Starlink uses to plan its solid coverage, with an area of 379 
+ # square kilometers 
+decile_satellites = {
+    'Decile 1' : 1,
+    'Decile 2' : 2,
+    'Decile 3' : 2,
+    'Decile 4' : 5,
+    'Decile 5' : 7,
+    'Decile 6' : 12,
+    'Decile 7' : 17,
+    'Decile 8' : 8,
+    'Decile 9' : 25,
+    'Decile 10' : 38   
 }
