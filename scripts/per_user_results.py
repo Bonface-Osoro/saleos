@@ -5,6 +5,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import saleos.capacity as cy
 from inputs import decile_satellites
 warnings.filterwarnings('ignore')
 pd.options.mode.chained_assignment = None 
@@ -124,7 +125,7 @@ def decile_capacity_per_user():
             df = pd.DataFrame.from_dict(results)
 
     df[['technology', 'connected_sats', 'total_capacity_mbps', 
-        'per_user_capacity_mbps']] = ''
+        'per_user_capacity_mbps', 'monthly_gb']] = ''
 
 
     df = pd.merge(df, df1, on = 'decile')
@@ -134,6 +135,12 @@ def decile_capacity_per_user():
             
             df.loc[i, 'connected_sats'] = GEO_decile_satellites(
                 df['mean_area_sqkm'].loc[i])
+            
+        elif df.loc[i, 'constellation'] == 'Starlink':
+
+            constellation_size_factor = 4425 / 3236
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df['mean_area_sqkm'].loc[i]) * constellation_size_factor
 
         else:
 
@@ -148,6 +155,9 @@ def decile_capacity_per_user():
         
         df.loc[i, 'per_user_capacity_mbps'] = (df['total_capacity_mbps'].loc[i] 
             / df['mean_poor_connected'].loc[i])
+        
+        df.loc[i, 'monthly_gb'] = cy.monthly_traffic(df.loc[i, 
+                                    'per_user_capacity_mbps'])
     
     ################### Per user capacity #####################
 
@@ -198,7 +208,8 @@ def decile_cost_per_user():
             df = pd.DataFrame.from_dict(results)
    
     df[['technology', 'connected_sats', 'total_tco_per_satellite', 
-        'total_tco_usd', 'per_user_tco_usd', 'annualized_per_user_tco_usd']] = ''
+        'total_tco_usd', 'per_user_tco_usd', 'annualized_per_user_tco_usd',
+        'monthly_per_user_tco_usd']] = ''
     
     df = pd.merge(df, df1, on = 'decile')
     
@@ -208,6 +219,12 @@ def decile_cost_per_user():
             
             df.loc[i, 'connected_sats'] = GEO_decile_satellites(
                 df['mean_area_sqkm'].loc[i])
+            
+        elif df.loc[i, 'constellation'] == 'Starlink':
+            
+            constellation_size_factor = 4425 / 3236
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df['mean_area_sqkm'].loc[i]) * constellation_size_factor
 
         else:
 
@@ -228,6 +245,9 @@ def decile_cost_per_user():
         
         df.loc[i, 'annualized_per_user_tco_usd'] = (df['per_user_tco_usd'].loc[i] 
             / df['assessment_period_year'].loc[i]) 
+        
+        df.loc[i, 'monthly_per_user_tco_usd'] = (
+            df['annualized_per_user_tco_usd'].loc[i] / 12)
     
     ################### Per user cost #####################
 
@@ -292,6 +312,12 @@ def decile_emission_per_user():
             
             df.loc[i, 'connected_sats'] = GEO_decile_satellites(
                 df['mean_area_sqkm'].loc[i])
+            
+        elif df.loc[i, 'constellation'] == 'Starlink':
+            
+            constellation_size_factor = 4425 / 3236
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df['mean_area_sqkm'].loc[i]) * constellation_size_factor
 
         else:
 
@@ -340,8 +366,8 @@ def decile_emission_per_user():
 
 if __name__ == '__main__':
 
-    decile_capacity_per_user()
+    #decile_capacity_per_user()
 
     decile_cost_per_user()
 
-    decile_emission_per_user()
+    #decile_emission_per_user()
