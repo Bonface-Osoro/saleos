@@ -19,6 +19,7 @@ DATA_SSA = os.path.join(BASE_PATH, '..', 'results', 'SSA')
 DECILE_DATA = os.path.join(BASE_PATH, '..', '..', 'geosafi-consav', 'results', 
                            'SSA')
 
+
 deciles = ['Decile 1', 'Decile 2', 'Decile 3', 'Decile 4', 'Decile 5',
            'Decile 6', 'Decile 7', 'Decile 8', 'Decile 9', 'Decile 10']
 
@@ -364,10 +365,218 @@ def decile_emission_per_user():
     return None
 
 
+def decile_satellite(decile):
+
+    """
+    This function assigns the number of satellites based on the decile
+
+    Parameters
+    ----------
+    decile : string
+        Population decile category
+
+    Returns
+    -------
+    number_of_satellites : int
+        Number of satellites over a country.
+    """
+    for key, sat_numbers in decile_satellites.items():
+
+        if key == decile:
+            
+            number_of_satellites = sat_numbers
+
+    return number_of_satellites
+
+
+def capacity_coverage():
+    """
+    This function calculate the capacity provided by the satellites for users in
+    different areas across Sub-Saharan Africa.
+    """
+    uncov_population = os.path.join(DECILE_DATA, 'SSA_poor_unconnected.csv')
+    ssa = os.path.join(DECILE_DATA, 'SSA_subregional_population_deciles.csv')
+    sat_capacity = os.path.join(DATA_PROCESSED, 'interim_results_capacity.csv')
+
+    cov = pd.read_csv(uncov_population)
+    cov = cov[cov['technology'] == 'GSM']
+    cov = cov[cov['poverty_range'] == 'GSAP2_poor']
+    cov = cov[['iso3', 'GID_1', 'poor_unconnected']]
+    cov = cov.groupby(['iso3', 'GID_1']).agg({'poor_unconnected': 'mean'}).reset_index()
+
+    df = pd.read_csv(ssa)
+    df = df[['GID_2', 'decile', 'area']]
+    df = df.rename(columns = {'GID_2': 'GID_1'})
+    df = pd.merge(df, cov, on = 'GID_1', how = 'inner')
+    
+    sat = pd.read_csv(sat_capacity)
+    starlink_cap = sat[sat['constellation'] == 'Starlink']
+    starlink_cap = starlink_cap['capacity_per_single_satellite_mbps'].mean()
+
+    oneweb_cap = sat[sat['constellation'] == 'OneWeb']
+    oneweb_cap = (oneweb_cap['capacity_per_single_satellite_mbps'].mean())
+
+    kuiper_cap = sat[sat['constellation'] == 'Kuiper']
+    kuiper_cap = (kuiper_cap['capacity_per_single_satellite_mbps'].mean())
+
+    geo_cap = sat[sat['constellation'] == 'GEO']
+    geo_cap = (geo_cap['capacity_per_single_satellite_mbps'].mean())
+
+    constellations = ['Starlink', 'OneWeb', 'Kuiper', 'GEO']
+
+    dfs = []
+    for constellation in constellations:
+
+        df_copy = df.copy()
+        
+        df_copy['constellation'] = constellation
+        dfs.append(df_copy)
+
+    df = pd.concat(dfs, ignore_index = True)
+    for i in range(len(df)):
+
+        if df.loc[i, 'constellation'] == 'geo_generic':
+            
+            df.loc[i, 'sat_cap'] = geo_cap
+            df.loc[i, 'connected_sats'] = GEO_decile_satellites(
+                df['area'].loc[i])
+            
+        elif df.loc[i, 'constellation'] == 'Kuiper':
+            
+            df.loc[i, 'sat_cap'] = kuiper_cap
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area'])
+
+        elif df.loc[i, 'constellation'] == 'Starlink':
+
+            df.loc[i, 'sat_cap'] = starlink_cap
+            constellation_size_factor = 4425 / 3236
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area']) * constellation_size_factor
+
+        else:
+
+            df.loc[i, 'sat_cap'] = oneweb_cap
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area'])
+            
+        df.loc[i, 'per_user_mbps'] = ((df.loc[i, 'connected_sats'] 
+                * df.loc[i, 'sat_cap']) / df.loc[i, 'poor_unconnected'])
+
+    fileout = 'satellite_capacity_coverage.csv'
+    path_out = os.path.join(DATA_SSA, fileout)
+    df.to_csv(path_out)
+
+    return None
+
+
+def cost_coverage():
+    """
+    This function calculate the cost provided by the satellites for users in
+    different areas across Sub-Saharan Africa.
+    """
+    uncov_population = os.path.join(DECILE_DATA, 'SSA_poor_unconnected.csv')
+    ssa = os.path.join(DECILE_DATA, 'SSA_subregional_population_deciles.csv')
+    sat_cost = os.path.join(DATA_RESULTS, 'final_cost_results.csv')
+
+    cov = pd.read_csv(uncov_population)
+    cov = cov[cov['technology'] == 'GSM']
+    cov = cov[cov['poverty_range'] == 'GSAP2_poor']
+    cov = cov[['iso3', 'GID_1', 'poor_unconnected']]
+    cov = cov.groupby(['iso3', 'GID_1']).agg({'poor_unconnected': 'mean'}).reset_index()
+
+    df = pd.read_csv(ssa)
+    df = df[['GID_2', 'decile', 'area']]
+    df = df.rename(columns = {'GID_2': 'GID_1'})
+    df = pd.merge(df, cov, on = 'GID_1', how = 'inner')
+    
+    sat = pd.read_csv(sat_cost)
+    starlink_cost = sat[sat['constellation'] == 'Starlink']
+    starlink_tco = starlink_cost['total_cost_ownership'].mean()
+    starlink_sats = starlink_cost['number_of_satellites'].mean()
+    starlink_tco = starlink_tco / starlink_sats
+
+    oneweb_cost = sat[sat['constellation'] == 'OneWeb']
+    oneweb_tco = (oneweb_cost['total_cost_ownership'].mean())
+    oneweb_sats = oneweb_cost['number_of_satellites'].mean()
+    oneweb_tco = oneweb_tco / oneweb_sats
+
+    kuiper_cost = sat[sat['constellation'] == 'Kuiper']
+    kuiper_tco = (kuiper_cost['total_cost_ownership'].mean())
+    kuiper_sats = kuiper_cost['number_of_satellites'].mean()
+    kuiper_tco = kuiper_tco / kuiper_sats
+
+    geo_cost = sat[sat['constellation'] == 'GEO']
+    geo_tco = (geo_cost['total_cost_ownership'].mean())
+    geo_sats = geo_cost['number_of_satellites'].mean()
+    geo_tco = geo_tco / geo_sats
+
+    constellations = ['Starlink', 'OneWeb', 'Kuiper', 'GEO']
+
+    dfs = []
+    for constellation in constellations:
+
+        df_copy = df.copy()
+        
+        df_copy['constellation'] = constellation
+        dfs.append(df_copy)
+
+    df = pd.concat(dfs, ignore_index = True)
+  
+    for i in tqdm(range(len(df)), desc = 'Processing coverage capacity'):
+
+        if df.loc[i, 'constellation'] == 'geo_generic':
+            
+            df.loc[i, 'sat_cost'] = geo_tco
+            df.loc[i, 'connected_sats'] = GEO_decile_satellites(
+                df['area'].loc[i])
+            period = 15
+            
+        elif df.loc[i, 'constellation'] == 'Kuiper':
+            
+            df.loc[i, 'sat_cost'] = kuiper_tco
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area'])
+            period = 5
+
+        elif df.loc[i, 'constellation'] == 'Starlink':
+
+            df.loc[i, 'sat_cost'] = starlink_tco
+            constellation_size_factor = 4425 / 3236
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area']) * constellation_size_factor
+            period = 5
+
+        else:
+
+            df.loc[i, 'sat_cost'] = oneweb_tco
+            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                df.loc[i, 'area'])
+            period = 5
+  
+        df.loc[i, 'per_user_tco'] = ((df.loc[i, 'connected_sats'] 
+                * df.loc[i, 'sat_cost']) / df.loc[i, 'poor_unconnected'])
+        
+        df.loc[i, 'per_user_annualized_tco'] = (df.loc[i, 'per_user_tco'] 
+                / period)
+        
+        df.loc[i, 'per_user_monthly_tco'] = (
+            df.loc[i, 'per_user_annualized_tco'] / 12)
+
+    fileout = 'satellite_cost_coverage.csv'
+    path_out = os.path.join(DATA_SSA, fileout)
+    df.to_csv(path_out)
+
+    return None
+
 if __name__ == '__main__':
 
-    #decile_capacity_per_user()
+    decile_capacity_per_user()
 
     decile_cost_per_user()
 
-    #decile_emission_per_user()
+    decile_emission_per_user()
+
+    capacity_coverage()
+
+    cost_coverage()

@@ -643,14 +643,14 @@ unknown_hyg = {
  # circle that Starlink uses to plan its solid coverage, with an area of 379 
  # square kilometers 
 decile_satellites = {
-    'Decile 1' : 1,
-    'Decile 2' : 2,
-    'Decile 3' : 2,
-    'Decile 4' : 5,
-    'Decile 5' : 7,
-    'Decile 6' : 12,
-    'Decile 7' : 17,
-    'Decile 8' : 8,
-    'Decile 9' : 25,
-    'Decile 10' : 38   
+    'Decile 1' : 0.9943536,
+    'Decile 2' : 1.728773575,
+    'Decile 3' : 2.413178515,
+    'Decile 4' : 6.184914538,
+    'Decile 5' : 9.633842236,
+    'Decile 6' : 16.32615742,
+    'Decile 7' : 23.53445437,
+    'Decile 8' : 33.71974775,
+    'Decile 9' : 51.84970507,
+    'Decile 10' : 92.79318619   
 }
