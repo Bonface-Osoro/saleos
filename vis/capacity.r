@@ -43,38 +43,34 @@ chn_capacity <-
         ymax = mean / 1e3 + sd / 1e3),
     width = .2,
     position = position_dodge(.98),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "a",
+    subtitle = "A",
     x = NULL,
-    y = "Channel Capacity\n(Gbps)",
-    fill = 'QoS\nScenario'
+    y = "Channel Capacity \n(Gbps)",
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
-      format(y, scientific = FALSE),
+      format(y, scientific = FALSE), limit = c(0, 0.7),
     expand = c(0, 0)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
-    axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
     plot.title = element_text(
       size = 10,
       face = "bold",
@@ -115,17 +111,17 @@ sat_capacity <-
         ymax = mean / 1e3 + sd / 1e3),
     width = .2,
     position = position_dodge(.98),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "b",
+    subtitle = "B",
     x = NULL,
     y = "Satellite Capacity\n(Gbps)",
-    fill = 'QoS\nScenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -133,22 +129,17 @@ sat_capacity <-
     expand = c(0, 0),
     limits = c(0, 980)
   ) +
-  theme_minimal() +
   theme(
-    axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
     legend.position = 'bottom',
-    axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
     plot.title = element_text(
       size = 10,
       face = "bold",
@@ -196,17 +187,17 @@ const_capacity <-
     ),
     width = .2,
     position = position_dodge(.98),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "c",
+    subtitle = "C",
     x = NULL,
     y = "Total Usable Constellation\nCapacity (Tbps)",
-    fill = 'QoS\nScenario'
+    fill = 'QoS Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
@@ -214,22 +205,17 @@ const_capacity <-
     expand = c(0, 0),
     limits = c(0, 45)
   ) +
-  theme_minimal() +
   theme(
-    axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
-    axis.title = element_text(size = 6),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
-    legend.position = 'bottom' ,
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
+    legend.position = 'bottom',
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
     plot.title = element_text(
       size = 10,
       face = "bold",
@@ -277,38 +263,34 @@ capacity_per_user <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.98),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "d",
+    subtitle = "D",
     x = NULL,
     y = "Mean Peak Capacity\n(Mbps/User)",
-    fill = 'Adoption\nScenario'
+    fill = 'Adoption Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
-      format(y, scientific = FALSE),
+      format(y, scientific = FALSE),limit = c(0, 159),
     expand = c(0, 0),
-  ) + theme_minimal() +
+  ) + 
   theme(
-    axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
-    axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
     plot.title = element_text(
       size = 10,
       face = "bold",
@@ -349,38 +331,34 @@ monthly_traffic <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.98),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "e",
+    subtitle = "E",
     x = NULL,
     y = "Mean Peak Monthly \nTraffic (GB/User)",
-    fill = 'Adoption\nScenario'
+    fill = 'Adoption Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
-      format(y, scientific = FALSE),
+      format(y, scientific = FALSE), limit = c(0, 2200),
     expand = c(0, 0),
-  ) + theme_minimal() +
+  ) + 
   theme(
-    axis.title.y = element_text(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
-    axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold")
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold")
   )
 
 
@@ -413,41 +391,38 @@ per_user_area <-
            position = position_dodge()) +
   geom_text(
     aes(label = as.character(signif(mean, 2))),
-    size = 1.5,
+    size = 2,
     position = position_dodge(1),
     vjust = 0.5,
     hjust = -0.1,
     angle = 90
   ) +
-  scale_fill_brewer(palette = "Spectral") +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
-    subtitle = "f",
+    subtitle = "F",
     x = NULL,
-    fill = 'Adoption\nScenario'
-  ) + ylab('Mean Users<br>(Users/km<sup>2</sup>)') +
+    y = "Mean Users (Users/km²)",
+    fill = 'Adoption Scenario'
+  ) + 
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0),
-    limits = c(0, 0.0149)
-  ) + theme_minimal() +
+    limits = c(0, 0.0153)
+  ) +
   theme(
-    axis.title.y = element_markdown(size = 6),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.title.y = element_markdown(size = 8),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
-    axis.title = element_text(size = 6),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
+    axis.title = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
     plot.title = element_text(
       size = 10,
       face = "bold",

@@ -80,15 +80,14 @@ social_carbon_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
-  theme_minimal() +
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
-    subtitle = "a",
+    subtitle = "A",
     x = NULL,
+    y = "Total Social Cost \n(Baseline) (US$ Millions)",
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Total Social Cost<br>(Baseline) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 1439),
@@ -98,11 +97,6 @@ social_carbon_baseline <-
     legend.position = "bottom",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    axis.title.y = element_markdown(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
@@ -140,15 +134,14 @@ social_cost_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
-  theme_minimal() +
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
-    subtitle = "b",
+    subtitle = "B",
     x = NULL,
+    y = "Total Social Cost \nWorst Case) (US$ Millions)",
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Total Social Cost<br>(Worst Case) (US$ Millions)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 1439),
@@ -158,11 +151,6 @@ social_cost_worst_case <-
     legend.position = "bottom",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    axis.title.y = element_markdown(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
@@ -199,15 +187,14 @@ social_carbon_per_subscriber_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
-  theme_minimal() +
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
-    subtitle = "b",
+    subtitle = "B",
     x = NULL,
+    y = "Annual Social Cost/User \n(Baseline) (US$)",
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Annual Social Cost/User<br>(Baseline) (US$)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 114),
@@ -217,11 +204,6 @@ social_carbon_per_subscriber_baseline <-
     legend.position = "bottom",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    axis.title.y = element_markdown(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
@@ -258,15 +240,15 @@ social_carbon_per_subscriber_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_brewer(palette = "Dark2") + 
+  scale_fill_viridis_d(direction = -1) + 
   theme_minimal() +
   labs(
     colour = NULL,
-    subtitle = "d",
+    subtitle = "D",
     x = NULL,
+    y = "Annual Social Cost/User \n(Worst-case) (US$)",
     fill = "Satellite\nMission\nStage"
   ) +
-  ylab("Annual Social Cost/User<br>(Worst-case) (US$)") + 
   scale_y_continuous(
     labels = comma,
     limits = c(0, 114),
@@ -276,11 +258,6 @@ social_carbon_per_subscriber_worst_case <-
     legend.position = "bottom",
     axis.title = element_text(size = 6),
     axis.line = element_line(colour = "black"),
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    axis.title.y = element_markdown(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
