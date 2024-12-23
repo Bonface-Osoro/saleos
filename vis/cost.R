@@ -50,11 +50,10 @@ constellation_capex <-
         ymax = mean / 1e6 + sd / 1e6),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + 
-  theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -68,23 +67,18 @@ constellation_capex <-
       format(y, scientific = FALSE),
     limits = c(0, 9599),
     expand = c(0, 0)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 
@@ -113,10 +107,10 @@ constellation_opex <-
         ymax = mean / 1e6 + sd / 1e6),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -130,23 +124,18 @@ constellation_opex <-
       format(y, scientific = FALSE),
     limits = c(0, 9599),
     expand = c(0, 0)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 
@@ -174,10 +163,10 @@ constellation_tco_total <-
         ymax = mean / 1e6 + sd / 1e6),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -191,23 +180,18 @@ constellation_tco_total <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0), limits = c(0, 9599)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 
@@ -237,10 +221,10 @@ constellation_tco <-
         ymax = mean / 1e6 + sd / 1e6),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = 1) + 
   theme(legend.position = 'right') +
   labs(
     colour = NULL,
@@ -254,23 +238,18 @@ constellation_tco <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0), limits = c(0, 9599)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold")
   )
 
 ###################################
@@ -307,41 +286,34 @@ constellation_monthly_cost_per_user <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = 'Spectral') +
-  theme_minimal() +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
     y = "Mean Monthly TCO \n(US$/User)",
-    fill = 'Adoption\nScenario'
+    fill = 'Adoption Scenario'
   ) +
   scale_y_continuous(
     labels = comma,
     expand = c(0, 0),
     limits = c(0, 79)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 7),
-    axis.text.y = element_text(size = 7),
-    axis.title.y = element_text(size = 6),
+    axis.title.y = element_text(size = 8),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
-    legend.direction = "horizontal",
-    legend.position = c(0.5, 0.9),
+    legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8, face = "bold"),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold")
   )
 
 total_cost <- ggarrange(
@@ -353,7 +325,7 @@ total_cost <- ggarrange(
   ncol = 4,
   common.legend = T,
   legend = "none",
-  labels = c("a", "b", "c", "d"),
+  labels = c("A", "B", "C", "D"),
   font.label = list(size = 9)
 )
 
@@ -410,39 +382,34 @@ constellation_capex_per_user <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
     y = "Capex\n(US$/User)",
-    fill = 'Adoption\nScenario'
+    fill = 'Adoption Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0), limits = c(0, 4999)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold")
   )
 
 
@@ -478,39 +445,34 @@ constellation_opex_per_user <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",
     subtitle = NULL,
     x = NULL,
     y = "Opex\n(US$/User)",
-    fill = 'Adoption\nScenario'
+    fill = 'Adoption Scenario'
   ) +
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0), limits = c(0, 4999)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold")
   )
 
 ##############################
@@ -545,10 +507,10 @@ constellation_tco_per_user <-
         ymax = mean + sd),
     width = .2,
     position = position_dodge(.9),
-    color = 'black',
+    color = 'red',
     size = 0.2
   ) +
-  scale_fill_brewer(palette = "Spectral") + theme_minimal() +
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -561,23 +523,18 @@ constellation_tco_per_user <-
     labels = function(y)
       format(y, scientific = FALSE),
     expand = c(0, 0), limits = c(0, 4999)
-  ) + theme_minimal() +
+  ) + 
   theme(
-    strip.text.x = element_blank(),
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.title.y = element_text(size = 6),
     axis.line.x  = element_line(size = 0.15),
     axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    plot.subtitle = element_text(size = 8),
-    plot.title = element_text(size = 10, face = "bold")
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 ##################
@@ -593,7 +550,7 @@ cost_per_user <- ggarrange(
   ncol = 4,
   common.legend = T,
   legend = "bottom",
-  labels = c("e", "f", "g", "h"),
+  labels = c("E", "F", "G", "H"),
   font.label = list(size = 9)
 )
 
