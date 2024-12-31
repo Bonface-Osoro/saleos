@@ -96,13 +96,10 @@ social_carbon_baseline <-
   theme(
     legend.position = "bottom",
     axis.title = element_text(size = 6),
-    axis.line = element_line(colour = "black"),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
@@ -150,13 +147,10 @@ social_cost_worst_case <-
   theme(
     legend.position = "bottom",
     axis.title = element_text(size = 6),
-    axis.line = element_line(colour = "black"),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
@@ -203,13 +197,10 @@ social_carbon_per_subscriber_baseline <-
   theme(
     legend.position = "bottom",
     axis.title = element_text(size = 6),
-    axis.line = element_line(colour = "black"),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
@@ -257,13 +248,10 @@ social_carbon_per_subscriber_worst_case <-
   theme(
     legend.position = "bottom",
     axis.title = element_text(size = 6),
-    axis.line = element_line(colour = "black"),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     plot.subtitle = element_text(size = 8, face = "bold"),
     plot.title = element_text(size = 8, face = "bold")
   )
