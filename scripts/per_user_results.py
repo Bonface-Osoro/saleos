@@ -184,7 +184,9 @@ def decile_cost_per_user():
     cost_data = os.path.join(DATA_PROCESSED, 'interim_results_cost.csv')
     pop_path = os.path.join(DECILE_DATA, 'SSA_decile_summary_stats.csv')
     df1 = pd.read_csv(pop_path) 
-    df1 = df1[['decile', 'mean_area_sqkm', 'mean_poor_connected', 'gni']]
+    df1 = df1[['decile', 'mean_area_sqkm', 'mean_poor_connected', 
+               'cost_per_1GB_usd', 'monthly_income_usd', 'cost_per_month_usd', 
+               'adoption_rate_perc', 'arpu_usd']]
 
     df = pd.read_csv(cost_data)
     df = df[['constellation', 'number_of_satellites', 
@@ -242,15 +244,18 @@ def decile_cost_per_user():
             * df['connected_sats'].loc[i])
         
         df.loc[i, 'per_user_tco_usd'] = (df['total_tco_usd'].loc[i] 
-            / df['mean_poor_connected'].loc[i])
+            / (df['mean_poor_connected'].loc[i] 
+            * (df['adoption_rate_perc'].loc[i] / 100)))
         
         df.loc[i, 'annualized_per_user_tco_usd'] = (df['per_user_tco_usd'].loc[i] 
             / df['assessment_period_year'].loc[i]) 
         
         df.loc[i, 'monthly_per_user_tco_usd'] = (
             df['annualized_per_user_tco_usd'].loc[i] / 12)
-    
-    df['affordability_ratio'] = df['monthly_per_user_tco_usd'] / df['gni'] * 1e2
+
+        df.loc[i, 'percent_gni'] = ((df['monthly_per_user_tco_usd'].loc[i] 
+        / df['monthly_income_usd'].loc[i]) * 100)
+
     ################### Per user cost #####################
 
     filename = 'SSA_decile_cost.csv'
