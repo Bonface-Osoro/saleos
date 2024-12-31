@@ -184,7 +184,7 @@ def decile_cost_per_user():
     cost_data = os.path.join(DATA_PROCESSED, 'interim_results_cost.csv')
     pop_path = os.path.join(DECILE_DATA, 'SSA_decile_summary_stats.csv')
     df1 = pd.read_csv(pop_path) 
-    df1 = df1[['decile', 'mean_area_sqkm', 'mean_poor_connected']]
+    df1 = df1[['decile', 'mean_area_sqkm', 'mean_poor_connected', 'gni']]
 
     df = pd.read_csv(cost_data)
     df = df[['constellation', 'number_of_satellites', 
@@ -250,6 +250,7 @@ def decile_cost_per_user():
         df.loc[i, 'monthly_per_user_tco_usd'] = (
             df['annualized_per_user_tco_usd'].loc[i] / 12)
     
+    df['affordability_ratio'] = df['monthly_per_user_tco_usd'] / df['gni'] * 1e2
     ################### Per user cost #####################
 
     filename = 'SSA_decile_cost.csv'
@@ -571,12 +572,12 @@ def cost_coverage():
 
 if __name__ == '__main__':
 
-    decile_capacity_per_user()
+    #decile_capacity_per_user()
 
     decile_cost_per_user()
 
-    decile_emission_per_user()
+    #decile_emission_per_user()
 
-    capacity_coverage()
+    #capacity_coverage()
 
-    cost_coverage()
+    #cost_coverage()

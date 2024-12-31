@@ -65,15 +65,13 @@ constellation_capex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 9599),
+    limits = c(0, 7499),
     expand = c(0, 0)
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -122,15 +120,13 @@ constellation_opex <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    limits = c(0, 9599),
+    limits = c(0, 7499),
     expand = c(0, 0)
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -179,14 +175,12 @@ constellation_tco_total <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 9599)
+    expand = c(0, 0), limits = c(0, 7499)
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -237,14 +231,12 @@ constellation_tco <-
   scale_y_continuous(
     labels = function(y)
       format(y, scientific = FALSE),
-    expand = c(0, 0), limits = c(0, 9599)
+    expand = c(0, 0), limits = c(0, 7499)
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -307,8 +299,6 @@ constellation_monthly_cost_per_user <-
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -403,8 +393,6 @@ constellation_capex_per_user <-
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -466,8 +454,6 @@ constellation_opex_per_user <-
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -528,8 +514,6 @@ constellation_tco_per_user <-
     axis.title.y = element_text(size = 8),
     axis.text.x = element_text(size = 6),
     axis.text.y = element_text(size = 6),
-    axis.line.x  = element_line(size = 0.15),
-    axis.line.y  = element_line(size = 0.15),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
