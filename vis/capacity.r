@@ -46,7 +46,7 @@ chn_capacity <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = 1) + 
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -112,7 +112,7 @@ sat_capacity <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = 1) + 
+  scale_fill_viridis_d(direction = -1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -186,7 +186,7 @@ const_capacity <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = 1) +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",
@@ -260,7 +260,7 @@ capacity_per_user <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = 1) +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",
@@ -326,7 +326,7 @@ monthly_traffic <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = 1) +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",
@@ -387,7 +387,7 @@ per_user_area <-
     hjust = -0.1,
     angle = 90
   ) +
-  scale_fill_viridis_d(direction = 1) +
+  scale_fill_viridis_d(direction = -1) +
   labs(
     colour = NULL,
     title = " ",

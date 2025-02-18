@@ -80,7 +80,7 @@ social_carbon_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     subtitle = "A",
@@ -131,7 +131,7 @@ social_cost_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     subtitle = "B",
@@ -181,7 +181,7 @@ social_carbon_per_subscriber_baseline <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     subtitle = "B",
@@ -231,7 +231,7 @@ social_carbon_per_subscriber_worst_case <-
     hjust = 0.5,
     position = position_stack()
   )  +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   theme_minimal() +
   labs(
     colour = NULL,
