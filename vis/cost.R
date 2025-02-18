@@ -281,7 +281,7 @@ constellation_monthly_cost_per_user <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = -1) +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
@@ -375,7 +375,7 @@ constellation_capex_per_user <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
@@ -436,7 +436,7 @@ constellation_opex_per_user <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = -1) +
+  scale_fill_viridis_d(direction = 1) +
   labs(
     colour = NULL,
     title = " ",
@@ -496,7 +496,7 @@ constellation_tco_per_user <-
     color = 'red',
     size = 0.2
   ) +
-  scale_fill_viridis_d(direction = -1) + 
+  scale_fill_viridis_d(direction = 1) + 
   labs(
     colour = NULL,
     title = " ",
