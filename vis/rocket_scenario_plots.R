@@ -190,7 +190,7 @@ climate_change <-
       y = value / 1e9,
       label = round(value / 1e9, 2)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -258,7 +258,7 @@ climate_change_wc <-
       y = value / 1e9,
       label = round(value / 1e9, 2)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -325,7 +325,7 @@ ozone_depletion <-
       y = value / 1e6,
       label = round(value / 1e6, 2)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -395,7 +395,7 @@ ozone_depletion_wc <-
       y = value / 1e6,
       label = round(value / 1e6, 2)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -461,7 +461,7 @@ resource_depletion <-
       y = value / 1e3,
       label = round(value / 1e3, 0)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -527,7 +527,7 @@ freshwater_ecotixicity <-
       y = value / 1e8,
       label = round(value / 1e8, 0)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -594,7 +594,7 @@ human_toxicity <-
       y = value,
       label = round(value, 0)
     ),
-    size = 2.5,
+    size = 3,
     data = totals,
     vjust = 0.5,
     hjust = -0.09,
@@ -679,9 +679,9 @@ legends <-
     legend.title = element_text(size = 9, face = "bold")
   ) +
   guides(colour = guide_legend(
-    override.aes = list(size = 8),
-    ncol = 2,
-    nrow = 4
+    override.aes = list(size = 9),
+    ncol = 4,
+    nrow = 2
   ))
 
 ##################
@@ -695,8 +695,8 @@ pub_emission <- ggarrange(
   freshwater_ecotixicity,
   human_toxicity,
   legends,
-  nrow = 4,
-  ncol = 2
+  nrow = 6,
+  ncol = 1
 )
 
 path = file.path(visualizations, 'figures', 'g_rocket_sensitivity_lca_metrics_panel.png')
@@ -704,8 +704,8 @@ dir.create(file.path(visualizations, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 12,
-  height = 9,
+  width = 9,
+  height = 14,
   res = 480
 )
 

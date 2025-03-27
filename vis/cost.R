@@ -70,8 +70,8 @@ constellation_capex <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -125,8 +125,8 @@ constellation_opex <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -179,8 +179,8 @@ constellation_tco_total <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -235,13 +235,13 @@ constellation_tco <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
-    plot.subtitle = element_text(size = 10, face = "bold")
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 ###################################
@@ -297,13 +297,13 @@ constellation_monthly_cost_per_user <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
-    plot.subtitle = element_text(size = 10, face = "bold")
+    plot.subtitle = element_text(size = 10, face = "bold"),
   )
 
 total_cost <- ggarrange(
@@ -311,8 +311,8 @@ total_cost <- ggarrange(
   constellation_opex,
   constellation_tco_total,
   constellation_tco,
-  nrow = 1,
-  ncol = 4,
+  nrow = 2,
+  ncol = 2,
   common.legend = T,
   legend = "none",
   labels = c("A", "B", "C", "D"),
@@ -391,8 +391,8 @@ constellation_capex_per_user <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -452,8 +452,8 @@ constellation_opex_per_user <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size =8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -512,8 +512,8 @@ constellation_tco_per_user <-
   ) + 
   theme(
     axis.title.y = element_text(size = 8),
-    axis.text.x = element_text(size = 6),
-    axis.text.y = element_text(size = 6),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8),
     legend.position = 'bottom',
     axis.title = element_text(size = 8),
     legend.title = element_text(size = 8),
@@ -530,8 +530,8 @@ cost_per_user <- ggarrange(
   constellation_opex_per_user,
   constellation_tco_per_user,
   constellation_monthly_cost_per_user,
-  nrow = 1,
-  ncol = 4,
+  nrow = 2,
+  ncol = 2,
   common.legend = T,
   legend = "bottom",
   labels = c("E", "F", "G", "H"),
@@ -542,7 +542,6 @@ output <- ggarrange(
   total_cost,
   cost_per_user,
   nrow = 2,
-  ncol = 1,
   common.legend = F,
   legend = "bottom",
   font.label = list(size = 9),
@@ -554,8 +553,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 9,
-  height = 5,
+  width = 6,
+  height = 8,
   res = 480
 )
 print(output)
