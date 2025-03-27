@@ -90,7 +90,7 @@ social_carbon_baseline <-
   ) +
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 1439),
+    limits = c(0, 700),
     expand = c(0, 0)
   ) +
   theme(
@@ -191,7 +191,7 @@ social_carbon_per_subscriber_baseline <-
   ) +
   scale_y_continuous(
     labels = comma,
-    limits = c(0, 114),
+    limits = c(0, 55),
     expand = c(0, 0)
   ) +
   theme(
