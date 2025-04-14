@@ -195,7 +195,7 @@ climate_change <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "a",
@@ -263,7 +263,7 @@ climate_change_wc <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "b",
@@ -331,7 +331,7 @@ ozone_depletion <-
     hjust = -0.09,
     position = position_stack()
   ) +
-  scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "b",
@@ -400,7 +400,7 @@ ozone_depletion_wc <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "d",
@@ -466,7 +466,7 @@ resource_depletion <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "c",
@@ -532,7 +532,7 @@ freshwater_ecotixicity <-
     vjust = 0.5,
     hjust = -0.09,
     position = position_stack()
-  )  + scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  )  + scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "d",
@@ -600,7 +600,7 @@ human_toxicity <-
     hjust = -0.09,
     position = position_stack()
   ) +
-  scale_fill_brewer(palette = "Dark2") + coord_flip() +
+  scale_fill_viridis_d(direction = 1) + coord_flip() +
   labs(
     colour = NULL,
     title = "e",
@@ -670,7 +670,7 @@ legends <-
   lims(x = c(0, 0), y = c(1, 1)) +
   labs(fill = "Satellite Mission Stage", color = NULL) +
   theme_void() +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_viridis_d(direction = 1) +
   theme(
     legend.direction = "vertical",
     legend.position = c(0.5, 0.6),
