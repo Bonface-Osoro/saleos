@@ -70,6 +70,7 @@ def GEO_decile_satellites(decile_area):
 
     number_of_satellites = decile_area / satellite_coverage_area
 
+
     return number_of_satellites
 
 
@@ -426,7 +427,7 @@ def capacity_coverage():
     kuiper_cap = (kuiper_cap['capacity_per_single_satellite_mbps'].mean())
 
     geo_cap = sat[sat['constellation'] == 'GEO']
-    geo_cap = (geo_cap['capacity_per_single_satellite_mbps'].mean())
+    geo_cap = (geo_cap['capacity_per_single_satellite_mbps'].mean()) 
 
     constellations = ['Starlink', 'OneWeb', 'Kuiper', 'GEO']
 
@@ -441,37 +442,37 @@ def capacity_coverage():
     df = pd.concat(dfs, ignore_index = True)
     for i in range(len(df)):
 
-        if df.loc[i, 'constellation'] == 'geo_generic':
+        if df.loc[i, 'constellation'] == 'GEO':
             
-            df.loc[i, 'sat_cap'] = geo_cap
-            df.loc[i, 'connected_sats'] = GEO_decile_satellites(
-                df['area'].loc[i])
+            df.loc[i, 'sat_cap'] = geo_cap * 0.005
+            #df.loc[i, 'connected_sats'] = GEO_decile_satellites(
+                #df['area'].loc[i])
             
         elif df.loc[i, 'constellation'] == 'Kuiper':
             
-            df.loc[i, 'sat_cap'] = kuiper_cap
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area'])
+            df.loc[i, 'sat_cap'] = kuiper_cap * 6
+            #df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                #df.loc[i, 'area'])
 
         elif df.loc[i, 'constellation'] == 'Starlink':
 
-            df.loc[i, 'sat_cap'] = starlink_cap
-            constellation_size_factor = 4425 / 3236
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area']) * constellation_size_factor
+            df.loc[i, 'sat_cap'] = starlink_cap * 12
+            #constellation_size_factor = 4425 / 3236
+            #df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                #df.loc[i, 'area']) * constellation_size_factor
 
         else:
 
-            df.loc[i, 'sat_cap'] = oneweb_cap
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area'])
+            df.loc[i, 'sat_cap'] = oneweb_cap * 2
+            #df.loc[i, 'connected_sats'] = LEO_decile_satellite(
+                #df.loc[i, 'area'])
             
-        df.loc[i, 'per_user_mbps'] = ((df.loc[i, 'connected_sats'] 
-                * df.loc[i, 'sat_cap']) / df.loc[i, 'poor_unconnected'])
+        df.loc[i, 'per_user_mbps'] = ((df.loc[i, 'sat_cap']) / df.loc[i, 'poor_unconnected'])
 
     fileout = 'satellite_capacity_coverage.csv'
     path_out = os.path.join(DATA_SSA, fileout)
     df.to_csv(path_out)
+
 
     return None
 
@@ -500,22 +501,22 @@ def cost_coverage():
     starlink_cost = sat[sat['constellation'] == 'Starlink']
     starlink_tco = starlink_cost['total_cost_ownership'].mean()
     starlink_sats = starlink_cost['number_of_satellites'].mean()
-    starlink_tco = starlink_tco / starlink_sats
+    starlink_tco = starlink_tco #/ starlink_sats
 
     oneweb_cost = sat[sat['constellation'] == 'OneWeb']
     oneweb_tco = (oneweb_cost['total_cost_ownership'].mean())
-    oneweb_sats = oneweb_cost['number_of_satellites'].mean()
-    oneweb_tco = oneweb_tco / oneweb_sats
+    oneweb_sats = oneweb_cost['number_of_satellites'].max()
+    oneweb_tco = oneweb_tco #/ oneweb_sats
 
     kuiper_cost = sat[sat['constellation'] == 'Kuiper']
     kuiper_tco = (kuiper_cost['total_cost_ownership'].mean())
-    kuiper_sats = kuiper_cost['number_of_satellites'].mean()
-    kuiper_tco = kuiper_tco / kuiper_sats
+    kuiper_sats = kuiper_cost['number_of_satellites'].max()
+    kuiper_tco = kuiper_tco #/ kuiper_sats
 
     geo_cost = sat[sat['constellation'] == 'GEO']
     geo_tco = (geo_cost['total_cost_ownership'].mean())
-    geo_sats = geo_cost['number_of_satellites'].mean()
-    geo_tco = geo_tco / geo_sats
+    geo_sats = geo_cost['number_of_satellites'].max()
+    geo_tco = geo_tco #/ geo_sats
 
     constellations = ['Starlink', 'OneWeb', 'Kuiper', 'GEO']
 
@@ -529,39 +530,30 @@ def cost_coverage():
 
     df = pd.concat(dfs, ignore_index = True)
   
-    for i in tqdm(range(len(df)), desc = 'Processing coverage capacity'):
+    for i in tqdm(range(len(df)), desc = 'Processing coverage cost'):
 
-        if df.loc[i, 'constellation'] == 'geo_generic':
+        if df.loc[i, 'constellation'] == 'GEO':
             
-            df.loc[i, 'sat_cost'] = geo_tco
-            df.loc[i, 'connected_sats'] = GEO_decile_satellites(
-                df['area'].loc[i])
+            df.loc[i, 'sat_cost'] = geo_tco / df.loc[i, 'area']
             period = 15
             
         elif df.loc[i, 'constellation'] == 'Kuiper':
             
-            df.loc[i, 'sat_cost'] = kuiper_tco
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area'])
+            df.loc[i, 'sat_cost'] = kuiper_tco / df.loc[i, 'area']
             period = 5
 
         elif df.loc[i, 'constellation'] == 'Starlink':
 
-            df.loc[i, 'sat_cost'] = starlink_tco
-            constellation_size_factor = 4425 / 3236
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area']) * constellation_size_factor
+            df.loc[i, 'sat_cost'] = starlink_tco / df.loc[i, 'area']
             period = 5
 
         else:
 
-            df.loc[i, 'sat_cost'] = oneweb_tco
-            df.loc[i, 'connected_sats'] = LEO_decile_satellite(
-                df.loc[i, 'area'])
+            df.loc[i, 'sat_cost'] = oneweb_tco / df.loc[i, 'area']
             period = 5
   
-        df.loc[i, 'per_user_tco'] = ((df.loc[i, 'connected_sats'] 
-                * df.loc[i, 'sat_cost']) / df.loc[i, 'poor_unconnected'])
+        df.loc[i, 'per_user_tco'] = ((df.loc[i, 'sat_cost']) / df.loc[i, 
+                    'poor_unconnected'])
         
         df.loc[i, 'per_user_annualized_tco'] = (df.loc[i, 'per_user_tco'] 
                 / period)
@@ -579,10 +571,10 @@ if __name__ == '__main__':
 
     #decile_capacity_per_user()
 
-    decile_cost_per_user()
+    #decile_cost_per_user()
 
     #decile_emission_per_user()
 
     #capacity_coverage()
 
-    #cost_coverage()
+    cost_coverage()

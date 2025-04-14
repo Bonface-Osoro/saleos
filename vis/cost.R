@@ -311,8 +311,8 @@ total_cost <- ggarrange(
   constellation_opex,
   constellation_tco_total,
   constellation_tco,
-  nrow = 2,
-  ncol = 2,
+  nrow = 1,
+  #ncol = 2,
   common.legend = T,
   legend = "none",
   labels = c("A", "B", "C", "D"),
@@ -530,8 +530,8 @@ cost_per_user <- ggarrange(
   constellation_opex_per_user,
   constellation_tco_per_user,
   constellation_monthly_cost_per_user,
-  nrow = 2,
-  ncol = 2,
+  nrow = 1,
+  #ncol = 2,
   common.legend = T,
   legend = "bottom",
   labels = c("E", "F", "G", "H"),
@@ -553,8 +553,8 @@ dir.create(file.path(folder, 'figures'), showWarnings = FALSE)
 png(
   path,
   units = "in",
-  width = 6,
-  height = 8,
+  width = 11,
+  height = 6,
   res = 480
 )
 print(output)
